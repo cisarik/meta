@@ -1,7 +1,3 @@
-Logical whole identity: framenest-tailnet-mullvad-egress-and-operator-network-recovery-contract
-Worker session ordinal: 02
-Worker exchange ordinal: 01
-
 # Authoritative Prompt for Fresh Worker 2
 
 ## Implement the Repository-Native Mullvad Egress and Network Recovery Contract

@@ -1,7 +1,3 @@
-Logical whole identity: framenest-tailnet-mullvad-egress-and-operator-network-recovery-contract
-Worker session ordinal: 04
-Worker exchange ordinal: 01
-
 # Authoritative Prompt for Fresh Worker 4
 
 ## Correct the Missing NUC Rollback Duration
