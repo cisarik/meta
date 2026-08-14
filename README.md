@@ -22,12 +22,30 @@ A logical whole keeps one directory for its full lifecycle even when the work
 spans multiple calendar days. Dates and timestamps are recovered from Git and
 file metadata rather than directory names.
 
-Worker prompt/report filenames inside a logical whole follow the governing AP
-pin and the trace grammar applicable when those artifacts were created.
+Worker prompt/report filenames inside a logical whole use this Meta-local
+storage contract:
 
-Historical prompt and report contents are not rewritten merely to modernize
-old path references or make earlier artifacts look as though they were created
-under a later layout.
+    <worker-session>_<phase>_<meta-exchange-index>.md
+    <worker-session>_report_<meta-exchange-index>.md
+
+`<worker-session>` remains the one-based, two-digit AP Worker-session ordinal.
+`<meta-exchange-index>` is a Meta-local, zero-based, two-digit storage index.
+The filename suffix is not itself the AP Worker-exchange ordinal:
+
+    meta_exchange_index = Worker exchange ordinal - 1
+
+Every completed exchange has exactly one prompt and one matching report with
+the same session ordinal and Meta exchange index. `00_handout.md` is reserved
+for the Orchestrator handout and is not a Worker exchange.
+
+Prompt and report contents remain exact historical evidence. Path
+normalization does not rewrite them. Old literal path references inside
+historical artifacts are preserved as historical text.
+
+Meta naming is storage and discovery policy only. It grants no task, AP,
+project, acceptance, publication, deployment, production, or closure
+authority. Future prompt/report pairs are added only after the report exists.
+This Meta-maintenance prompt and its report are not archived in Meta.
 
 ## Authority
 
