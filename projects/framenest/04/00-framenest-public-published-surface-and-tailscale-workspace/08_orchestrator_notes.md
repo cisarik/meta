@@ -128,3 +128,88 @@ disabled".
   `public_published_uds` reader per accepted ADR-0074
   (`06_implementation_00.md`). Explicitly local-only; no external exposure,
   TLS, Funnel, or NUC changes in this grant.
+- Session 03 exchange 01 reported implementation PASS: commit `95f514b`
+  (twenty files; local-only public reader). Two allowlist deviations
+  honestly recorded (`server.py` UDS bind for the public mode; one
+  `GET /api/audience/me` route-policy line in `tailscale_ingress.py`) —
+  both necessary, reviewed and accepted by the Orchestrator. Orchestrator
+  verified commit shape, no-mutation grep on public modules, read-only
+  fail-closed engine wiring, distinct socket default, and independently
+  re-ran the inventory contract suite (11 passed). Accepted.
+- Session 03 exchange 02 reported implementation PASS: commit `5b99575`
+  (twenty-six files; `media.workspace.read`, workspace list, own-attribution
+  content reads, admin contributor filter). Orchestrator verified commit
+  shape, read-only attribution grep, public-composition route freedom,
+  trusted-ingress capability policy line, and independently re-ran the
+  workspace contract tests (3 passed). Accepted. Rollout #4 complete.
+- Session 03 exchange 03 issued: durable ordinary-user analysis proposals
+  (`08_implementation_00.md`) — one additive migration to schema head 0033,
+  `analysis.propose` capability, POST proposal + admin list, strict
+  no-provider/no-enqueue/no-flag boundary.
+- Session 03 exchange 03 reported implementation PASS: commit `da06109`
+  (forty-one files; additive migration 0033 `media_analysis_proposals`,
+  `analysis.propose`, POST + admin list, strict no-provider/no-enqueue
+  boundary proven behaviorally and by grep). Orchestrator verified commit
+  shape, schema CHECK, public required-revision bump, and independently
+  re-ran proposal + migration tests (14 passed). Accepted. Flagged drift:
+  README/PRODUCT/ROADMAP still say 0032 — folded into exchange 04's
+  allowlist.
+- Session 03 exchange 04 reported implementation PASS: commit `f59f401`
+  (twenty-three files; `metadata.alias.team.read` admin-only, dual-gate
+  audited team-alias route, SELECT-only stack, 0032→0033 prose fix in
+  README/PRODUCT/ROADMAP). Orchestrator verified commit shape, dual
+  capability policy, write-free alias path grep, and independently re-ran
+  the team-alias contract tests (9 passed). Accepted.
+- **All six ADR-0074 code rollouts complete** (1 gate incl. unpublish,
+  2 local public reader, 4 workspace media, 5 proposals, 6 team aliases;
+  rollout 3's independent security acceptance pending; rollout 7 companion
+  reconnect parked; rollout 8 unpark on Cooperator request).
+- Session 04 exchange 01 reported audit PASS: verdict **yes-with-conditions**.
+  No Critical/High. Conditions: C1 = F-1 public 422 validation leakage
+  (Low), C2 = F-2 tcp-mode non-loopback bind guard (Medium, pre-existing),
+  C3 = rate limits/body caps/timeouts owned by the future reverse-proxy
+  whole (F-8), C4 = Cooperator disposition on F-3 proposal growth
+  (dedupe / rate limit / dismiss route / accept). Ride-alongs: F-4 marker
+  assert, F-5 sanitized error logging, F-6 URI percent-encoding. Orchestrator
+  spot-verified F-1/F-2 citations in source. Audit accepted; triage:
+  C1+C2+ride-alongs routed to session 05 infosec hardening slice;
+  C3 recorded as mandatory acceptance item of the TLS/reverse-proxy
+  preflight checklist; C4 pending Michal's product decision.
+- Session 05 exchange 01 reported implementation PASS: four commits
+  (`bcf5ec1`, `d3b203f`, `4b7b87e`, `3a21405`) closing F-1, F-2, F-3(B),
+  F-4, F-5, F-6; full suite 3300 passed / 8 skipped. Orchestrator verified
+  the chain and independently re-ran focused tests (65 passed).
+  **Report accuracy near-miss:** the Worker's report mis-transcribed the
+  final full SHA (actual `3a21405e08ff30a840afe655e702d931e833acf2`,
+  reported `...0b0c0b7bdeddbb64ac1e2ea1a2f04e04`); same short prefix, real
+  chain confirmed by git. Accepted with correction recorded.
+- Cooperator explicitly requested the previously out-of-scope INFOSEC manual
+  + admin/diagnostic scripts ("potrebujem si byť istý pre public net").
+  Session 05 exchange 02 issued (`12_infosec_docs_00.md`): docs/INFOSEC.md
+  (hardening manual + audit record), bash operator tools under
+  scripts/operator/infosec/**, README pointer. After it: TLS/reverse-proxy
+  deployment preflight whole remains the gate to any public bind.
+- Session 05 exchange 02 reported implementation PASS: commit `be35922`
+  (five files, +708): docs/INFOSEC.md manual with audit record + F-9
+  numbering note + citation-dense checklist, three bash operator tools
+  (`bash -n` verified by Orchestrator), README pointer. Behavioral smoke ran
+  against throwaway /tmp fixtures only. Accepted.
+- Session 05 exchange 03 reported PASS: Cooperator acceptance-test guide
+  delivered (`13_report_00.md`); two non-blocking script polish items routed
+  (executable bit, `-h` early exit). Orchestrator verified guide commands
+  against launcher docs and script headers at HEAD.
+- **Cooperator freeze decision (2026-08-25):** VPS/public-net/TLS deployment
+  planning FROZEN for this whole; any future deploy era MUST reconnect with
+  then-current deployment documentation (NUC runbook, framenest-release
+  ADR-0060 contract, INFOSEC.md checklist). Acceptance guide to be mirrored
+  into the repository. Whole remains open pending Michal's Part A/B
+  acceptance execution — parked, not closed.
+- Session 05 exchange 04 issued (final freeze preparation,
+  `14_freeze_prep_00.md`): repository `docs/ACCEPTANCE_DUAL_AUDIENCE.md`
+  with deploy-freeze annex + preflight shape, script polish, README pointer.
+- Next era (post-freeze): fresh Agent Orchestrator resumes the parked
+  companion Brave extension testing (03/10 backlog) per Michal's explicit
+  unfreeze; companion-infosec: audit found no companion-specific defect;
+  ingress CSRF/mutation-proof/audit machinery companion relies on was
+  verified-claims inventory items 12–13. Restoration handout authored by
+  this Orchestrator after exchange 04 report lands.
