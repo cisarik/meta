@@ -207,9 +207,13 @@ disabled".
 - Session 05 exchange 04 issued (final freeze preparation,
   `14_freeze_prep_00.md`): repository `docs/ACCEPTANCE_DUAL_AUDIENCE.md`
   with deploy-freeze annex + preflight shape, script polish, README pointer.
-- Next era (post-freeze): fresh Agent Orchestrator resumes the parked
-  companion Brave extension testing (03/10 backlog) per Michal's explicit
-  unfreeze; companion-infosec: audit found no companion-specific defect;
-  ingress CSRF/mutation-proof/audit machinery companion relies on was
-  verified-claims inventory items 12–13. Restoration handout authored by
-  this Orchestrator after exchange 04 report lands.
+- Session 05 exchange 04 reported PASS: final commit `c3e9ac7617a07b6a8e60c911a0b78b25ced71665`
+  — scripts now 100755 with `-h` exit-0 (live-verified by Orchestrator),
+  `docs/ACCEPTANCE_DUAL_AUDIENCE.md` (415 lines) with Deployment-Freeze
+  Annex, README pointer. Accepted. **04/00 whole is now FROZEN-PARKED:
+  code+audit+docs complete at this SHA, pending Cooperator Part A/B
+  acceptance execution; not closed.**
+- Restoration handout for the next era authored by this Orchestrator at
+  `/home/agile/meta/projects/framenest/05/00-framenest-companion-brave-testing-resume/00_handout.md`
+  — mission: resume parked companion Brave extension testing (03/10 backlog)
+  under Michal's explicit unfreeze authority.
