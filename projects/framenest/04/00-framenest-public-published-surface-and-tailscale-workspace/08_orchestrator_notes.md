@@ -119,6 +119,12 @@ disabled".
   adapter. Accepted. Recorded follow-up: unpublish-on-PUT was outside
   exchange 03's allowlist — scheduled as exchange 04 before any public
   reader exists.
-- Session 02 exchange 04 issued: administrator unpublish on the sole
-  content-publication route (`05_implementation_00.md`). Next after it:
-  fresh session 03 for successor whole #2, local-only `public_published_uds`.
+- Session 02 exchange 04 reported implementation PASS: commit `dd26782`
+  (thirteen files; unpublish on the sole route, honest statuses, audit kept).
+  Orchestrator verified commit shape, writer/deleter grep (only admin
+  adapter + catalog removal), and independently re-ran the new unpublish
+  contract tests (4 passed). Accepted. Rollout #1 complete.
+- Session 03 exchange 01 issued (fresh session): local-only
+  `public_published_uds` reader per accepted ADR-0074
+  (`06_implementation_00.md`). Explicitly local-only; no external exposure,
+  TLS, Funnel, or NUC changes in this grant.
