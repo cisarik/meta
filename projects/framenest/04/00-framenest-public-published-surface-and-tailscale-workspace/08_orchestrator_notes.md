@@ -113,3 +113,12 @@ disabled".
   (`04_implementation_00.md`) — companion Apply never publishes,
   administrator PUT sole write, historical `companion_review` rows readable,
   focused tests via canonical `./.ap/ap exec` route.
+- Session 02 exchange 03 reported implementation PASS: commit `ffef457`
+  (five files); Orchestrator re-ran focused tests independently (21 passed)
+  and verified the sole remaining publication insert is the admin PUT
+  adapter. Accepted. Recorded follow-up: unpublish-on-PUT was outside
+  exchange 03's allowlist — scheduled as exchange 04 before any public
+  reader exists.
+- Session 02 exchange 04 issued: administrator unpublish on the sole
+  content-publication route (`05_implementation_00.md`). Next after it:
+  fresh session 03 for successor whole #2, local-only `public_published_uds`.
