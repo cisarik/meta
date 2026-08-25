@@ -1,5 +1,13 @@
 # Fresh Agent Orchestrator Restoration
 
+```text
+PARKED — 2026-08-25. This file is not live product authority.
+Companion Brave testing is frozen. Whole remains NOT-CLOSED.
+Live Orchestrator object:
+/home/agile/meta/projects/framenest/04/00-framenest-public-published-surface-and-tailscale-workspace/00_handout.md
+Parked test inventory: COMPANION_PARKED_BRAVE_TEST_BACKLOG.md in this folder.
+```
+
 ## FrameNest Companion — review-inbox chrome, unread vs history, and stale-context closeout
 
 You are a **fresh** terminal-capable Agent Orchestrator for FrameNest under
@@ -67,23 +75,16 @@ STOP: Roadmap “screenshot-led UI/UX production polish remains deferred”
       live Cooperator testing, not a fishing expedition.
 ```
 
-Paste seed for a new Agent chat (pointer only, not durable authority):
+Paste seed for a new Agent chat (pointer only). **Superseded 2026-08-25 — use 04/00:**
 
 ```text
 Resume this AP-integrated FrameNest project as a fresh Orchestrator.
-Read /home/agile/meta/projects/framenest/03/10-framenest-companion-review-inbox-ux-history-mvp/00_handout.md
+Read /home/agile/meta/projects/framenest/04/00-framenest-public-published-surface-and-tailscale-workspace/00_handout.md
 completely before any Worker prompt.
-Begin read-only. Restore canonical state and the declared AP upgrade ledger.
-Do not mutate. Do not implement product code.
-Michal already selected this bounded whole: unread-only companion inbox,
-clickable green title-bar history (newest first), badge = unopened/unedited
-items, sequential UX testing, and forgotten bugs (starting with Extension
-context invalidated). Confirm the small chrome forks in that handoff
-Section 8, then issue Planner 01_planning_00.md with Plan Mode on.
+Begin read-only. Do not mutate. Do not implement product code.
+Companion 03/10 is parked, not-closed. Dual-audience public/Tailscale is
+the live object. Issue Planner 01_planning_00.md with Plan Mode on.
 Communicate with Michal in Slovak. Extra High. No Max.
-At the end of this whole, after UX PASS, generate a continuation restoration
-prompt for the next fresh Orchestrator (the post-03/09 product-horizon
-prompt deferred when Michal changed course).
 ```
 
 Continuation Bootstrap (AP pointer, not this whole’s authority):
