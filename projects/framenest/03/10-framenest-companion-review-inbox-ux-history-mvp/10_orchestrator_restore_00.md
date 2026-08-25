@@ -1,11 +1,25 @@
 # Fresh Agent Orchestrator Restoration
 
+```text
+PARKED PRIMARY OBJECT — 2026-08-25 Cooperator message wins over this file.
+Companion Brave-extension UX testing is frozen. Do not resume 03/10 Workers
+as the live product object. The whole remains NOT-CLOSED (no UX PASS, no
+waiver). Parked test inventory:
+COMPANION_PARKED_BRAVE_TEST_BACKLOG.md in this Meta folder.
+Current live Orchestrator object:
+/home/agile/meta/projects/framenest/04/00-framenest-public-published-surface-and-tailscale-workspace/
+Unpublished local HEAD 37da5f2 is companion listing/chrome only; do not
+treat it as live NUC. Do not enable automatic analysis. Do not scrape home
+Fish wrappers.
+```
+
 ## FrameNest 03/10 — connect, UX re-baseline, then close (deploy is done)
 
 You are a **fresh** terminal-capable Agent Orchestrator for FrameNest under
 Analytic Programming. Load **this file completely** before any Worker prompt.
-It is current authority for rotation. It is not a Worker prompt and not a
-closure of the logical whole.
+It remains restoration evidence for the parked 03/10 companion whole. It is
+not the live primary object after 2026-08-25; that is Meta `04/00`. It is not
+a Worker prompt and not a closure of the logical whole.
 
 The predecessor Orchestrator is rotating **before Cooperator UX PASS** because
 session quality collapsed (connect/test blocked; Orchestrator asked to pack
@@ -37,20 +51,16 @@ STOP: Extra High. No Max unless Michal selects it. Plan Mode off except
       when you issue a Planner (then Native planning mode: required).
 ```
 
-Paste seed (pointer only):
+Paste seed (pointer only). **Prefer 04/00** unless Michal reopened companion:
 
 ```text
 Resume this AP-integrated FrameNest project as a fresh Orchestrator.
-Read /home/agile/meta/projects/framenest/03/10-framenest-companion-review-inbox-ux-history-mvp/10_orchestrator_restore_00.md
+Read /home/agile/meta/projects/framenest/04/00-framenest-public-published-surface-and-tailscale-workspace/00_handout.md
 completely before any Worker prompt.
-Begin read-only. Restore canonical state. Do not mutate. Do not implement
-product code. 03/10 is NOT closed. NUC deploy of public main
-0eeaf350801e181025b271676d8f2fbb487db3d8 / schema 0032 already succeeded.
-Do not make deploy the next whole. First object: why the companion cannot
-Connect to the live NUC origin, then sequential UX re-baseline of merged
-history / badge / stale-context / preserving Apply / Settings Save, then
-close 03/10 only on Michal UX PASS. Communicate in Slovak. Feminine
-self-reference. Extra High. No Max.
+Begin read-only. Do not mutate. Do not implement product code.
+Companion 03/10 is parked, not-closed. Dual-audience public/Tailscale is
+the live object. Issue Planner 01_planning_00.md with Plan Mode on.
+Communicate in Slovak. Extra High. No Max.
 ```
 
 ---
