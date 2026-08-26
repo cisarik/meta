@@ -329,3 +329,66 @@ redesign.
   `feat/x-meme-browser-companion`.
 - `Phase-qualified result: publication-PASS`. Logical whole not closed.
   NUC and numbered re-test remain Cooperator-owned.
+
+## 2026-08-27 — Cooperator PASS; logical whole closed
+
+- Cooperator: „PASS, predpokladám, že closeout dáva zmysel teraz.“ Treated
+  as rendered PASS of numbered items 1–12 on NUC serving published
+  `afa0670e…`, plus explicit closeout intent.
+- Direct re-read at closure:
+  - Public `refs/heads/main` =
+    `afa0670e26d17b04570ad555ba4f922052507c6c`
+  - Canonical `/home/agile/Projects/framenest`
+    `feat/x-meme-browser-companion` same SHA, tracked-clean
+  - AP pin `9c5cc44f8b6c92dd56ad2427d13223d7d59c5656`
+  - No in-flight Worker; no unpublished candidate; no FrameNest mutation
+    this turn
+
+```text
+Phase-qualified result: production-acceptance-PASS
+Result artifact or commit: afa0670e26d17b04570ad555ba4f922052507c6c
+Result evidence: Cooperator rendered PASS after NUC refresh of published main
+Logical-whole closure: closed-by-ORCHESTRATOR
+Required preceding results: satisfied
+Cooperator-owned decisions: satisfied
+Residual-risk disposition: satisfied
+Upgrade-ledger reconciliation: complete
+Active mutation: none
+Closure actor: ORCHESTRATOR
+Declared closure signal: closed-by-ORCHESTRATOR
+Signal owner: orchestrator
+Worker emission of closure signal: prohibited
+Accepted evidence: implementation-PASS 04 (afa0670e); full-fresh acceptance-PASS 05; publication-PASS of afa0670e to origin/main; Cooperator PASS 1–12 on NUC
+Active-context reconciliation: complete
+Closure authority: present
+Implementation completion: implementation-PASS at afa0670e
+Audit completion: acceptance-PASS session 05
+Publication: publication-PASS afa0670e == refs/heads/main
+Public Git equality: equal
+Orchestrator acceptance: accepted
+```
+
+Preceding results: correction implementation-PASS (session 04), full-fresh
+independent acceptance-PASS (session 05), publication-PASS of the same SHA,
+Cooperator rendered PASS. Schema remains `0033`. Four `companion_mutation`
+unchanged.
+
+Upgrade ledger `docs/AP_UPGRADE_OBSERVATIONS.md` entry
+`consumer-declared-execution-and-capability-route-binding` remains
+`untriaged` / `non-authorizing` / `Closure action: retain-active`. Isolated-
+worktree `ap exec --root <worktree>` launch-path miss is unchanged and
+**not this kebab**. No FrameNest ledger mutation at closure.
+
+Parked remainder (not this whole; not a reopen):
+- Gallery 🧠 admin bulk analyze-and-canonical-save (per-field not done)
+- R4 Settings automatic-analysis checkbox
+- VPS
+- Cover Studio
+- Persistent multi-model comparison board
+- `origin/feat/x-meme-browser-companion` stale ahead-count (informational)
+- Loopback `create_app` skips ingress capability (public HTTP 403 on
+  suggestion-list GET unproven in that topology; route-policy evidence held)
+
+No next logical whole is selected. Restoration for a later Orchestrator
+starts read-only at public `main` `afa0670e…` and this closure entry. Do not
+resume era-07 Worker ordinals 01–05 as live authority.
