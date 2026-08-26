@@ -147,3 +147,185 @@ Maintained by: Agent Orchestrator. Append-only narrative; superseded facts move 
 - Next: Worker 03 independent acceptance, prompt `03_acceptance_00.md`,
   candidate `36ffdb19…`, fresh worktree w3, do not use w2.
 - No push, NUC, or FrameNest mutation this turn.
+
+## 2026-08-26 — Worker 03 independent acceptance reviewed
+
+- Claim `03_report_00.md`: `acceptance-PASS` of
+  `36ffdb197da9294fb1fbb06931f8169061a25c9b`. Session 03 authority expired
+  at that report. Independence claimed (did not author the two commits).
+- Direct object verification (this Orchestrator):
+  - Canonical still `2aead54…` / tree `0900818f…` tracked-clean; AP pin
+    `9c5cc44…`; public `main` still `2aead54…` (`ls-remote`).
+  - w3 detached at `36ffdb19…` tracked-clean; ancestor of `2aead54…`;
+    rev-list count 2; unused as implementation copy.
+  - w2 still `36ffdb19…` on `feat/ai-suggestions-alias-edit-mvp`,
+    tracked-clean, unused by session 03 as working copy.
+  - Path set exactly 15; persist-join blobs equal parent; no 0034; ADR
+    bodies 0062/0076/0023 untouched; four `companion_mutation=True` at
+    `tailscale_ingress.py` 540/550/558/567; `app.js` has no `/apply`;
+    probe `/tmp/framenest-aliasacc-03-provenance.py` absent.
+  - Spot-checked control-matrix lines: `identityAllowsMetadataEdit`
+    353–358; Analyze gate 7289; 🧠 still `analysis.run` ∧ `canonical.write`
+    5254–5258; card title `item.display_title` 6030.
+  - Tests: not re-run here; acceptor reported 230 Python + 181 JS from w3
+    with RF-16 deviation and w3 `framenest.__file__`.
+- `acceptance-PASS` accepted. Logical whole **not closed**. Publication,
+  NUC, and numbered re-test 1–12 remain Cooperator-owned next surfaces.
+- No push, NUC, or FrameNest mutation this turn.
+
+## 2026-08-26 — Cooperator item-1 FAIL (live NUC / public main)
+
+- Michal scored item 1 FAIL: ordinary Gallery has no bottom-left Edit
+  icon; Details preview has Technical details + description and no Edit
+  button (admin has both).
+- Public `refs/heads/main` re-read: still `2aead54…`. Canonical same.
+  Candidate `36ffdb19…` is unpublished. Rendered NUC cannot serve the
+  candidate.
+- That FAIL matches **predecessor** `app.js` on `2aead54…`: Gallery ~6029
+  and Details ~444 gate Edit on `metadata.canonical.write` only. Ordinary
+  therefore never gets the overlay control. This is the defect this whole
+  exists to fix; it is not a candidate defect and does not authorize
+  correction of `36ffdb19…`.
+- Next remains Cooperator publication of `36ffdb19…`, then
+  `~/nuc_push.fish`, then re-score item 1 (and 2–12) on that SHA.
+
+## 2026-08-26 — publication of 36ffdb19 to public main
+
+- Cooperator grant: „publikovať.“
+- Preflight: public `main` was `2aead54…`; candidate `36ffdb19…` is a
+  descendant of that SHA (two commits); canonical tracked-clean.
+- One non-force push:
+  `git push --porcelain origin 36ffdb197da9294fb1fbb06931f8169061a25c9b:refs/heads/main`
+  → `2aead54..36ffdb1`.
+- Credential-free `ls-remote` `refs/heads/main` =
+  `36ffdb197da9294fb1fbb06931f8169061a25c9b`.
+- Local `feat/x-meme-browser-companion` fast-forwarded to the same SHA
+  (canonical now matches public main). Did not push
+  `feat/x-meme-browser-companion`.
+- `Phase-qualified result: publication-PASS`. Logical whole not closed.
+  NUC and numbered re-test remain Cooperator-owned.
+
+## 2026-08-26 — Cooperator numbered re-test after NUC refresh
+
+Rendered scores on published `36ffdb19…` (screenshot: admin standalone Edit
+with suggestions chrome vs compact/hosted Edit without Load):
+
+| Item | Score | Classification |
+|---|---|---|
+| 1 | PASS | Ordinary Edit affordance works; alias write is the Save path. |
+| 2 | PASS on freeze + new product defect | Canonical unchanged in admin Manage / public / admin Gallery is the **frozen** ADR-0077 display rule. Ordinary then cannot see their own Save anywhere except re-open Edit. Cooperator now requires caller-visible overlay. |
+| 3 | PASS | Hosted Details: Edit shown; Analyze/Load hidden — **as frozen**. Later item-4 addendum supersedes the Load-hide half. |
+| 4 | PARTIAL + addenda | Original chrome (heading, dropdown+Load above Title) is present on admin standalone. New intent: ordinary Load of admin-provided title/description/tags/filename; same Edit+Load in companion (hosted side panel). Conflicts with ADR-0077 §§5–8 (`workflow.read` only; alias mode hides chrome; hosted hides Load; filename admin-only). |
+| 5 | PASS | Load does not overwrite Current. |
+| 6 | PASS | Per-field title ✅. |
+| 7 | PARTIAL + addenda | Suggested tags exist but chips are `pointer-events: none`; overlay/overlap in the tags strip; Cooperator wants the chip itself to append into selected tags with `x`. Hide Content category and Acquisition source in this dialog (admin too). Freeze had kept admin classification. |
+| 8 | PARTIAL + addenda | Dropdown change still must not call provider (not rescored as FAIL). After Analyze, list shows 3 not 2; re-open shows 2. Matches in-session prepend plus inbox refresh when preview `analysisRunId` ≠ persisted run id (`refreshMetadataSuggestionList` keeps `selectedItem` if missing). Native `<select>` is not companion eye-candy. |
+| 9 | not scored | Leave as prior companion PASS; do not reopen R1–R3′. |
+| 10–12 | PASS | Isolation and copy/provider items hold. |
+
+Proposed correction freeze (awaiting Cooperator `koriguj`; not issued):
+
+1. Caller-visible alias **read**: authenticated catalog list/detail merge
+   overlay for `(media_id, login_key)` into the fields Gallery/Details
+   already render. Other identities, anonymous/public, and admin Manage
+   canonical stay canonical. No `0034`. Succeed ADR-0077 §2 display sentence
+   and the ADR-0062 frozen-surface **read** clause the same way §1 succeeded
+   Edit affordance — do not edit ADR-0062/0076/0023 bodies; successor note
+   on ADR-0077.
+2. Load chrome for ordinary **and** alias mode **and** hosted companion
+   web. Analyze stays `analysis.run` ∧ not hosted. Ordinary does not gain
+   `workflow.read`, Apply, or Analyze. New/extended **read** list of
+   generic analyzed runs for media the caller can already GET (not inbox
+   Apply). Schema `0033`.
+3. Filename: reveal as informational strip (ordinary too). Alias PUT still
+   title/description/tags only — filename is not overlay and must not
+   become canonical rename.
+4. Companion **extension** = hosted FrameNest in the side panel (right
+   screenshot), not a second Edit inside `extension/ui/save.html`.
+5. Suggested tag = button; click appends to Current chips with `x`; wrap
+   without overlap; enable pointer events.
+6. Hide Content category and Acquisition source in this Edit dialog for
+   all actors; admin Save preserves existing canonical values (no silent
+   category rewrite).
+7. Dedupe dropdown after Analyze; replace native select with companion-
+   language custom dropdown (dark, green accent). No provider on change.
+
+Out of this correction: R4, VPS, Gallery 🧠 per-field, Cover Studio,
+ordinary `analysis.run` / canonical.write / Apply, hover-`+` save.html
+redesign.
+
+## 2026-08-26 — Cooperator «koriguj»; Worker 04 issued
+
+- Grant: Cooperator accepted the correction freeze in the prior notes
+  entry. Prompt `04_correction_00.md`. Session 04 / exchange 01,
+  `fresh-worker-session`, `Native planning mode: not-used`, isolated
+  worktree w4 from published `36ffdb19…`. No push. Full-fresh independent
+  acceptance remains a later Worker (`Automatic corrections used: 1`).
+- Canonical checkout must stay `36ffdb19…` tracked-clean.
+
+## 2026-08-27 — Worker 04 correction claim reviewed; Worker 05 issued
+
+- Claim `04_report_00.md`: `implementation-PASS` at
+  `afa0670e26d17b04570ad555ba4f922052507c6c` (parent `85e9c04…` feat, then
+  docs). Session 04 authority expired at that report.
+- Direct object verification (this Orchestrator):
+  - Canonical still `36ffdb19…` / tree `30197622…` tracked-clean; public
+    `main` same; AP pin `9c5cc44…`.
+  - w4 HEAD `afa0670e…`, branch `feat/ai-suggestions-alias-edit-corr`,
+    tracked-clean, two commits, ancestor of `36ffdb19…`.
+  - Path set 27 files vs parent. Named off-allowlist deviation is
+    `companion_review_repository.py` (+1 constructor argument
+    `suggested_filename=`). Accepted as reuse, not a second store.
+  - No 0034; ADR-0062/0076/0023 bodies untouched; four
+    `companion_mutation=True` at `tailscale_ingress.py` 545/555/563/572.
+  - Additive GET `/api/media/{id}/ai-suggestions` capability
+    `metadata.alias.write`, not mutation. Catalog merge on list/get.
+    Load vs Analyze split (`identityAllowsAiSuggestionLoadChrome` /
+    `identityAllowsAiAnalyze`). Hosted Load shown. Classification row
+    `hidden = true`. Refresh dedupes on `analysis_run_id` (no missing-id
+    prepend). `app.js` has no `/apply`.
+  - Tests: not re-run here.
+- Implementation-PASS accepted as an Orchestrator-verified **claim of
+  completeness against the correction freeze**, not as independent
+  acceptance and not as closure.
+- Next: Worker 05 independent full-fresh acceptance, prompt
+  `05_acceptance_00.md`, candidate `afa0670e…`, fresh worktree w5, do not
+  use w4.
+- No push, NUC, or FrameNest mutation this turn.
+
+## 2026-08-27 — Worker 05 independent acceptance reviewed
+
+- Claim `05_report_00.md`: `acceptance-PASS` of
+  `afa0670e26d17b04570ad555ba4f922052507c6c`. Session 05 authority expired
+  at that report. Independence claimed (did not author the two correction
+  commits). Session 03 verdict on `36ffdb19…` was not reused as evidence.
+- Direct object verification (this Orchestrator):
+  - Canonical still `36ffdb19…` tracked-clean; public `main` same; AP pin
+    `9c5cc44…`.
+  - w5 detached at `afa0670e…`; ancestor of `36ffdb19…`; rev-list count 2.
+  - w4 still `afa0670e…`, unused as session-05 working copy.
+  - Path set exactly 27; probe `/tmp/framenest-aliasacc-05-provenance.py`
+    absent.
+  - Spot-check: `identityAllowsMetadataEdit` `app.js` 353–359; GET
+    `/api/media/{id}/ai-suggestions` ingress 307–311
+    (`metadata.alias.write`). Tests not re-run here.
+- `acceptance-PASS` accepted. Logical whole **not closed**. Publication,
+  NUC (`~/nuc_push.fish`), and numbered re-test 1–12 remain
+  Cooperator-owned next surfaces.
+- No push, NUC, or FrameNest mutation this turn.
+
+## 2026-08-27 — publication of afa0670e to public main
+
+- Cooperator grant: „publikovať.“
+- Preflight: public `main` was `36ffdb19…`; candidate `afa0670e…` is a
+  descendant of that SHA (two commits); canonical tracked-clean.
+- One non-force push:
+  `git push --porcelain origin afa0670e26d17b04570ad555ba4f922052507c6c:refs/heads/main`
+  → `36ffdb1..afa0670`.
+- Credential-free `ls-remote` `refs/heads/main` =
+  `afa0670e26d17b04570ad555ba4f922052507c6c`.
+- Local `feat/x-meme-browser-companion` fast-forwarded to the same SHA
+  (canonical now matches public main). Did not push
+  `feat/x-meme-browser-companion`.
+- `Phase-qualified result: publication-PASS`. Logical whole not closed.
+  NUC and numbered re-test remain Cooperator-owned.
