@@ -90,3 +90,40 @@ Maintained by: Agent Orchestrator. Append-only narrative; superseded facts move 
 - Disposition: **accept** `977a7af…`. Next surface is a separate Cooperator
   publication grant of that exact SHA to public `main`. Not NUC. Not R4.
   Not closure.
+
+## 2026-08-26 — Worker 05 publication
+
+- Terminal report `05_report_00.md` claimed `publication-PASS` of
+  `977a7af80afed16745adb0ef8e939555e5e21cce`. Authority expired at that report.
+- ORCHESTRATOR independent public-ref proof (credential-free `ls-remote`):
+  `refs/heads/main` = `977a7af80afed16745adb0ef8e939555e5e21cce`. Canonical
+  HEAD, tree `ed5959ed…`, and subject match. Branch
+  `feat/x-meme-browser-companion`, tracked-clean. AP pin `9c5cc44…` =
+  public `cisarik/ap` `main`. ADR-0076 present on the published tree. w3/w4
+  still at `977a7af…`.
+- Disposition: **publication-PASS**. Living docs for R1–R3′ are on public
+  `main`. Closure gates remaining: NUC `framenest-release` to this SHA, then
+  Cooperator numbered rendered re-test. Not R4. Not VPS. Not closure.
+- Next: Cooperator-run read-only `status` then `check --release 977a7af…`.
+  Deploy is a later separate grant after those results. Same-schema `0033`
+  expected; no migration-required continuation expected.
+
+## 2026-08-26 — Cooperator NUC refresh (owner-run)
+
+- Cooperator attested manual push/deploy. Independent `ls-remote` still
+  `977a7af…` on public `main`; canonical HEAD still that SHA, tracked-clean.
+- Owner terminal: standing operator wrapper invoked `framenest-release`
+  `status` → `check --release 977a7af…` → `deploy --yes` → post `status`.
+  Pre-deploy live release was `91410fe…` / schema `0033` / service active /
+  backup `ready`. Check named public main `977a7af…` and AP pin `9c5cc44…`.
+  Post-deploy: `active_release` `977a7af…`, `service_active: active`,
+  `database_revision: 0033`, `backup_restore_readiness: ready`,
+  same-schema cutover complete. Classified **deployment-PASS**
+  (Cooperator-observed wrapper transcript; not a Worker grant). Host,
+  identity, fingerprint, and private-network values from that transcript
+  are not copied here.
+- A later paste of the MacBook `framenest-release` block inside an NUC
+  login failed as **operator-path mismatch** (wrong host / missing local
+  checkout). Not a product defect and not a failed cutover.
+- Remaining closure gate: numbered rendered R1–R3′ re-test after reload of
+  unpacked Brave from the SHA the NUC serves. Not R4. Not VPS. Not closure.
