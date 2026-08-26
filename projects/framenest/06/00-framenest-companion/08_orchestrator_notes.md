@@ -225,3 +225,20 @@ Cooperator scores (rendered, NUC on `977a7af…`):
   scoped independent re-acceptance of `2aead54…` from a fresh worktree
   (not w9). Prompt: `10_acceptance_00.md`. If the same two tests still
   fail, escalate rather than a third automatic correction.
+
+## 2026-08-26 — Worker 10 item-9 re-acceptance PASS
+
+- `10_report_00.md` acceptance-PASS. Fresh w10 of `2aead54…`; independence
+  OK; provenance under w10 `src/`. Matrix **205 passed, 0 failed** (session
+  08 had the same 205 with two red). Canonical and public `main` still
+  `977a7af…`. Tree `0900818f…`. Range vs main: two commits, eight paths;
+  test-only delta vs `fb59c42…` is the two test files.
+- Object check: ancestor of `977a7af…`, count 2, DI still injects
+  `PersistImportedPreviewAnalysis`, four `companion_mutation`, no Alembic
+  `0034`. Previously inverted owning HTTP join and fake-id supersession
+  tests are green on this SHA.
+- ORCHESTRATOR accepts `2aead540ee39a81a96425902f85e9b9a34f0d690`.
+  Logical whole not-closed. Publication is a separate Cooperator grant.
+  Prompt: `11_publication_00.md`. After public main equals that SHA:
+  routine NUC `framenest-release`, then rendered re-test of **item 9**.
+  Not R4. Not Edit/AI apply. Not VPS.
