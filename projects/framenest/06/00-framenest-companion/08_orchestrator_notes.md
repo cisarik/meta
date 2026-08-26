@@ -163,3 +163,15 @@ Cooperator scores (rendered, NUC on `977a7af…`):
 - Worker 06 / exchange 01 staged: `06_diagnostic_00.md` (Fresh Evidence
   Probe, read-only, SHA `977a7af…`). No correction authority in that
   prompt.
+
+## 2026-08-26 — Worker 06 item-9 diagnostic
+
+- `06_report_00.md` PASS (diagnostic). ORCHESTRATOR accepts **H3**:
+  `PreviewImportedMediaSuggestion` is non-persistent; Analyze by AI /
+  Gallery 🧠 never `record_analyzed`; companion unopened cannot move.
+  ADR-0067 §5 / ADR-0076 join unimplemented on that path. H5 listing bug
+  refuted as primary. H1 fixture secondary and insufficient alone.
+- Next: bounded correction session 07 — persist generic analyzed run from
+  successful imported preview, no second provider call, no Edit/AI apply,
+  no R4. Then independent acceptance of that commit. Canonical stays
+  `977a7af…` until a later publication grant of `HEAD'`.
