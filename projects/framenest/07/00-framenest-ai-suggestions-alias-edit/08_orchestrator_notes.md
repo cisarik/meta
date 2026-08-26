@@ -57,3 +57,51 @@ Maintained by: Agent Orchestrator. Append-only narrative; superseded facts move 
 - Closed predecessor `framenest-companion-brave-testing-resume` remains
   closed. R1–R3′ and item 9 PASS are not reopened. R4 and VPS stay out.
 - No product code implemented. No publication, NUC, Git writes in FrameNest.
+
+## 2026-08-26 — Planner session 01 / exchange 01 review
+
+- Artifact: `01_report_00.md` exists. It is a Slovak Cursor Plan Mode
+  document (YAML front matter, mermaid, archive-todo), **not** the
+  contracted AP terminal report (`### Report for ORCHESTRATOR_CHAT`,
+  coordinates, PASS/PARTIAL/BLOCKED, English). Planning authority expired
+  at that delivery. This is **not** planning PASS under AP. Content is
+  treated as a frozen planner artifact pending Cooperator approval plus
+  one Orchestrator freeze (below). No Worker impersonation: the file was
+  not rewritten.
+- Gate claims in the artifact match this Orchestrator's restoration
+  (HEAD `2aead54…`, tree `0900818f…`, AP pin `9c5cc44…`, Alembic `0033`).
+- Repository-checked claims that hold:
+  - Ordinary lacks Edit because Details ~443–444 and Gallery ~6029 gate
+    on `metadata.canonical.write`; ordinary already has `alias.write`;
+    alias GET/PUT exist.
+  - `GET /api/media/{id}/automatic-analysis` is latest-only
+    (`get_by_media_definition` → `_latest_run`).
+  - `GET /api/companion/review-inbox/{media_id}` returns `suggestions[]`
+    (generic analyzed history, movie 409, default limit 25 / max 100),
+    capability `media.workflow.read`, **not** `companion_mutation`.
+    Ordinary stays 403. Website Edit may GET it; must never POST apply.
+  - `result_json` already carries title/description/tags/filename.
+  - Bulk Load is `applyResolvedAiSuggestionToMetadataWorkspace` ~5494.
+  - Analyze locks after `aiSuggestionApplied` (~6505–6517, ~7204).
+  - Provider copy is `aiSuggestionErrorMessage` ~7285
+    (`AI_PROVIDER_UNAVAILABLE`); library-scan ~10362 is a different path.
+  - Essay “New AI analysis is available after confirmation.” is
+    `renderMetadataAiPanel` ~6753–6755 when `aiCapability.available`.
+  - Stale confirm: `metadataAiConfirmationContextIsCurrent` includes
+    `aiCapabilityRevision`; mismatch returns without status (~7222).
+  - Gallery 🧠 is `identityAllowsCardAiQuickAction` ∧ incomplete ∧ not
+    movie; park as debt.
+  - ADR-0076 still says Edit remains `metadata.canonical.write`.
+- Named Orchestrator freeze **not** in the artifact as written:
+  ordinary Edit **form load** must GET existing alias when non-empty,
+  else seed from canonical. Artifact said Current always seeds from
+  canonical GET, never alias — that would make re-open Edit ignore the
+  overlay the user just saved. Gallery/Details **display** stay
+  canonical. Awaiting Cooperator confirmation; then implementation
+  Worker 02, not a second planning cycle.
+- Implementation notes if accepted: dropdown GET `limit=100`; movie
+  Edit keeps Identify, hides generic suggestions (inbox GET 409);
+  isolated-worktree Python still canonical `--root` + pytest
+  `--rootdir`/`pythonpath` deviation; no 0034; no fifth
+  `companion_mutation`.
+- No implementation issued. No FrameNest mutation.
