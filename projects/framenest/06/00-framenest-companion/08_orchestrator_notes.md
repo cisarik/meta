@@ -274,3 +274,20 @@ Cooperator scores (rendered, NUC on `977a7af…`):
 - Remaining: rendered re-test of **item 9** after reload of unpacked Brave
   from the SHA the NUC serves. Items 1–8 already PASS on `977a7af…`. Not
   R4. Not VPS. Not closure.
+
+## 2026-08-26 — item 9 PASS; whole closed; rotation
+
+- Cooperator scored item **9 PASS**: ordinary notification / unopened after
+  admin Analyze by AI. Adjacent finding: first Analyze showed “AI provider
+  is not available” / confirmation copy; retry loaded a draft. Classified
+  **not a reopen of the persist-join**; remainder for the next whole
+  (copy + first-attempt provider UX).
+- New Cooperator objective: **AI suggestions** (plural) per-field apply +
+  ordinary **Edit = alias**. Not R4. Not VPS. Not a correction of
+  `2aead54…` persist-join.
+- Logical whole `framenest-companion-brave-testing-resume`:
+  **closed-by-ORCHESTRATOR**. Remainder parked: items 11–12 isolation
+  probe; first-attempt provider copy; `SECURITY.md` own-history prose;
+  AP upgrade ledger still untriaged/non-authorizing.
+- Restoration for the next Orchestrator:
+  `/home/agile/meta/projects/framenest/07/00-framenest-ai-suggestions-alias-edit/00_handout.md`
