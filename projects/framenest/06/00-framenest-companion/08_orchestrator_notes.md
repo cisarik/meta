@@ -127,3 +127,39 @@ Maintained by: Agent Orchestrator. Append-only narrative; superseded facts move 
   checkout). Not a product defect and not a failed cutover.
 - Remaining closure gate: numbered rendered R1–R3′ re-test after reload of
   unpacked Brave from the SHA the NUC serves. Not R4. Not VPS. Not closure.
+
+## 2026-08-26 — Cooperator numbered re-test
+
+Cooperator scores (rendered, NUC on `977a7af…`):
+
+| Item | Score | Classification |
+|---|---|---|
+| 1–8 | PASS | R1/R2/R3′ listing as specified |
+| 9 | FAIL | R3′ ordinary unopened/badge after analysis of an own item — **defect candidate**, not closed |
+| 10 | PASS | hosted Details; Analyze hidden; Edit hidden for ordinary |
+| 11–12 | NOT TESTED | Alice/Bob isolation and inbox 403 probe — remainder, not a close blocker unless upgraded |
+| 13–16 | PASS | movies / disconnect / parked composer_unbound / expected failed-save |
+
+- Hosted click-into-iframe Details: Cooperator-accepted (item 3/4/10).
+- Edit modal “AI suggestion / View details” is **not** an R1–R3′ remainder.
+  R1 hid Analyze by AI and Load AI suggestion in **hosted Details**; hosted
+  Edit currently also hides Load (`companionWebHosted()`), leaving read-only
+  View details. Cooperator amendment: per-field preview + ✅ apply, model
+  dropdown, Load above Title — **new product whole**, not a correction of
+  `977a7af…`, not R4.
+- Related observed defect on admin Analyze then Save: suggestion not shown
+  after Analyze; Save then wrote the full suggestion into all inputs and
+  persisted. Aligns with current bulk apply / hide-Load-in-hosted, not with
+  the requested per-field contract.
+- Logical whole **not-closed**. Item 9 FAIL blocks UX PASS. Edit/AI apply UX
+  is a changed objective → new kebab after this whole (or after a bounded
+  item-9 diagnostic), unless Michal explicitly waives item 9.
+
+## 2026-08-26 — Cooperator selected route 1
+
+- Diagnose item 9 first; possible one bounded correction afterwards; then
+  close this kebab; Edit/AI per-field apply is the **next** whole. R4 still
+  not in this whole.
+- Worker 06 / exchange 01 staged: `06_diagnostic_00.md` (Fresh Evidence
+  Probe, read-only, SHA `977a7af…`). No correction authority in that
+  prompt.
