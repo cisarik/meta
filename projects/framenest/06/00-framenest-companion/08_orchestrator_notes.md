@@ -191,3 +191,37 @@ Cooperator scores (rendered, NUC on `977a7af…`):
   independent acceptance of `fb59c42…` from a fresh worktree (not w7).
   Prompt: `08_acceptance_00.md`. Publication of `HEAD'` remains a later
   Cooperator grant.
+
+## 2026-08-26 — Worker 08 item-9 acceptance PARTIAL
+
+- `08_report_00.md` PARTIAL. Fresh w8 of `fb59c42…`; independence OK;
+  provenance under w8 `src/`. Matrix: 2 failed, 203 passed. Canonical and
+  public `main` still `977a7af…`.
+- Object check of the two reds: owning
+  `test_imported_preview_joins_inbox_and_own_history` POSTs preview under
+  `tailscale_uds` with `_serve_headers` only (no Origin /
+  `X-FrameNest-Request`) → 403 `MUTATION_ORIGIN_FORBIDDEN` before join.
+  `_FakeRepository.create_manual_pending` reuses one hardcoded id so
+  `first.id != second.id` cannot hold. Not a demonstrated second
+  `provider.suggest`, fifth mutation, 0034, or ordinary analysis-run write.
+- Production DI still injects the join (inspection). Unit persist path
+  passed. Session 07 claim that those two tests passed is **not
+  reproduced**. Do **not** accept or publish `fb59c42…`.
+- Second bounded correction authorized: **test-only**, new independent
+  evidence (inverted tests), not a second automatic correction of H3.
+  Prompt: `09_correction_00.md`. Then independent re-acceptance.
+
+## 2026-08-26 — Worker 09 test-only correction
+
+- `09_report_00.md` implementation-PASS (claim). Object check: w9 detached
+  `2aead540ee39a81a96425902f85e9b9a34f0d690`, parent `fb59c42…`, exactly
+  two test files, no `src/` in the delta. Canonical and public `main`
+  still `977a7af…`. w7/w8 still `fb59c42…`.
+- Owning HTTP join POSTs now `_mutation_headers(ADMIN_LOGIN)` /
+  `EXTERNAL_ORIGIN`. Fake `create_manual_pending` emits distinct ids after
+  the first serial. Range vs `977a7af…` remains the original eight paths
+  (persist + tests).
+- Classified **implementation-PASS**, not acceptance. Next: session 10
+  scoped independent re-acceptance of `2aead54…` from a fresh worktree
+  (not w9). Prompt: `10_acceptance_00.md`. If the same two tests still
+  fail, escalate rather than a third automatic correction.
