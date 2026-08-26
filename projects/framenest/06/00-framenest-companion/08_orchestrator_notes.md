@@ -175,3 +175,19 @@ Cooperator scores (rendered, NUC on `977a7af…`):
   successful imported preview, no second provider call, no Edit/AI apply,
   no R4. Then independent acceptance of that commit. Canonical stays
   `977a7af…` until a later publication grant of `HEAD'`.
+
+## 2026-08-26 — Worker 07 item-9 join correction
+
+- `07_report_00.md` implementation-PASS (claim). Independent object check:
+  w7 detached `fb59c42a8e3a32d9476581beeabba0eb9c04109a`, parent
+  `977a7af…`, one commit, 8 files, AP pin unchanged. Canonical, public
+  `main`, w3, and w4 still `977a7af…`. Schema head still `0033`.
+- Persist design confirmed in tree: after one `provider.suggest`,
+  `PersistImportedPreviewAnalysis` does `create_manual_pending` →
+  `claim_pending` → `record_analyzed`; movie skip; analyzing skip; no
+  canonical metadata write; library-scan preview unchanged. Preview route
+  remains `analysis.run`. Ordinary still lacks that capability.
+- Classified **implementation-PASS**, not acceptance. Next: session 08
+  independent acceptance of `fb59c42…` from a fresh worktree (not w7).
+  Prompt: `08_acceptance_00.md`. Publication of `HEAD'` remains a later
+  Cooperator grant.
