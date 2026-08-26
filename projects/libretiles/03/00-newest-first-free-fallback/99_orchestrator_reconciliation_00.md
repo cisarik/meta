@@ -56,6 +56,23 @@ Cooperator opened opencode sessions in `/home/agile/libretiles` (a stale pre-AP 
 3. Push after every accepted slice (remote backup); ordinary non-force pushes only.
 4. AP repository gates (exact cwd + baseline + porcelain + doctor) stay in every Worker prompt; a gate mismatch means STOP, not "work anyway".
 
-## 5. Next bounded step
+## 5. Execution ledger of this whole (post-planning history)
 
-Issue Slice 3 (fallback presentation + prompts) to a **fresh** Worker session — see `04_implementation_00.md` in this directory (session 04, exchange 01, baseline `94c1655`). After its terminal report: reconcile → Slice 4 (ops/docs) → independent acceptance → closure decisions for wholes A/B/C remain Cooperator-owned.
+Slice 3 issued as `04_implementation_00.md` (session 04) → PASS, archived `04_report_00.md`. Slice 4 issued as `05_implementation_00.md` (session 05) → PASS, archived `05_report_00.md`, slices pushed. Independent acceptance issued as `06_acceptance_00.md` (session 06) → PASS archived `06_report_00.md`.
+
+## 6. Closure record (2026-08-25, evening)
+
+Cooperator-rendered UI walkthrough: **PASS** (newest-first cards, default/preference retention, ping-pong animation incl. reduced motion, exhaustion messaging, Admin kill switch). Residual-risk disposition: **accepted with caveat** — problems may still surface in real play; reopening stays possible.
+
+- Whole **A** `free-openrouter-rival`: **CLOSED — superseded by D** (its live-429 classification defect was fixed en route in whole B; standalone live happy-path never separately proven).
+- Whole **B** `nim-fallback-free-rivals`: **CLOSED with disposition** — Cooperator observed rival fallback working twice in real play; formal live 429→NIM probe remains a parked backlog item inherited by whole E test design.
+- Whole **C** `creditless-free-play`: **CLOSED** — residuals accepted (`accounts.User` docstring fixed in D Slice 1; historical seed prompt text and billing tombstone migrations remain by design).
+- Whole **D** `newest-first-free-fallback`: **CLOSED** — acceptance-complete PASS, zero findings, UI PASS, risk disposition recorded. Candidate `e00c92271e788b78a9460e6daa39d3120b7ca58b` = public product HEAD.
+
+Parked ledger candidate: `backend/catalog/selection.py:10` comment still references deleted `frontend/src/lib/free-rivals.ts`.
+
+## 7. Selected next logical whole — playable-free-rivals
+
+Cooperator observation driving it: OpenRouter-hosted `nvidia/nemotron-3-super-120b-a12b:free` produced three consecutive PASS turns despite the move prompt forbidding pass while legal scoring moves exist (`prompts.ts:67`); note also the orchestration-side auto-pass path (`move/route.ts:801`). Goal: MVP = a genuinely playable version — winning not required, serial turn-surrender unacceptable. Planner Worker prompt: `/home/agile/meta/projects/libretiles/04/00-playable-free-rivals/01_planning_00.md`.
+
+**Rotation note:** the Orchestrator instance that ran wholes D–E-bootstrap ended 2026-08-25 evening. A full restoration/handoff for the FRESH Agent Orchestrator (with mandated Scrabble + prompt-engineering expert competences) lives at `/home/agile/meta/projects/libretiles/04/00-playable-free-rivals/00_handout_00.md` — paste that file into the new session.
