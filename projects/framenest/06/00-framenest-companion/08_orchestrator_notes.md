@@ -242,3 +242,35 @@ Cooperator scores (rendered, NUC on `977a7af…`):
   Prompt: `11_publication_00.md`. After public main equals that SHA:
   routine NUC `framenest-release`, then rendered re-test of **item 9**.
   Not R4. Not Edit/AI apply. Not VPS.
+
+## 2026-08-26 — Worker 11 publication PASS
+
+- `11_report_00.md` publication-PASS (claim). Independent
+  `ls-remote https://github.com/cisarik/framenest.git refs/heads/main` =
+  `2aead540ee39a81a96425902f85e9b9a34f0d690`. Canonical HEAD, tree
+  `0900818f…`, and `.ap` pin `9c5cc44…` match. Branch
+  `feat/x-meme-browser-companion`, tracked-clean. Fast-forward of two
+  commits from `977a7af…`. No NUC in that session.
+- Disposition: **publication-PASS**. Remaining: Cooperator read-only
+  `framenest-release status` then `check --release 2aead54…`, then a
+  **separate** deploy grant, then rendered item-9 re-test. Same-schema
+  `0033` expected. Not R4. Not VPS. Not closure.
+
+## 2026-08-26 — Cooperator NUC refresh to 2aead54 (owner-run)
+
+- Cooperator ran standing wrapper `~/nuc_push.fish`. Independent
+  `ls-remote` still `2aead54…` on public `main`; canonical HEAD still that
+  SHA, tracked-clean. No Worker.
+- Pre: live NUC `977a7af…` / schema `0033` / service active / backup
+  `ready`. Check named public main `2aead54…` and AP pin `9c5cc44…`.
+  Post: `active_release` `2aead54…`, `service_active: active`,
+  `database_revision: 0033`, `backup_restore_readiness: ready`,
+  same-schema cutover complete. Classified **deployment-PASS**
+  (Cooperator-observed wrapper transcript). Host, identity, fingerprint,
+  and private-network values are not copied here.
+- Bare `./deploy/ubuntu/framenest-release` without the wrapper’s transport
+  env sanitizes to `command failed`. Operator-path mismatch, not a failed
+  cutover. Do not paste the MacBook block inside an NUC SSH login.
+- Remaining: rendered re-test of **item 9** after reload of unpacked Brave
+  from the SHA the NUC serves. Items 1–8 already PASS on `977a7af…`. Not
+  R4. Not VPS. Not closure.
