@@ -392,3 +392,13 @@ Parked remainder (not this whole; not a reopen):
 No next logical whole is selected. Restoration for a later Orchestrator
 starts read-only at public `main` `afa0670e…` and this closure entry. Do not
 resume era-07 Worker ordinals 01–05 as live authority.
+
+## 2026-08-27 — rotation handout for era 08
+
+- Cooperator asked for R4 + Gallery 🧠 per-field, a complete AP restoration
+  prompt, drain of unnamed remainders, and explicit exclusion of Cover
+  Studio and VPS.
+- Restoration written:
+  `/home/agile/meta/projects/framenest/08/00-framenest-mvp-remainder/00_handout.md`
+- This Orchestrator session ends. Era-07 ordinals 01–05 remain expired.
+  No Worker issued. No FrameNest mutation.
