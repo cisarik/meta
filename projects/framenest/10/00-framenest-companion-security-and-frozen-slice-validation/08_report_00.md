@@ -1,0 +1,29 @@
+### Report for ORCHESTRATOR_CHAT
+
+- Coordinates: logical whole `framenest-companion-security-and-frozen-slice-validation`; Worker session 08; Worker exchange 01.
+- Status: PASS — phase-qualified result: implementation-PASS.
+- Start commit: `53e6448a573a7ac5a2e94ea83f94f68a83ef3074` (branch `feat/x-meme-browser-companion`, porcelain empty, AP pin `7ef45da756ed3cc14808e89bf25d0a9f9aba5d26` verified before mutation). End commit: `460b37b20ed803c55d125b30c1d51816d201f62a`. No push (not authorized).
+
+**Changed files and purpose (all inside the exact allowlist):**
+1. `src/framenest/adapters/api/application.py` — B2: registered a `RequestValidationError` handler on the workspace app (public composition returns earlier, so it is untouched). Returns status **422** with the uniform body `{"error": {"code": "VALIDATION_FAILED", "message": "Request validation failed."}}` and `Cache-Control: no-store` (repo-wide error-response convention). Chosen error code: **`VALIDATION_FAILED`** (ALL_CAPS token matching existing codes such as `IDENTITY_REQUIRED`, `CAPABILITY_DENIED`, `NOT_FOUND`). Message is fully static: no caller input, no field paths, no pydantic loc data. The handler also emits one sanitized WARNING structured record (`workspace_request_validation_rejected`, static fields only, no exception/input payload), mirroring the public composition's handler pattern so diagnostics are not lost; the response itself is static regardless.
+2. `src/framenest/adapters/api/public_published_application.py` — B4: the `StarletteHTTPException` catch-all now returns `public_not_found_response()` (uniform sanitized **404**) for every non-enumerated status; the enumerated branch `{401,403,404,405,406,415}` is byte-identical to before. The WARNING log retains the true status via `HTTP_{exc.status_code}` (server-side truth preserved).
+3. `SECURITY.md` — minimal wording fix in the UDS provenance subsection only: main claim changed to "**before the server reads or processes any request**", exactly matching the implementation guarantee recorded in the same subsection's residuals paragraph. Nothing else in the subsection changed; no 422-contract prose added.
+4. `tests/contract/test_local_web_application.py` — two new tests through the full workspace `create_app` composition asserting per route family: status 422; body exactly `error.code`/`error.message` (`VALIDATION_FAILED` / static message); no `detail` key; hostile marker absent from the response text; `Cache-Control: no-store`. Families: X submit (wrong-typed `url`), companion review apply (wrong-typed `analysis_run_id`), upload complete, alias PUT (extra-forbid field), automatic-analysis PUT (wrong-typed bool), and a separate test for the analysis-proposal family.
+5. `tests/contract/test_public_published_uds.py` — new test proving the collapsed catch-all: a test-only probe route (raises `StarletteHTTPException(418)`) inserted before the catch-all in the composed app; asserts status **404** with the exact NOT_FOUND body, `no-store`, and no CORS header leakage (the old code returned 418). No new test module was needed; no production simulation hook was added. Enumerated statuses' existing behavior is covered by the pre-existing suite staying green.
+
+**Honest malformed-request nuance:** the upload-complete and analysis-proposal routes carry no body schema, so their honest malformed requests are a malformed path UUID (`/api/uploads/{marker}/complete`) and a malformed query (`?limit={marker}` on `/api/admin/analysis-proposals`) respectively — both trigger `RequestValidationError` and both previously leaked the caller input through FastAPI's default `{"detail": ...}` body; both now return the uniform 422.
+
+**Tests and validation (exact commands/outcomes):**
+- `./.ap/ap project check --baseline 53e6448…` → `ap project check --baseline: PASS`.
+- `./.ap/ap exec … --operation test-focus -- tests/contract/test_local_web_application.py tests/contract/test_public_published_uds.py tests/contract/test_x_request_api.py tests/contract/test_companion_review_api.py tests/contract/test_youtube_request_api.py tests/contract/test_upload_api.py tests/contract/test_analysis_proposal.py tests/contract/test_media_alias_api.py -q -p no:cacheprovider` → **313 passed in 79.64s**.
+- Targeted confirmation run (`-k "malformed or catch_all or validation"` on the two touched test files) → 5 passed, 230 deselected.
+- Pre-implementation inspection found **no existing test asserting the old FastAPI `{"detail": [...]}` 422 shape** (all existing 422 assertions check status only or application-level bodies produced inside routers) — the BLOCKED stopping condition did not trigger. (Note from the Orchestrator: this inspection missed two indirect stale assertions (`"error" not in body`) in test files outside this focused set; they surfaced at the full-suite gate and were corrected in S5c, commit 2e39c4d.)
+
+**Commit result:** exactly one commit `460b37b` (`fix: enforce uniform sanitized error contract for malformed requests`), staged by exact path, five files, `103 insertions(+), 7 deletions(-)`; post-commit porcelain empty; no push, no force.
+
+**Deviations/risks/missing evidence:** none blocking. Reported judgment calls: (a) the sanitized WARNING log emit added in the workspace handler (mirrors the public handler; static fields only); (b) `Cache-Control: no-store` header on the new 422 body (workspace error convention); (c) public catch-all exercised via a test-only probe route rather than a new module. Evidence is E2, non-independent; acceptance of this candidate remains separate.
+
+**Smallest next step:** route the committed candidate `460b37b` to the required fresh independent acceptance Worker.
+
+**Report justification:** new-mutation
+**Authority expiry:** this report terminates my authority; I claim no acceptance, publication, or closure of the logical whole, and I stop autonomous work here.
