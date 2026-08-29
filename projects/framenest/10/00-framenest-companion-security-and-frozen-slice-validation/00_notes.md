@@ -217,6 +217,100 @@ Sections 6A–6E; sequencing in handout Section 7.
   vs out-of-scope ledger candidate). After his testing round he receives an
   expert restoration/dispatch prompt for a fresh Agent Orchestrator that
   will orchestrate Workers implementing his confirmed refinements.
+- **Cooperator testing phase (opened 2026-08-28):** per Michal's directive,
+  during his step-by-step testing the Orchestrator stays read-only: no
+  Workers dispatched for small refinements, no direct mutation; findings are
+  triaged (concrete defect / aesthetic refinement / security observation /
+  out-of-scope) and accumulated in the confirmed-refinements ledger below,
+  which becomes the input for the expert prompt for a fresh Agent
+  Orchestrator (that Orchestrator will run ONE Planner Worker first, then
+  batch implementation; Michal confirms each refinement). Only a finding
+  that fully blocks his testing would trigger a bounded correction proposal,
+  and only with his explicit approval.
+- **NUC deployment verified (2026-08-29, Cooperator readback):**
+  `framenest-release status` → `active_release: 22352c9e70737cfebe4de2c693fefc8ce55ba98b`,
+  `service_active: active`, `database_revision: 0033` (same-schema update,
+  no migration-required), `backup_restore_readiness: ready`. Full chain
+  verified: local HEAD == origin/main == origin/branch == NUC active release
+  == `22352c9`; local dev server starts clean (DB migrated to head, WARNING
+  loop gone). Rendered UI/UX + Brave companion acceptance over Tailscale may
+  proceed. Unified Cooperator wrapper `~/framenest.fish` created (private,
+  NUC values only there; modes: dev/push/align/status/check/deploy/sha/logs/
+  restart/migrate-status/migrate) — supersedes his scattered scripts; repo's
+  `./framenest` development launcher unaffected.
+- **Confirmed-refinements ledger (Cooperator-confirmed, for the fresh
+  Orchestrator prompt):**
+  1. (2026-08-29, triaged during testing-open; classification: pre-existing
+     DX/environment issue, NOT a regression — none of the ten commits touched
+     the coordinator/repository/schema paths, verified by
+     `git log d8629e3..HEAD`) On a stale or locked local development database,
+     server startup produces a repeating WARNING
+     `media_analysis_discovery_failed` / `MEDIA_ANALYSIS_DISCOVERY_FAILED`
+     (retryable, capped-delay retry loop) with no actionable hint. Root
+     mechanics: `media_analysis_coordinator.py:302-333` tolerates only
+     "no such table"/"does not exist" errors mentioning `media_analysis_runs`
+     (`_missing_schema_error`, :408-417); any other repository error (e.g.
+     "no such column" from a stale DB shape, or a stale lock) retries
+     forever. Candidate refinements (Cooperator to confirm scope): (a) add
+     "no such column"/schema-mismatch to the tolerated-missing-schema
+     classification; (b) include "run `poetry run framenest-db migrate`" in
+     the warning context; (c) optional startup migration-status check with a
+     clear WARNING when the DB is behind head. Operator fix for the current
+     state is the documented `poetry run framenest-db status` + `migrate`.
+  2. (2026-08-29, Cooperator testing round 1) Companion history chrome:
+     spontaneous reopen on scroll/refresh + open-by-default. FIXED SAME DAY
+     under his explicit "fix now, then I re-test" order: commit `c4d0200`
+     (session 20 correctly BLOCKED on the stale harness; session 21 landed
+     the correction + harness realignment to ADR-0072 Decision 2, which
+     already mandated collapsed-on-load) + fresh acceptance (session 23) PASS.
+     Product rule going forward: history collapsed by default, toggle-only,
+     refreshes never change the user's chosen state, no persistence.
+  3. (2026-08-29, Cooperator testing round 1) AI suggestion tags strip:
+     unmapped suggested tags were inert spans ("plain div"), could not be
+     added. FIXED SAME DAY: commit `454f181` (session 22) — unmapped tags
+     clickable for non-alias actors via the existing
+     `createAndSelectMetadataTag` (creates canonical tag + adds to draft;
+     draft chips keep ×; re-addable after removal), alias-mode (ordinary
+     user) stays inert with honest hint; CSS affordance added; fresh
+     acceptance (session 23) PASS. Product rule: every suggested tag
+     click-to-add for actors with tag-creation authority.
+  4. (2026-08-29, Cooperator testing round 1) Review apply: no defect — the
+     Cooperator needed step-by-step testing instructions (provided in chat;
+     admin-only flow over an analyzed X item).
+  5. (2026-08-29, Cooperator testing round 1) Alias edit across actors: NOT a
+     defect — per-actor overlay is the accepted ADR-0062/0077 contract
+     (caller-private overlay keyed by `(media_id, login_key)`; each actor
+     sees their own overlay over canonical; admin seeing the unedited
+     canonical title after an ordinary user edited THEIR overlay is correct,
+     and the cross-actor non-leakage is a security property). Explained to
+     the Cooperator; no code change.
+  6. (2026-08-29, Cooperator testing round 1) Settings toggle automatic
+     analysis: PASS (including hidden for ordinary user).
+  7. (2026-08-29, ledger candidate) `tests/metadata_alias_edit.test.js:128`
+     test NAME stale in name only ("mapped suggested tags are buttons and
+     unmapped tags are not") — assertions still pass; rename in a future
+     test-hygiene batch.
+  8. (2026-08-29, ledger candidate) alias-mode inert-span strip path has
+     source-level coverage only (tests/metadata_alias_edit.test.js:128-135,
+     outside the three JS gates); runtime assertion in a future test-hardening
+     batch.
+- **Publication 2 (2026-08-29, under the Cooperator's "fix now, then re-test"
+  order):** pushed `22352c9..454f181` to origin branch + FF main (verified
+  `454f181d8b011ef563ac13a28e8d894dbc497bc4`); NUC refresh to `454f181` is
+  the Cooperator's next manual step (`~/framenest.fish deploy` + `status`).
+- **Meta trace commit verified (2026-08-28):** Michal's manual commits
+  `e8bdbe3` + `3eb5671` ("docs: add planning and report files for
+  framenest-companion-security-and-frozen-slice-validation") contain all 26
+  trace files (handout, notes, planning pair, 18 report companions, 4
+  decision-bearing prompt companions); `git status --porcelain` in the meta
+  repository is clean — nothing missing, nothing untracked, no error found.
+- **Public verification at testing open:** local HEAD == origin/main ==
+  origin/feat/x-meme-browser-companion ==
+  `22352c9e70737cfebe4de2c693fefc8ce55ba98b` (fresh `git ls-remote`); AP pin
+  local `.ap` HEAD == public AP main == `7ef45da756ed3cc14808e89bf25d0a9f9aba5d26`.
+  NUC runtime state is NOT verifiable from this session (no NUC authority
+  granted here) — the authoritative readback is Michal's
+  `deploy/ubuntu/framenest-release status`.
 - **Ledger candidates accumulated (non-authorizing, for future wholes):**
   workspace anti-leak test fixture binds empty attribution lists (test
   hardening); reverse-direction workspace overlay check analogue absent;
