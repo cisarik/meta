@@ -298,6 +298,36 @@ Sections 6A–6E; sequencing in handout Section 7.
   order):** pushed `22352c9..454f181` to origin branch + FF main (verified
   `454f181d8b011ef563ac13a28e8d894dbc497bc4`); NUC refresh to `454f181` is
   the Cooperator's next manual step (`~/framenest.fish deploy` + `status`).
+- **Cooperator testing round 2 (2026-08-29) and era handover:** T1/T2/T3
+  PASS (history fix verified rendered on the NUC → NUC confirmed serving
+  454f181). FAILs reported: T4/T5 (tags click no-op on previously analyzed
+  memes — remove/re-add also dead; Orchestrator suspicion recorded in the
+  era-11 handout: silent early-return in `copySuggestionFieldToCurrent`
+  when the tag is already in the draft, app.js:6816); GIF/animated preview
+  never pauses (restarts from zero) while video pauses/resumes but flashes
+  black on open — regression from the editor rework era; 🧠 shows "The AI
+  suggestion provider response was invalid." with no progress indication;
+  X video save fails with generic "Save to FrameNest failed" (first image
+  save succeeded). NEW PRODUCT DIRECTIONS decided by the Cooperator: Edit
+  always opens with the newest AI suggestion loaded (Load button
+  superseded; dropdown onchange switches dynamically; applies to web AND
+  extension review popup); 🧠 opens an empty Edit modal immediately with an
+  eye-candy spinner while the model runs (design delegated to Orchestrator
+  judgment); companion live-refresh + unread "active history" matching the
+  badge (unread in history until opened; ordinary users get analyzed items
+  as unread when admin approves analysis of their media; no duplicates
+  between active and history views). STANDING REASONING POLICY (Cooperator
+  directive): every Worker prompt declares a Reasoning recommendation
+  matched to task risk (High for security/ambiguous/architectural; Medium
+  only for routine bounded corrections with complete evidence; Low trivial
+  only); Orchestrator reasons at full strength; if the dispatch environment
+  cannot vary reasoning effort, the recommendation governs discipline and
+  copy-paste routing, and a confirmed hard capability limit is recorded as
+  an AP upgrade observation. **Era-10 handover:** expert handout written to
+  `/home/agile/meta/projects/framenest/11/00-framenest-companion-unread-inbox-and-editor-suggestion-ux/00_handout_agent.md`
+  (new whole: `framenest-companion-unread-inbox-and-editor-suggestion-ux`);
+  era-10 remains logically open on the Cooperator's side (his re-testing
+  continues in era 11); this Orchestrator's active role ends here.
 - **Meta trace commit verified (2026-08-28):** Michal's manual commits
   `e8bdbe3` + `3eb5671` ("docs: add planning and report files for
   framenest-companion-security-and-frozen-slice-validation") contain all 26
