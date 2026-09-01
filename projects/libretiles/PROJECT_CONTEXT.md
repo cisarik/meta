@@ -425,9 +425,34 @@ Two structural patterns worth reusing rather than reinventing:
 - Two browser profiles are required for multiplayer. Two tabs in one profile share `localStorage` and the second login overwrites the first.
 - An AI turn takes ~21 seconds with a working key. That is expected, not a timeout.
 
-## 11. Related artifacts
+## 11. Carried-forward obligation: the deployment whole has no handout yet
+
+Recorded here, not only in a handout, so it cannot be lost when a session ends. The Cooperator asked
+for it twice and it was not written before the era-09 Orchestrator's session ended.
+
+He needs two artifacts, as professional as possible: **(1)** an expert Orchestrator handout for the VPS
+deployment whole that leads him step by step to a finished hardened deployment, written for someone who
+says he is a complete novice at operations and named Prometheus and Grafana specifically as things he
+does not understand; and **(2)** a **prompt for a read-only Research Worker** — he has ChatGPT Deep
+Research available — for current VPS-hardening practice on Ubuntu Server 24.04, demanding versions and
+retrieval dates rather than unsourced "best practices", and framed so the researcher can answer "this is
+disproportionate for a single demo VPS" where that is honest.
+
+The full fact set that handout must carry — the nginx topology decision, the exact
+`DJANGO_NUM_PROXIES=1` and `$proxy_add_x_forwarded_for` arithmetic with both silent
+misconfigurations, the `audit-04-F01` correction and the trap in its obvious remedy, the
+`NEXT_PUBLIC_*` build-time inlining trap, and the monitoring assessment — is written out in
+`10/00-ui-internationalization/00_handout.md` section 10. **Do not reconstruct it from memory; copy it
+from there.**
+
+Topology decision already made, at the Cooperator's explicit request: **Docker Compose for the
+application and Redis; nginx and certbot on the host.** Reasons and the rejected systemd alternative are
+in that same section.
+
+## 12. Related artifacts
 
 - `/home/agile/meta/README.md` — the Meta storage contract
-- `/home/agile/meta/projects/libretiles/09/00-backend-security-hardening/` — the security era, including the full independent audit report `01_report_00.md`
+- `/home/agile/meta/projects/libretiles/09/00-backend-security-hardening/` — the CLOSED security era: the original audit `01_report_00.md`, four audit reports, and the closure record `99_closure.md`
+- `/home/agile/meta/projects/libretiles/10/00-ui-internationalization/00_handout.md` — the current whole, and the only place the deployment fact set is written out
 - `/home/agile/meta/projects/libretiles/DEFECT_LEDGER.md` — open defects found by Cooperator-executed acceptance
 - `.ap/AP.md`, `.ap/AP_ORCHESTRATOR.md`, `.ap/AP_WORKER.md`, `.ap/PROMPT_CONTRACTS.md`, `.ap/INFOSEC.md`, `.ap/PROMPT_ENGINEERING_PATTERNS.md`
