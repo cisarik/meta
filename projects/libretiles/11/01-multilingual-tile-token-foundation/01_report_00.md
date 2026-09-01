@@ -146,4 +146,4 @@ The renewed prompt must restate the full bounded planning authority and require 
 
 ## 25. Authority expiry
 
-All planning authority granted by this exchange expires with this terminal report. No implementation, mutation, acceptance, or logical-whole closure is authorized.
+All planning authority granted by this exchange expires with this terminal report. No implementation, mutation, acceptance, or logical-whole closure is authorized. 

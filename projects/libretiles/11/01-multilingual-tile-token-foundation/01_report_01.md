@@ -1,4 +1,3 @@
-
 ## 1. Repository and AP preflight evidence
 
 Directly observed:
@@ -163,7 +162,7 @@ Create two migrations after current game leaf `0007`:
 Canonical DB writes:
 
 - `board_state`: 15×15 `BoardCell | null`
-- `bag_tiles`: ordered `string[]`
+- `bag_tiles`: o`
 - `PlayerSlot.rack`: ordered `string[]`
 - Move placements retain `{row,col,letter,blank_as}`.
 - Move words become `{word,tokens,coords,score,multiplier}`.
@@ -326,7 +325,7 @@ Full-dictionary acquisition remains outside scope, but activation likewise requi
 
 ### Slice F1 — token semantics and pure engine
 
-- **Objective:** establish canonical tokens, explicit alphabets, word authority, physical word sequences, variant-neutral search, and save schema 4.
+- **Obestablish canonical tokens, explicit alphabets, word authority, physical word sequences, variant-neutral search, and save schema 4.
 - **Paths:** `backend/gamecore/{variant_store,word_authority,types,board,legality,move_search,fastdict,scoring,state}.py`, English/Slovak manifests and short asset, related backend tests.
 - **Schemas:** variant manifest contract, `Cell`, `WordFound`, `WordAuthority`, save schema `"4"`.
 - **Tests:** loader negatives, L·L canary, Slovak short invariant, Hungarian synthetic engine/search/scoring, draw order, v4 save round trip, old-save rejection.
@@ -436,7 +435,7 @@ Evidence labels: D = directly observed; S = supplied by prompt; I = inference.
 | 3 | Short authority regresses to substring logic | Valid longer words rejected | Central `WordAuthority`, complete `WordFound` tests including `OSAMENIU` | S/D |
 | 4 | Tile count still uses lexical length | `Á`+`CS`, bingo, and search fail | Carry tokens/coords and count containers only | D |
 | 5 | AI normalization drops candidates | False no-move pass/exchange | Variant enum, token arrays, mocked route test, final Django validation | D |
-| 6 | Frontend coordinate drift | Tiles render in wrong cells | 15×15 nested arrays and sparse AI coordinate map | D/I |
+| 6 | Frontend coordinate drift | Tiles render in wrong cells | 1ays and sparse AI coordinate map | D/I |
 | 7 | Bag/rack count corruption | Incorrect draws and endgame | JSON arrays and `len(array)` only | D |
 | 8 | Blank physical identity lost | Wrong points/history/round trip | `{token:"?",blank_as}` in cell and word tokens | D |
 | 9 | Python/JavaScript normalization differs | Valid token rejected at one boundary | Shared documented canonical order and cross-language fixtures | I |
@@ -513,5 +512,4 @@ The Orchestrator should approve the recommended decisions and issue a fresh-work
 
 ## 25. Authority-expiry statement
 
-This terminal planning report consumes the authorized initial planning cycle. All Worker planning authority for session 01, exchange 02 expires now. It grants no implementation, migration, database, Git, provider, deployment, acceptance, publication, or logical-whole closure authority.
-
+This terminal planning report consumes the authorized initial planning cycle. All Worker planning authority for session 01, exchange 02 expires now. It grants no implementation, migration, database, Git, provider, deployment, acceptance, publication, or logical-whole closure authority. 

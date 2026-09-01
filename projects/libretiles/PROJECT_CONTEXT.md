@@ -618,11 +618,55 @@ with a recorded candidate finding: `frontend/src/lib/api.ts:122-132` parses the 
 `/(\d+)\s+seconds/i` against Django's English body, and should read the numeric `Retry-After` header
 instead.
 
-## 14. Related artifacts
+## 14. Authoritative game alphabet orders — Cooperator-sourced 2026-09-01, Orchestrator-validated
+
+`alphabet_order` is a DECLARED language order for game purposes: tile order, the starting draw, and the
+blank picker. It is never derived from `letters[]` and never derived from Unicode collation.
+
+```text
+en  A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+sk  A Á Ä B C Č D Ď DZ DŽ E É F G H CH I Í J K L Ĺ Ľ M N Ň O Ó Ô P Q R Ŕ S Š T Ť U Ú V W X Y Ý Z Ž
+cs  A Á B C Č D Ď E É Ě F G H CH I Í J K L M N Ň O Ó P Q R Ř S Š T Ť U Ú Ů V W X Y Ý Z Ž
+pl  A Ą B C Ć D E Ę F G H I J K L Ł M N Ń O Ó P R S Ś T U W Y Z Ź Ż
+hu  A Á B C CS D DZ DZS E É F G GY H I Í J K L LY M N NY O Ó Ö Ő P Q R S SZ T TY U Ú Ü Ű V W X Y Z ZS
+```
+
+Sources he supplied: JÚĽŠ SAV *Pravidlá slovenského pravopisu* (sk, which also states that `DZ`, `DŽ`,
+and `CH` are separate letters); Ústav pro jazyk český AV ČR (cs, `CH` between H and I); Rada Języka
+Polskiego PAN (pl, 32 letters, `Q V X` explicitly NOT part of the alphabet); MTA *A magyar helyesírás
+szabályai* (hu, 40 native letters, eight two-character letters and the three-character `DZS`).
+
+**THE INVARIANT IS A SUBSET, NOT SET EQUALITY.** Measured by the Orchestrator against the real assets:
+
+```text
+locale  order tokens   non-blank tile kinds   tiles missing from order   letters with no tile
+en          26                26                    none                (0)  —
+sk          46                41                    none                (5)  DZ DŽ CH Q W
+cs          42                39                    none                (3)  CH Q W
+pl          32                32                    none                (0)  —
+hu          44                38                    none                (6)  DZ DZS Q W X Y
+```
+
+Every non-blank tile token MUST appear exactly once in `alphabet_order`. Requiring the reverse is WRONG
+and would fail on the already-shipped Slovak variant, because locked fork 1 states outright that the
+Slovak set has no CH/DZ/DŽ tiles. `alphabet_order` must be duplicate-free and NFC.
+
+Consequence: **blank targets come from the TILE SET ordered by alphabet index, not from
+`alphabet_order`.** Otherwise a Slovak player could assign a blank to `CH`, which is not a tile in that
+variant. `playable_letters` and the BlankPicker both use tile tokens sorted by alphabet position.
+
+Czech caveat he flagged: this array is a deterministic total order for the ENGINE. Normed Czech
+dictionary collation per ČSN 97 6030 treats `Á Ď É Ě Í Ň Ó Ť Ú Ů Ý` as their base letter at the primary
+level, with diacritics deciding only secondarily. Document `alphabet_order` so nobody later reuses it as
+a universal word sorter. Czech is the only one of the five where that confusion is possible.
+
+## 15. Related artifacts
 
 - `/home/agile/meta/README.md` — the Meta storage contract
 - `/home/agile/meta/projects/libretiles/09/00-backend-security-hardening/` — the CLOSED security era: the original audit `01_report_00.md`, four audit reports, and the closure record `99_closure.md`
 - `/home/agile/meta/projects/libretiles/10/00-ui-internationalization/00_handout.md` — the current whole, and the only place the deployment fact set is written out
 - `/home/agile/meta/projects/libretiles/10/00-ui-internationalization/90_orchestrator-restoration.md` — Stage-1 restoration evidence for the current whole, including the measured Django Slovak-coverage probe and the string inventory
 - `/home/agile/meta/projects/libretiles/DEFECT_LEDGER.md` — open defects found by Cooperator-executed acceptance
+- `/home/agile/meta/projects/libretiles/11/01-multilingual-tile-token-foundation/00_handout.md` — the handout for the fresh Orchestrator holding `ui-internationalization` and `atomic-tile-token-foundation`
+- `/home/agile/meta/projects/libretiles/11/01-multilingual-tile-token-foundation/90_orchestrator-plan-acceptance.md` — the accepted tile-token plan, its three corrections, and the eight decisions
 - `.ap/AP.md`, `.ap/AP_ORCHESTRATOR.md`, `.ap/AP_WORKER.md`, `.ap/PROMPT_CONTRACTS.md`, `.ap/INFOSEC.md`, `.ap/PROMPT_ENGINEERING_PATTERNS.md`
