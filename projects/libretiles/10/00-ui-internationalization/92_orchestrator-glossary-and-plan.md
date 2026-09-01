@@ -238,59 +238,83 @@ otherwise the changed `npm run build` route table looks like a regression and th
 
 # 4. Slice plan
 
+**REVISED 2026-09-01 after Cooperator decision 7 (no URL locale prefixes at all).** The original plan
+is kept below the revision so the change is legible rather than silently swapped.
+
 Ordered by risk and by reviewability, not by convenience. `PROMPT_ENGINEERING_PATTERNS` P05 and the
 era-09 lesson that one allowlist covering a dependency addition, an authentication change, a
 fail-closed guard, four frontend changes, a shell script, and three documents produces a diff nobody
 can review honestly.
 
+## Current plan
+
 ```text
-S1  i18n foundation                         Worker 01   R1        no proxy.ts, no visible copy change
+S1  i18n foundation                         Worker 01   R1   LANDED a5aff12, accepted
       dictionary contract, plural helpers, glossary, locale store + cookie mirror + first-visit
-      detection, dynamic <html lang>, and ONE proving area (auth + landing) converted end to end.
-      Deliberately excludes proxy.ts so this slice is not a security-boundary slice.
+      detection, dynamic <html lang> and generateMetadata, and the auth + landing proving area plus
+      the api.ts error map. Followed by the Orchestrator-authored copy removal at f26e92a.
 
-S2  locale path-prefix routing              Worker 02   R3        proxy.ts — the collision point
-      /sk/... and /en/... resolution, bare-path redirect from the cookie, header emission kept
-      SEPARABLE and separately tested, plus the full loopback header re-proof on /, /play, /settings,
-      /game/{id}, /waiting/{id}, /draw/{id}, /api/models, /api/prompts, GET /api/ai/move against the
-      audit-03 baseline. The S7b constraint "it sets headers and nothing else" is REOPENED here,
-      explicitly and in writing, because locale routing needs exactly that logic in exactly that file.
+S2  locale path-prefix routing              CANCELLED by Cooperator decision 7
+      There are no /sk/ or /en/ prefixes. proxy.ts is not touched for routing. The era-09 constraint
+      "it sets headers and nothing else" is therefore NEVER reopened in this whole.
 
-S3  Slovak content, batch by area           Orchestrator + subagents, then Worker wiring
-      The Cooperator decided the Orchestrator translates, using its own subagents, and that no Worker
-      performs translation. Batches follow the areas in section 2. Auth and error strings are NOT
-      delegated — see the two security acceptance criteria in 90_orchestrator-restoration.md section 7.
-      Wiring is split so no single diff exceeds one reviewable area group:
-        S3a  play, queue, draw, waiting
-        S3b  game, controls, board, overlay, chat
-        S3c  history, profile, prompt, settings, error, a11y
+S3a play, queue, draw, waiting  + LocaleProvider     Worker   R1
+      The uii-01-F04 LocaleProvider moves here rather than into a dedicated correction slice, because
+      a provider without localized pages cannot be meaningfully tested. Carries the SSR regression
+      test uii-01-F04 needs: request `/` from a production `next start` with the sk cookie and assert
+      Slovak copy in the server HTML.
+S3b game, controls, board, overlay, chat              Worker   R1
+S3c history, profile, prompt, settings, error, a11y   Worker   R1
 
-S4  remove the player-facing pickers        Worker      R1        behaviour change, folded in by
-      Cooperator decision B2-1. Removes the model picker and the prompt-preset picker so a player sees
-      only a model name. Same file as S3c (settings/page.tsx), so it lands adjacent to it and not in a
-      separate later whole. Locked fork 11 verified NOT engaged: none of the five frozen files is
-      touched and no provider is added, removed, or renamed.
+S4  remove the player-facing pickers        Worker   R1
+      Model picker and prompt-preset picker removed so a player sees only a model name. NO database
+      change: accounts.User.preferred_ai_model_id stays, keeps its migrations, its admin field, and
+      its is_selectable_model validation, and simply stops being written from the player UI — which
+      makes it admin-settable only, in the direction the Cooperator wants. Locked fork 11 verified NOT
+      engaged: none of the five frozen files is touched and no provider is added, removed, or renamed.
+      Be precise: this delivers "the player does not choose". It does NOT deliver "the admin sets the
+      GLOBAL default", which is still catalog row 1 determined in code and belongs to the
+      admin-console whole.
 
-S5  backend localization                    Worker      R1+R2     Django USE_I18N + LocaleMiddleware
-      after SessionMiddleware and before CommonMiddleware; axes ordering preserved and
-      test_admin_login_brake.py re-run; Accept-Language sent by the API client; uii-01-F01 corrected by
-      reading the numeric Retry-After header; orch-02-D11 includeSubDomains added, preload NOT added.
+S5  backend localization                    Worker   R1+R2
+      Django USE_I18N + LocaleMiddleware after SessionMiddleware and before CommonMiddleware; axes
+      ordering preserved and test_admin_login_brake.py re-run; Accept-Language sent by the API client
+      from the store; uii-01-F01 corrected by reading the numeric Retry-After header; orch-02-D11
+      includeSubDomains added, preload NOT added.
 
-S6  nonce CSP                               Worker      R3        orch-01-F18, with the same full
-      header re-proof as S2. Deliberately AFTER S2 so proxy.ts is re-proved once per shape, not twice.
+S6  nonce CSP                               Worker   R3
+      orch-01-F18. The ONLY proxy.ts touch in this whole, and it is a header concern, so the slice-07
+      constraint holds rather than being reopened. Full loopback header re-proof on /, /play,
+      /settings, /game/{id}, /waiting/{id}, /draw/{id}, /api/models, /api/prompts, GET /api/ai/move
+      against the audit-03 baseline. Server stopped by exact PID.
 
-S7  diagnosability and polish               Worker      R1        audit-01-F06 catalog proxies stop
-      swallowing failures into an empty 200; uii-01-F02 accessible names; uii-01-F03 dates take the
-      active locale; the longest-string layout pass at a smaller window.
+S7  diagnosability and polish                Worker   R1
+      audit-01-F06 catalog proxies stop swallowing failures into an empty 200; uii-01-F02 accessible
+      names; uii-01-F03 dates take the active locale; the longest-string layout pass at a smaller
+      window.
 
-S8  Cooperator-executed acceptance          Cooperator            batch-prefixed PASS/FAIL/PARTIAL,
-      including the three deferred S7b behaviours, the two known UX defects, and diacritic rendering on
-      his own machine, for which he is the acceptance owner.
+S8  Cooperator-executed acceptance          Cooperator
+      batch-prefixed PASS/FAIL/PARTIAL, including the three deferred S7b behaviours and the two known
+      UX defects.
 ```
 
 Deployment artifacts remain owed and are scheduled between S7 and S8, per his item-6 qualification:
 the expert Orchestrator handout for the VPS deployment whole, and the read-only Research Worker prompt
 for ChatGPT Deep Research.
+
+## What the revision changed, and why it is an improvement
+
+```text
+before  8 slices, TWO proxy.ts touches (S2 routing at R3, S6 nonce at R3), the "headers and nothing
+        else" constraint reopened in writing, every internal router.push and <Link> made
+        locale-aware, and a third source of locale truth (URL) to reconcile
+after   the same 8 slices minus S2, ONE proxy.ts touch (S6, headers only), the constraint intact,
+        no navigation changes, and two sources of locale truth (cookie for the server, store for
+        persistence) with the provider making them agree
+```
+
+The Orchestrator recommended the prefix. The Cooperator overrode it after thinking about it and was
+right. Recorded as such.
 
 # 5. What the Orchestrator does not delegate
 
