@@ -13,12 +13,35 @@ if this file and the repository disagree, **the repository wins and this file ne
 `09/00-backend-security-hardening/99_closure.md`. 32 findings `verified-closed`, 13 rejected as false
 positives, all residuals dispositioned with sign-off where required.
 
-Last reconciled against `main` at commit `19cfec9ed27c57e9499b71c55be6c2fb709b0c63` by the era-09
-continuation Orchestrator, with porcelain empty, public readback equal, and no uncommitted state.
-Every standing gate in section 4 was re-measured green at that commit by the Orchestrator, not
-merely accepted from a Worker report. ALL implementation work in this whole has landed. Only the comprehensive fresh independent re-audit
-(P-10) and the Cooperator's manual acceptance batch remain before closure. Re-verify before relying on
-any of this.
+**Logical whole `ui-internationalization` (Meta 10/00) is OPEN** and is the current whole. Its six
+opening Cooperator decisions are in section 13. Slice S1 landed at
+`a5aff1214d97d28f2d27e55de5de19f09faf9c0e` with all eight gates green and was accepted by the
+Cooperator in his own browser. A small Cooperator-requested UI follow-up landed at
+`f26e92a61c65269c4d7d5a620665040e65466e59`. `uii-01-F04` is folded into slice S2 by his decision.
+
+`main` is now `f26e92a61c65269c4d7d5a620665040e65466e59`. Everything below that speaks of `19cfec9` as
+"current" describes the closed security era and is history, not current state.
+
+Last reconciled against `main` at commit `f26e92a61c65269c4d7d5a620665040e65466e59` by the era-10
+`ui-internationalization` Orchestrator, with porcelain empty, public readback equal, and no uncommitted
+state. **All eight standing gates were re-measured green at that commit**: mypy 80 files, ruff,
+`manage.py check`, pytest `328 passed, 4 skipped`, `npm run typecheck` exit 0, `npx vitest run`
+`337 passed | 3 skipped`, `npm run lint` exit 0, `npm run build` exit 0. They were also all green at
+`a5aff12` and at `19cfec9` (frontend suite `326 passed | 3 skipped` at `19cfec9`). Re-verify before
+relying on any of this.
+
+⛔ **A green gate set did NOT mean a correct product at `a5aff12`.** `uii-01-F04`: the server renders
+the page body in English while `<html lang>` and `<title>` follow the Slovak cookie. No gate can see
+it, because vitest runs with environment `node` and nothing renders a page. It was found by
+`next start` on a loopback port plus curl. Generalise the era-09 lesson: **for anything that renders,
+render it, or do not claim it.**
+
+**One commit in this era was authored by the ORCHESTRATOR rather than a Worker:** `f26e92a`, fourteen
+lines of Cooperator-requested UI copy removal. It used the standing delegated slice git pattern
+(explicit-path staging, pre-push `ls-remote` equality gate, one non-force push, public readback) and
+passed all eight gates, but its evidence is explicitly **non-independent** — the Orchestrator was both
+implementer and verifier. That is proportionate for R1 cosmetic work with no trust boundary and is
+recorded rather than left implicit. Do not use it as precedent for anything larger.
 
 ---
 
@@ -224,7 +247,7 @@ request body, the response body, or a stack trace.
 
 ## 7. Security state — do not regress it
 
-**`audit-03-F01` is corrected at `19cfec9`** and awaiting a bounded independent re-audit.
+**`audit-03-F01` is `verified-closed`** by the bounded independent re-audit `audit-04` at `19cfec9`.
 `DJANGO_NUM_PROXIES` defaults to `0`, is validated fail-closed, and binds `get_ident` to `REMOTE_ADDR`.
 Orchestrator-verified dynamically: a spoofed `X-Forwarded-For` no longer changes the throttle bucket.
 The history below is kept because the mechanism matters for any future rate limit.
@@ -310,7 +333,7 @@ old name still executes with a deprecation warning. A minor bump could drop that
 stop emitting the CSP and every other security header. Anyone bumping `next` must prove the headers
 are still emitted afterwards.
 
-One medium finding still needs Cooperator sign-off and is NOT fixable inside this whole:
+One medium finding is not fixable inside that whole and was dispositioned rather than corrected:
 `audit-02-F05` — there is no CI, SBOM, signing, or provenance in-tree attesting the artifact a browser
 executes. No `.github` directory exists at all. Adding CI is a separate deliberate decision about what
 it gates.
@@ -321,8 +344,11 @@ dispositioned as `rejected-false-positive` in `audit-02-F07`.
 `audit-02-F05` — no CI, SBOM, signing, or provenance in-tree — is an **accepted residual with explicit
 Cooperator sign-off given 2026-09-01**. The complete Residual-Risk Decision record is in the ledger.
 
-⛔ **The do-not-deploy stands until the comprehensive re-audit returns per-finding verdicts.** Nothing
-in this project is `verified-closed` yet.
+⛔ **The do-not-deploy stands, but for one specific named reason rather than precautionarily.** All 32
+corrected findings ARE `verified-closed` — thirty by `audit-03` at `b5774b2`, two by `audit-04` at
+`19cfec9`. What blocks public exposure is `audit-04-F01` / `orch-05-D14`, which becomes reachable the
+moment Django sits behind nginx, plus the unresolved deployment items in section 11. The deployment
+whole must correct it before public exposure.
 
 ### Runtime evidence for the CSP now exists, and one gap in it
 
@@ -411,7 +437,9 @@ Two structural patterns worth reusing rather than reinventing:
 7. **An authorized correction can expose a pre-existing defect outside its allowlist, twice in a row.** When that happens, do not keep growing the slice. Give the Worker a decision rule with a pre-authorized bounded fallback so the work converges in at most one more exchange, and route the root cause as its own whole.
 8. **Your own prediction can be wrong and the Worker's measurement can be right.** An Orchestrator claimed a third test file would break a probe; the Worker measured `19 passed` and explained why. Say so plainly when it happens; that is what keeps Workers reporting honestly.
 9. **Diagnose the environment before blaming the product.** A websocket failure that looked like a product defect was a Tailscale exit node routing the entire Docker bridge range into the tunnel. Check reachability, routes, and services first.
-10. **A negative grep is not a conclusion.** The era-09 continuation Orchestrator grepped `backend/catalog/selection.py` for `*_PROVIDER =` constants, found two, and recorded in this file and in the ledger that the backend knew about only two providers. All nine were there as string literals inside `DIRECT_FREE_RIVALS` / `WATCHLIST_FREE_RIVALS`. The Worker measured it, contradicted the Orchestrator, and was right. When a grep returns *few* results, widen the pattern before writing a finding — a finding built on the absence of a match must state the exact pattern that failed to match.
+10. **A negative grep is not a conclusion.** The era-09 continuation Orchestrator grepped `backend/catalog/selection.py` for `*_PROVIDER =` constants, found two, and recorded in this file and in the ledger that the backend knew about only two providers. All nine were there as string literals inside `DIRECT_FREE_RIVALS` / `WATCHLIST_FREE_RIVALS`. The Worker measured it, contradicted the Orchestrator, and was right. When a grep returns *few* results, widen the pattern before writing a finding — a finding built on the absence of a match must state the exact pattern that failed to match. Two more instances landed in era 10 on one afternoon: the Django password validators live in `django/contrib/auth/locale/sk/`, not `django/conf/locale/sk/`, and `rest_framework/locale/sk/` ships a compiled `.mo` with no `.po`, so a `.po`-only search reports both as absent.
+11. **For anything that renders, render it, or do not claim it.** Era 10, `uii-01-F04`. Eight green gates — including `typecheck`, `lint`, `build`, and 337 frontend tests — coexisted with a document that declared `<html lang="sk">` and a Slovak `<title>` around an entirely English body. vitest runs with environment `node` and nothing in the suite renders a page, so the whole gate set was structurally blind. The technique that found it is the one the era-09 re-auditor established for CSP headers: production build, `next start` bound to loopback on a non-default port, probe with an HTTP client, stop the server **by exact PID**. Reuse it for every rendered claim in this project.
+12. **A faithfully executed prompt can still produce a defective product, and then the prompt is the defect.** `uii-01-F04` came from the Orchestrator's own section-5 contract, which made the client store the source of truth for the locale and called the server-readable cookie "a routing hint only". In a server-rendered application, whatever the server can read must be authoritative for rendered output, or SSR and hydration cannot agree. The Worker implemented the contract exactly, its gates were genuinely green, and it honestly reported the adjacent limitation it did find. Classify this as an Orchestrator design defect, not a Worker execution defect, and say so in the record.
 
 ## 10. Known environment traps on the Cooperator's machine
 
@@ -449,10 +477,114 @@ Topology decision already made, at the Cooperator's explicit request: **Docker C
 application and Redis; nginx and certbot on the host.** Reasons and the rejected systemd alternative are
 in that same section.
 
-## 12. Related artifacts
+## 12. Cooperator product intent for the admin provider/model console
+
+Recorded **verbatim in substance** on 2026-09-01, in this durable file rather than only in a handout,
+because the Cooperator asked whether this brainstorming had been lost. It had not been lost as a
+*decision* — locked fork 11 and the ledger both record the provider freeze — but the *detail* below was
+nowhere in this file. It is now. This section is product intent and constrains successor wholes; it is
+not authority to implement anything today.
+
+He stated, in his own words and his own priority ordering:
+
+- **The single most important thing for him** is being able to add new providers and new models, and set
+  the default, **from the Django admin interface, without an SSH connection**. That is the acceptance
+  condition for the `admin-provider-model-console` whole, and it is what "the models must not be
+  hardcoded" means operationally.
+- He wants **AI-vs-AI diagnostics inside that admin surface, in both the English and the Slovak
+  variant**, going beyond the existing ping→pong tile.
+- In future he intends to configure **OpenAI-compatible models** there, and he wants to **test a model's
+  strength before promoting it to default**. The engine numbers in section 6 constrain how such a test
+  must be built: final score is an engine number and is identical whichever model is plugged in, so a
+  strength metric must rest on the `completion_source` distribution and the `provider_candidate` rate.
+- **"It was bad UX to leave that decision to the user."** The player should not choose the model. He
+  believes the frontend may already reflect this and asked; see the correction below.
+- The player **should only ever see the model's name**, not provider internals, tiers, or tuples.
+
+⛔ **Factual correction the Orchestrator owes him, verified in the repository at `19cfec9`, not
+inferred.** The frontend has **NOT** yet been changed. The player still chooses:
+
+```text
+frontend/src/app/settings/page.tsx:656-712   a selectable rival panel over the live catalog, with
+                                             display_name, description, and per-row selection
+frontend/src/app/settings/page.tsx:664       "No rival selected" fallback
+frontend/src/app/play/page.tsx:31,65         "Choose AI"
+frontend/src/hooks/useGameStore.ts:30,129    persisted `selectedModelId`, default ""
+frontend/src/hooks/useGameStore.ts:32,131    persisted `selectedPromptId` — the player also chooses the
+                                             PROMPT PRESET, through PromptCatalogModal and the
+                                             "Prompt presets" control in ScorePanel.tsx:425
+```
+
+So there are **two** player-facing internals to remove, not one: the model choice and the prompt-preset
+choice. The prompt-preset choice arguably leaks more product internals to a player than the model choice
+does. `10/01-player-model-choice-removal` is therefore genuine outstanding work, not already-landed work.
+
+Note the overlap, because it affects sequencing: removing the player's model and prompt choice rewrites
+`frontend/src/app/settings/page.tsx`, which is the same file the `ui-internationalization` whole rewrites
+for the interface-locale switch. Two wholes rewriting one 803-line file in sequence is avoidable churn.
+Whether to fold that removal into the current whole is a Cooperator scope decision and has not been made.
+
+## 13. Decisions taken at the opening of `ui-internationalization`
+
+All six are **Cooperator decisions**, given on 2026-09-01 in reply to a decision package that carried a
+recommendation and the supporting evidence for each. He selected option A for the first five.
+
+```text
+1  LOCALE ROUTING: path prefix `/sk/...` and `/en/...`. Subdomain-per-locale is REJECTED for now and
+   remains available as a separate later decision if SEO or marketing ever needs it.
+   Rationale he was shown: a subdomain layout touches five surfaces the security era just hardened —
+   request-derived `connect-src`, HSTS `includeSubDomains`, `ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS`, and
+   the Django admin session-cookie domain scope. A path prefix costs none of them: one origin, one CSP,
+   one host, one cookie scope. This SUPERSEDES the "subdomain-locale feature" named in the era-09
+   handout, deliberately and with his agreement.
+
+2  INTERFACE LOCALE SWITCH: a switch in Settings, PLUS browser-language detection on the FIRST visit
+   only. Not detection alone, and not a switch alone.
+
+3  SLOVAK REGISTER: informal `ty` (tykanie). "Tvoj rad", not "Váš rad". Fixed for the whole product,
+   including error messages. Do not vary it.
+
+4  NONCE CSP: implement it. `orch-01-F18` (`script-src 'unsafe-inline'`, medium, previously an accepted
+   residual with his sign-off) moves from accepted to being corrected in this whole. `style-src
+   'unsafe-inline'` REMAINS an accepted low residual because Framer Motion sets inline `style`
+   attributes.
+   ORCHESTRATOR SELF-CORRECTION, measured at the `npm run build` run on 2026-09-01: the cost he was
+   shown was overstated. The Orchestrator wrote that "all six page files under `frontend/src/app` carry
+   `use client` and are prerendered as static shells", so a nonce would convert six routes to dynamic.
+   The `"use client"` half is correct; the prerendering half was not. The build route table shows only
+   THREE product pages prerendered static — `○ /`, `○ /play`, `○ /settings` (plus `○ /_not-found`) —
+   while `ƒ /draw/[id]`, `ƒ /game/[id]`, `ƒ /waiting/[id]` and every `/api/` route are ALREADY
+   server-rendered on demand. So the nonce costs static prerendering on three routes, not six. That is
+   exactly what the `orch-01-F18` residual record itself said — "a nonce CSP needs dynamic rendering on
+   `/`, `/play`, `/settings`" — and the residual was more precise than the Orchestrator restating it.
+   The decision does not change; the cost is smaller than presented and he was told so.
+
+5  DJANGO HSTS: add `SECURE_HSTS_INCLUDE_SUBDOMAINS`. Do NOT add `SECURE_HSTS_PRELOAD`. `orch-02-D11`
+   is corrected in this whole for the includeSubDomains half; `preload` stays a separate explicit future
+   decision because submission to the browser preload list is close to irreversible. Remember there are
+   TWO HSTS emitters and this concerns Django's only — `frontend/src/lib/security-headers.ts:109-112`
+   already sends `includeSubDomains` from the Next.js proxy in production.
+
+6  SEQUENCING: localization and the UI/UX work come FIRST. The VPS deployment itself happens only after
+   the UI/UX changes. BOTH deployment artifacts are still owed and are NOT cancelled — the expert
+   Orchestrator handout for the deployment whole, and the read-only Research Worker prompt for ChatGPT
+   Deep Research. He confirmed both are needed; he simply is not deploying yet.
+```
+
+Backend localization route, following from decision 2 and measured rather than assumed: Django
+`USE_I18N = True` with a Slovak `LANGUAGE_CODE` supplies bundled Slovak for all four password
+validators, username uniqueness, the email validator, and four DRF exception messages. It does NOT
+cover `rest_framework_simplejwt` or `django-axes`, neither of which ships an `sk` catalog. The full
+probe output is in `10/00-ui-internationalization/90_orchestrator-restoration.md` section 5.3, together
+with a recorded candidate finding: `frontend/src/lib/api.ts:122-132` parses the 429 wait time with
+`/(\d+)\s+seconds/i` against Django's English body, and should read the numeric `Retry-After` header
+instead.
+
+## 14. Related artifacts
 
 - `/home/agile/meta/README.md` — the Meta storage contract
 - `/home/agile/meta/projects/libretiles/09/00-backend-security-hardening/` — the CLOSED security era: the original audit `01_report_00.md`, four audit reports, and the closure record `99_closure.md`
 - `/home/agile/meta/projects/libretiles/10/00-ui-internationalization/00_handout.md` — the current whole, and the only place the deployment fact set is written out
+- `/home/agile/meta/projects/libretiles/10/00-ui-internationalization/90_orchestrator-restoration.md` — Stage-1 restoration evidence for the current whole, including the measured Django Slovak-coverage probe and the string inventory
 - `/home/agile/meta/projects/libretiles/DEFECT_LEDGER.md` — open defects found by Cooperator-executed acceptance
 - `.ap/AP.md`, `.ap/AP_ORCHESTRATOR.md`, `.ap/AP_WORKER.md`, `.ap/PROMPT_CONTRACTS.md`, `.ap/INFOSEC.md`, `.ap/PROMPT_ENGINEERING_PATTERNS.md`

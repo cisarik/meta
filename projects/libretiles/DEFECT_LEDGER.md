@@ -561,7 +561,415 @@ lost at closure: `orch-01-F18` `script-src 'unsafe-inline'` in production (`medi
 routed to the UX/i18n whole), `audit-01-F13` duplicate-username disclosure (`low`), `audit-01-F09`
 ticket in the query string (`low`), and `style-src 'unsafe-inline'` (`low`).
 
-## Open defects
+## Era 10 — `ui-internationalization`, opened 2026-09-01
+
+Baseline `19cfec9ed27c57e9499b71c55be6c2fb709b0c63`. Nothing below has been corrected yet. No Worker has
+been issued. Full restoration evidence, including the exact probe commands and their output, is in
+`10/00-ui-internationalization/90_orchestrator-restoration.md`.
+
+### Disposition changes to routed residuals, by Cooperator decision 2026-09-01
+
+```text
+orch-01-F18  script-src 'unsafe-inline'          accepted-residual (medium, signed off)
+             -> TO BE CORRECTED in ui-internationalization as a nonce CSP.
+             The existing sign-off is NOT discarded; it remains the record of why the residual was
+             lawful between 445029d and this whole.
+             ORCHESTRATOR SELF-CORRECTION, from the measured `npm run build` route table at 19cfec9:
+             the Orchestrator told the Cooperator that all SIX page files under frontend/src/app are
+             prerendered as static shells, so a nonce would make six routes dynamic. The "use client"
+             half is right; the prerendering half was wrong. Measured:
+                 ○ /            ○ /_not-found      ○ /play        ○ /settings     <- static
+                 ƒ /draw/[id]   ƒ /game/[id]       ƒ /waiting/[id]                <- ALREADY dynamic
+                 ƒ /api/ai/judge  ƒ /api/ai/move   ƒ /api/models  ƒ /api/prompts  <- ALREADY dynamic
+             So the cost is three product routes, not six — precisely what the orch-01-F18 residual
+             record already said ("a nonce CSP needs dynamic rendering on /, /play, /settings"). The
+             residual was more precise than the Orchestrator restating it. Decision unchanged; the
+             Cooperator was told the cost is smaller than presented.
+             style-src 'unsafe-inline' REMAINS an accepted low residual (Framer Motion inline styles).
+
+orch-02-D11  Django HSTS without includeSubDomains or preload   accepted-residual (low, routed)
+             -> includeSubDomains TO BE ADDED in ui-internationalization.
+             -> preload REMAINS a separate explicit future Cooperator decision, because submission to
+                the browser preload list is close to irreversible. Not accepted, not rejected: deferred
+                with a named owner decision.
+             Precision retained: two HSTS emitters exist; this is Django's only. The Next.js proxy at
+             frontend/src/lib/security-headers.ts:109-112 already emits includeSubDomains in production.
+
+audit-01-F06 public prompt text + swallow-to-HTTP-200 in the catalog proxies   accepted-residual (low)
+             -> the swallow half is CONFIRMED and in scope for this whole.
+```
+
+### audit-01-F06, swallow half — confirmed at `19cfec9`, both files
+
+    Classification:  product-defect (diagnosability) with a minor disclosure aspect
+    Severity:        low
+    Confidence:      high
+    Evidence class:  established-static — the Orchestrator read both files in full
+    Location:        frontend/src/app/api/models/route.ts:19-21 and :25-27
+                     frontend/src/app/api/prompts/route.ts:11-13 and :17-19
+    Observed:        both routes return NextResponse.json([], { status: 200 }) on BOTH the `!res.ok`
+                     branch and the bare `catch` branch. A caller therefore cannot distinguish "the
+                     catalog is legitimately empty" from "Django is unreachable" from "Django returned
+                     500". The frontend renders the same string in both cases:
+                     "The rival catalog is empty. Seed the free catalog to play AI matches."
+                     (app/play/page.tsx:27-28, app/settings/page.tsx:55-56)
+    Impact:          a backend outage presents to the user, and to the Cooperator during a demo, as
+                     "you have not seeded the catalog". That is the acc-01-D02 shape again: a real
+                     failure rendered as a configuration mistake.
+    Note:            models/route.ts uses `next: { revalidate: 60 }` while prompts/route.ts uses
+                     `cache: "no-store"`. That asymmetry is undocumented and means a 60-second stale
+                     empty catalog can outlive a recovered backend.
+    Correction direction: distinguish the three cases in the response so the UI can say "the catalog is
+                     empty" versus "the catalog is temporarily unavailable". Do not leak Django's
+                     status text or body to the browser.
+    Regression test: a stubbed backend failure must NOT produce the empty-catalog wording
+    Owner:           ui-internationalization
+    Status:          open
+
+### uii-01-F01 — the 429 wait time is parsed out of an English Django string
+
+    Classification:  product-defect (localization fragility), NOT a security finding
+    Severity:        low
+    Confidence:      high
+    Evidence class:  established-static for the coupling, reproduced-dynamic for the current Slovak text
+    Location:        frontend/src/lib/api.ts:122-132 parseRetryAfterSeconds, consumed by
+                     formatThrottleWait at :134-143 and humanMessageForStatus case 429 at :164-165
+    Mechanism:       the wait time is extracted with /(\d+)\s+seconds/i against Django's 429 response
+                     body. That depends on the literal English word "seconds" surviving in the response.
+    Measured:        with USE_I18N=True and LANGUAGE_CODE="sk", DRF's Throttled detail becomes
+                     "Požiadavok bol obmedzený, z dôvodu prekročenia limitu. Expected available in
+                     3274 seconds." — the FIRST sentence is translated by the bundled sk catalog and
+                     the second is not. The regex therefore still matches today, by luck rather than
+                     by design.
+    Impact if it changes: formatThrottleWait silently degrades from "Too many requests. Try again in
+                     about 55 minutes." to the generic "Too many requests. Please wait and try again."
+                     No test would catch it, and this is exactly the acc-01-D04 message quality that
+                     the security era existed to fix.
+    Why it matters now: decision 2 of this whole enables Django USE_I18N. The coupling moves from
+                     dormant to live.
+    Correction direction: read the numeric `Retry-After` response header, which DRF's exception_handler
+                     sets from exc.wait and which is locale-independent. Keep the regex only as a
+                     fallback.
+    Regression test: a 429 whose body has NO English "seconds" but DOES carry Retry-After must still
+                     render a human wait time. Must fail before the fix.
+    Owner:           ui-internationalization
+    Status:          open
+
+### uii-01-F02 — the product has no aria-label, no role, no alt, and no explicit tab order
+
+    Classification:  product-defect (accessibility), pre-existing
+    Severity:        low technically, medium for interview presentability
+    Confidence:      high
+    Evidence class:  established-static, measured with a WIDENED pattern rather than a narrow one
+    Method:          grep -rnoE "aria-[a-zA-Z]+|role=|alt=|title=|placeholder=|sr-only|screen-?reader|tabIndex"
+                     over frontend/src --include=*.tsx --include=*.ts, then counted by attribute.
+                     Result, complete:
+                         title=        10
+                         placeholder=   6
+                         aria-hidden    4
+                         aria-pressed   3
+                         aria-live      2
+                         aria-current   1
+                     ZERO occurrences of aria-label, role=, alt=, tabIndex, sr-only, or screen-reader.
+                     The exact patterns that matched nothing are named above; this is not a narrow
+                     negative grep.
+    Impact:          icon-only controls have no accessible name. The header cluster in ScorePanel.tsx
+                     is largely icon buttons with a custom IconTooltip, and a tooltip is not an
+                     accessible name. "Accessibility basics: keyboard reachability, focus states, modal
+                     focus trap and ESC" is already an open manual-acceptance item below.
+    Relevance to i18n: aria-labels are translatable strings. They do not exist yet, so this whole is the
+                     cheapest moment in the project's life to add them — the alternative is adding them
+                     later and translating them twice.
+    Correction direction: give every icon-only control an accessible name; add role and focus management
+                     to the modals. Keep the added names inside the same dictionary as the visible copy.
+    Regression test: a test asserting an accessible name for each icon-only control in ScorePanel and
+                     GameControls
+    Owner:           ui-internationalization (UX fine-tuning)
+    Status:          open
+
+### uii-01-F03 — dates are formatted with a hardcoded "en-US" locale
+
+    Classification:  product-defect (localization)
+    Severity:        low
+    Confidence:      high
+    Evidence class:  established-static
+    Location:        frontend/src/components/game/GameHistoryPanel.tsx:73
+                     frontend/src/components/game/ProfileModal.tsx:22
+    Observed:        both call Intl.DateTimeFormat("en-US", ...). These are the only two Intl. call
+                     sites in frontend/src; toLocaleString, toLocaleDateString, and toLocaleTimeString
+                     return nothing.
+    Impact:          a Slovak interface would still render American dates ("September 1" rather than
+                     "1. septembra"), which is the visible half-localized tell.
+    Correction direction: take the active UI locale. Note that a Slovak month name is genitive in a
+                     date ("1. septembra", not "1. september"), so a naive month-name switch reads
+                     wrong to a Slovak speaker; prefer Intl with the sk locale over hand-built strings.
+    Regression test: with the sk locale active, neither call site emits an English month name
+    Owner:           ui-internationalization
+    Status:          open
+
+### uii-01-F04 — the server renders the body in English while `<html lang>` says `sk`
+
+    Classification:  product-defect (localization correctness + accessibility), and an
+                     ORCHESTRATOR DESIGN DEFECT rather than a Worker execution defect
+    Severity:        medium for interview presentability, low functionally
+    Confidence:      high for the mechanism
+    Evidence class:  reproduced-dynamic for the server output; established-static for the client
+                     half; the React console error itself is `not demonstrated`
+    Found by:        the Orchestrator, at a5aff12, while re-verifying Worker session 01's report.
+                     The Worker did NOT report it and no gate could have caught it.
+    Location:        frontend/src/app/layout.tsx readUiLocale (server, reads the cookie)
+                     frontend/src/lib/i18n/index.ts useLocale (client, reads the Zustand store)
+                     frontend/src/hooks/useGameStore.ts uiLocale (empty during SSR)
+
+    HOW IT WAS MEASURED. `npm run build` then `next start -p 3411` bound to loopback, probed with
+    curl, then the server stopped by exact PID. Three requests:
+
+      A  no cookie, Accept-Language: sk-SK,sk;q=0.9
+           <html lang="en">   title English   "Sign In" x1   "Prihlásiť sa" x0
+      B  Cookie: libretiles_locale=sk
+           <html lang="sk">   title SLOVAK    "Sign In" x1   "Prihlásiť sa" x0     <-- the defect
+      C  Cookie: libretiles_locale=fr
+           <html lang="en">   title English                                        (correct fallback)
+
+    Case B is decisive. The document declares itself Slovak and carries a Slovak <title>, while
+    every string in the body is English.
+
+    Mechanism:       the root layout is a Server Component and reads the locale from the cookie.
+                     The body is rendered by client components whose locale comes from the
+                     persisted Zustand store, which is EMPTY during server rendering, so
+                     useLocale() falls through to DEFAULT_LOCALE = "en". The document therefore
+                     contains two independent, contradicting locale sources.
+    Impact 1:        PREDICTED a guaranteed server/client hydration mismatch on every Slovak page
+                     load. **DISPROVED by Cooperator observation, 2026-09-01.** He loaded
+                     /settings with the Slovak locale active, opened the browser console, hard
+                     reloaded with Ctrl+Shift+R, and repeated it in an incognito window. Result,
+                     in his words: "konzola cista" — no hydration error at all.
+                     The Orchestrator's reasoning was that zustand persist rehydrates synchronously
+                     and therefore before React's first client render. Observation says otherwise:
+                     rehydration lands after the hydration render, so the client's first render also
+                     produces English, matches the server, and only then re-renders into Slovak.
+                     Evidence class for this impact is now `rejected-false-positive`.
+    Impact 2:        PREDICTED a visible flash of English copy before hydration.
+                     **DISPROVED by the same observation** — "bez bliku". The re-render is
+                     imperceptible.
+    Impact 3:        the only impact that SURVIVES, and it is smaller than first written. The
+                     pre-hydration document is internally inconsistent: `<html lang="sk">` and a
+                     Slovak `<title>` around an English body. After hydration the DOM is correct, so
+                     a screen reader in practice sees the corrected DOM and the accessibility claim
+                     in the first version of this entry was overstated. What remains is a
+                     first-byte and non-JS-crawler inconsistency, plus the structural problem that
+                     the document has two independent locale sources.
+
+    SEVERITY RE-DERIVED after the Cooperator's observation: **low**, down from medium. Reachability
+                     is limited to the pre-hydration document; there is no observed user-visible or
+                     console effect. Confidence in the MECHANISM stays high — the curl measurement
+                     is unambiguous. Confidence in USER IMPACT is low.
+
+    WHY IT STILL GETS FIXED, on a changed justification: once slice S3 localizes the remaining ~330
+                     strings, EVERY page's server HTML will be fully English inside a
+                     `lang="sk"` document, which is a much larger inconsistency than the ~30 strings
+                     localized today. And slice S2 adds `Accept-Language` detection in proxy.ts,
+                     which only helps if the server-known locale actually reaches the rendered tree.
+                     So the provider is a prerequisite for S2 and S3 rather than a bug fix.
+
+    ORCHESTRATOR ERROR RECORDED PLAINLY: two of the three impacts were asserted from code reading
+                     with "confidence: high" and were wrong. The Cooperator's ten-second browser
+                     check disproved them. This is the sixth time in this project that someone other
+                     than the Orchestrator was right about a claim the Orchestrator had stated more
+                     precisely than its evidence supported, and the first time it was the Cooperator
+                     rather than a Worker. The original prediction is kept above rather than deleted.
+
+    WHY NO GATE CAUGHT IT: vitest runs with environment "node" and there is no test that renders a
+                     page server-side and asserts its copy. typecheck, lint, and build are all
+                     blind to it. Browser MCP is a locked fork. This is PROJECT_CONTEXT lesson 1 in
+                     a new costume: "for anything the model touches: measure live, or do not claim
+                     it" generalises to "for anything that renders: render it, or do not claim it".
+
+    ROOT CAUSE IS THE ORCHESTRATOR'S CONTRACT, stated plainly. The section-5 design in the
+                     session-01 prompt made the store the source of truth and called the cookie a
+                     "routing hint only". That is wrong for a server-rendered application: whatever
+                     the server can read must be authoritative for rendered output, or SSR and the
+                     client cannot agree. The Worker implemented the contract faithfully and its
+                     eight gates are genuinely green. The instruction was wrong, not the execution.
+
+    Correction direction: the server-known locale must reach the client tree. Read the cookie in
+                     the root layout, pass it into a client LocaleProvider wrapping {children}, and
+                     have useLocale() prefer the provider value so SSR and hydration agree. The
+                     store keeps persistence; it stops being the rendering source. setUiLocale
+                     writes cookie plus store and then calls router.refresh() so <html lang> and
+                     metadata catch up in the same interaction — which also resolves the separate
+                     limitation the Worker DID report honestly (Next 16.3.4 layouts do not rerender
+                     on client navigation, documented at
+                     node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/layout.md
+                     line 154).
+    Regression test: a server-render assertion. Request `/` from a production `next start` with
+                     Cookie: libretiles_locale=sk and assert the SSR HTML contains the Slovak
+                     auth-tab string and does NOT contain "Sign In". Must fail at a5aff12.
+    Owner:           ui-internationalization. Originally routed to a dedicated bounded correction in
+                     Worker session 02; after the Cooperator's observation dropped the severity to
+                     low, the Orchestrator recommends FOLDING it into slice S2 (proxy.ts locale
+                     routing), which touches the same locale-resolution path and needs the provider
+                     to make its Accept-Language detection effective. Sequencing decision belongs to
+                     the Cooperator because he had already approved the separate slice.
+    Status:          open
+
+### Orchestrator-authored follow-up at `f26e92a` — game-variant button descriptions removed
+
+Cooperator request, 2026-09-01, in his own words: the two per-button lines under the Game variant
+buttons — "PÍSMENÁ A LEXIKÓN COLLINS 2019" and "100 PÍSMEN SSS A SLOVENSKÝ LEXIKÓN" — are not wanted.
+Not a defect; a product-copy decision that is his to make.
+
+```text
+frontend/src/app/settings/page.tsx     description dropped from the choices type, the two objects,
+                                       and the render; min-h-[154px] -> min-h-[96px] in BOTH language
+                                       panels for symmetry, since a label-only button no longer needs
+                                       room for a description. The other five settings panels keep
+                                       their descriptions and their 154px height, untouched.
+frontend/src/lib/i18n/messages.en.ts   settings.gameVariant.englishDesc / slovakDesc removed
+frontend/src/lib/i18n/messages.sk.ts   the same two keys removed
+frontend/src/lib/i18n/GLOSSARY.md      the two glossary rows removed
+                                       4 files, +2 -14
+```
+
+The height reduction was an Orchestrator judgement inside his request, disclosed to him before the
+commit and approved (`B7-1 ok`) after he looked at it in his own running dev server.
+
+Worth recording as evidence that the S1 type contract does what it was designed to do: removing a key
+from BOTH catalogs kept `AC-EXHAUST` and `npm run typecheck` green, and removing it from only one would
+have failed the typecheck gate. That is the whole purpose of `Record<TextKey, string>`.
+
+Gates at `f26e92a`, all measured: mypy 80 files clean, ruff clean, `manage.py check` clean, pytest
+`328 passed, 4 skipped in 191.60s`, `npm run typecheck` exit 0, `npx vitest run`
+`337 passed | 3 skipped`, `npm run lint` exit 0, `npm run build` exit 0. Push
+`a5aff12..f26e92a  main -> main`, non-force; public readback equal to local `HEAD`.
+
+⛔ **Evidence class: NON-INDEPENDENT.** The Orchestrator was both implementer and verifier. Proportionate
+for a fourteen-line R1 cosmetic change with no trust boundary, and stated explicitly rather than left
+implicit. Not precedent for anything larger. The build gate was deliberately held until the Cooperator
+stopped his dev server, because `next build` and `next dev` share `frontend/.next` — the same stopping
+condition the Orchestrator had imposed on the Worker, honoured when the Orchestrator was on the other
+side of it.
+
+
+
+```text
+B5-2a  console after Ctrl+Shift+R with Slovak active   konzola cista        PASS (disproves F04 impact 1)
+B5-2b  flash of English before hydration                bez bliku            PASS (disproves F04 impact 2)
+B5-2c  diacritic rendering in the gold gradient text     diakritika ok        PASS
+       ľ, ť, í, ž render correctly in the clipped-background gradient. The Orchestrator's
+       static prediction that Noto Serif would cover Latin Extended-A is confirmed in the
+       rendered product by the acceptance owner.
+B5-2c  scope observation: only the two Settings panels and their buttons are Slovak; everything
+       else, including "New game", is still English, under hard reload and in incognito.
+       NOT A DEFECT — this is exactly the S1 scope. S1 localized the landing/auth page, the api.ts
+       error map, and two Settings panels only. Slices S3a/S3b/S3c own the remaining ~330 strings.
+       Recorded because the Cooperator reported it as a possible problem and a later reader must not
+       re-open it as one.
+RESOLVED         the landing/auth page at `/` was unchecked at the time of B5; see B6-2 below.
+B6-2   the landing/auth page while logged out, with Slovak active   vsetko ok   PASS
+       He checked all seven items individually: the gold gradient headline with "ľudia aj AI.",
+       the three feature cards, the account panel and both tabs, both input placeholders, the
+       submit button, the footnote with a non-breaking-space thousands separator "279 496", and a
+       deliberately wrong password rendering "Nesprávne používateľské meno alebo heslo".
+       This closes the S1 scope: every string S1 was authorized to localize is confirmed rendered
+       in Slovak by the acceptance owner.
+B6-3   game-variant button descriptions unwanted -> corrected at f26e92a, see above
+B7-1   both language panels after the copy removal and the height change   ok   PASS
+```
+
+### uii-01-F05 — first-visit detection cannot be done on the client without a flash
+
+    Classification:  design consequence of uii-01-F04, recorded separately because its owner differs
+    Severity:        low
+    Confidence:      high
+    Evidence class:  reproduced-dynamic — case A above
+    Observed:        on a first-ever visit there is no cookie, so the server cannot know the
+                     browser's language and necessarily renders English. Client-side detection then
+                     switches to Slovak after mount.
+    Correction direction: `proxy.ts` reads `Accept-Language` on a request that carries no locale
+                     cookie and sets the cookie on the response, so the server knows the locale from
+                     the very first byte. That is the only place the information exists early enough.
+    Owner:           ui-internationalization, slice S2, together with the URL locale prefixes.
+                     Deliberately NOT the bounded correction, because proxy.ts is the security-header
+                     emitter and its slice carries the full header re-proof.
+    Status:          open
+
+### Two smaller observations from the same re-verification, accepted rather than corrected
+
+```text
+uii-01-N01  frontend/src/app/layout.tsx duplicates t()'s catalog ternary as a local textFor(),
+            because index.ts imports React hooks and a Server Component should not pull the store
+            into the server bundle. The Worker's instinct was right and it reported the deviation.
+            It is a one-line duplication with two lookup paths. Cleaner shape: split a React-free
+            translate.ts out of index.ts. Fold into the bounded correction, since that slice touches
+            these files anyway. Severity info.
+uii-01-N02  pluralSk implements one | 2..4 | otherwise, which the Worker flagged as not CLDR.
+            ORCHESTRATOR VERIFICATION: for Slovak this is CORRECT for integer counts. Slovak, unlike
+            Polish or Russian, uses the genitive plural from 5 upward AND for 21, 101, and so on —
+            "21 minút" is right and "21 minúta" would be wrong. CLDR's Slovak "many" category is for
+            non-integer values (v != 0), and every count in this product is an integer produced by
+            Math.round, Set.size, or a score. The helper's third argument is therefore CLDR "other"
+            rather than CLDR "many", which is a NAMING mismatch and not a behaviour defect. Accepted
+            as correct; the residual is that a future decimal count would be wrong. The Worker was
+            right to flag it and right not to change it.
+```
+
+### Cooperator-visible verification the Orchestrator performed on Worker session 01
+
+Every number in the report was re-measured independently at `a5aff12` rather than accepted:
+
+```text
+git                 HEAD = ls-remote = a5aff1214d97d28f2d27e55de5de19f09faf9c0e, porcelain empty,
+                    .ap gitlink unchanged at 9c5cc44
+allowlist           14 files changed, all inside the section-9 allowlist. No proxy.ts, no backend,
+                    no package.json, no frozen provider file, no LocaleHtmlLang.tsx (primary route
+                    taken, consistently)
+mypy                Success: no issues found in 80 source files
+ruff                All checks passed!
+manage.py check     System check identified no issues (0 silenced).
+pytest              328 passed, 4 skipped in 191.81s          (Worker reported 188.32s — same counts)
+npm run typecheck   exit 0
+npx vitest run      337 passed | 3 skipped, 25 files passed | 1 skipped   (exactly as reported)
+npm run lint        exit 0
+npm run build       exit 0, route table identical to the report, every route now ƒ
+doc citation        VERIFIED verbatim at layout.md line 156. The same section, line 154, also says
+                    "Layouts ... do not rerender", which is the limitation the Worker reported
+                    honestly rather than hiding.
+string content      every en and sk string compared against the prompt's authored table; verbatim,
+                    including the U+00A0 thousands separator in landing.footnote
+AC-SEC-1            re-read: two DIFFERENT Django 401 bodies produce one identical message per
+                    locale, and the Slovak string is checked against five enumeration fragments.
+                    Correct shape. Minor gap: fragments are asserted for sk only, not en. Accepted.
+AC-SEC-2            re-read: uses a real token-bearing call (changePassword) and asserts the Slovak
+                    session-expired string differs from the login string. Correct.
+api.ts              the requestCarriedToken distinction survives; 400 and 409 still prefer the
+                    server field message; parseRetryAfterSeconds, refreshAccessToken, and the retry
+                    logic are untouched
+```
+
+
+
+### Orchestrator method note — an invalid probe, recorded rather than discarded
+
+The first attempt to measure Django's bundled Slovak coverage used
+`override_settings(USE_I18N=True)` inside an already-booted process and produced a MIXED result:
+`ngettext` translated to Slovak while `gettext` did not. That result was **invalid, not a finding**.
+`django.utils.translation._trans` is a `Trans` object that resolves its backend from
+`settings.USE_I18N` on first access **per attribute name** and then caches it with `setattr`, so every
+attribute touched during `django.setup()` stayed bound to `trans_null`. The valid probe set
+`USE_I18N=True` from process start through a settings module outside the repository.
+
+Separately, a `.po`-only search reported all four Django password messages and all DRF Slovak messages
+as ABSENT. Both were false negatives. The password validators live in
+`django/contrib/auth/locale/sk/`, not `django/conf/locale/sk/`, and `rest_framework/locale/sk/` ships a
+compiled `django.mo` with no `.po` at all. Two more instances of "a negative grep is not a conclusion",
+in a single afternoon.
+
+## Open defects from the closed security era
+
+These are kept as history. All are `verified-closed` per `audit-03` and `audit-04` except where the
+entry says otherwise; the per-entry `Status:` lines below were written before those re-audits and are
+superseded by the verdict inventory in `09/00-backend-security-hardening/99_closure.md`.
 
 ### orch-02-F21 — the provider-failure log redaction is a denylist this project's own fixture defeats
 
