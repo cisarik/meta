@@ -530,13 +530,14 @@ All six are **Cooperator decisions**, given on 2026-09-01 in reply to a decision
 recommendation and the supporting evidence for each. He selected option A for the first five.
 
 ```text
-1  LOCALE ROUTING: path prefix `/sk/...` and `/en/...`. Subdomain-per-locale is REJECTED for now and
-   remains available as a separate later decision if SEO or marketing ever needs it.
-   Rationale he was shown: a subdomain layout touches five surfaces the security era just hardened —
-   request-derived `connect-src`, HSTS `includeSubDomains`, `ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS`, and
-   the Django admin session-cookie domain scope. A path prefix costs none of them: one origin, one CSP,
-   one host, one cookie scope. This SUPERSEDES the "subdomain-locale feature" named in the era-09
-   handout, deliberately and with his agreement.
+1  LOCALE ROUTING: **SUPERSEDED on 2026-09-01 by decision 7 below — there are no URL locale
+   prefixes at all.** The original decision was a path prefix `/sk/...` and `/en/...`, with
+   subdomain-per-locale rejected. The subdomain rejection STANDS and is permanent for this cut.
+   Rationale he was shown for rejecting subdomains: a subdomain layout touches five surfaces the
+   security era just hardened — request-derived `connect-src`, HSTS `includeSubDomains`,
+   `ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS`, and the Django admin session-cookie domain scope. This
+   superseded the "subdomain-locale feature" named in the era-09 handout, deliberately and with his
+   agreement.
 
 2  INTERFACE LOCALE SWITCH: a switch in Settings, PLUS browser-language detection on the FIRST visit
    only. Not detection alone, and not a switch alone.
@@ -564,11 +565,48 @@ recommendation and the supporting evidence for each. He selected option A for th
    decision because submission to the browser preload list is close to irreversible. Remember there are
    TWO HSTS emitters and this concerns Django's only — `frontend/src/lib/security-headers.ts:109-112`
    already sends `includeSubDomains` from the Next.js proxy in production.
+   NOTE after decision 7: the only reason `orch-02-D11` was routed to this whole was that
+   `includeSubDomains` interacted with a subdomain-locale design. With no subdomains and no prefixes
+   that interaction no longer exists, so this is now a plain one-line settings addition with an explicit
+   test in `test_security_settings.py`. The decision stands; the coupling is gone.
 
 6  SEQUENCING: localization and the UI/UX work come FIRST. The VPS deployment itself happens only after
    the UI/UX changes. BOTH deployment artifacts are still owed and are NOT cancelled — the expert
    Orchestrator handout for the deployment whole, and the read-only Research Worker prompt for ChatGPT
    Deep Research. He confirmed both are needed; he simply is not deploying yet.
+
+7  NO URL LOCALE PREFIXES AT ALL. Decided 2026-09-01, superseding decision 1. `/` and every existing
+   path stay exactly as they are. There is no `/en/...`, no `/sk/...`, and no subdomain. His reasoning,
+   in his own words: "ked mam v localstorage ulozeny jazyk interface ... ma to zmysel a je to
+   jednoduchsie".
+
+   THE ORCHESTRATOR RECOMMENDED THE PREFIX AND HE WAS RIGHT TO OVERRIDE IT. What the prefixes would
+   have bought — shareable language-bearing links, per-language SEO, and a path the server can read
+   without a cookie — is worth nothing to this product. It is an interview demo of AI integration, not
+   a content site; there is no public content to rank, and every page except `/` is behind login.
+   What they would have cost is concrete:
+     - redirect or rewrite logic inside `frontend/src/proxy.ts`, the file that emits EVERY security
+       header, whose slice-07 prompt said in terms "it sets headers and nothing else"
+     - either an `app/[locale]/` restructure that moves every page file, or a proxy rewrite
+     - every internal `router.push(...)` and `<Link>` made locale-aware, across dozens of call sites
+     - a third source of locale truth (URL) needing reconciliation against the cookie and the store
+
+   CONSEQUENCE WORTH STATING LOUDLY: with no prefixes, `proxy.ts` is now touched exactly ONCE in this
+   whole — in the nonce-CSP slice, which is a header concern. **The era-09 constraint that `proxy.ts`
+   sets headers and nothing else is therefore never reopened.** The Orchestrator had planned to reopen
+   it in writing; his decision made that unnecessary. The highest-risk touch in the whole is gone.
+
+   One factual correction to his premise, made because a wrong premise should not survive even when it
+   leads to the right answer: URL prefixes would NOT have required a backend change. They are frontend
+   routes. What they would have changed is `proxy.ts` and every internal navigation call. Django
+   localization (`USE_I18N`, slice S5) is a separate matter, is unaffected by this decision, and is
+   still going ahead — the registration form shows Django's own password-validator text and that text
+   must be Slovak.
+
+   Accepted residual that follows: on the very first document request from a brand-new visitor there is
+   no locale cookie, so the server renders `lang="en"` and English metadata even for a Slovak browser.
+   The client detects, writes the cookie, and every later document is correct. He measured the visible
+   effect himself and reported "bez bliku" and "konzola cista". Recorded as `uii-01-F05`, accepted, low.
 ```
 
 Backend localization route, following from decision 2 and measured rather than assumed: Django

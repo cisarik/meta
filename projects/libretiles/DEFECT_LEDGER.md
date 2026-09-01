@@ -561,6 +561,237 @@ lost at closure: `orch-01-F18` `script-src 'unsafe-inline'` in production (`medi
 routed to the UX/i18n whole), `audit-01-F13` duplicate-username disclosure (`low`), `audit-01-F09`
 ticket in the query string (`low`), and `style-src 'unsafe-inline'` (`low`).
 
+## New logical whole `multilingual-tile-token-foundation` (Meta 11/01), opened 2026-09-01
+
+Baseline `1b7b05d0de854d7936c5fcd2b0d55a5cc5d14cfd`. Objective: atomic variable-length tile tokens, with
+Hungarian as the forcing function and Czech and Polish as pure data variants. Opened as a SEPARATE
+logical whole from `ui-internationalization` under RF-19, because the objective materially changed:
+the UI locale framework already works and needs no planning, while the engine change spans nine layers,
+a database migration, and four standing Cooperator locks.
+
+Meta directory: `11/01-multilingual-tile-token-foundation/`. It is `01` rather than `00` because
+`11/00-admin-provider-model-console/` was created earlier. Meta's `<logical-whole-sequence>` is an
+archive-ordering key assigned at creation time, not a priority ranking; execution order is
+`11/01` first, then `11/00`, and that is recorded here so the mismatch is not read as an error.
+
+### ORCHESTRATOR ERROR at Worker session 01 exchange 01 — the planning prompt was structurally incomplete
+
+    Classification:  protocol defect in an Orchestrator-issued prompt
+    Severity:        blocking; no product impact
+    Found by:        the Worker, which returned planning-BLOCKED rather than improvising
+    Verified by:     the Orchestrator, reading .ap/PROMPT_CONTRACTS.md:89-101 after the report
+
+`PROMPT_CONTRACTS.md` "Planning Record" requires SIX fields in every initial
+implementation-planning prompt, and the issued prompt carried NONE of them:
+
+```text
+Planning cycle: initial
+Prior planning report: none
+Targeted revision basis: none
+Changed decision boundary: none
+Preserved unaffected decisions: none
+Automatic targeted revisions used: 0
+```
+
+The prompt DID carry all nine `Plan-to-Execution Gate` fields correctly, which is why the omission was
+not obvious from the Orchestrator's side. Cause: the Orchestrator read the "Common Worker Task Fields"
+table and the "Worker Report Header" but never opened the "Planning Record" section at line 89, because
+it had originally been preparing an implementation prompt and switched to a planning prompt without
+returning to the contract. AP is explicit that `PROMPT_CONTRACTS.md` owns exact field spellings; the
+Orchestrator instead approximated the shape from `AP_ORCHESTRATOR.md` prose.
+
+**This is the seventh time in this project that someone other than the Orchestrator was right about a
+claim the Orchestrator was confident in, and the fifth time it was a Worker.** The report is a model of
+the behaviour this project wants: it ran only the identity gates, mutated nothing, touched none of the
+five untracked flag images it was told to leave alone, preserved all four locks, named the exact missing
+fields, quoted the exact contract location, explicitly declined to infer the fields locally because that
+"would manufacture authority", and recommended the correct remedy — a contiguous current-session
+exchange 02 that is still `Planning cycle: initial`, because a BLOCKED exchange that produced no plan
+did not consume the one authorized planning cycle.
+
+Disposition: reissued as Worker session 01 **exchange 02**, `current-worker-session` with a continuity
+anchor and complete authority renewal. The session is healthy — it performed only read-only gates — and
+planning requires no independence, so AP prefers current-session renewal over a fresh session.
+
+### Cooperator decision, 2026-09-01: in-progress games are expendable
+
+Asked whether existing in-progress game sessions must survive the persistence migration, he answered
+`obetovatelne - vsetky rozohrate vymazat predsa, su to len testovacie hry`.
+
+This materially simplifies the plan and removes the largest risk in the risk register:
+
+```text
+BEFORE  a deterministic legacy conversion of board_state, bag_tiles, racks, move history, and
+        save-state rows, plus rollback semantics for partially converted live games
+AFTER   the migration MAY delete existing GameSession rows and their dependents. No legacy
+        board/bag/rack decoding path is required. The representation change becomes forward-only.
+```
+
+Constraints that survive the simplification, and the plan must still honour them:
+
+```text
+- accounts.User rows, credentials, password_changed_at, and JWT blacklist state are NOT game state
+  and must NOT be deleted
+- catalog rows (AIModel, AIPrompt) are NOT game state and must NOT be deleted
+- ConsumedWsTicket rows are transient and may be cleared
+- the migration must be explicit and reviewable about exactly which tables it empties, must not use a
+  blanket flush, and must be reversible in the sense that re-running it on an empty database is a no-op
+- deleting rows is a destructive operation on the Cooperator's development database. It has his
+  explicit authorization for THIS purpose only, and the implementation prompt must say so in terms.
+  It does NOT authorize touching any other table.
+```
+
+### Flag assets normalized by the Orchestrator, 2026-09-01
+
+At his instruction (`B11-3 normalizuj`). Fit-inside-the-box with transparent padding: no distortion and
+no cropping, so the US/UK star and stripe detail and the Hungarian 2:1 ratio all survive intact.
+
+```text
+en.jpeg   500x300   43489 B  ->  en.png  48x32 (image 48x29)  2572 B
+sk.jpeg  2048x1367  52961 B  ->  sk.png  48x32 (image 48x32)  1326 B
+cz.jpeg  1280x720   31985 B  ->  cs.png  48x32 (image 48x27)   924 B
+hu.jpeg  1479x995   19185 B  ->  hu.png  48x32 (image 48x32)   242 B
+pl.jpeg   474x296    4319 B  ->  pl.png  48x32 (image 48x30)   166 B
+                    -------                                   -----
+                    191939 B  total                            5230 B  total
+```
+
+48x32 is a 2x asset for a 24x16 CSS rendering, so it stays crisp on a retina display. `cz.jpeg` becomes
+`cs.png`: the flag is a country symbol but the selector chooses a LANGUAGE, and the Czech language code
+is `cs`. Naming the asset by locale removes a country-to-language lookup table that would otherwise
+exist purely to hide the mismatch. The five source JPEGs remain untracked and are not committed.
+
+
+
+Gathered by the Orchestrator at `1b7b05d0de854d7936c5fcd2b0d55a5cc5d14cfd` while reviewing a
+Cooperator-supplied ChatGPT analysis and its draft planning prompt. All of it is read-only,
+`established-static` unless marked otherwise, and none of it authorizes implementation.
+
+### The Cooperator's supplied variant JSONs — arithmetically validated
+
+Computed rather than trusted, from the exact JSON text he supplied:
+
+```text
+variant     tiles  kinds  nominal points  multi-char tiles                       loader accepts today
+czech        100    40         205        none                                    100  (drops 0)
+polish       100    33         190        none                                    100  (drops 0)
+hungarian    100    39         235        SZ GY NY CS LY ZS TY  (9 physical tiles)  91  (DROPS 9)
+slovak       100    42         267        none                                    100  (existing)
+```
+
+All three are 100 tiles with exactly 2 blanks, no duplicate letter entries, NFC-clean, uppercase, and
+every non-blank token satisfies `str.isalpha()`. The ChatGPT claim that today's loader would take only
+**91 of 100** Hungarian tiles is **exactly right** — the nine dropped are SZ×2, GY×2, NY×1, CS×1, LY×1,
+ZS×1, TY×1.
+
+### Verified confirmations of the ChatGPT analysis
+
+```text
+backend/gamecore/variant_store.py:177   if letter != "?" and len(letter) != 1: continue     CONFIRMED
+backend/gamecore/variant_store.py:193   letters sorted by lt.letter, declared order lost    CONFIRMED
+backend/game/models.py:26               board_state = JSONField                             CONFIRMED
+backend/game/models.py:32               bag_tiles = TextField(default="")                   CONFIRMED
+backend/game/services.py:272            grid.append("".join(row_chars))                     CONFIRMED
+backend/game/services.py:279,485        session.bag_tiles = "".join(bag.tiles)              CONFIRMED
+backend/game/services.py:248            tiles=list(session.bag_tiles)  <- CHARACTER split   CONFIRMED
+backend/gamecore/state.py:44,49,111,120,121  save-state joins grid rows, racks, and bag     CONFIRMED
+backend/game/serializers.py:248         exchange child=CharField(max_length=1)              CONFIRMED
+backend/game/serializers.py:269-277     _nfc_uppercase_letter requires len(nfc)==1          CONFIRMED
+frontend/src/app/api/ai/move/route.ts:123,127  Zod .length(1)                               CONFIRMED
+frontend/src/app/api/ai/move/route.ts:329      /^[\p{L}?]$/u                                CONFIRMED
+frontend/src/app/api/ai/move/route.ts:334,341  blankAs single code point                    CONFIRMED
+frontend/src/lib/types.ts:48            board: string[]                                     CONFIRMED
+frontend/src/hooks/useGameStore.ts      SelectedVariantSlug = "english" | "slovak"           CONFIRMED
+```
+
+### Three precision corrections to the supplied analysis
+
+```text
+1  `isalpha()` is NOT what blocks Hungarian. "SZ".isalpha() is True. The blocker is the
+   `len(nfc) == 1` half of the same condition. `isalpha()` only blocks a token containing
+   punctuation, i.e. the Catalan L·L case. The distinction matters because a remedy aimed at
+   `isalpha()` would fix nothing for Hungarian.
+2  The analysis prescribes `poetry run ruff / mypy / pytest` as the validation route. That route is
+   NOT usable inside a Worker boundary in this project — see PROJECT_CONTEXT.md section 4. Any prompt
+   built on it would fail at the first gate.
+3  The analysis directs the planner at `frontend/src/lib/prompts.ts` and the AI move route without
+   stating that the MOVE CORE prompt carries a pinned SHA-256 and `MOVE_PROMPT_VERSION`
+   `pfr-s2-core-1`, both LOCKED by Cooperator decision (locked fork 2), and that the nine providers
+   are frozen (locked fork 11). A plan produced without those constraints could violate two standing
+   Cooperator decisions.
+```
+
+### Two things the supplied analysis MISSED
+
+#### uii-01-F06 — the bag's remaining count is a string length
+
+    Classification:  latent correctness defect, NOT reachable today
+    Severity:        low today; high the moment a multi-character tile exists
+    Confidence:      high
+    Evidence class:  established-static
+    Location:        backend/game/services.py:372 and :558 — `bag_remaining = len(session.bag_tiles)`
+    Observed:        `bag_tiles` is a TextField holding the joined tile string. Its LENGTH is reported
+                     to the client and to the AI context as the number of tiles left in the bag.
+    Impact:          with a Hungarian bag, one `SZ` tile would be counted as TWO remaining tiles. The
+                     bag would appear to hold up to 109 tiles for a 100-tile set, endgame detection
+                     reads the count, and `BAG_EMPTY_AND_PLAYER_OUT` is a real end reason.
+    Why it was missed by the supplied analysis: it named the join and the character split on the same
+                     field but not the count derived from it. Three distinct defects live in one field.
+    Owner:           the multilingual tile-token whole
+    Status:          open
+
+#### uii-01-F07 — every accented Slovak tile loses the starting draw, today, in production
+
+    Classification:  product-defect (game rules), PRE-EXISTING and REACHABLE NOW
+    Severity:        low — it only decides who opens the board — but it is a live rules defect in a
+                     shipped variant, not a future hypothetical
+    Confidence:      high
+    Evidence class:  reproduced-dynamic — the Orchestrator loaded the real Slovak variant through the
+                     real loader and evaluated the real comparison expression
+    Location:        backend/game/services.py:453-464 `_perform_starting_draw`, which decides
+                     `slot0_first` with `slot0_value <= slot1_value` on the raw tile strings
+    Measured:        ('Á' <= 'Z') is False        code points 193 vs 90
+                     ('Ä' <= 'B') is False        196 vs 66
+                     ('Č' <= 'D') is False        268 vs 68
+                     ('Ž' <= 'A') is False        381 vs 65
+                     ('Ó' <= 'P') is False        211 vs 80
+    Consequence:     the seventeen single-copy Slovak diacritic tiles all sort AFTER Z under
+                     code-point comparison, so a player who draws `Á` is treated as further from A
+                     than a player who draws `Z`. In the Slovak alphabet `Á` is SECOND.
+    Corroborating:   the same root cause makes `variant_store.py:193` produce the playable-letter
+                     order `A B C … Z Á Ä É Í Ó Ô Ú Ý Č Ď Ĺ Ľ Ň Ŕ Š Ť Ž`, which is what
+                     `services.py:167` publishes as `"alphabet"` to the AI context and the blank
+                     picker. Accented letters appear after Z there too.
+    Why it matters for the plan: it proves the "explicit variant alphabet order" requirement from the
+                     CURRENT product rather than from a Hungarian hypothesis, and it means the fix has
+                     value even before any new variant ships. Naive code-point collation happens to
+                     order the Hungarian digraphs correctly (`SZ` < `T`, `CS` < `D`, `ZS` > `Z`) while
+                     being wrong for every accented vowel in Slovak, Czech, Polish, and Hungarian.
+    Correction direction: variant-declared tile order, honoured by the loader and by the starting
+                     draw. Do not reach for `locale`-based collation; the order is a game rule and
+                     belongs in the variant asset.
+    Regression test: in Slovak, `Á` must beat `Z` in the starting draw. Must fail before the fix.
+    Owner:           the multilingual tile-token whole
+    Status:          open
+
+### Flag assets the Cooperator added, untracked at `1b7b05d`
+
+```text
+frontend/public/en.jpeg    500x300    43489 B
+frontend/public/sk.jpeg   2048x1367   52961 B
+frontend/public/cz.jpeg   1280x720    31985 B
+frontend/public/hu.jpeg   1479x995    19185 B
+frontend/public/pl.jpeg    474x296     4319 B
+```
+
+Deliberately NOT committed by the Orchestrator. They are five different aspect ratios and up to
+2048 px wide for what will render at roughly 20 px, so they must be normalised to one small identical
+size before they enter the tree. `sk.jpeg` alone is 53 KB for a flag. Note also the filename is
+`cz.jpeg` while the Czech variant's `language_code` is `cs`; that mismatch must be resolved
+deliberately rather than papered over with a lookup table.
+
+
+
 ## Era 10 — `ui-internationalization`, opened 2026-09-01
 
 Baseline `19cfec9ed27c57e9499b71c55be6c2fb709b0c63`. Nothing below has been corrected yet. No Worker has
@@ -805,12 +1036,13 @@ audit-01-F06 public prompt text + swallow-to-HTTP-200 in the catalog proxies   a
     Regression test: a server-render assertion. Request `/` from a production `next start` with
                      Cookie: libretiles_locale=sk and assert the SSR HTML contains the Slovak
                      auth-tab string and does NOT contain "Sign In". Must fail at a5aff12.
-    Owner:           ui-internationalization. Originally routed to a dedicated bounded correction in
-                     Worker session 02; after the Cooperator's observation dropped the severity to
-                     low, the Orchestrator recommends FOLDING it into slice S2 (proxy.ts locale
-                     routing), which touches the same locale-resolution path and needs the provider
-                     to make its Accept-Language detection effective. Sequencing decision belongs to
-                     the Cooperator because he had already approved the separate slice.
+    Owner:           ui-internationalization, slice S3a. Routing history, kept legible: first a
+                     dedicated bounded correction in Worker session 02; then folded into slice S2
+                     (proxy.ts locale routing) once the Cooperator's browser check dropped the
+                     severity to low; then moved to S3a when Cooperator decision 7 CANCELLED S2
+                     altogether by removing URL locale prefixes. S3a is the right home because a
+                     LocaleProvider without localized pages cannot be meaningfully tested, and S3a is
+                     the first slice that gives it real Slovak pages to render.
     Status:          open
 
 ### Orchestrator-authored follow-up at `f26e92a` — game-variant button descriptions removed
@@ -886,13 +1118,22 @@ B7-1   both language panels after the copy removal and the height change   ok   
     Observed:        on a first-ever visit there is no cookie, so the server cannot know the
                      browser's language and necessarily renders English. Client-side detection then
                      switches to Slovak after mount.
-    Correction direction: `proxy.ts` reads `Accept-Language` on a request that carries no locale
-                     cookie and sets the cookie on the response, so the server knows the locale from
-                     the very first byte. That is the only place the information exists early enough.
-    Owner:           ui-internationalization, slice S2, together with the URL locale prefixes.
-                     Deliberately NOT the bounded correction, because proxy.ts is the security-header
-                     emitter and its slice carries the full header re-proof.
-    Status:          open
+    Correction direction considered and REJECTED: `proxy.ts` reads `Accept-Language` on a request
+                     with no locale cookie and sets the cookie on the response. Rejected because
+                     Cooperator decision 7 removed URL locale prefixes, so `proxy.ts` no longer needs
+                     to be touched for anything except headers, and touching the file that emits every
+                     security header to shave one document render is a bad trade.
+    Disposition:     **accepted-residual**, severity low, approver Orchestrator (below the INFOSEC 14
+                     threshold that would require Cooperator sign-off).
+    Rationale:       reachability is exactly one document — the FIRST request from a brand-new visitor
+                     with no cookie. The client detects, writes the cookie, and every later document is
+                     correct. The Cooperator measured the visible effect in his own browser and
+                     reported "bez bliku" and "konzola cista". The cost of removing it is a redirect or
+                     cookie write inside the security-header emitter; the benefit is one imperceptible
+                     render. Not worth it.
+    Regression test: not applicable — no code change.
+    Owner:           none; closed as an accepted residual.
+    Status:          accepted-residual
 
 ### Two smaller observations from the same re-verification, accepted rather than corrected
 
