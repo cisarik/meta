@@ -1585,6 +1585,145 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice R14 landed at `74b5339e5bdcdd036041b6bf908c5454f7d8a400` — Worker session 13, exchange 01
+
+`fix(a11y): one persistent announcer and a role on every named rack tile`. 7 files, +223 -35, one created,
+none deleted, parent `e8cc7bb`, one non-force push, public readback equal, `.ap` gitlink untouched.
+Build gate PRIMARY: port 3000 empty.
+
+Orchestrator verdict: **implementation-PASS, ACCEPTED as delivered.** Evidence independent — all eight gates
+re-measured, the build re-run, the emitted CSS read, and the rack markup rendered by the Orchestrator's own
+throwaway probe.
+
+Archived as `13_implementation_00.md` + `13_report_00.md`.
+
+### The end-state count table, re-measured rather than accepted
+
+```text
+                  before  after   expected
+aria-live            8       1        1     LiveAnnouncer.tsx:25 and nowhere else
+role="status"        8       1        1     LiveAnnouncer.tsx:24
+role="dialog"        4       4        4     the four dialogs, untouched
+aria-modal           4       4        4     ts/tsx only; a 5th match is GLOSSARY.md PROSE, as reported
+role="group"         0       1        1     AIThinkingOverlay.tsx:271
+htmlFor              0       0        0
+tabIndex             4       5        5     the one rack tile
+activeElement        0       0        0     uii-01-F19 still open, as intended
+```
+
+`messages.{en,sk,cs,pl}.ts` absent from the diff, `backend/` absent from the diff, no locked-fork file
+touched, no dependency added. 294 keys stay 294.
+
+### Gates at `74b5339`, Orchestrator-measured
+
+```text
+mypy 83 files clean · ruff clean · manage.py check clean · pytest 381 passed, 4 skipped in 217.72s
+typecheck exit 0 · vitest 418 passed | 3 skipped · lint exit 0
+build exit 0, 11 dynamic routes, ZERO static
+```
+
+`414 -> 418` is `+6 -2` and the Worker accounted for both halves: six new `it` blocks, minus the two
+`AC-STATUS-NOT-DIALOG` cases that the authorized section-10.1 inversion replaced.
+
+### The `sr-only` question, answered from the built artifact
+
+`grep -c "sr-only" .next/static/css/*.css` -> **1**, reproduced by the Orchestrator's own build. The
+emitted rule was read rather than assumed:
+
+```css
+.sr-only{clip-path:inset(50%);white-space:nowrap;border-width:0;width:1px;height:1px;
+         margin:-1px;padding:0;overflow:hidden}  .absolute,.sr-only{position:absolute}
+```
+
+That is the correct visually-hidden pattern — clipped, not `display:none` and not `visibility:hidden`, so
+the announcer really is in the accessibility tree. The section 5.4 fallback was not needed.
+
+### The vacuous assertion is genuinely fixed, which was half the point
+
+`AC-NO-OVERLAY-LIVE` now sets `aiCountdown: 30`, a live fallback attempt, and a non-null
+`aiTurnTelemetry.humanState`, and asserts that `"0:30"` and the humanState string ARE in the markup before
+asserting zero `aria-live`. The nodes whose presence the old fixture accidentally suppressed are now proven
+present. That is what makes the zero-count load-bearing instead of decorative.
+
+### The rack fix, rendered by the Orchestrator rather than read
+
+A throwaway probe rendered `TileRack` in exchange mode through the shipped code, then was deleted
+(porcelain verified clean):
+
+```text
+role="button"                     present
+tabindex="0"                      present
+aria-label="Tile A, 1 point"      present
+aria-roledescription="draggable"  present
+```
+
+`uii-01-F20` is corrected: the name is now attached to an element that can carry it. The
+`aria-roledescription="draggable"` that comes with dnd-kit's defaults is now announced even in exchange
+mode where the tile is not draggable — cosmetically imprecise, not worth a slice.
+
+### ⛔ TWO NEW FINDINGS, AND THE WORKER FOUND BOTH ITSELF
+
+Report item 17, in response to the prompt field asking what it could still see. Both are mine again.
+
+#### uii-01-F24 — a focusable button that no key can activate
+
+`{...attributes}` brings dnd-kit's `role="button"` and my `tabIndex={selectEnabled ? 0 : -1}` makes it
+`0` whenever the tile is clickable. `DraggableTile` has `onClick` and **no `onKeyDown`**. A native
+`<button>` synthesizes a click from Enter and Space; a `div[role=button][tabindex=0]` does not.
+
+```text
+verified  page.tsx:535-539 configures PointerSensor and TouchSensor only. There is NO KeyboardSensor, so
+          dnd-kit's `listeners` contain no keyboard handler either, in any state.
+verified  TapSelectableTile:147-151 already has an explicit Enter/Space onKeyDown. The draggable sibling
+          does not.
+scope     WIDER than the report says. selectEnabled is true on a normal turn too, not only in exchange
+          mode, so every desktop rack tile is now a dead Tab stop.
+```
+
+⛔ **This is a REGRESSION introduced by R14.** Before it, those tiles were not focusable at all, so there
+was nothing to land on. Keyboard navigation is now measurably worse than at `e8cc7bb`. Cause: my
+instruction specified the attribute and never modelled the resulting interaction.
+
+Fix, and the fact that makes it safe: add an Enter/Space `onKeyDown` calling `onSelect` when
+`selectEnabled`, mirroring `TapSelectableTile`. Because there is no KeyboardSensor, it cannot collide with
+dnd-kit's listeners in the drag-enabled state. The alternative — forcing `tabIndex={-1}` — merely restores
+the old silence and is the fallback if the handler proves to interact with drag.
+
+#### uii-01-F23 — six dead `aria-label`s on role-less toast containers
+
+Section 5 of the R14 prompt authorized removing `role` and `aria-live` from the six toast branches and said
+nothing about `aria-label`, so six `aria-label={t("a11y.status.turn")}` now sit on generic `motion.div`s.
+Same class as `uii-01-F20`: an `aria-label` on a generic element is not permitted and is ignored.
+
+Practical impact near zero — the toast's own text is inside the element and the announcer speaks the
+message — but it is six invalid attributes that a later reviewer will correctly flag. Fix: delete the six
+lines. `t` stays in use for the toast copy.
+
+### ⛔ THE PATTERN, STATED PLAINLY: THREE A11Y INSTRUCTIONS, THREE DEFECTS
+
+```text
+S11 -> uii-01-F21  I specified role="status" on a container and did not model aria-atomic + a ticking timer
+S11 -> uii-01-F20  I specified aria-label and did not model where the role comes from
+R14 -> uii-01-F24  I specified tabIndex=0 and did not model what activates the control
+R14 -> uii-01-F23  I specified removing two attributes and did not notice the third became invalid
+```
+
+Every one is the same error: **authorizing an ARIA attribute without stating the interaction it implies.**
+Lesson 14 in `PROJECT_CONTEXT.md` already names it after F21 and F22, and R14 repeated it anyway, which
+means the lesson as written was not operational enough. It now carries a concrete rule: for every attribute
+added or removed, write down what the user does, what the technology announces, and what key activates it —
+and if the answer is "nothing activates it", that is the defect, not a detail.
+
+### Two small test-strength notes, recorded not corrected
+
+```text
+AC-RACK-ROLE      asserts `toMatch(/role="/)`, which proves SOME role exists in the rack markup rather
+                  than role="button" on the tile. True as written; weaker than its name. The Orchestrator
+                  probe closed the gap by observation this once.
+AC-RACK-ROLE      its unreachable source-slice fallback ends with `expect(String(error)).toMatch(/./)`,
+                  a no-op. Harmless; it never runs.
+```
+
 ## Slice R14 issued — Worker session 13, exchange 01, at `e8cc7bb`
 
 `fix(a11y): one persistent announcer and a role on every named rack tile`. Prompt staged at
@@ -5922,15 +6061,20 @@ HE OBSERVES — keyboard only, no screen reader needed
   2  Escape closes each of those four
   3  Tab still walks the page and never becomes unescapable (no trap was written, by design)
   4  focus is NOT restored to the opener on close — expected, uii-01-F19, accepted residual
+  5  ⛔ AFTER R15 ONLY: Tab onto a rack tile, press Enter or Space, and the tile is selected. At `74b5339`
+     this FAILS — uii-01-F24, the tile is focusable and no key activates it. Do not ask him before R15
+     lands; a confirmed failure he already has on paper is not worth his time.
 CLOSED BY INSPECTION ONLY — never observable in this project
-  5  whether the rack tile announces "Písmeno A, 1 bod"
-  6  whether the turn banner, toasts and AI overlay announce at all              uii-01-F22
-  7  whether the AI overlay re-reads itself every second                         uii-01-F21
+  6  whether the rack tile announces "Písmeno A, 1 bod"
+  7  whether the turn banner, toasts and AI overlay announce at all              uii-01-F22
+  8  whether the AI overlay re-reads itself every second                         uii-01-F21
 ```
 
-⛔ Items 5–7 must be written into `99_closure.md` as **inspection-only**, never as an observed pass, and no
-later session may summarize this whole as "accessibility verified". The three findings are corrected on the
-strength of ARIA semantics plus string-rendered markup, and that is the whole of the evidence.
+⛔ Items 6–8 must be written into `99_closure.md` as **inspection-only**, never as an observed pass, and no
+later session may summarize this whole as "accessibility verified". Those three findings are corrected on
+the strength of ARIA semantics plus string-rendered markup, and that is the whole of the evidence.
+`uii-01-F20`, `uii-01-F23` and `uii-01-F24` are different: they are structural, and item 5 makes F24
+genuinely observable.
 
 This also retires the ledger line "modal focus trap and ESC" from the manual-acceptance list above: ESC is
 covered by item 2, the focus trap does not exist by design, and the announcement half is unobservable.
