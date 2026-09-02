@@ -1585,6 +1585,165 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice R1 issued — Worker session 11, exchange 01, at `8f44022`
+
+`feat(ui): premium searchable language and variant pickers with flags`. Prompt staged at
+`/tmp/opencode/uii-r1-worker-11-prompt.md`, 451 lines. Archive as `11_implementation_00.md` **only after
+its report exists**. Fresh Implementation Worker, E2, reasoning HIGH.
+
+**The last feature work in this whole, and closure condition 2.** It is also the only slice here that
+builds a NEW INTERACTIVE COMPONENT rather than extracting strings.
+
+### One shared component, two instances
+
+`frontend/src/components/settings/PremiumPicker.tsx` replaces both 2x2 button grids. Contract: closed
+state shows the selected flag plus label with a trailing arrow; open state is a text input plus a filtered
+listbox; ArrowUp/Down/Home/End/Enter/Escape all specified; disabled rows rendered, muted, unselectable and
+SKIPPED by arrow navigation; outside click closes without changing the value.
+
+Accessibility is required INSIDE the picker and forbidden outside it, because the product-wide pass is the
+next slice and mixing them would make both diffs unreviewable. Inside: `role="combobox"`,
+`aria-expanded`, `aria-controls`, `aria-label`, `role="listbox"`, `role="option"`, `aria-selected`,
+`aria-disabled`, `aria-activedescendant`. Those will be the **first** `role` and `aria-label` attributes
+this codebase has ever had.
+
+### ⚠ THE DIACRITIC TRAP, named in the prompt rather than left to be discovered
+
+The obvious fold is `value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()`. It handles
+`č š ž ě ř ů á í ó ú ý ą ę ć ń ś ź ż` — and it does **NOT** handle Polish `ł`, because U+0142 is a
+distinct letter with a stroke, not a base letter plus a combining mark. NFD leaves it untouched.
+
+Not reachable today: the four endonyms are `English`, `Slovenčina`, `Čeština`, `Polski`, and no shipped
+label begins with `ł`. But `Słowacki` — the Polish exonym for Slovak, already in the catalog — contains one
+mid-word, so a query of `slowacki` against it exercises exactly this path. The prompt therefore requires an
+explicit character map for `ł`/`Ł` and suggests `đ`/`Đ`/`ø` at zero extra cost, and `AC-FOLD` asserts the
+`ł` case **explicitly**, with the note that "that assertion is the point of the test".
+
+His own example is a mandatory test: `cestina`, `CESTINA`, `Čeština` and `ceSTIna` must all match
+`Čeština`.
+
+### Testability under a node-environment suite, made structural
+
+vitest runs with `environment: "node"` and nothing in the suite renders a component — the same blindness
+that let `uii-01-F04` ship. So the prompt requires the FILTERING and the ARROW-NAVIGATION INDEX ARITHMETIC
+to be extracted as pure exported functions, and says why: *"that is the whole reason to extract them."*
+`AC-PICKER-NAV` then tests the part most likely to be subtly wrong — skipping disabled options in both
+directions, and Home/End landing on the first/last ENABLED option.
+
+### One genuine design question handed to the Worker WITH permission to overrule the prompt
+
+Section 7.4 authors `picker.flagAlt` as `Vlajka: {language}` — and then says that a flag rendered next to
+its own label may be purely DECORATIVE, in which case `alt=""` plus `aria-hidden="true"` is **more**
+correct, because a screen reader would otherwise announce "Vlajka: Slovenčina, Slovenčina". The Worker is
+told either choice is acceptable, must say which and why, and must add the keys to all four catalogs
+regardless so the decision is reversible without a new slice.
+
+That shape is deliberate: it is a real accessibility judgement that depends on the finished markup, which
+the Worker will have read and the Orchestrator has not.
+
+### Three preservation constraints that would silently break corrected defects
+
+```text
+variantDisplayName MUST keep its name, signature and export — app/play/page.tsx imports it for the
+                   uii-01-F14 queue label. Breaking it reintroduces a corrected defect invisibly.
+variants order     must NOT be re-sorted; server order is deliberate.
+hu.png             must stay UNREFERENCED. Hungarian is neither a shipped interface locale nor a
+                   playable variant.
+```
+
+### ✅ The Orchestrator's key-count check fired for a THIRD consecutive prompt
+
+```text
+first draft prose  "Add all eight new keys."
+programmatic count  5   (four plain + one parameterized)
+corrected to        FIVE, with the table-wins precedence rule added inline, then re-verified
+```
+
+Three prompts in a row now: S8 said 29 for 35, S9 said 14 for 16, R1 said 8 for 5. Two of those three were
+caught by the Orchestrator before issuing rather than by a Worker afterwards, which is the improvement the
+S8 entry promised. The underlying lesson stands and is now mechanical: **count the table, never trust the
+prose.**
+
+## ⛔ ORCHESTRATOR OMISSION CHECK at `8f44022`: R1 IS STILL OPEN, and it is a CLOSURE CONDITION
+
+Measured, not remembered, while scoping the accessibility slice:
+
+```text
+grep -rn "en.png|sk.png|cs.png|pl.png|hu.png|flag" frontend/src
+  -> ONE hit, and it is `is_flagship` in types.ts. The five committed 48x32 flag PNGs are
+     referenced NOWHERE. They have been in the tree, unused, since 61c9f09.
+both language panels
+  -> still `grid grid-cols-2` button grids. Neither is a dropdown; there is no <input>, no
+     combobox, no listbox, no search field in settings.
+diacritic-insensitive matching
+  -> `normalize(` appears only in the LOCKED api/ai/move/route.ts for tile tokens. There is ZERO
+     diacritic folding anywhere in the frontend.
+```
+
+**So `R1` has not been started.** `93_orchestrator-handout.md` section 6 describes it in the Cooperator's
+own detail: *"a flag image left of the language name, a search input with diacritic-insensitive
+autocomplete ('cestina' must match 'Čeština'), and an arrow at the input edge that opens the dropdown.
+TWO of them — one for the interface locale, one for the game variant. He wants them eye candy, matching
+the existing premium chrome, not a plain white input."*
+
+And handout section 11 makes it closure condition 2: *"both Settings dropdowns exist with flags,
+diacritic-insensitive autocomplete and the arrow, and he has accepted them."*
+
+⚠ **This is an Orchestrator omission, and it nearly slipped.** Ten slices went to translation and
+corrections while the one feature he described in his own words sat untouched, and the previous
+Orchestrator message summarised the remaining work as "accessibility plus backend residuals" — which was
+WRONG by one whole feature. Recorded plainly rather than quietly fixed, because a closure condition that
+disappears from a status summary is exactly how a whole closes on incomplete evidence.
+
+### ORCHESTRATOR SEQUENCING DECISION: R1 goes BEFORE the accessibility slice
+
+The accessibility work (`uii-01-F02`) must add accessible names, `role`, `aria-modal`, `htmlFor` and ESC
+handling to the final UI. `R1` REPLACES both settings language panels with a different control — a
+combobox with a text input, a listbox, images and keyboard navigation.
+
+```text
+a11y then R1   the a11y slice writes names for two button grids that R1 then deletes, and R1 must
+               re-do the a11y for a combobox — which has strictly MORE a11y surface than a button grid
+               (aria-expanded, aria-controls, aria-activedescendant, role=combobox/listbox/option)
+R1 then a11y   the a11y slice sees the final control set once and writes each accessible name once
+```
+
+Second ordering is obviously right. `R1` is issued next; accessibility follows it and becomes the last
+frontend slice.
+
+### The measured a11y baseline, taken now and reusable by that later slice
+
+Re-measured at `8f44022` with the widened pattern, so the later prompt does not have to rediscover it:
+
+```text
+ZERO occurrences   aria-label · aria-labelledby · aria-describedby · role= · alt= · tabIndex ·
+                   sr-only · htmlFor · aria-modal · <dialog> · autoFocus
+present            aria-hidden 5 · aria-disabled 5 · aria-pressed 3 · aria-live 2 · aria-current 1
+                   title= 9 · placeholder= 6 · onKeyDown 5
+```
+
+Specific findings for that slice, each with its location:
+
+```text
+1  ScorePanel:355   the back button's only content is a `↩` glyph plus a HOVER-ONLY IconTooltip. A
+                    tooltip is not an accessible name — IconTooltip renders a `pointer-events-none`
+                    absolutely-positioned span revealed by `group-hover`, invisible to a screen reader
+                    as a label. Needs aria-label.
+2  HeaderMiniButton with `iconOnly`   four call sites — profile 👤, games 🗂️, settings x2. The `label`
+                    prop IS passed and IS already localized, but when `iconOnly` it renders ONLY inside
+                    the tooltip. The name exists; it just is not attached. Cheapest possible fix.
+3  htmlFor is ZERO  ProfileModal's three password fields have visible labels that are NOT associated
+                    with their inputs. A screen reader announces an unlabelled password field.
+4  four modal surfaces  GameHistoryModal, ProfileModal, BlankPicker, and the aiBlockerModal inside
+                    game/[id]/page.tsx. None has role="dialog", aria-modal, or aria-labelledby, and
+                    only settings/page.tsx:552 handles Escape at all.
+5  TileRack tiles    already keyboard-operable with onKeyDown Enter/Space and aria-pressed — better
+                    than expected. Their accessible name is the bare letter; "Písmeno A, 1 bod" would
+                    be materially better and is a translatable string.
+6  alt= is ZERO and there is currently NO <img> or next/image in the product at all. R1 introduces the
+                    FIRST images in this codebase, so R1 itself must ship their alt text.
+```
+
 ## Slice S9 landed at `8f440221b757bc142cb26391875c1361492da419` — Worker session 10, exchange 01
 
 `feat(i18n): localize the profile modal and close the date locale defect`. 7 files, +297 -30, parent
