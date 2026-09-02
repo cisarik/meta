@@ -27,7 +27,7 @@ and `1b7b05d0de854d7936c5fcd2b0d55a5cc5d14cfd` (the starting-draw screen, plus a
 fix). `uii-01-F04` is owned by slice **S3a**, not S2 — Cooperator decision 7 cancelled S2 altogether by
 removing URL locale prefixes. An earlier version of this paragraph said S2 and was stale.
 
-`main` is now `e8cc7bb3be6b1e403102ed4e89c04996a0349fd3`. Porcelain is EMPTY — the ten
+`main` is now `74b5339e5bdcdd036041b6bf908c5454f7d8a400`. Porcelain is EMPTY — the ten
 deliberately untracked `frontend/public` flag files are gone. The **Cooperator himself** committed the
 five normalized 48x32 PNGs at `61c9f09` on 2026-09-02 (`feat(images): add new language icons for Czech,
 English, Hungarian, Polish, and Slovak`, 5 files, 5230 B total, byte sizes identical to the
@@ -65,51 +65,67 @@ Commit lineage of era 11, all Orchestrator-verified:
     8f44022  S9   the profile modal; uii-01-F03 CLOSED                   7 files, 16 keys
     c3f75e3  R1   premium searchable pickers with flags (closure cond. 2) 12 files, +615
     e8cc7bb  S11  R12: accessible names, dialog semantics, status regions 16 files, 9 keys
+    74b5339  R14  one persistent announcer; rack tiles get a role       7 files, 0 keys
 
 Anything below that speaks of `19cfec9`, `f26e92a`, `1b7b05d`, `9f0c5b8`, `3fd1a81`, `8c00a33`,
-`2917251`, `61c9f09`, `5a96b5e`, `e421c66`, `e0d3b64`, `383011b`, `d40b230`, `6ca85de`, `4bf4365`, `d806e31`, `8f44022` or `c3f75e3`
+`2917251`, `61c9f09`, `5a96b5e`, `e421c66`, `e0d3b64`, `383011b`, `d40b230`, `6ca85de`, `4bf4365`, `d806e31`, `8f44022`, `c3f75e3` or `e8cc7bb`
 as "current" describes an earlier commit and is history.
 
 ⛔ **THE FRONTEND SURFACE OF `10/00` IS COMPLETE AT `e8cc7bb`** — copy (S1–S9), function (S4), presentation
-(R1) and accessibility attributes (S11). Everything remaining in this whole is **backend and security**:
-R7 Django i18n + `uii-01-F17`, R8 `Retry-After`, R9 HSTS `includeSubDomains`, R10 nonce CSP, R11 catalog
-proxies + `uii-01-F13`, then **R14** (new, created by S11 itself) and the final acceptance batch.
+(R1) and accessibility attributes (S11). `R14` at `74b5339` then corrected S11's own three defects.
+Everything remaining in this whole is **backend and security**, plus one 10-line frontend correction:
+R15 (`uii-01-F24` + `uii-01-F23`), R7 Django i18n + `uii-01-F17`, R8 `Retry-After`, R9 HSTS
+`includeSubDomains`, R10 nonce CSP, R11 catalog proxies + `uii-01-F13`, then the final acceptance batch.
 
-⚠ **`R14` is the remediation S11 produced and it is not optional.** Three findings, all caused by
-Orchestrator instructions rather than Worker error, plus one weak assertion:
+✅ **`R14` IS DONE at `74b5339`.** It fixed `uii-01-F21` (a `role="status"` container enclosing a per-second
+countdown, re-announcing the whole overlay atomically once a second), `uii-01-F22` (live regions that mount
+with their content and so may never announce), `uii-01-F20` (`aria-label` on a role-less rack tile), and the
+vacuous `aria-live` count assertion. `role="status"` and `aria-live` each went 8 -> 1. The emitted
+`.sr-only` rule was read from the built CSS and is the correct clipped pattern, not `display:none`.
 
-    uii-01-F21  role="status" implies aria-atomic=true, and the region I put on AIThinkingOverlay's
-                fixed inset-0 container encloses a per-second countdown at AIThinkingOverlay.tsx:302.
-                An AT re-reads the whole overlay once a second. It also REMOVED the narrow correct
-                announcer that existed at the parent commit. A regression, not a gap.
-    uii-01-F22  all three status regions mount together with their content, so they may never announce
-                at all. The reliable pattern is a persistent region present before the text changes.
-                F21 and F22 share ONE fix: a single persistent visually hidden role="status" announcer.
-    uii-01-F20  TileRack.tsx:38 spreads dnd-kit's attributes — the source of role="button" and
-                tabIndex=0, verified in @dnd-kit/core 6.3.1 dist/core.esm.js:3432-3438 — only when
-                not exchange mode and not interaction-disabled. In exchange mode the tile keeps the new
-                aria-label with NO role, which is ARIA-invalid and commonly ignored.
-    test gap    AC-STATUS-NOT-DIALOG's `aria-live` count assertion is vacuous: the fixture sets
-                aiTurnTelemetry: null so the telemetry <p> never renders. Set a humanState.
+⛔ **BUT R14 PRODUCED TWO MORE, AND THE PATTERN IS NOW THE FINDING:**
 
-**All eight standing gates re-measured green at `e8cc7bb` by the era-10 continuation Orchestrator**,
+    uii-01-F24  REGRESSION. {...attributes} brings dnd-kit's role="button" and tabIndex={selectEnabled
+                ? 0 : -1} makes it 0 whenever the tile is clickable — but DraggableTile has onClick and
+                NO onKeyDown, and page.tsx:535-539 configures no KeyboardSensor. So every desktop rack
+                tile is now a dead Tab stop that no key can activate. Before R14 they were not focusable
+                at all, so keyboard navigation is measurably WORSE than at e8cc7bb. Wider than reported:
+                selectEnabled is true on a normal turn, not only in exchange mode.
+                Fix: an Enter/Space onKeyDown mirroring TapSelectableTile:147-151. Safe precisely because
+                there is no KeyboardSensor to collide with.
+    uii-01-F23  six aria-label={t("a11y.status.turn")} now sit on role-less toast motion.divs, because the
+                R14 prompt authorized removing role and aria-live and said nothing about aria-label.
+                Same class as F20. Near-zero impact, six invalid attributes. Fix: delete the six lines.
+
+⛔ **FOUR A11Y DEFECTS FROM FOUR A11Y INSTRUCTIONS, ALL THE SAME ERROR.** F21: specified `role="status"`
+without modelling `aria-atomic` plus a ticking timer. F20: specified `aria-label` without modelling where
+the role comes from. F24: specified `tabIndex=0` without modelling what activates the control. F23:
+specified removing two attributes without noticing the third became invalid. Lesson 14 in section 9 already
+named this after F21/F22 and R14 repeated it anyway, so the lesson was not operational enough. The rule now
+reads: **for every ARIA attribute added or removed, write down what the user does, what the technology
+announces, and which key activates it. If nothing activates it, that is the defect.**
+
+**All eight standing gates re-measured green at `74b5339` by the era-10 continuation Orchestrator**,
 independently rather than accepted from the Worker report:
 
     mypy config game gamecore accounts catalog   Success: no issues found in 83 source files
     ruff check .                                 All checks passed!
     manage.py check                              System check identified no issues (0 silenced).
-    pytest                                       381 passed, 4 skipped in 218.61s
+    pytest                                       381 passed, 4 skipped in 217.72s
     npm run typecheck                            exit 0
-    npx vitest run                               414 passed | 3 skipped  (29 files passed | 1 skipped)
+    npx vitest run                               418 passed | 3 skipped  (29 files passed | 1 skipped)
     npm run lint                                 exit 0
     npm run build                                exit 0, EVERY route ƒ, zero static, no deprecation warning
+    grep -c sr-only .next/static/css/*.css       1, and the rule is clip-path:inset(50%), not display:none
 
-Catalog size at `e8cc7bb`: **294 keys per catalog x 4 languages = 1176 strings**, of which 20 per catalog
-are parameterized functions. Parity exact in all four, re-derived from source rather than read off a
-report. `280 -> 285` (R1) `-> 294` (S11); the arithmetic closes at every step.
+Catalog size is unchanged by R14: **294 keys per catalog x 4 languages = 1176 strings**, of which 20 per
+catalog are parameterized functions. Parity exact in all four, re-derived from source rather than read off a
+report. `280 -> 285` (R1) `-> 294` (S11) `-> 294` (R14 adds none); the arithmetic closes at every step.
 
-The earlier `c3f75e3` measurement — pytest 220.68s, vitest 405 passed | 3 skipped — is history. At that
-commit `mypy --no-incremental` was also run as a ninth check and returned the identical clean result.
+The earlier `c3f75e3` and `e8cc7bb` measurements — pytest 220.68s / 218.61s, vitest 405 and 414 — are
+history. `414 -> 418` is `+6 -2`: six new tests minus the two `AC-STATUS-NOT-DIALOG` cases that R14's one
+authorized inversion replaced. At `c3f75e3` `mypy --no-incremental` was also run as a ninth check and
+returned the identical clean result.
 
 ✅ **The open mypy question in section 4 is now ANSWERED with evidence: mypy's incremental cache does
 NOT share the `orch-04-F22` weakness at this commit.** Section 4 asked whether a cached mypy success
@@ -616,7 +632,8 @@ Two structural patterns worth reusing rather than reinventing:
 11. **For anything that renders, render it, or do not claim it.** Era 10, `uii-01-F04`. Eight green gates — including `typecheck`, `lint`, `build`, and 337 frontend tests — coexisted with a document that declared `<html lang="sk">` and a Slovak `<title>` around an entirely English body. vitest runs with environment `node` and nothing in the suite renders a page, so the whole gate set was structurally blind. The technique that found it is the one the era-09 re-auditor established for CSP headers: production build, `next start` bound to loopback on a non-default port, probe with an HTTP client, stop the server **by exact PID**. Reuse it for every rendered claim in this project.
 12. **A faithfully executed prompt can still produce a defective product, and then the prompt is the defect.** `uii-01-F04` came from the Orchestrator's own section-5 contract, which made the client store the source of truth for the locale and called the server-readable cookie "a routing hint only". In a server-rendered application, whatever the server can read must be authoritative for rendered output, or SSR and hydration cannot agree. The Worker implemented the contract exactly, its gates were genuinely green, and it honestly reported the adjacent limitation it did find. Classify this as an Orchestrator design defect, not a Worker execution defect, and say so in the record.
 13. **Do not state an inventory more precisely than the measurement that produced it.** Lesson 10 is about negative greps; this is its positive twin. At `c3f75e3` the Orchestrator wrote that `AIThinkingOverlay` "already has `aria-live` in two places". The measurement actually run counted `aria-label`, `role`, `alt`, `htmlFor`, `tabIndex`, `aria-modal` and `sr-only` — **never `aria-live`**. There were two occurrences repo-wide, in two different files, and the Worker read the source, found one in the named file, said so, and resolved both. Two consecutive slices now end with a Worker correcting an Orchestrator claim on evidence (R1's `alt=""`, S11's `aria-live`). Both times the prompt's own permission-to-overrule is what surfaced it. Write the count, or write "unmeasured".
-14. **An accessibility attribute is a behavioural change, so reason about the behaviour, not the attribute.** `uii-01-F21`: `role="status"` carries an implicit `aria-atomic="true"`, so putting it on a `fixed inset-0` container that encloses a per-second countdown makes an assistive technology re-read the entire overlay once a second — the exact interruption the same prompt argued `polite` would avoid, and worse than the narrow announcer it replaced. `uii-01-F22`: a live region that mounts together with its text frequently never announces at all. Neither is visible to `typecheck`, `lint`, `build`, or a node-environment vitest suite; both are visible by reading the ARIA semantics. When authorizing a11y work, name the *announcement* you expect and what would make it fire.
+14. **An accessibility attribute is a behavioural change, so reason about the behaviour, not the attribute.** ⛔ THIS LESSON WAS WRITTEN AFTER TWO DEFECTS AND THEN REPEATED TWICE MORE, so it now carries an operational rule instead of an observation. Four defects, one error: `uii-01-F21` specified `role="status"` on a `fixed inset-0` container without modelling that `role="status"` implies `aria-atomic="true"` and that the container held a per-second countdown, so an assistive technology re-read the whole overlay once a second. `uii-01-F22` specified live regions that mount together with their text, which frequently never announce at all. `uii-01-F20` specified `aria-label` without modelling that the role it needs comes from a conditionally spread dnd-kit `attributes` object. `uii-01-F24` specified `tabIndex={0}` without modelling that a `div[role=button]` does not synthesize a click from Enter or Space, turning every desktop rack tile into a dead Tab stop — a regression against the commit before it. THE RULE: for every ARIA attribute you add or remove, write down (a) what the user does, (b) what the technology announces, (c) which key activates it. If the answer to (c) is "nothing", that is the defect and not a detail. None of these four is visible to `typecheck`, `lint`, `build`, or a node-environment vitest suite; all four are visible by reading the semantics before writing the prompt.
+15. **A remediation slice can produce its own remediation, and that is a signal to change method rather than iterate.** S11 produced F20/F21/F22; R14 fixed those three and produced F23/F24. Both Workers executed their prompts faithfully and reported the new problems themselves, in the report field that asks what they can still see — which is the only reason the chain was visible at all. Keep that field in every prompt. But when the second slice in a domain also generates defects, the Orchestrator's model of that domain is the fault, not the slice size: stop writing another confident prompt and write down the interaction model first.
 
 ## 10. Known environment traps on the Cooperator's machine
 
@@ -968,7 +985,9 @@ instead.
    Orchestrator's order. Sequence for the rest of `10/00`:
 
    ```text
-   R14  the S11 remediation — uii-01-F21, F22, F20 and one vacuous test assertion
+   R14  DONE at 74b5339 — uii-01-F21, F22, F20 and the vacuous assertion
+   R15  the R14 remediation — uii-01-F24 (Enter/Space on the draggable rack tile) and uii-01-F23 (six
+        dead aria-labels on role-less toast containers). About ten lines across two files.
    R7   Django localization: USE_I18N, LocaleMiddleware after SessionMiddleware, Accept-Language,
         plus uii-01-F17 (game_end_reason enum reaching the player raw)
    R8   uii-01-F01 — read the numeric Retry-After header instead of parsing an English 429 body
@@ -980,9 +999,10 @@ instead.
    B25+ the final acceptance batch, then the residual signatures and 99_closure.md
    ```
 
-   R14 goes first deliberately: it fixes a regression S11 itself introduced, and doing it now means the
-   accessibility markup is correct at the moment it is last touched, rather than closing the whole over a
-   known-wrong announcement design.
+   R14 went first deliberately: it fixed a regression S11 itself introduced, and doing it while the
+   accessibility markup was fresh was cheaper than closing the whole over a known-wrong announcement
+   design. R15 follows for the same reason — `uii-01-F24` is a keyboard regression against `e8cc7bb`, and
+   unlike the announcement findings it IS observable by the Cooperator without a screen reader.
 
 ## 14. Authoritative game alphabet orders — Cooperator-sourced 2026-09-01, Orchestrator-validated
 
