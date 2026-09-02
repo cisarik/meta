@@ -13,22 +13,157 @@ if this file and the repository disagree, **the repository wins and this file ne
 `09/00-backend-security-hardening/99_closure.md`. 32 findings `verified-closed`, 13 rejected as false
 positives, all residuals dispositioned with sign-off where required.
 
-**Logical whole `ui-internationalization` (Meta 10/00) is OPEN** and is the current whole. Its six
-opening Cooperator decisions are in section 13. Slice S1 landed at
-`a5aff1214d97d28f2d27e55de5de19f09faf9c0e` with all eight gates green and was accepted by the
-Cooperator in his own browser. A small Cooperator-requested UI follow-up landed at
-`f26e92a61c65269c4d7d5a620665040e65466e59`. `uii-01-F04` is folded into slice S2 by his decision.
+**Two logical wholes are OPEN.** `ui-internationalization` (Meta 10/00) is roughly 60 percent done with
+no active mutation. `multilingual-tile-token-foundation` (Meta 11/01) holds an accepted `planning-PASS`
+and is ready for slice F1. `czech-polish-hungarian-variant-activation` (Meta 11/02) is NOT STARTED and
+is blocked on Cooperator-supplied dictionaries. Execution order is `10/00`, then `11/01`, then `11/02`,
+then `11/00`. The 10/00 opening Cooperator decisions are in section 13; the 11/01 alphabet data is in
+section 14.
 
-`main` is now `f26e92a61c65269c4d7d5a620665040e65466e59`. Everything below that speaks of `19cfec9` as
-"current" describes the closed security era and is history, not current state.
+Three slices of `10/00` have landed and were Cooperator-accepted in his own browser:
+`a5aff1214d97d28f2d27e55de5de19f09faf9c0e` (S1 — the typed two-locale message system and the localized
+landing/auth page), `f26e92a61c65269c4d7d5a620665040e65466e59` (the game-variant description removal),
+and `1b7b05d0de854d7936c5fcd2b0d55a5cc5d14cfd` (the starting-draw screen, plus a latent `tf()` contract
+fix). `uii-01-F04` is owned by slice **S3a**, not S2 — Cooperator decision 7 cancelled S2 altogether by
+removing URL locale prefixes. An earlier version of this paragraph said S2 and was stale.
 
-Last reconciled against `main` at commit `f26e92a61c65269c4d7d5a620665040e65466e59` by the era-10
-`ui-internationalization` Orchestrator, with porcelain empty, public readback equal, and no uncommitted
-state. **All eight standing gates were re-measured green at that commit**: mypy 80 files, ruff,
-`manage.py check`, pytest `328 passed, 4 skipped`, `npm run typecheck` exit 0, `npx vitest run`
-`337 passed | 3 skipped`, `npm run lint` exit 0, `npm run build` exit 0. They were also all green at
-`a5aff12` and at `19cfec9` (frontend suite `326 passed | 3 skipped` at `19cfec9`). Re-verify before
-relying on any of this.
+`main` is now `e0d3b64cbccf1a1d9983ba5c394762f55961325a`. Porcelain is EMPTY — the ten
+deliberately untracked `frontend/public` flag files are gone. The **Cooperator himself** committed the
+five normalized 48x32 PNGs at `61c9f09` on 2026-09-02 (`feat(images): add new language icons for Czech,
+English, Hungarian, Polish, and Slovak`, 5 files, 5230 B total, byte sizes identical to the
+Orchestrator-normalized assets recorded in `DEFECT_LEDGER.md`). The five source JPEGs **never entered Git
+history** and are gone from the working tree, so nothing is orphaned. Any handout or record that still
+expects "ten deliberately untracked files in `frontend/public`" describes an earlier state; that
+obligation is **discharged** and `10/00` R1 can reference `/en.png`, `/sk.png`, `/cs.png`, `/hu.png`,
+`/pl.png` immediately. Full RF-12 classification of that commit (`unrelated-owner-work`, secondary
+`accepted-continuation`) is in `10/00-ui-internationalization/94_orchestrator-restoration.md` section 1.
+
+⛔ **THREE OF THE FOUR VISEGRÁD LANGUAGES ARE PLAYABLE: Slovak, Czech, Polish.** Czech and Polish landed
+at `2917251` with real inflected lexicons from LibreOffice hunspell — 3 930 497 and 3 721 704 words,
+licensed, provenance-pinned to one commit, Orchestrator-verified by hash and by membership probe.
+**Hungarian is NOT playable and is blocked on a real inflection lexicon**, not on tile data: `unmunch`
+cannot expand `hu_HU` because Magyar Ispell alias-compresses it and `unmunch` implements no `AF`
+handling and no two-level suffixation. The accepted route is to keep the pinned source and replace the
+expander with Spylls, which is a **candidate and not yet verified**. The full acceptance gate for that
+work is in `DEFECT_LEDGER.md`.
+
+Commit lineage of era 11, all Orchestrator-verified:
+
+    9f0c5b8  F1   atomic tile tokens in the pure engine                     26 files
+    3fd1a81  F2a  fail-closed command to purge legacy development state      4 files
+    8c00a33  F2b  token-shaped persistence, uii-01-F06 and uii-01-F07        9 files
+    2917251  A1   Czech and Polish activated as playable variants           22 files
+    61c9f09  --   the five 48x32 flag PNGs, committed by the COOPERATOR      5 files
+    5a96b5e  S3a  server locale authoritative + four interface locales      15 files
+    e421c66  S3b  board, rack, action buttons and chat in four locales      11 files
+    e0d3b64  S3c  the game screen, plus uii-01-F08 and uii-01-F09 fixed      8 files
+
+Anything below that speaks of `19cfec9`, `f26e92a`, `1b7b05d`, `9f0c5b8`, `3fd1a81`, `8c00a33`,
+`2917251`, `61c9f09`, `5a96b5e` or `e421c66` as "current" describes an earlier commit and is history.
+
+**All eight standing gates re-measured green at `e0d3b64` by the era-10 continuation Orchestrator**,
+independently rather than accepted from the Worker report:
+
+    mypy config game gamecore accounts catalog   Success: no issues found in 83 source files
+    mypy --no-incremental (same scope)           Success: no issues found in 83 source files
+    ruff check .                                 All checks passed!
+    manage.py check                              System check identified no issues (0 silenced).
+    pytest                                       381 passed, 4 skipped in 220.95s
+    npm run typecheck                            exit 0
+    npx vitest run                               374 passed | 3 skipped  (28 files passed | 1 skipped)
+    npm run lint                                 exit 0
+    npm run build                                exit 0, EVERY route ƒ, zero static, no deprecation warning
+
+✅ **The open mypy question in section 4 is now ANSWERED with evidence: mypy's incremental cache does
+NOT share the `orch-04-F22` weakness at this commit.** Section 4 asked whether a cached mypy success
+could hide errors the way `npm run build` hid two type errors behind `tsconfig.json`
+`"incremental": true`. Measured at `61c9f09`: the cached and `--no-incremental` runs return the
+identical `83 source files` clean result. That caution no longer needs to be carried forward.
+
+The same gate set was measured green at `2917251` and `61c9f09` with vitest at 352/3; `5a96b5e` adds ten
+frontend tests and every addition is accounted for. Zero `○` static routes is the REQUIRED outcome, not
+a coincidence: a static route would mean the locale cookie is no longer read.
+
+**The game surface is now localizing, area by area.** At `e421c66` the five surfaces a player touches on
+every turn are in all four locales: the action buttons (`Zahrať / Vynechať / Vymeniť`,
+`Zahrát / Vzdát tah / Vyměnit`, `Zagraj / Pauza / Wymiana`), the blank picker, the rack empty state, the
+board hints and points abbreviation (`b.` / `b.` / `pkt`), and the chat panel. All three plural functions
+are live at one call site and were read back through the real `tf()` against the shipped catalogs:
+
+    sk  Výber: 1 písmeno · 2 písmená · 5 písmen · 22 písmen
+    cs  Výběr: 1 kámen   · 2 kameny  · 5 kamenů · 22 kamenů
+    pl  Wybrane: 1 płytka · 2 płytki · 5 płytek · 22 PŁYTKI   <- Polish diverges at 22, by design
+
+⚠ **Two traps this produced, both worth carrying forward.** Polish genitive plural inserts an epenthetic
+`e`, so `płytek` does NOT contain the stem `płytk` and a naive stem glob in a test gives a false
+failure — assert the actual catalog forms. And a counted noun in a Slavic locale should be written as a
+grammatically inert colon-label (`Výber: 2 písmená`) rather than a participle sentence, because the
+participle would have to agree in both number and case across the one/few/many forms.
+
+⛔ **One visible half-localized string is open at `e421c66`:** `Board.tsx:689` renders a dim English
+`zoom` next to the localized `board.reset`, so the control reads "Reset zoom" in every locale. Cause is
+an Orchestrator allowlist gap — the broad inventory counted six text nodes in that file and the prompt
+authorized five. Routed to slice S3c with the key `board.zoomNoun`.
+
+⛔ **`uii-01-F04` IS CORRECTED at `5a96b5e`, and the interface now ships in FOUR locales.** Server HTML,
+`<html lang>`, `<title>` and the visible body share one locale, because `layout.tsx` reads the cookie and
+feeds it to a client `LocaleProvider` that `useLocale()` prefers over the store. The store keeps
+persistence and first-visit detection and stops being the rendering source. Reproduced independently by
+the Orchestrator on a different loopback port than the Worker used:
+
+    cookie=sk -> lang=sk, "Sign In" x0, "Prihlásiť sa" x1     (was x1 / x0 — that WAS the defect)
+    cookie=cs -> lang=cs, "Přihlásit se" x1
+    cookie=pl -> lang=pl, "Zaloguj się" x1
+    cookie=fr | cz | hu | SK | empty -> lang=en, English body
+
+The U+00A0 thousands separator was verified end to end for the first time, read as raw bytes from the
+server HTML: `32 37 39 c2 a0 34 39 36` in sk / cs / pl versus `279,496` in en.
+
+The frontend suite sat at 342 for four consecutive slices, which was the standing proof that no frontend
+file had been touched; `A1` is the first slice to change it, deliberately, and every added test is
+accounted for.
+
+⚠ **Two era-11 deviations from accepted plan decisions, both deliberate and both evidence-backed.** The
+development-state purge is a **management command**, not migration `0008`, because a fail-closed
+irreversible migration is hostile to Django's own test harness in two measured directions and would make
+`manage.py migrate` destructive. Consequently the schema migration is `0008_atomic_token_state_schema`,
+**not `0009`** — there is no gap. Full reasoning in `DEFECT_LEDGER.md`.
+
+⚠ **Czech and Polish receive the ENGLISH MOVE/JUDGE prompt CORE.** `MovePromptLexiconId` is
+`"collins2019" | "slovak"` and anything else falls through to English, so the free LLM is primed on
+Collins while the engine scores Czech or Polish. Bounded by the central product fact in section 6 — the
+engine authors every move — so it degrades prompt quality, not playability. Recorded, not fixed.
+
+**All eight standing gates were also green at `9f0c5b8`**, Orchestrator-measured: mypy 81 files, ruff,
+`manage.py check`, pytest `352 passed, 4 skipped`, typecheck exit 0, vitest `342 passed | 3 skipped`,
+lint exit 0, build exit 0. The frontend suite has been unchanged at 342 across both slices, which is
+itself the evidence that neither touched a frontend file.
+
+Last reconciled against `main` at commit `1b7b05d0de854d7936c5fcd2b0d55a5cc5d14cfd` by the era-11
+`multilingual-tile-token-foundation` Orchestrator, with porcelain carrying only the ten deliberately
+untracked `frontend/public` flag files, public readback equal, and no uncommitted tracked state.
+**All eight standing gates were re-measured green at that commit** by that Orchestrator itself rather
+than accepted from a handout:
+
+    mypy config game gamecore accounts catalog   Success: no issues found in 80 source files
+    ruff check .                                 All checks passed!
+    manage.py check                              System check identified no issues (0 silenced).
+    pytest                                       328 passed, 4 skipped in 189.67s
+    npm run typecheck                            exit 0   (tsc --noEmit --incremental false)
+    npx vitest run                               342 passed | 3 skipped  (26 files passed | 1 skipped)
+    npm run lint                                 exit 0
+    npm run build                                exit 0
+
+They were also green at `f26e92a` (frontend suite `337 passed | 3 skipped`), at `a5aff12`, and at
+`19cfec9` (`326 passed | 3 skipped`). Re-verify before relying on any of this.
+
+**The `npm run build` route table is now ALL dynamic, and that changes a Cooperator-facing cost claim.**
+Every route reports `ƒ` at `1b7b05d` — `/`, `/play`, and `/settings` included — because `layout.tsx`
+reads the locale cookie. That is the expected, documented cost of decision 2 and is NOT a regression;
+`92_orchestrator-glossary-and-plan.md` section 3 predicted it in writing. The consequence for decision 4
+is worth stating loudly: the nonce CSP was costed to the Cooperator as "three product routes lose static
+prerendering", and those three routes are **already** dynamic, so the nonce now costs **zero** additional
+static prerendering. That estimate has now been revised down twice. The decision itself does not change.
 
 ⛔ **A green gate set did NOT mean a correct product at `a5aff12`.** `uii-01-F04`: the server renders
 the page body in English while `<html lang>` and `<title>` follow the Slovak cookie. No gate can see
@@ -152,8 +287,11 @@ parallel canonical route.
 `9ff9ac5` and `7a197da` while two type errors existed in the tree — finding `orch-04-F22`. Every
 "build succeeds" claim in this era, including the Orchestrator's own re-measurements, was weaker than
 stated. "The build passed" and "the code type-checks" are now two separate claims and both must be
-said. Check whether `mypy`'s incremental mode has the same weakness before trusting a cached success
-there.
+said. **The parallel mypy question is now ANSWERED rather than open:** measured at `61c9f09`, the
+cached mypy run and `mypy --no-incremental` over the documented scope both return
+`Success: no issues found in 83 source files`, so mypy's cache does not share the `orch-04-F22`
+weakness at that commit. Re-check it after any dependency or stub change, but stop carrying it as an
+unknown.
 
 ### Two traps that have already cost real Worker sessions
 
@@ -453,29 +591,86 @@ Two structural patterns worth reusing rather than reinventing:
 - Two browser profiles are required for multiplayer. Two tabs in one profile share `localStorage` and the second login overwrites the first.
 - An AI turn takes ~21 seconds with a working key. That is expected, not a timeout.
 
-## 11. Carried-forward obligation: the deployment whole has no handout yet
+## 11. Carried-forward obligations: THREE handouts are owed, none written
 
-Recorded here, not only in a handout, so it cannot be lost when a session ends. The Cooperator asked
-for it twice and it was not written before the era-09 Orchestrator's session ended.
+Recorded here, not only in a handout, so they cannot be lost when a session ends.
 
-He needs two artifacts, as professional as possible: **(1)** an expert Orchestrator handout for the VPS
-deployment whole that leads him step by step to a finished hardened deployment, written for someone who
-says he is a complete novice at operations and named Prometheus and Grafana specifically as things he
-does not understand; and **(2)** a **prompt for a read-only Research Worker** — he has ChatGPT Deep
-Research available — for current VPS-hardening practice on Ubuntu Server 24.04, demanding versions and
-retrieval dates rather than unsourced "best practices", and framed so the researcher can answer "this is
-disproportionate for a single demo VPS" where that is honest.
+### 11.1 An expert Orchestrator handout for `10/00 ui-internationalization` — WRITTEN, 2026-09-01
 
-The full fact set that handout must carry — the nginx topology decision, the exact
-`DJANGO_NUM_PROXIES=1` and `$proxy_add_x_forwarded_for` arithmetic with both silent
-misconfigurations, the `audit-04-F01` correction and the trap in its obvious remedy, the
-`NEXT_PUBLIC_*` build-time inlining trap, and the monitoring assessment — is written out in
-`10/00-ui-internationalization/00_handout.md` section 10. **Do not reconstruct it from memory; copy it
-from there.**
+✅ **Delivered.** `10/00-ui-internationalization/93_orchestrator-handout.md`, 41 783 B, written by the
+era-11 Orchestrator at his explicit request. It is the second handout for that whole; where it and
+`00_handout.md` disagree, `93_` is later and wins, and every disagreement is named in its section 4.
 
-Topology decision already made, at the Cooperator's explicit request: **Docker Compose for the
-application and Redis; nginx and certbot on the host.** Reasons and the rejected systemd alternative are
-in that same section.
+Cooperator decision, his own initiative, that produced it: finishing the localization deserves its own
+fresh Orchestrator that understands exactly how to complete it, because it is an enormous chunk and will
+consume very many tokens. In his words: `10/00 by bolo najrozumnejsie riesit novym fresh Agent
+Orchestratorom ktory bude presne rozumiet ako dokoncit lokalizaciu ta je predsa ohromne velky zarez`.
+Sequencing he set: written after `11/01`'s slices, not interleaved with them.
+
+He also observed, correctly, that **Slovak itself is not finished.** Re-measured at `61c9f09`: **57 keys**
+are localized — `enText` holds exactly **55** plain keys and `enFn` holds exactly **2** parameterized
+ones — across six areas (draw 13, landing 11, error 11, settings 10, auth 10, meta 2, which sums to 57).
+An earlier version of this paragraph and `93_orchestrator-handout.md` both say "55 keys across six areas"
+while listing a histogram that sums to 57; both numbers are real and the sentence conflated the `enText`
+half with the total. A key-set diff of the two catalogs returns zero missing and zero extra keys, so the
+`Record<TextKey, string>` contract is holding. The entire game surface is still English —
+`game/[id]/page.tsx` alone holds ~70 user-facing literals across 1822 lines, and JSX text nodes between
+tags are invisible to a quoted-literal grep, so the true figure is higher.
+
+What that handout carries, so nobody reconstructs it: the corrected residual list R1–R13 with **R2 marked
+DONE** because era 11 slice A1 delivered the dynamic variant list; the measured per-file remaining scope
+**with the warning that a raw grep over-counts** locked and non-user-facing literals in
+`provider-registry.ts`, `prompts.ts`, `security-headers.ts` and the AI routes; the glossary and his
+personal `písmeno` / `zásobník` / `žolík` decisions; the three-form Slovak plural contract; the
+`Record<TextKey, string>` type contract; AC-SEC-1 and AC-SEC-2 as non-delegable; the one open Cooperator
+decision on which locales to ship; unverified candidate terminology for Polish and Hungarian clearly
+labelled as candidates; the boundary table against the still-open `11/01`; and the nine failure modes
+this model has actually exhibited.
+
+### 11.2 An expert Orchestrator handout for the VPS deployment whole — STILL OWED
+
+Asked for three times and still not written. He describes himself as a complete novice at operations and
+named Prometheus and Grafana specifically as things he does not understand. The complete fact set —
+the Docker-Compose-plus-host-nginx topology decision, the exact `DJANGO_NUM_PROXIES=1` and
+`$proxy_add_x_forwarded_for` arithmetic with both silent misconfigurations, `audit-04-F01` and the trap
+in its obvious remedy, the `NEXT_PUBLIC_*` build-time inlining trap, and the monitoring assessment — is
+written out in `10/00-ui-internationalization/00_handout.md` section 10. **Copy it from there; do not
+reconstruct it from memory.**
+
+### 11.3 A prompt for a read-only Research Worker — STILL OWED
+
+He has ChatGPT Deep Research and wants it used for current VPS-hardening practice on Ubuntu Server
+24.04. The prompt must demand versions and retrieval dates rather than unsourced "best practices", and
+must be framed so the researcher can honestly answer "this is disproportionate for a single demo VPS",
+particularly about Prometheus and Grafana.
+
+**That route is now proven to work.** Era 11 used it for the Hungarian lexicon question with the brief at
+`11/02/90_hungarian-lexicon-research-brief.md` and got back a precise, source-cited report that correctly
+returned a **negative** answer on nine of nine candidates rather than an optimistic pointer. Reuse that
+brief's shape: two independent questions, hard disqualifying constraints, required per-candidate fields,
+and an explicit instruction that a well-evidenced negative is a fully successful outcome.
+
+Topology decision already made at his explicit request: **Docker Compose for the application and Redis;
+nginx and certbot on the host.** Reasons and the rejected systemd alternative are in that same section.
+Deployment happens after the UI/UX work, by his decision 6.
+
+### His stated goal, and the honest distance to it
+
+On 2026-09-01 he named the goal: localization plus **play in the Visegrád Four languages**. The honest
+path, with nothing hidden:
+
+```text
+11/01  F2b -> F2c -> F3 -> F4, then the R4 independent audit, then closure
+11/02  czech-polish-hungarian-variant-activation — BLOCKED on three things HE must supply:
+       czech.txt, polish.txt, hungarian.txt with licensing and provenance evidence.
+       Sourcing those is the single highest-value thing he can do in parallel, because it is the
+       only blocker nobody else can clear. No scraping, no synthesis, no substitutes.
+10/00  the ~330 remaining strings plus cs/pl/hu UI translations, under its own fresh Orchestrator
+```
+
+`11/02` needs `11/01` closed **and** the dictionaries. `10/00` R4 (cs/pl/hu UI) is additive and
+independent of the engine. Neither is reachable in one sitting, and saying otherwise would be dishonest.
+
 
 ## 12. Cooperator product intent for the admin provider/model console
 
@@ -579,7 +774,6 @@ recommendation and the supporting evidence for each. He selected option A for th
    path stay exactly as they are. There is no `/en/...`, no `/sk/...`, and no subdomain. His reasoning,
    in his own words: "ked mam v localstorage ulozeny jazyk interface ... ma to zmysel a je to
    jednoduchsie".
-
    THE ORCHESTRATOR RECOMMENDED THE PREFIX AND HE WAS RIGHT TO OVERRIDE IT. What the prefixes would
    have bought — shareable language-bearing links, per-language SEO, and a path the server can read
    without a cookie — is worth nothing to this product. It is an interview demo of AI integration, not
@@ -607,7 +801,50 @@ recommendation and the supporting evidence for each. He selected option A for th
    no locale cookie, so the server renders `lang="en"` and English metadata even for a Slovak browser.
    The client detects, writes the cookie, and every later document is correct. He measured the visible
    effect himself and reported "bez bliku" and "konzola cista". Recorded as `uii-01-F05`, accepted, low.
+
+8  INTERFACE LOCALES: **en + sk + cs + pl.** Decided 2026-09-02, his answer verbatim `1. B`, in reply to
+   a three-option package (A `en+sk`; B `en+sk+cs+pl`, recommended; C all five including `hu`) that
+   carried the honest cost — roughly triple the translation volume, near-zero architecture cost because
+   each locale is one `messages.<locale>.ts` typed `Record<TextKey, string>` and `tsc` names every
+   missing key. So the `Locale` union grows from `["en","sk"]` to `["en","sk","cs","pl"]`.
+   HUNGARIAN INTERFACE IS NOT SHIPPED, consistent with Hungarian gameplay being blocked on a real
+   inflection lexicon. `frontend/public/hu.png` is committed and deliberately UNREFERENCED until
+   `11/02`; that is not a defect and must not be "fixed".
+   Interface locale and game variant remain TWO INDEPENDENT AXES. B makes them coincide in extent, not
+   in meaning: a Slovak speaker playing the Czech variant with a Slovak interface is a normal case.
 ```
+
+⛔ **TERMINOLOGY: the Cooperator's Czech assumption was WRONG, corrected on primary-source evidence.**
+Full record with verbatim quotations and retrieval dates in
+`10/00-ui-internationalization/95_orchestrator-terminology.md`. He said Czech `písmeno` is "clearly right
+just as in Slovak". The Česká asociace Scrabble rules (`https://scrabble.hrejsi.cz/pravidla`, retrieved
+2026-09-02) use **`kámen`** for the physical tile throughout and reserve **`písmeno`** for the letter
+printed on it — the two words do different jobs inside one sentence. Czech therefore ships `kámen`.
+
+Conversely his **Slovak** decision is now PROVEN right rather than merely accepted: `sk.wikipedia`'s
+Scrabble article uses `písmen*` 29 times and `kameň` **zero** times, so his override of the
+Orchestrator's `kameň` / `dlaždica` suggestions matched the actual national convention. Fourth time his
+answer beat the Orchestrator's recommendation, first time with a primary source to prove why.
+
+```text
+              tile      letter    rack        blank    bag        board          pass        points
+en            tile      letter    rack        blank    bag        board          Pass        pts
+sk  DECIDED   písmeno   písmeno   zásobník    žolík    vrecko     hracia plocha  Vynechať    b.
+cs  EVIDENCED kámen     písmeno   zásobník    žolík    sáček      hrací deska    Vzdát tah   b.
+pl  EVIDENCED płytka    litera    stojak      blank    woreczek   plansza        Pauza       pkt
+```
+
+Polish is sourced from the Polska Federacja Scrabble regulations (`https://pfs.org.pl/regulaminy.php`,
+retrieved 2026-09-02): `płytka` 62, `stojak` 28, `blank` 24, `woreczek` 26. All three handout candidates
+were correct. ⚠ **Polish `pass` is `Pauza`, not `Pas`** — `pas` appears ZERO times in those regulations
+while `pauza` has its own numbered section 3.4 and 3.4.2 states the player says „pauza". The
+Orchestrator's instinct was `Pas` and checking prevented shipping the wrong verb on a primary button.
+
+⚠ **Polish needs a THIRD plural function.** `pluralSk(n, one, few, many)` implements `1 / 2..4 /
+otherwise`, which is correct for Slovak **and Czech** (`22 minút`, `22 minut`) but WRONG for Polish,
+which keys on the last digit with a 12–14 exception (`22 minuty`, not `22 minut`). A separate `pluralPl`
+is required; `pluralSk` is reused verbatim for Czech behind an exported `pluralCs` alias. Points also
+abbreviate differently — `pkt` is one character wider than `b.` in the tightest container in the product.
 
 Backend localization route, following from decision 2 and measured rather than assumed: Django
 `USE_I18N = True` with a Slovak `LANGUAGE_CODE` supplies bundled Slovak for all four password
