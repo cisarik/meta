@@ -1585,6 +1585,93 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice S9 landed at `8f440221b757bc142cb26391875c1361492da419` — Worker session 10, exchange 01
+
+`feat(i18n): localize the profile modal and close the date locale defect`. 7 files, +297 -30, parent
+`d806e31`, one non-force push, public readback equal. Orchestrator verdict: **implementation-PASS,
+ACCEPTED.** Evidence non-independent.
+
+Archived as `10_implementation_00.md` + `10_report_00.md`.
+
+# ✅ THE FRONTEND COPY SURFACE IS COMPLETE
+
+This was the last copy slice. Every user-facing string the frontend owns now exists in four locales.
+
+### The catalog, measured at `8f44022`
+
+```text
+en / sk / cs / pl    text=262   fn=18   total=280 each
+PARITY OK — zero missing, zero extra, both tables, every direction
+1120 Orchestrator-authored strings
+
+by area:  game 67 · settings 49 · history 35 · play 20 · profile 16 · draw 13 · landing 11 ·
+          error 11 · auth 10 · header 8 · overlay 8 · queue 8 · controls 6 · board 6 · chat 6 ·
+          meta 2 · nav 2 · rack 1 · blank 1
+```
+
+### A FINAL leftover sweep over every non-test `.tsx`, with the validated tool
+
+23 files swept. **Seven** JSX text nodes survive, and every one is correct:
+
+```text
+draw/[id]/page.tsx:244      'VS'       glossary decision — universally understood, 2ch container
+ScorePanel.tsx:63           'Libre'    the WORDMARK, not copy; the product is Libre Tiles in every locale
+layout.tsx:12               a false positive — the sweep caught a function signature, not a text node
+settings/page.tsx:664       false positive — a ternary fragment
+Cell.tsx:100, :104          false positives — ternary fragments
+ProfileModal.tsx:71         false positive — a ternary fragment
+```
+
+Two intentional, five regex artefacts, **zero real leftovers**. That is the first time the whole frontend
+sweeps clean.
+
+### uii-01-F03 is now CLOSED, verified through BOTH shipped functions
+
+A throwaway harness imported both real formatters and called them, then was removed (porcelain verified
+clean):
+
+```text
+en   joined="September 2, 2026"   updated="Sep 2, 4:35 PM"
+sk   joined="2. septembra 2026"   updated="2. 9., 16:35"
+cs   joined="2. září 2026"        updated="2. 9. 16:35"
+pl   joined="2 września 2026"     updated="2 wrz, 16:35"
+formatJoinedDate(null,"sk")        -> "Neznáme"
+formatJoinedDate("not-a-date","sk")-> "Neznáme"
+```
+
+Both English outputs are byte-identical to the old hardcoded `"en-US"` behaviour, so the correction
+provably changed nothing for English. `grep -rn '"en-US"' frontend/src` now returns only the two
+`locale === "en" ? "en-US" : locale` mappings and one test assertion — **no hardcoded date locale remains.**
+
+The detail the prompt flagged is correct in the shipped code:
+`useMemo(() => formatJoinedDate(profile?.date_joined, locale), [profile?.date_joined, locale])`. Without
+`locale` in that list, switching language would have left a stale English date on screen — a bug that
+renders wrong in a browser while passing every test.
+
+### Gates at `8f44022`, Orchestrator-measured
+
+```text
+mypy 83 files · ruff · manage.py check · pytest 381 passed, 4 skipped in 221.84s
+typecheck exit 0 · vitest 398 passed | 3 skipped · lint exit 0
+build exit 0, 11 dynamic routes, ZERO static
+```
+
+### Reuse discipline held, and `api.ts` is untouched
+
+All eleven reusable keys were reused and no near-duplicate was added. `frontend/src/lib/api.ts` has an
+empty diff, which is what structurally preserves `AC-SEC-1` and `AC-SEC-2`: the two newly localized
+strings are CLIENT-side form checks that disclose neither account existence nor current-password
+correctness, and every server-response message still routes through the untouched mapping.
+
+### One honest disclosure worth keeping
+
+The Worker exported `formatJoinedDate` as a test seam **before** the red run and stated that its pre-fix
+behaviour was unchanged by the export. That is the right order: a seam added after a green run proves
+less, and saying when the seam appeared is what makes the pre-fix failure text trustworthy.
+
+It also hit the pytest session-handle problem a third time and handled it exactly as the prompt now
+requires — re-ran the authorized command once, retained the handle, quoted only a summary it actually saw.
+
 ## Slice S9 issued — Worker session 10, exchange 01, at `d806e31`
 
 `feat(i18n): localize the profile modal and close the date locale defect`. Prompt staged at
@@ -4364,6 +4451,14 @@ audit-01-F06 public prompt text + swallow-to-HTTP-200 in the catalog proxies   a
     Regression test: with the sk locale active, neither call site emits an English month name
     Owner:           ui-internationalization
     Status:          open
+    Status:          **CORRECTED at 8f44022** (S9) — NOT verified-closed.
+                     BOTH call sites are locale-aware. `grep -rn '"en-US"' frontend/src` returns only the
+                     two `locale === "en" ? "en-US" : locale` mappings plus one test assertion.
+                     Orchestrator-verified through both real shipped functions; both English outputs are
+                     byte-identical to the old behaviour. The `memberSince` useMemo carries `locale` in
+                     its dependency list, so a language switch re-renders the date rather than leaving a
+                     stale English one. Not verified-closed because no independent audit has run and
+                     Cooperator rendered acceptance of the profile modal is still outstanding.
     Status:          **HALF corrected at d806e31** (S8) — still OPEN.
                      GameHistoryPanel.tsx `formatUpdatedAt(value, locale)` now takes the active locale
                      and maps `en` -> `en-US` so English output is byte-identical. Orchestrator-verified
