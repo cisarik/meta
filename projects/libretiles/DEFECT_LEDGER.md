@@ -1585,6 +1585,230 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice R14 issued — Worker session 13, exchange 01, at `e8cc7bb`
+
+`fix(a11y): one persistent announcer and a role on every named rack tile`. Prompt staged at
+`/tmp/opencode/uii-r14-worker-13-prompt.md`, 500 lines. Archive as `13_implementation_00.md` **only after
+its report exists**. Fresh Implementation Worker, E2, reasoning HIGH.
+
+The first slice in this whole that **removes** accessibility attributes. `role="status"` goes 8 -> 1 and
+`aria-live` goes 8 -> 1, because F21 and F22 share one fix and taking it makes the product smaller instead
+of adding another layer.
+
+### The mechanism, and why it is one thing and not three
+
+```text
+ADD     ONE visually hidden region, mounted UNCONDITIONALLY inside DndContext beside <BlankPicker/> at
+        page.tsx:1691 — role="status" aria-live="polite" aria-atomic="true" aria-label=a11y.status.turn
+REMOVE  role="status" + aria-live from all six ToastOverlay branches   page.tsx :195 :250 :288 :327 :369 :384
+REPLACE the AIThinkingOverlay container's live semantics with role="group" + the SAME aria-label. `group`
+        is a valid host for an accessible name and is NOT a live region, so the ticking countdown becomes
+        harmless and `a11y.status.aiThinking` stays in use.
+REMOVE  live semantics from TurnStatusNotice, which becomes plain visual text — and its now-unused `useT`
+        import, or lint fails.
+FIX     TileRack.tsx:46 — spread dnd-kit's `attributes` ALWAYS so the aria-label has a role, keep
+        `listeners` conditional so drag behaviour does not change, then tabIndex={selectEnabled ? 0 : -1}
+        so non-interactive tiles do not become Tab stops.
+```
+
+**Zero new keys and zero catalog edits.** Both existing status keys stay in use, so nothing goes dead and
+`messages.*.ts` must appear in `git diff --name-only` zero times. 294 keys stay 294.
+
+### Two things written in so a Worker cannot helpfully break them
+
+⛔ **The first value is not announced, and that is correct.** `turnStatus.text` is non-null at mount, so the
+initial status is silent and every subsequent change speaks. The prompt forbids a mount-delay, a double
+render, or a clear-and-reset effect to force it, and makes "I found myself writing one" a stopping condition.
+
+⛔ **`sr-only` is JIT and this codebase references it zero times today.** Tailwind is 4.2.2 and ships the
+utility, but it is only emitted once a source file uses it. So the prompt requires
+`grep -c "sr-only" .next/static/css/*.css >= 1` after the build, with a pre-authorized inline
+visually-hidden fallback if it is 0 — and forbids `display:none`, `visibility:hidden`, `hidden`,
+`opacity-0` alone and zero width/height, every one of which would produce a region that is present,
+persistent and completely silent.
+
+### The one authorized test inversion, named in advance
+
+`AC-STATUS-NOT-DIALOG` asserts `role="status"` x6 and `aria-live="polite"` x6 in the toast source. Both
+become 0. The prompt authorizes flipping exactly those two counts, requires the negative assertions
+(no `role="dialog"`, no `aria-modal`) to stay, requires the positive counterpart to move to
+`AC-ANNOUNCE-ONE`, and requires the report to argue property coverage. It also requires the
+`AC-NO-OVERLAY-LIVE` fixture to set a non-null `aiTurnTelemetry.humanState`, which is what makes the
+count assertion stop being vacuous.
+
+New pin: `AC-ONE-LIVE-REGION` — across `frontend/src` excluding tests, `aria-live` exactly once and
+`role="status"` exactly once. Fifth pinning assertion in this catalog.
+
+### Orchestrator pre-verification before issuing
+
+Every line number in the prompt was checked against the shipped source, because a wrong citation in a
+prompt is the same failure mode as a wrong inventory:
+
+```text
+TileRack.tsx:46 the conditional spread — NOT :38, which is dnd-kit's own `disabled` option. The first
+                draft said :38 and was corrected before issuing.
+TileRack.tsx:41 selectEnabled · :86 aria-label on the draggable · :154 on the tap button
+page.tsx role="status" at 195 250 288 327 369 384, each aria-live on the following line
+page.tsx:102-109 Toast, every variant carrying `message: string` · :1446-1477 turnStatus
+page.tsx:1456 the aiThinking branch — so the AI turn is ALREADY announced and a second source would
+                duplicate it · :1691 BlankPicker · :1750 blocker · :1760 toast
+AIThinkingOverlay.tsx:271-273 the region · :302 formatTime(aiCountdown) inside it · :325-339 the feed
+TurnStatusNotice.tsx:14 the null guard that makes it mount with its content
+@dnd-kit/core 6.3.1 dist/core.esm.js:3432-3438 — role, tabIndex, aria-disabled, aria-pressed,
+                aria-roledescription, aria-describedby, with role defaulting to 'button'
+React 19.2.4 and `JSX.Element` used ZERO times in src/ — so the prompt forbids annotating it
+expected end state 1 1 4 4 1 0 5 0 for aria-live, role=status, role=dialog, aria-modal, role=group,
+                htmlFor, tabIndex, activeElement — tabIndex 4 -> 5 is the one rack tile
+```
+
+## Slice S11 landed at `e8cc7bb3be6b1e403102ed4e89c04996a0349fd3` — Worker session 12, exchange 01
+
+`feat(a11y): accessible names, dialog semantics and status regions`. 16 files, +454 -9, none created,
+none deleted, parent `c3f75e3`, one non-force push, public readback equal, `.ap` gitlink untouched at
+`9c5cc44`. Build gate ran the PRIMARY route: `ss -tlnp | grep :3000` empty, exit 1.
+
+Orchestrator verdict: **implementation-PASS, ACCEPTED as delivered.** Evidence independent — every gate
+re-measured below, every count re-derived from the shipped source rather than read off the report.
+
+Archived as `12_implementation_00.md` + `12_report_00.md`.
+
+**The frontend copy, function and attribute surface is now complete.** What follows in this whole is
+backend and security only — plus the one remediation this slice itself created, recorded as `R14`.
+
+Handout residual **`R12` (`uii-01-F02` accessible names + `uii-01-F03` locale-aware dates) is now
+satisfied**: F03 closed at `8f44022`, F02 delivered here. `R14` is a NEW label, not a reopening — it
+carries the three findings this delivery produced (F20, F21, F22) plus one test-strength fix. Handout
+labels run R1–R13, so R14 is the next free identifier.
+
+### Gates at `e8cc7bb`, Orchestrator-measured
+
+```text
+mypy 83 files clean · ruff clean · manage.py check clean · pytest 381 passed, 4 skipped in 218.61s
+typecheck exit 0 · vitest 414 passed | 3 skipped (29 files passed, 1 skipped) · lint exit 0
+build exit 0, 11 dynamic routes, ZERO static
+```
+
+`405 -> 414` is exactly the nine new `it` blocks: AC-RACKTILE-4, AC-RACKBLANK-4, AC-A11Y-COPY-4,
+AC-DIALOG-PRESENT x4, AC-STATUS-NOT-DIALOG x2. No pre-existing test was weakened or removed.
+
+### Counted from the shipped source, not accepted from the report
+
+```text
+294 keys per catalog x 4 languages = 1176 strings, parity exact   285 + 9, arithmetic closes
+20 fn keys per catalog, parity exact
+role="dialog" 4 · aria-modal 4 · tabIndex={-1} 4      the four dialogs, nothing else
+role="status" 8       = 6 ToastOverlay branches + AIThinkingOverlay + TurnStatusNotice
+htmlFor 0             the three ProfileModal password inputs were NOT touched, as forbidden
+"Tab" / shiftKey 0    no focus trap was written, as forbidden
+activeElement 0       focus restoration absent -> uii-01-F19 stands as an accepted residual
+locked-fork files 0   prompts.ts, ai-move-stream, api/ai/move, api.ts, constants.ts, types.ts,
+                      PremiumPicker.tsx, provider-registry, openai-compatible, ibm-watsonx,
+                      ai-runtimes, selection.py, and the entire backend/ are all untouched
+```
+
+Terminology verified verbatim against the glossary in all four catalogs: sk `Písmeno`, cs `Kámen`,
+pl `Płytka`, and `Žolík / Žolík / Blank` for the blank. The fifth live use of the plural helpers and the
+first for `bod` is correct through the real `tf`: sk `1 bod / 2 body / 5 bodov`, cs `bodů`, pl `punktów`.
+The test also asserts `sk 2` is not `2 bodov`.
+
+### ⛔ THE WORKER CORRECTED MY INVENTORY AND IT WAS RIGHT
+
+Report item 8 says `AIThinkingOverlay` contained **one** `aria-live`, not the two my scoping note claimed.
+Checked at the parent commit:
+
+```text
+git grep aria-live c3f75e3 -- frontend/src
+  AIThinkingOverlay.tsx:236                 the telemetry <p>
+  app/game/[id]/page.tsx:1614               the <section> wrapping TurnStatusNotice
+```
+
+Two occurrences repo-wide, in **two different files**. My note collapsed them into one file. The Worker
+read the source, found one, said so, and resolved both: it removed the inner telemetry attribute (which the
+new outer region would have nested) and removed the page-level `section` wrapper (because
+`TurnStatusNotice` itself became the labelled region). No nested live region remains anywhere; the three
+status surfaces are DOM siblings, not ancestors of one another.
+
+**This is the second consecutive slice where a Worker overruled an Orchestrator claim on evidence.** The
+pattern that produced both: I stated a conclusion more precisely than my measurement supported. The
+measurement I actually ran counted `aria-label`, `role`, `alt`, `htmlFor`, `tabIndex`, `aria-modal` and
+`sr-only`. It never counted `aria-live`. The "two places" was recollection presented as inventory.
+
+Report item 16 is also correct and I verified it: the **games** `HeaderMiniButton` at `ScorePanel.tsx:419`
+is not `iconOnly` and renders visible localized text, so it already had a name. Only the **profile** one
+at `:364` is icon-only, and only it took an `aria-label`.
+
+### ⛔ THREE NEW FINDINGS, all mine, none of them Worker disobedience
+
+#### uii-01-F21 — the AI progress region re-announces the entire overlay once per second
+
+`role="status"` carries an implicit `aria-atomic="true"`. The region I told the Worker to put on
+`AIThinkingOverlay`'s `fixed inset-0` container encloses `formatTime(aiCountdown)` at
+`AIThinkingOverlay.tsx:302`, which ticks every second for the whole AI turn, plus an append-only candidate
+feed. Atomic plus ticking means an assistive technology re-reads the timer, the best score, every provider
+pill and every candidate row roughly once a second.
+
+That is the exact opposite of the principle my own prompt argued for one section earlier — `polite` was
+chosen so announcements "queue rather than interrupt". And it is a **regression against the parent
+commit**, because the `aria-live` at `:236` that this slice removed was a narrow, correct announcer on a
+single telemetry line.
+
+Cause: my instruction. The Worker implemented what it was told, disclosed exactly what it changed, and had
+no way to see the consequence from the prompt. Owner: this whole, as `R14`.
+
+#### uii-01-F22 — every status region mounts together with its content, so it may never announce at all
+
+A live region has to exist in the DOM **before** its content changes for an assistive technology to
+announce reliably. All three of ours appear with their text already inside: `ToastOverlay` is rendered on
+demand at `game/[id]/page.tsx:1761`, `TurnStatusNotice` returns `null` when there is no text,
+`AIThinkingOverlay` sits inside a conditional `AnimatePresence`.
+
+The parent commit's `<section aria-live>` was conditional in the same way, so S11 did not regress this —
+but it means the delivered turn, toast and AI announcements probably do not fire. The node-only suite
+cannot detect it, which is exactly why the report's declared evidence ceiling matters. Owner: this whole,
+folded into `R14`.
+
+⚠ F21 and F22 have **one shared fix**: a single persistent visually hidden `role="status"` announcer on
+the game page, fed a short string, with the overlays keeping `aria-label` and losing their live semantics.
+That removes ticking content from the region and makes the region persistent in one move.
+
+#### uii-01-F20 — a rack tile loses its accessible name in exchange mode
+
+`TileRack.tsx:38` spreads dnd-kit's `attributes` only when
+`!(isExchangeMode || interactionDisabled || !dragEnabled)`. Those attributes are where `role: "button"` and
+`tabIndex: 0` come from — verified in `@dnd-kit/core` 6.3.1 at `dist/core.esm.js:3432-3438`. So in
+**exchange mode** and when it is **not your turn**, the `motion.div` carries the new `aria-label` with no
+role at all, and `aria-label` on a generic element is both ARIA-invalid and commonly ignored. In exchange
+mode those tiles are still clickable, so the loss is real rather than academic. The tap path is fine:
+`TapSelectableTile` renders a real `<button>`.
+
+Severity medium, owner this whole, routed to `R14` since it is the same file class and the same review
+pass. Not a prompt violation — the conditional spread is invisible from the prompt.
+
+### One test is weaker than its name suggests, and it is worth writing down
+
+`AC-STATUS-NOT-DIALOG` asserts `markup.match(/aria-live=/g)?.length === 1`, which reads like a pin against
+re-nesting. It is not. The fixture sets `aiTurnTelemetry: null`, so `humanState` is falsy and the telemetry
+`<p>` does not render at all — the assertion would pass with the inner `aria-live` still in place. The
+Worker's own reported pre-fix failure confirms it failed on the outer `role="status"`, never on the count.
+The fix is trivial (set a `humanState` in the fixture) and belongs to `R14`.
+
+The three genuinely load-bearing new tests are the plural ones and `AC-DIALOG-PRESENT`, which resolves
+`aria-labelledby` back to a matching `id` in the rendered markup rather than merely asserting the attribute
+exists.
+
+### Accepted without change
+
+```text
+four a11y.dialog.* fallback keys added to all four catalogs though all four dialogs use
+aria-labelledby        required by prompt section 6.2 so the choice stays reversible without a new slice
+onCloseRef indirection Worker's own near-miss fix: keeps the mount-time focus effect from re-running when
+                       a parent re-renders an inline close callback. Correct.
+sort: "updated"        a test fixture used "recent"; typecheck caught it; corrected inside the allowlist
+BlankPicker SSR test   mutates useGameStore.getInitialState() to force the open branch and resets after.
+                       Works because zustand's server snapshot IS the initial state. A smell, but bounded
+                       and it demonstrably renders the dialog markup it asserts on.
+```
+
 ## Slice S11 issued — Worker session 12, exchange 01, at `c3f75e3`
 
 `feat(a11y): accessible names, dialog semantics and status regions`. Prompt staged at
@@ -5686,3 +5910,28 @@ These are the remaining human-only observations, and they are the reason the
 - The two known UX defects the Cooperator reported: the new-game modal not appearing after "Play the house", and Settings appearing to change the language during a game
 - Error and edge paths beyond the invalid word: provider unavailable, expired session at various points
 - Accessibility basics: keyboard reachability, focus states, modal focus trap and ESC, readability with the premium look disabled, layout at a smaller window
+
+### S11 acceptance, resolved by Cooperator decision 10 on 2026-09-02
+
+He was asked directly whether a screen reader is available. Answer: **"Nemám a nechcem ju inštalovať."**
+That settles the acceptance shape, and it is a permanent ceiling rather than a scheduling detail.
+
+```text
+HE OBSERVES — keyboard only, no screen reader needed
+  1  Profile, Games, the blank picker and the rival-unavailable overlay each take focus when they open
+  2  Escape closes each of those four
+  3  Tab still walks the page and never becomes unescapable (no trap was written, by design)
+  4  focus is NOT restored to the opener on close — expected, uii-01-F19, accepted residual
+CLOSED BY INSPECTION ONLY — never observable in this project
+  5  whether the rack tile announces "Písmeno A, 1 bod"
+  6  whether the turn banner, toasts and AI overlay announce at all              uii-01-F22
+  7  whether the AI overlay re-reads itself every second                         uii-01-F21
+```
+
+⛔ Items 5–7 must be written into `99_closure.md` as **inspection-only**, never as an observed pass, and no
+later session may summarize this whole as "accessibility verified". The three findings are corrected on the
+strength of ARIA semantics plus string-rendered markup, and that is the whole of the evidence.
+
+This also retires the ledger line "modal focus trap and ESC" from the manual-acceptance list above: ESC is
+covered by item 2, the focus trap does not exist by design, and the announcement half is unobservable.
+
