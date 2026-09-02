@@ -1585,6 +1585,47 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## The accessibility slice is now scoped from MEASUREMENT, at `c3f75e3`
+
+Every input in the product enumerated, rather than a `htmlFor` count inferred into a conclusion:
+
+```text
+file:line                              inside <label>   aria-label
+app/page.tsx:172  (username)                 NO             NO      <- genuinely unlabelled
+app/page.tsx:179  (password)                 NO             NO      <- genuinely unlabelled
+components/game/ChatPanel.tsx:53             NO             NO      <- has a placeholder only
+components/game/ProfileModal.tsx:257         YES            no      already correct
+components/game/ProfileModal.tsx:270         YES            no      already correct
+components/game/ProfileModal.tsx:283         YES            no      already correct
+components/settings/PremiumPicker.tsx:191    NO             YES     already correct (R1)
+```
+
+So the real input work is **three** fields, not six: the two auth fields on the landing page and the chat
+input. A placeholder is not an accessible name — it disappears on focus in most screen-reader flows — so
+`ChatPanel` needs a real one.
+
+The rest of the a11y baseline at `c3f75e3`:
+
+```text
+aria-label 2 · role= 4 · alt= 2      all SEVEN of these are inside PremiumPicker.tsx, which R1 created.
+                                     Before R1 the product had zero of any of them.
+htmlFor 0 · tabIndex 0 · aria-modal 0 · aria-labelledby 0 · sr-only 0
+```
+
+Modal surfaces needing `role="dialog"`, `aria-modal="true"`, `aria-labelledby` and Escape:
+`ProfileModal`, `GameHistoryModal`, `BlankPicker`, and the `aiBlockerModal` plus the toast overlays inside
+`game/[id]/page.tsx`. Only `settings/page.tsx:552` handles Escape today, and `PremiumPicker` handles its
+own.
+
+Icon-only controls needing an accessible name: the `↩` back button at `ScorePanel:355`, and the four
+`iconOnly` `HeaderMiniButton` call sites (profile 👤, games 🗂️, settings x2). Their labels are ALREADY
+localized and ALREADY passed as props — they are just rendered only inside a hover tooltip, which is not an
+accessible name. That makes this the cheapest high-value fix in the slice.
+
+`TileRack` tiles are better than expected: they already carry `onKeyDown` for Enter/Space and
+`aria-pressed`. Their accessible name is the bare letter; `"Písmeno A, 1 bod"` would be materially better
+and is a translatable string.
+
 ### uii-01-F18 — five accepted PremiumPicker behaviours, Cooperator-signed
 
     Classification:  accepted product behaviour, NOT defects
@@ -1945,8 +1986,19 @@ Specific findings for that slice, each with its location:
 2  HeaderMiniButton with `iconOnly`   four call sites — profile 👤, games 🗂️, settings x2. The `label`
                     prop IS passed and IS already localized, but when `iconOnly` it renders ONLY inside
                     the tooltip. The name exists; it just is not attached. Cheapest possible fix.
-3  htmlFor is ZERO  ProfileModal's three password fields have visible labels that are NOT associated
-                    with their inputs. A screen reader announces an unlabelled password field.
+3  htmlFor is ZERO  ⛔ AND THE FINDING THAT FOLLOWED FROM IT WAS WRONG. An earlier draft of this
+                    entry said "ProfileModal's three password fields have visible labels that are NOT
+                    associated with their inputs. A screen reader announces an unlabelled password
+                    field." That was a NEGATIVE-GREP CONCLUSION and it is FALSE.
+                    Measured by reading ProfileModal.tsx:253-265: each input is NESTED INSIDE its
+                    `<label className="block">`, which is IMPLICIT labelling and is fully valid per the
+                    HTML spec. `htmlFor` is unnecessary when the control is a descendant of its label.
+                    All three password fields are already correctly labelled.
+                    This is the project's most-repeated failure mode — `htmlFor` returning zero is not
+                    the same fact as "inputs are unlabelled" — caught this time by the Orchestrator
+                    against itself before any prompt was written. The remaining real question for the
+                    a11y slice is narrower: whether the two chat/search inputs elsewhere are labelled,
+                    which must be MEASURED and not inferred from the same grep.
 4  four modal surfaces  GameHistoryModal, ProfileModal, BlankPicker, and the aiBlockerModal inside
                     game/[id]/page.tsx. None has role="dialog", aria-modal, or aria-labelledby, and
                     only settings/page.tsx:552 handles Escape at all.
