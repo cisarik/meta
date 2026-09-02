@@ -27,7 +27,7 @@ and `1b7b05d0de854d7936c5fcd2b0d55a5cc5d14cfd` (the starting-draw screen, plus a
 fix). `uii-01-F04` is owned by slice **S3a**, not S2 — Cooperator decision 7 cancelled S2 altogether by
 removing URL locale prefixes. An earlier version of this paragraph said S2 and was stale.
 
-`main` is now `383011b389a9b3690647b6fa673060633572ab9d`. Porcelain is EMPTY — the ten
+`main` is now `d40b230e8071f609f1a26fbea70106664326673a`. Porcelain is EMPTY — the ten
 deliberately untracked `frontend/public` flag files are gone. The **Cooperator himself** committed the
 five normalized 48x32 PNGs at `61c9f09` on 2026-09-02 (`feat(images): add new language icons for Czech,
 English, Hungarian, Polish, and Slovak`, 5 files, 5230 B total, byte sizes identical to the
@@ -58,21 +58,22 @@ Commit lineage of era 11, all Orchestrator-verified:
     e421c66  S3b  board, rack, action buttons and chat in four locales      11 files
     e0d3b64  S3c  the game screen, plus uii-01-F08 and uii-01-F09 fixed      8 files
     383011b  S4   R6: the player no longer chooses model or prompt   15 files, -460 net
+    d40b230  S5   the two lobby screens + F10 F11 F12 F14 corrected   11 files
 
 Anything below that speaks of `19cfec9`, `f26e92a`, `1b7b05d`, `9f0c5b8`, `3fd1a81`, `8c00a33`,
-`2917251`, `61c9f09`, `5a96b5e`, `e421c66` or `e0d3b64` as "current" describes an earlier commit
-and is history.
+`2917251`, `61c9f09`, `5a96b5e`, `e421c66`, `e0d3b64` or `383011b` as "current" describes an earlier
+commit and is history.
 
-**All eight standing gates re-measured green at `383011b` by the era-10 continuation Orchestrator**,
+**All eight standing gates re-measured green at `d40b230` by the era-10 continuation Orchestrator**,
 independently rather than accepted from the Worker report:
 
     mypy config game gamecore accounts catalog   Success: no issues found in 83 source files
     mypy --no-incremental (same scope)           Success: no issues found in 83 source files
     ruff check .                                 All checks passed!
     manage.py check                              System check identified no issues (0 silenced).
-    pytest                                       381 passed, 4 skipped in 222.35s
+    pytest                                       381 passed, 4 skipped in 218.75s
     npm run typecheck                            exit 0
-    npx vitest run                               378 passed | 3 skipped  (28 files passed | 1 skipped)
+    npx vitest run                               382 passed | 3 skipped  (28 files passed | 1 skipped)
     npm run lint                                 exit 0
     npm run build                                exit 0, EVERY route ƒ, zero static, no deprecation warning
 
