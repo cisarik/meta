@@ -1585,7 +1585,121 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice S6 landed at `6ca85de7ee1e5a1db33253eeb9e7e47922e2718a` — Worker session 07, exchange 01
+
+`feat(i18n): localize the game header and the AI overlay`. 8 files, +253 −17, parent `d40b230`, one
+non-force push, public readback equal. Orchestrator verdict: **implementation-PASS, ACCEPTED**, with one
+leftover routed to S7. Evidence non-independent.
+
+Archived as `07_implementation_00.md` + `07_report_00.md`.
+
+Thirteen new keys, five existing keys reused. The chrome the player looks at during every turn — the
+header cluster and the AI overlay — is now in four locales.
+
+### Verified rather than accepted
+
+```text
+allowlist       8 files, all inside it. types.ts, ai-move-stream.ts and game/[id]/page.tsx UNTOUCHED.
+{humanState}    still read and still rendered; 3 occurrences in AIThinkingOverlay. The deferral holds.
+gates           mypy 83 · ruff · check · pytest 381/4 · typecheck 0 · vitest 386 passed | 3 skipped
+                · lint 0 · build 0 with 11 dynamic and ZERO static routes
+```
+
+`AC-NO-TELEMETRY-KEY` was **already passing before the change** and the Worker said so rather than
+claiming a pre-fix failure. That is the correct report of a guard test: it locks a property that was
+already true and must stay true. It is now green with thirteen more keys in the catalog.
+
+### ⛔ FIFTH ORCHESTRATOR INVENTORY MISS — and this time it produced a real methodological fix
+
+Report item 13 names a leftover: `AIThinkingOverlay.tsx:369-373`, the stats bar —
+`{aiCandidates.length} tried`, `{validSorted.length} valid`, `` `${rejectedCount} rejected` ``. Three
+user-facing strings with no authored key. Confirmed.
+
+Cause, diagnosed rather than hand-waved: my inventory regex was
+`>\s*([^<>{}]*?[A-Za-z][^<>{}]*?)\s*<`. The character class forbids `{`, so a text node whose
+EXPRESSION COMES FIRST — `>{expr} tried<` — cannot match. That is a fourth distinct sub-case of the same
+class:
+
+```text
+S3b  Board.tsx `zoom`              a plain text node, missed by writing the prompt from a narrow grep
+                                   AFTER a broad inventory had counted more
+S3c  `Invalid Word{...}!`          text then expression, and the expression contains `>`, which
+                                   `[^<>]` forbids
+S3c  `AI route failed (${...})`    a template literal with no capitalised word, so a `[A-Z][a-z]{2,}`
+                                   filter rejected it
+S6   `{expr} tried`                expression then text, which `[^<>{}]` forbids
+```
+
+**Four sub-cases, four different regexes needed, and each regex I wrote had its own blind spot.** The
+durable conclusion is unchanged and now proven five times: the STRUCTURAL defence — the report field
+obliging the Worker to enumerate every user-facing English string it can still see — is the control that
+works. It has caught a leftover in four consecutive slices.
+
+#### But one concrete tool improvement was worth making, and it was validated against the misses
+
+A v1 attempt stripped `{...}` from the whole file first. **It was catastrophically wrong and measuring it
+is what revealed why:** TSX braces are not only JSX expression containers, they are also every block,
+object literal and destructuring pattern, so repeated stripping collapsed a 12 715-character file to 586
+characters and found nothing. Recorded because "strip the braces first" is the obvious idea and it is
+wrong.
+
+The working order is the reverse — capture the candidate segment with a class that allows BOTH braces and
+`>`, then strip `{...}` inside that segment only, and discard segments left with unbalanced braces:
+
+```python
+for m in re.finditer(r'>([^<]*)<', s, re.S):
+    seg = m.group(1)
+    for _ in range(8):
+        new = re.sub(r'\{[^{}]*\}', ' ', seg)
+        if new == seg: break
+        seg = new
+    if '{' in seg or '}' in seg: continue      # not a clean text node
+```
+
+Validated against all four historical misses before use: `zoom` found, `Invalid Word...!` found,
+`Last error:` found, and the stats trio found. Stored at `/tmp/opencode/jsxsweep.py`. It is a better tool,
+**not a replacement for the report field.**
+
+#### The remaining surfaces, swept with the validated tool
+
+```text
+settings/page.tsx                 4 text nodes    (its ~40 strings are mostly quoted literals, not nodes)
+GameHistoryPanel.tsx             13
+ProfileModal.tsx                 14
+GameHistoryModal.tsx              3
+AIThinkingOverlay.tsx             2   <- the leftover trio, `rejected` being a template literal
+```
+
+That is now a measured inventory for S7 and S8 rather than an estimate.
+
+### The stats trio needs a colon-label, not a plural
+
+`3 tried` / `3 valid` / `3 rejected` cannot be translated word-for-word: Slovak would need agreement in
+number and case across one/few/many — "1 skúsený ťah", "2 skúsené ťahy", "5 skúsených ťahov" — and no
+single adjective form covers all three. The established pattern in this whole applies:
+`Skúsené: 3` / `Platné: 3` / `Zamietnuté: 3`, grammatically inert at every count, exactly as
+`controls.tilesSelected` and `play.humanQueue.queueFor` already are. Routed to S7.
+
+### Two layout risks the Worker named and did not change
+
+```text
+header.givingUp   pl "Poddaję się..."   in a whitespace-nowrap xl text button
+header.loggingOut pl "Wylogowuję..."    same
+overlay.filtering the longest string in the slice, text-xs centred inside max-w-lg — should wrap
+```
+
+It also noted that the CSS `uppercase` class stays on `overlay.aiThinking` and `overlay.best`, which is
+precisely why `overlay.bestBadge` carries its own pre-uppercased value. Both go into the next acceptance
+batch.
+
+### One precision correction the Worker made to the prompt
+
+Section 5 of the prompt was headed "seven existing keys" while its table listed five. The Worker reused
+the five that were actually specified and said so, rather than inventing two more. Orchestrator drafting
+error, no product impact, and the honest reading was the right one.
+
 ### Cooperator acceptance batch B22 — 8 of 8 PASS, plus one unprompted find
+
 
 His reply, verbatim: `B22-1 PASS B22-2 PASS vidim "Front: Čeština" B22-3 PASS B22-4 PASS B22-5 PASS
 B22-6 PASS B22-7 PASS + vidim tam Searching for moves.. alebo take nieco stale v anglictine B22-8 PASS`
