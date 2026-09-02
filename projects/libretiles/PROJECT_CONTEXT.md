@@ -27,7 +27,7 @@ and `1b7b05d0de854d7936c5fcd2b0d55a5cc5d14cfd` (the starting-draw screen, plus a
 fix). `uii-01-F04` is owned by slice **S3a**, not S2 — Cooperator decision 7 cancelled S2 altogether by
 removing URL locale prefixes. An earlier version of this paragraph said S2 and was stale.
 
-`main` is now `e0d3b64cbccf1a1d9983ba5c394762f55961325a`. Porcelain is EMPTY — the ten
+`main` is now `383011b389a9b3690647b6fa673060633572ab9d`. Porcelain is EMPTY — the ten
 deliberately untracked `frontend/public` flag files are gone. The **Cooperator himself** committed the
 five normalized 48x32 PNGs at `61c9f09` on 2026-09-02 (`feat(images): add new language icons for Czech,
 English, Hungarian, Polish, and Slovak`, 5 files, 5230 B total, byte sizes identical to the
@@ -57,20 +57,22 @@ Commit lineage of era 11, all Orchestrator-verified:
     5a96b5e  S3a  server locale authoritative + four interface locales      15 files
     e421c66  S3b  board, rack, action buttons and chat in four locales      11 files
     e0d3b64  S3c  the game screen, plus uii-01-F08 and uii-01-F09 fixed      8 files
+    383011b  S4   R6: the player no longer chooses model or prompt   15 files, -460 net
 
 Anything below that speaks of `19cfec9`, `f26e92a`, `1b7b05d`, `9f0c5b8`, `3fd1a81`, `8c00a33`,
-`2917251`, `61c9f09`, `5a96b5e` or `e421c66` as "current" describes an earlier commit and is history.
+`2917251`, `61c9f09`, `5a96b5e`, `e421c66` or `e0d3b64` as "current" describes an earlier commit
+and is history.
 
-**All eight standing gates re-measured green at `e0d3b64` by the era-10 continuation Orchestrator**,
+**All eight standing gates re-measured green at `383011b` by the era-10 continuation Orchestrator**,
 independently rather than accepted from the Worker report:
 
     mypy config game gamecore accounts catalog   Success: no issues found in 83 source files
     mypy --no-incremental (same scope)           Success: no issues found in 83 source files
     ruff check .                                 All checks passed!
     manage.py check                              System check identified no issues (0 silenced).
-    pytest                                       381 passed, 4 skipped in 220.95s
+    pytest                                       381 passed, 4 skipped in 222.35s
     npm run typecheck                            exit 0
-    npx vitest run                               374 passed | 3 skipped  (28 files passed | 1 skipped)
+    npx vitest run                               378 passed | 3 skipped  (28 files passed | 1 skipped)
     npm run lint                                 exit 0
     npm run build                                exit 0, EVERY route ƒ, zero static, no deprecation warning
 
@@ -696,8 +698,21 @@ He stated, in his own words and his own priority ordering:
   believes the frontend may already reflect this and asked; see the correction below.
 - The player **should only ever see the model's name**, not provider internals, tiers, or tuples.
 
-⛔ **Factual correction the Orchestrator owes him, verified in the repository at `19cfec9`, not
-inferred.** The frontend has **NOT** yet been changed. The player still chooses:
+✅ **RESOLVED at `383011b` (slice S4 / R6).** The paragraph below was true at `19cfec9` and is now
+history. The player no longer chooses the AI model or the prompt preset: the settings rival panel is
+a read-only display name, the prompt-preset picker and both of its components are deleted,
+`selectedPromptId` is gone from the store with a persist 4->5 migration, and `ai_prompt_id` is no
+longer sent at game creation so the backend picks catalog row 1. `preferred_ai_model_id`, its
+migrations, its admin field and its `is_selectable_model` validation are untouched, which is what
+makes it admin-settable only. ZERO backend change was needed: `_resolve_ai_model` and
+`_resolve_ai_prompt` already return row 1 when the field is omitted, and `sort_order` plus
+`is_active` are `list_editable` in Django Admin — so an administrator sets the default with no SSH,
+while `DYNAMIC_FREE_MODEL_CATALOG_ENABLED` stays `false`.
+
+The original correction, kept as history:
+
+⛔ **Factual correction the Orchestrator owed him, verified in the repository at `19cfec9`, not
+inferred.** The frontend had **NOT** yet been changed. The player still chose:
 
 ```text
 frontend/src/app/settings/page.tsx:656-712   a selectable rival panel over the live catalog, with
