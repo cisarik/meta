@@ -27,7 +27,7 @@ and `1b7b05d0de854d7936c5fcd2b0d55a5cc5d14cfd` (the starting-draw screen, plus a
 fix). `uii-01-F04` is owned by slice **S3a**, not S2 — Cooperator decision 7 cancelled S2 altogether by
 removing URL locale prefixes. An earlier version of this paragraph said S2 and was stale.
 
-`main` is now `74b5339e5bdcdd036041b6bf908c5454f7d8a400`. Porcelain is EMPTY — the ten
+`main` is now `f40d8a0ef2a8c157fde7caddc4a6f64e2695d495`. Porcelain is EMPTY — the ten
 deliberately untracked `frontend/public` flag files are gone. The **Cooperator himself** committed the
 five normalized 48x32 PNGs at `61c9f09` on 2026-09-02 (`feat(images): add new language icons for Czech,
 English, Hungarian, Polish, and Slovak`, 5 files, 5230 B total, byte sizes identical to the
@@ -66,9 +66,10 @@ Commit lineage of era 11, all Orchestrator-verified:
     c3f75e3  R1   premium searchable pickers with flags (closure cond. 2) 12 files, +615
     e8cc7bb  S11  R12: accessible names, dialog semantics, status regions 16 files, 9 keys
     74b5339  R14  one persistent announcer; rack tiles get a role       7 files, 0 keys
+    f40d8a0  R15  ORCHESTRATOR-AUTHORED: rack keyboard + dead labels    4 files, 0 keys
 
 Anything below that speaks of `19cfec9`, `f26e92a`, `1b7b05d`, `9f0c5b8`, `3fd1a81`, `8c00a33`,
-`2917251`, `61c9f09`, `5a96b5e`, `e421c66`, `e0d3b64`, `383011b`, `d40b230`, `6ca85de`, `4bf4365`, `d806e31`, `8f44022`, `c3f75e3` or `e8cc7bb`
+`2917251`, `61c9f09`, `5a96b5e`, `e421c66`, `e0d3b64`, `383011b`, `d40b230`, `6ca85de`, `4bf4365`, `d806e31`, `8f44022`, `c3f75e3`, `e8cc7bb` or `74b5339`
 as "current" describes an earlier commit and is history.
 
 ⛔ **THE FRONTEND SURFACE OF `10/00` IS COMPLETE AT `e8cc7bb`** — copy (S1–S9), function (S4), presentation
@@ -83,19 +84,25 @@ with their content and so may never announce), `uii-01-F20` (`aria-label` on a r
 vacuous `aria-live` count assertion. `role="status"` and `aria-live` each went 8 -> 1. The emitted
 `.sr-only` rule was read from the built CSS and is the correct clipped pattern, not `display:none`.
 
-⛔ **BUT R14 PRODUCED TWO MORE, AND THE PATTERN IS NOW THE FINDING:**
+⛔ **BUT R14 PRODUCED TWO MORE, AND THE PATTERN IS NOW THE FINDING.** Both are corrected at `f40d8a0`:
 
-    uii-01-F24  REGRESSION. {...attributes} brings dnd-kit's role="button" and tabIndex={selectEnabled
-                ? 0 : -1} makes it 0 whenever the tile is clickable — but DraggableTile has onClick and
-                NO onKeyDown, and page.tsx:535-539 configures no KeyboardSensor. So every desktop rack
-                tile is now a dead Tab stop that no key can activate. Before R14 they were not focusable
-                at all, so keyboard navigation is measurably WORSE than at e8cc7bb. Wider than reported:
-                selectEnabled is true on a normal turn, not only in exchange mode.
-                Fix: an Enter/Space onKeyDown mirroring TapSelectableTile:147-151. Safe precisely because
-                there is no KeyboardSensor to collide with.
-    uii-01-F23  six aria-label={t("a11y.status.turn")} now sit on role-less toast motion.divs, because the
-                R14 prompt authorized removing role and aria-live and said nothing about aria-label.
-                Same class as F20. Near-zero impact, six invalid attributes. Fix: delete the six lines.
+    uii-01-F24  REGRESSION, corrected at f40d8a0. {...attributes} brings dnd-kit's role="button" and
+                tabIndex={selectEnabled ? 0 : -1} makes it 0 whenever the tile is clickable — but
+                DraggableTile had onClick and NO onKeyDown, and page.tsx:535-539 configures no
+                KeyboardSensor. So every desktop rack tile became a dead Tab stop that no key could
+                activate: worse than at e8cc7bb, where they were not focusable at all. Wider than the
+                Worker reported — selectEnabled is true on a normal turn, not only in exchange mode.
+                Fixed with an Enter/Space onKeyDown mirroring TapSelectableTile:147-151, declared BEFORE
+                the listeners spread so a future KeyboardSensor would win on a draggable turn.
+    uii-01-F23  corrected at f40d8a0. Six aria-label={t("a11y.status.turn")} sat on role-less toast
+                motion.divs, because the R14 prompt authorized removing role and aria-live and said
+                nothing about aria-label. Same class as F20. Deleted; a11y.status.turn stays in use on
+                LiveAnnouncer, so no key went dead.
+
+⚠ **The ONLY outstanding evidence for F24 is one Cooperator keyboard observation**: Tab onto a rack tile,
+press Enter, the tile is selected. `AC-RACK-KEYBOARD` asserts the handler and its declaration order from
+SOURCE, because React does not serialize event handlers into static markup. Unlike F21 and F22, this one is
+genuinely observable by him.
 
 ⛔ **FOUR A11Y DEFECTS FROM FOUR A11Y INSTRUCTIONS, ALL THE SAME ERROR.** F21: specified `role="status"`
 without modelling `aria-atomic` plus a ticking timer. F20: specified `aria-label` without modelling where
@@ -105,15 +112,17 @@ named this after F21/F22 and R14 repeated it anyway, so the lesson was not opera
 reads: **for every ARIA attribute added or removed, write down what the user does, what the technology
 announces, and which key activates it. If nothing activates it, that is the defect.**
 
-**All eight standing gates re-measured green at `74b5339` by the era-10 continuation Orchestrator**,
-independently rather than accepted from the Worker report:
+**All eight standing gates measured green at `f40d8a0` by the era-10 continuation Orchestrator.** For
+`74b5339` and every commit before it this was independent re-measurement of another agent's work. For
+`f40d8a0` it is NOT independent — the Orchestrator authored that commit, so only the mechanical gates
+corroborate it and none of its judgement calls do. Do not read the two as equally verified:
 
     mypy config game gamecore accounts catalog   Success: no issues found in 83 source files
     ruff check .                                 All checks passed!
     manage.py check                              System check identified no issues (0 silenced).
-    pytest                                       381 passed, 4 skipped in 217.72s
+    pytest                                       381 passed, 4 skipped in 220.70s
     npm run typecheck                            exit 0
-    npx vitest run                               418 passed | 3 skipped  (29 files passed | 1 skipped)
+    npx vitest run                               420 passed | 3 skipped  (29 files passed | 1 skipped)
     npm run lint                                 exit 0
     npm run build                                exit 0, EVERY route ƒ, zero static, no deprecation warning
     grep -c sr-only .next/static/css/*.css       1, and the rule is clip-path:inset(50%), not display:none
@@ -986,8 +995,7 @@ instead.
 
    ```text
    R14  DONE at 74b5339 — uii-01-F21, F22, F20 and the vacuous assertion
-   R15  the R14 remediation — uii-01-F24 (Enter/Space on the draggable rack tile) and uii-01-F23 (six
-        dead aria-labels on role-less toast containers). About ten lines across two files.
+   R15  DONE at f40d8a0, ORCHESTRATOR-AUTHORED per decision 12 — uii-01-F24 and uii-01-F23
    R7   Django localization: USE_I18N, LocaleMiddleware after SessionMiddleware, Accept-Language,
         plus uii-01-F17 (game_end_reason enum reaching the player raw)
    R8   uii-01-F01 — read the numeric Retry-After header instead of parsing an English 429 body
@@ -1001,8 +1009,34 @@ instead.
 
    R14 went first deliberately: it fixed a regression S11 itself introduced, and doing it while the
    accessibility markup was fresh was cheaper than closing the whole over a known-wrong announcement
-   design. R15 follows for the same reason — `uii-01-F24` is a keyboard regression against `e8cc7bb`, and
+   design. R15 followed for the same reason — `uii-01-F24` is a keyboard regression against `e8cc7bb`, and
    unlike the announcement findings it IS observable by the Cooperator without a screen reader.
+
+12 THE ORCHESTRATOR MAY IMPLEMENT A TEN-LINE CORRECTION OF ITS OWN DEFECT. Decided 2026-09-02 in reply to
+   a direct question about who should implement `R15`, his answer: *"Oprav to sama"*. Precedent is
+   `f26e92a` in this same whole. The argument he accepted: a 500-line Worker prompt for a ten-line fix is
+   disproportionate, and every line of it would have been the Orchestrator dictating the exact edit anyway.
+
+   ⛔ THE COST, AND IT MUST NOT BE FORGOTTEN: **evidence for `f40d8a0` is NON-INDEPENDENT.** For every
+   Worker slice the Orchestrator re-measured another agent's work, and twice a Worker corrected an
+   Orchestrator claim on evidence — which is precisely the check that an Orchestrator-authored commit does
+   not have. Only the mechanical gates corroborate `f40d8a0`; none of its judgement calls do. The
+   discipline applied to compensate, and the minimum bar for any future use of this authority:
+
+   ```text
+   pre-fix failures CAPTURED, not asserted   the two source files were checked out back to the parent
+                                             commit, the focused suite run, the exact failure text
+                                             recorded, then the edits restored from a backup and porcelain
+                                             re-verified clean
+   the one test that did NOT fail pre-fix    named as a test-strength improvement rather than dressed up
+                                             as a regression test
+   all eight gates                           run in full, not just the focused suite
+   the evidence ceiling                      written down: source-asserted handlers are not dispatched
+                                             handlers
+   ```
+
+   This authority is for correcting the Orchestrator's OWN defect at this scale. It is not a general
+   licence to skip Workers, and it does not extend to backend, security, or anything with a trust boundary.
 
 ## 14. Authoritative game alphabet orders — Cooperator-sourced 2026-09-01, Orchestrator-validated
 
