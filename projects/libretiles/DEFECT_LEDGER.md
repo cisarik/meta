@@ -1585,6 +1585,109 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice S7 landed at `4bf436581c1b6382183411259e25c6a409b7d54f` — Worker session 08, exchange 01
+
+`feat(i18n): localize the settings screen and the overlay stats bar`. 8 files, +524 -53, parent
+`6ca85de`, one non-force push, public readback equal. Orchestrator verdict: **implementation-PASS,
+ACCEPTED**, with one Orchestrator-caused wart recorded. Evidence non-independent.
+
+Archived as `08_implementation_00.md` + `08_report_00.md`.
+
+**The frontend copy surface is now essentially complete except history and profile.** 38 new keys, the
+largest single slice in this whole.
+
+### The catalog invariant, measured across all four locales
+
+```text
+en  text=213  fn=16  total=229
+sk  text=213  fn=16  total=229
+cs  text=213  fn=16  total=229
+pl  text=213  fn=16  total=229
+PARITY OK — zero missing, zero extra, in every direction, for both tables
+```
+
+229 keys x 4 locales = **916 authored strings** in this whole so far, all Orchestrator-authored and all
+gated by `Record<TextKey, string>`.
+
+### Gates at `4bf4365`, Orchestrator-measured
+
+```text
+mypy 83 files · ruff · manage.py check · pytest 381 passed, 4 skipped in 221.09s
+typecheck exit 0 · vitest 390 passed | 3 skipped · lint exit 0
+build exit 0, 11 dynamic routes, ZERO static
+```
+
+### ⛔ A REAL Next.js 16.3.4 CONSTRAINT I DID NOT KNOW, and the Worker proved it
+
+The prompt told the Worker: "If the arrays are not exported, export them for the test rather than
+duplicating them in the test file." **That instruction is impossible to follow for a page module**, and
+the Worker discovered why, worked around it legally, and reported it.
+
+Reproduced by the Orchestrator rather than accepted: adding `export` to `TIMEOUT_CHOICES` and running
+`npm run typecheck` yields, verbatim:
+
+```text
+.next/dev/types/app/settings/page.ts(14,13): error TS2344: Type 'OmitWithTag<typeof import(".../settings/page"),
+  "prefetch" | "default" | "dynamic" | "revalidate" | "metadata" | "viewport" | "instant" | "config" |
+  ... 8 more ... | "generateViewport", "">' does not satisfy the constraint '{ [x: string]: never; }'.
+  Property 'TIMEOUT_CHOICES' is incompatible with index signature.
+```
+
+The generated `.next/types/app/settings/page.ts` contains a `checkFields<Diff<{ default: Function;
+config?: {}; generateStaticParams?: Function; metadata?: any; generateMetadata?: Function; ... },
+TEntry, ''>>()` assertion that **enumerates the only exports an App Router page module may have**. Any
+other named export is a `tsc` error.
+
+**This is durable environment knowledge and it is being promoted to `PROJECT_CONTEXT.md`.**
+`frontend/AGENTS.md` says "This is NOT the Next.js you know"; this is a concrete, reproducible instance,
+and it will bite any future slice that tries to export a helper or a constant from a page file.
+
+#### uii-01-F16 — the choice arrays are attached as static properties on the page component
+
+    Classification:  code-shape wart caused by an ORCHESTRATOR allowlist that was too narrow
+    Severity:        info
+    Confidence:      high
+    Evidence class:  established-static — settings/page.tsx:721-723
+                       SettingsPage.TIMEOUT_CHOICES = TIMEOUT_CHOICES;
+                       SettingsPage.STEP_CHOICES = STEP_CHOICES;
+                       SettingsPage.BOARD_THEME_CHOICES = BOARD_THEME_CHOICES;
+                       export default SettingsPage;
+    Why it exists:   `AC-KEYTYPED` needs the LIVE arrays, not a copy, or the test proves nothing. A named
+                     export is a tsc error per the constraint above. `default` IS an allowed export, and
+                     properties hung on it are not module exports, so this typechecks. It is a legal and
+                     clever way out of a box.
+    ⛔ THE BOX WAS MINE.  The idiomatic fix is a separate module — `frontend/src/app/settings/choices.ts`
+                     or `frontend/src/lib/settings-choices.ts` — imported by both the page and the test.
+                     The Worker could not do that because my allowlist said "No file is created and none
+                     is deleted". This is the fourth time in this project that an Orchestrator allowlist
+                     was too narrow, and the first time the consequence was an odd code shape rather than
+                     a blocked session.
+    Impact:          none functional. A reader wonders why a React component carries static data.
+    Correction direction: extract the three arrays to their own module and import them in both places.
+                     Costs one new file and two import lines.
+    Regression test: AC-KEYTYPED already covers the behaviour and would survive the extraction unchanged.
+    Owner:           fold into any later slice that has an independent reason to touch settings/page.tsx;
+                     do NOT spend a slice on it
+    Status:          accepted-residual (Orchestrator, below the INFOSEC 14 medium threshold)
+
+### Two honest reporting details worth keeping
+
+```text
+1  the focused post-fix run is quoted as `6 passed | 35 skipped`. That is a FOCUSED i18n run, not the
+   suite, and the Worker also quoted the full `390 passed | 3 skipped`. Both numbers are true and it
+   distinguished them, which is exactly the precision this project asks for.
+2  it disclosed that a first parallel pytest wrapper lost its continuation handle after 30 seconds and
+   that it re-ran the exact authorized command once with a retained handle. A tooling hiccup, correctly
+   classified as a diagnostic-method issue rather than a product failure, and not smoothed over.
+```
+
+### Item 14 leftover list: nothing unauthorized remains
+
+`30s / 1m / 2m / 3m / 5m` and `10 / 20 / 30 / 50 / 80` are deliberately unlocalized unit abbreviations and
+numbers per prompt D5; `"Escape"` is a KeyboardEvent key name; `selectedModel.display_name` is a model
+identity. **Zero unauthorized hardcoded English.** First slice in this whole where the leftover list is
+empty of real findings — six slices after the report field was introduced.
+
 ## Slice S7 issued — Worker session 08, exchange 01, at `6ca85de`
 
 `feat(i18n): localize the settings screen and the overlay stats bar`. Prompt staged at
