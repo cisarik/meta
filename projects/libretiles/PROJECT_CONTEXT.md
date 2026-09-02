@@ -870,6 +870,28 @@ with a recorded candidate finding: `frontend/src/lib/api.ts:122-132` parses the 
 `/(\d+)\s+seconds/i` against Django's English body, and should read the numeric `Retry-After` header
 instead.
 
+9  ADMIN VERIFICATION LEAVES `ui-internationalization`. Decided 2026-09-02. Acceptance batch B21,
+   which would have had him reorder catalog rows in Django admin and inspect GameSession rows, is
+   **FROZEN with every item NOT TESTED**, and all admin work belongs to `11/00`. His words: *"admin bola
+   odbocka, je to najdolezitejsie pre mna okrem hry proti AI a lokalizacia + UI/UX perfektne.. Toto sa
+   ale netyka tvojho logickeho celku prosim Freeze B21"*.
+
+   HE WAS RIGHT AND THE ORCHESTRATOR WAS DRIFTING. Removing the player-facing picker is `10/00` work;
+   verifying the admin surface that now owns the setting is not. The Orchestrator had followed the
+   evidence across a whole boundary instead of depositing it and stopping.
+
+   His priority order, stated in the same message: **game-vs-AI first, then localization plus UI/UX
+   "perfektne", then admin.**
+
+   All measured admin-surface evidence is deposited in
+   `11/00-admin-provider-model-console/90_admin_surface_evidence_from_era10.md`, written blind to that
+   directory's own `00_handout.md` per his standing do-not-read instruction, and stating that the handout
+   wins on any overlap.
+
+   CONSEQUENCE FOR CLOSURE: `10/00` closure condition "the player no longer chooses a model or a prompt
+   preset" is **MET** at `383011b` and Cooperator-verified by `B20-5`. It does not require the admin side
+   to be demonstrated, and after this decision it must not.
+
 ## 14. Authoritative game alphabet orders — Cooperator-sourced 2026-09-01, Orchestrator-validated
 
 `alphabet_order` is a DECLARED language order for game purposes: tile order, the starting draw, and the
