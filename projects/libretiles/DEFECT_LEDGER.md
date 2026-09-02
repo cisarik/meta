@@ -1585,6 +1585,88 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice S9 issued — Worker session 10, exchange 01, at `d806e31`
+
+`feat(i18n): localize the profile modal and close the date locale defect`. Prompt staged at
+`/tmp/opencode/uii-s9-worker-10-prompt.md`, 386 lines. Archive as `10_implementation_00.md` **only after
+its report exists**. Fresh Implementation Worker, E2.
+
+**This is the LAST copy slice in this logical whole.** After it every user-facing string the frontend owns
+is in four locales, and what remains is accessibility, Django localization and three security residuals.
+
+### Sixteen new keys and ELEVEN reuses — more reuse than new work
+
+```text
+header.profile · nav.settings · game.blocker.close · auth.eyebrow · auth.field.username ·
+auth.field.password · header.logout · header.loggingOut · game.password.updated ·
+game.password.failed · history.unknownDate
+```
+
+All eleven verified present in all four catalogs before writing the prompt. The prompt says in terms that
+duplicating any of them would be a defect, because a second Slovak spelling of "Heslo" is exactly how a
+catalog starts to drift. This is the first slice where reuse outnumbers new authoring, which is what a
+maturing catalog should look like.
+
+### uii-01-F03 will be CLOSED, and the pattern is copied from the half that already shipped
+
+`ProfileModal.tsx:18-27` `formatJoinedDate` is the second and last hardcoded `"en-US"` site. The prompt
+requires the same shape S8 shipped — a `locale` parameter, `en` mapped to `en-US` so English output stays
+byte-identical, the caller resolving via `useLocale()` — so the two sibling functions stay recognisably
+alike rather than diverging into two idioms.
+
+One detail the prompt calls out that a Worker could easily miss: `memberSince` at `:59` is a `useMemo`, so
+**the locale must be in its dependency list** or switching language would leave a stale English date on
+screen. That is the kind of correctness bug that renders fine in a test and wrong in a browser.
+
+Measured in this repository before issuing, so no hand-built month tables are needed:
+
+```text
+en-US  September 2, 2026     sk  2. septembra 2026     cs  2. září 2026     pl  2 września 2026
+en literal matches · sk/cs/pl all differ from en · none contains "September"     SATISFIABLE
+```
+
+### The two localized validation errors are auth-adjacent, and the prompt says why they are safe
+
+`profile.error.allFields` and `profile.error.mismatch` are **client-side form checks**, not server
+responses, so they may safely name which field is wrong. What they must not do is leak anything about the
+ACCOUNT — no username existence, no restatement of whether the current password was right — and neither
+authored string does. The server-side wording stays `game.password.failed` / `game.password.updated`,
+reused unchanged, and `frontend/src/lib/api.ts` is on the forbidden list, so `AC-SEC-1` and `AC-SEC-2` are
+structurally untouched. The Worker must confirm that explicitly.
+
+### ✅ THE ORCHESTRATOR CAUGHT ITS OWN COUNTING ERROR THIS TIME, BEFORE ISSUING
+
+After S8 the ledger recorded: *"For the remaining slices I will count the table programmatically before
+writing the prose number."* Applied immediately, and it fired on the very next prompt:
+
+```text
+first draft prose  FOURTEEN new keys
+programmatic count of the enumerated table   16
+corrected to       SIXTEEN, and re-verified 16 == 16 after the edit
+```
+
+The prompt now also carries an explicit precedence rule in the same paragraph — *"If any prose number in
+this prompt disagrees with the enumerated table, THE TABLE WINS"* — so a future discrepancy resolves
+itself without a Worker having to raise it. Two Workers in a row had to do that raising; the third does
+not.
+
+### Two intentional duplications pinned by a test
+
+`profile.field.current` and `profile.ph.current` carry identical text in every locale, because the field's
+visible label and its placeholder both say "Current password" today. They are two keys because a label and
+a placeholder are different UI roles that a later designer may legitimately want to diverge.
+`profile.email` is `Email` in all four locales because Slovak, Czech and Polish all use that word.
+
+`AC-PROFILE-DUP` asserts both, so neither can be "corrected" into a false distinction — the same shape of
+defence as `AC-POLISH-DUP` and `AC-NO-TELEMETRY-KEY`. That is now three intentional-sameness assertions in
+this catalog, and the pattern is worth naming: **when a translation legitimately coincides, pin it, or
+someone will eventually "fix" it.**
+
+### One trap added from two slices' experience
+
+Two consecutive Workers lost a pytest summary to a session-handle timeout. The prompt now says: retain the
+handle or re-run the exact authorized command once, and *"Do not report a summary you did not see."*
+
 ## Slice S8 landed at `d806e313c7f5b6198452fa68afa5d079059b6f48` — Worker session 09, exchange 01
 
 `feat(i18n): localize the saved-boards history and its dates`. 8 files, +400 -51, parent `4bf4365`, one
