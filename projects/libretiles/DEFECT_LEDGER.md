@@ -571,8 +571,2409 @@ a database migration, and four standing Cooperator locks.
 
 Meta directory: `11/01-multilingual-tile-token-foundation/`. It is `01` rather than `00` because
 `11/00-admin-provider-model-console/` was created earlier. Meta's `<logical-whole-sequence>` is an
-archive-ordering key assigned at creation time, not a priority ranking; execution order is
-`11/01` first, then `11/00`, and that is recorded here so the mismatch is not read as an error.
+archive-ordering key assigned at creation time, not a priority ranking; execution order is `10/00`,
+then `11/01`, then `11/02`, then `11/00`, and that is recorded here so the mismatch is not read as an
+error. An earlier version of this paragraph said "`11/01` first, then `11/00`" and omitted both `10/00`
+and `11/02`; corrected rather than quietly deleted.
+
+### The accepted two-whole split, recorded here so it is not only in the acceptance file
+
+Planning decision 1, ACCEPTED by the Orchestrator on 2026-09-01: the objective splits sequentially into
+`atomic-tile-token-foundation` (generic engine, migration, wire format, AI boundary, frontend state,
+readiness discovery, English/Slovak conversion, synthetic canaries) and then
+`czech-polish-hungarian-variant-activation` (Meta 11/02, NOT STARTED, blocked only on manually supplied
+dictionaries, short-word authorities, approved alphabet orders, and provenance). The boundary is the
+dictionary dependency, which is real and external.
+
+⚠ **RF-19 identity, resolved deliberately by the era-11 Orchestrator rather than drifted into.** Two
+candidate logical-whole identities exist for one Meta directory: `multilingual-tile-token-foundation`,
+carried by the archived Worker exchanges 01/01 and 01/02 and by this ledger, and
+`atomic-tile-token-foundation`, used by the `11/01` handout capsule and by planning decision 1. The
+identity in force is **`multilingual-tile-token-foundation`**. Reasons: the archived exchange
+coordinates and the Meta directory already carry it; the two-whole split narrowed the objective but did
+not materially change it, so RF-19's new-identity-and-reset rule is not triggered; and a new identity
+would reset the session ordinal to `01`, putting two different concrete Worker sessions on ordinal `01`
+inside one archive directory. `atomic-tile-token-foundation` and `czech-polish-hungarian-variant-
+activation` are therefore scope labels, not RF-19 identities. Slice F1 is session `02`, exchange `01`.
+
+## Slice F1 landed at `9f0c5b8141b94785f26f84fd0104131f063c3ed6` — Worker session 02, exchange 01
+
+`feat(engine): make tile tokens atomic in the pure game engine`. 26 files, +1225 −131, parent
+`1b7b05d`, one non-force push, public readback equal. Orchestrator verdict: **implementation-PASS,
+ACCEPTED.** Evidence is **non-independent** by design — the whole receives one fresh independent R4
+application audit after slice F3.
+
+### What the Orchestrator re-verified rather than accepted from the report
+
+Every material claim was re-measured. Two reproductions matter more than the rest:
+
+**1. The seeded-bag promise is PROVEN, not asserted.** Design decision 4.2 said the bag order must not
+move, because `letters` order feeds `distribution`, which is the pre-shuffle tile sequence for
+`TileBag`. The Orchestrator reconstructed the first twenty draws **from the baseline `1b7b05d` manifest
+blobs using baseline logic only** — the old `len(letter) != 1` filter, sort by token, dict insertion
+order, `random.Random(seed).shuffle` — and got sequences byte-identical to the four the Worker pinned
+in `test_seeded_bag_first_twenty_draws_match_baseline_1b7b05d`, which passes at `9f0c5b8`:
+
+```text
+english seed  1  M H O L A E I A A S I H T L X U O D S G
+english seed 42  I I U A O L ? P D S R A N N R I K V R H
+slovak  seed  1  O K R O A E L A A Y M K Ä O Ŕ Ý S D X J
+slovak  seed 42  M M Č A R O ? T D V T A O O T N N Ď V K
+```
+
+Two-sided: the values match a baseline reconstruction AND the test pinning them passes at HEAD.
+Therefore seeded games are unchanged. The Worker did not pin post-change values and label them baseline.
+
+**2. The formed-word invariant holds, probed live against the new authority.**
+
+```text
+word                      physical  codepoints  route      accepted
+OSAMENIU (contains AM)        8          8      main       True     <- invariant intact
+AM as a COMPLETE 2-tile word  2          2      two_tile   False
+Á + CS                        2          3      two_tile   True     <- the defect this fixes
+Á + C + S                     3          3      main       True     <- keyed on tiles, not string
+```
+
+`Á`+`CS` is the case `backend/game/services.py:209-222` gets wrong today, because
+`_word_passes_dictionary` keys the two-letter rule on `len(w) == 2` in **code points**. The new
+authority keys on `len(word.letters)`, the coordinate count. A source audit for substring patterns in
+`word_authority.py` returned none.
+
+### Gates at `9f0c5b8`, Orchestrator-measured
+
+```text
+mypy               Success: no issues found in 81 source files   (80 + word_authority.py)
+ruff               All checks passed!
+manage.py check    System check identified no issues (0 silenced).
+pytest             352 passed, 4 skipped in 195.32s              (328 + 24; none lost, none skipped)
+npm run typecheck  exit 0                        <- the code type-checks
+npx vitest run     342 passed | 3 skipped        <- unchanged, which proves no frontend file changed
+npm run lint       exit 0
+npm run build      exit 0, every route ƒ, Proxy registered, no deprecation warning   <- the build passed
+```
+
+### Boundary discipline, verified line by line
+
+The two narrowly bounded `backend/game/` files changed **exactly** the five permitted lines and nothing
+else: `services.py` line 52 import plus call sites 128 and 138; `diagnostics.py` line 31 import plus
+call site 331. All five are the `load_two_letter_allowlist` → `load_two_tile_words` rename. No frontend
+file, no migration, no model, no `config/`, `accounts/`, `catalog/`, `billing/`, no documentation.
+Locks A–D untouched. The ten untracked flag images are still untracked and unstaged.
+
+The asset rename is recorded by Git as **R100** and the Orchestrator computed the SHA-256 of both the
+new file and the baseline blob: `e2587f15c19c9046d013d161a06ba54deab0d05bee9f2dd2ac47c3d151048402`,
+identical. 103 entries, old name absent.
+
+`alphabet_order` in both manifests matches `PROJECT_CONTEXT.md` section 14 token for token — English 26,
+Slovak 46. Neither manifest declares `vowels`, as required. `letters=tuple(sorted(...))` is preserved at
+`variant_store.py:393` with a comment recording that it has no game meaning.
+
+### Adjacent hardening the Worker did inside the allowlist, disclosed rather than silent
+
+The loader now **raises** `VariantManifestError` with a stable `code` on a malformed `letters` row,
+where it previously did a silent `continue`. That is stricter than the named scope and is desirable —
+a silently skipped tile row is exactly how the Hungarian defect hid — but it is recorded here because
+it is a behaviour change beyond the literal instruction.
+
+### Two latent notes for F2 and F3
+
+```text
+1  VariantDefinition.playable_letters resolves alphabet positions with a bare index[token] lookup.
+   A hand-constructed VariantDefinition with an empty alphabet_order would raise KeyError. NOT
+   reachable today: the Orchestrator grepped and there is no `VariantDefinition(` construction
+   anywhere outside variant_store.py. Do not introduce one without alphabet_order.
+2  WordAuthority.is_lexical_word is a deliberately permissive searcher prune over a concatenated
+   string and does NOT apply physical length. That is safe only while accepts_formed_word over a
+   WordFound remains the final gate. F2 must not promote is_lexical_word to a legality decision.
+```
+
+### F2 obligations handed forward — none of these is done
+
+```text
+- delete _word_passes_dictionary and re-point the evaluate_scoring_move callers in services.py and
+  diagnostics.py at WordAuthority. Two authority paths must not become permanent.
+- invert Cell storage onto token/blank_as and remove the derived properties added in F1
+- wire VariantDefinition.slot0_wins_starting_draw into _perform_starting_draw. uii-01-F07 is NOT
+  corrected by F1; only its pure ordering half exists.
+- correct uii-01-F06: bag_tiles string length, character split, and the _persist_board join
+- migrations 0008/0009, preceded by their own separate read-only preflight
+- build_ai_state_dict is still lossy for multi-code-point cells; that is F3's, not F2's
+```
+
+### Residual-Risk Decision record — Slovak vowel classification
+
+```text
+Finding ID: mtt-F1-R01
+Decision: accepted-residual
+Severity: low
+Approver: Orchestrator (below the INFOSEC 14 medium threshold that requires Cooperator sign-off)
+Regression test: test_declared_vowels_change_leave_quality_slovak_stays_on_default — proves the
+  mechanism reacts to a declared `vowels` list and that Slovak deliberately stays on the default
+Rationale: neither english.json nor slovak.json declares `vowels`, so the default "AEIOU" still
+  classifies Á Ä É Í Ó Ô Ú Ý as consonants in ranked leave quality. Measured effect on a synthetic
+  variant: declaring Á as a vowel moves leave imbalance from 2 to 0 on rack ["Á","B"]. This was a
+  deliberate instruction, not an oversight: the engine authors every move in this product, the
+  measured Slovak engine numbers (520–560 per side, ~29 plies, all 17 single-copy diacritic tiles
+  consumed) were produced under the current ranking, and changing what the player watches the AI play
+  needs its own measured decision rather than a side effect of a token refactor.
+Recorded in: this ledger and 02_report_00.md item 10
+```
+
+
+### F2 read-only preflight — Worker session 03, exchange 01, at `9f0c5b8`
+
+Verdict: **preflight PASS, ACCEPTED.** Read-only; the repository is still at `9f0c5b8`, porcelain is still
+exactly the ten flag images, no commit, no push, and the live SQLite file is byte-for-byte untouched
+(`389120` bytes, mtime `2026-09-01 14:18:34.571546513 +0200`, verified by the Orchestrator after the
+Worker's cleanup). The authorized temporary root `/tmp/opencode/mtt-f2-preflight/` is confirmed absent.
+
+The Orchestrator re-measured the database independently through a read-only `mode=ro` connection.
+**Eighteen of eighteen row counts match the report exactly**, as does the table count, the FK topology,
+`journal_mode`, `integrity_check`, and the migration leaf.
+
+```text
+five target tables      game_chat_message 2   game_move 42   game_player_slot 58
+                        game_session 29       game_consumed_ws_ticket 1        total 132
+protected               accounts_user 4  catalog_ai_model 12  catalog_ai_prompt 4
+                        token_blacklist_outstandingtoken 23  ...blacklistedtoken 5
+                        all four axes_* 0    django_migrations 63    django_content_type 19
+                        auth_permission 76   sqlite_sequence 17
+tables total            24
+billing_% tables        ABSENT (app not in INSTALLED_APPS; disk migrations never applied)
+inbound FKs to the five 4 edges, ALL from inside the five; from outside: ZERO
+outbound to protected   game_session.ai_model_id, .ai_prompt_id, game_player_slot.user_id,
+                        game_chat_message.user_id — Django on_delete SET_NULL, so deleting a GAME row
+                        never touches the protected row
+journal_mode            delete   (no -wal / -shm sidecars exist)
+integrity_check         ok
+game leaf               0007_consumedwsticket; 0008 and 0009 do not exist
+database                sqlite3, /home/agile/Projects/libretiles/backend/db.sqlite3
+```
+
+**The five targets are NOT empty.** 132 rows. F2's purge is therefore a real irreversible deletion and
+**does** require the explicit opt-in flag; the empty no-op path must still be proven synthetically.
+
+#### Orchestrator precision correction on one reported value
+
+The report states `PRAGMA foreign_keys = 1`. A raw `sqlite3.connect()` from the Orchestrator reports
+`0`. **Neither is wrong** — `PRAGMA foreign_keys` is a **per-connection** setting, not a database
+property. The Worker measured it through the Django connection, which is the correct lens because that
+is the connection `migrate` uses; the Orchestrator measured a bare connection, which defaults to OFF.
+Recorded so a future reader does not "fix" a non-defect. The consequence for F2 is real: FK enforcement
+depends on which connection performs the deletion, so F2 must not depend on PRAGMA state at all.
+
+#### Findings the accepted plan did not name, all accepted into F2's boundary
+
+```text
+1  SQLite stores every one of these FKs as ON DELETE NO ACTION while the Django models declare
+   CASCADE / SET_NULL. A raw parent DELETE therefore fails while children exist, and disabling FK
+   checks would make it unconstrained. CONSEQUENCE, now mandated: F2 deletes through named historical
+   models with ORM querysets, never raw SQL, and never touches PRAGMA foreign_keys.
+2  game_consumed_ws_ticket has no FK in either direction. A collector delete of GameSession will NOT
+   remove tickets. Step 5 of the authorized order is mandatory and independent, not redundant.
+3  The Cooperator's runserver holds db.sqlite3 open (pid 211102 at inspection; re-check at apply time,
+   never assume the PID). F2's first stage gate is a Cooperator-stopped Django process.
+4  journal_mode is `delete`, not WAL, so no sidecar copy is needed today — but the checkpoint must use
+   the SQLite `.backup` API rather than a plain file copy, because a process holds the file open and
+   the mode can change.
+5  sqlite_sequence AUTOINCREMENT counters survive DELETE and its own row count stays 17. F2 must not
+   DELETE FROM sqlite_sequence, and no test may expect primary keys to restart at 1.
+6  If any billing_% table ever exists, F2 must REFUSE: historical billing_transaction declared
+   SET_NULL to game_session, which would mean a session delete updating unauthorized rows.
+```
+
+#### Checkpoint and restore recipe, accepted as F2's stage gate
+
+```text
+checkpoint   sqlite3 <DB> ".backup '<ABS>/db.sqlite3.f2-checkpoint'"      (Django stopped)
+restore      cp <ABS>/db.sqlite3.f2-checkpoint <DB>                        (Django stopped)
+never        VACUUM on the live file; restore into an open database
+```
+
+#### Migration-test harness the project already owns — F2 must reuse it, not invent one
+
+`TransactionTestCase` plus `MigrationExecutor(connection).migrate(...)` with historical models from
+`executor.loader.project_state(...).apps.get_model(...)`; destructive/irreversible data steps use
+`call_command("migrate", app, target, verbosity=0)` or import the `RunPython` callables directly;
+teardown always calls `backend/tests/_migration_restore.py` `restore_apps_to_leaf(*app_labels)`, which
+resolves the live graph leaf rather than pinning a name. `test_creditless_migration.py` is the closest
+existing cousin to a purge and is the model to follow.
+
+### ORCHESTRATOR SCOPE DECISION: the accepted plan's slice F2 is SPLIT into three
+
+The accepted plan's F2 bundles the purge migration, the schema migration, the REST and websocket v4
+change, and the frontend state change into one slice. That is the exact shape the era-09 lesson and
+`PROMPT_ENGINEERING_PATTERNS` P05 forbid: one allowlist covering a migration, a persistence rewrite, a
+wire-format change and a frontend rewrite produces a diff nobody can review honestly. Era 09 split S7
+into S7a/S7b for the same reason.
+
+```text
+F2a  the irreversible purge, ALONE.  migration 0008 + the fail-closed setting +
+     backend/.env.example + migration tests. E4. Requires the Cooperator to stop Django and a
+     verified .backup checkpoint. No schema change, no REST, no websocket, no frontend.
+F2b  backend persistence and legality.  migration 0009 (drop blanks, retype bag_tiles, structured
+     board_state), the services/serializers persistence paths, uii-01-F06, the uii-01-F07 wiring, and
+     re-pointing evaluate_scoring_move at WordAuthority with _word_passes_dictionary deleted.
+     The REST and websocket payload shape stays UNCHANGED behind a documented temporary adapter.
+F2c  wire format and frontend, together.  REST/websocket state_schema_version 4, BoardCell[][],
+     localStorage v4, board/tile/blank/draw rendering — and the F2b adapter is deleted here.
+```
+
+Why F2b keeps the wire shape frozen behind a throwaway adapter: if the backend emitted v4 while the
+frontend still read v3, the product would be broken between two slices. The Cooperator opens this
+application, and a fresh clone that crashes is a first-class defect in his frame. A small named adapter
+that one later slice deletes is cheaper than a broken window. Each of the three slices is green at its
+own commit and the product never breaks.
+
+
+### F2a exchange 01 returned PARTIAL / NEEDS_ORCHESTRATOR_DECISION — and the Worker was right to stop
+
+Worker session 04, exchange 01, at `9f0c5b8`. It wrote the four-path candidate, ran the eight gates,
+hit a red pytest, and **stopped at gate G1 without applying anything**. Orchestrator-verified: `HEAD`
+still `9f0c5b8`, no commit, no push, `django_migrations` still 63, the five target tables still hold
+132 rows, `backend/db.sqlite3` mtime unchanged at `2026-09-01 14:18:34.571546513 +0200`, no checkpoint
+directory, and porcelain carrying exactly the four candidate paths plus the ten flag images.
+
+It also declined to make `0008` reversible to force the gate green, which would have destroyed the
+honesty of the irreversibility contract. That was the right call.
+
+#### The measured blocker
+
+```text
+tests/test_scoreless_turns_migration.py:14   executor.migrate([("game","0005_remove_money_state")])
+  -> IrreversibleError, raised from game/migrations/0008_purge_legacy_game_state.py:33
+```
+
+That test walks the `game` graph backward to `0005` to exercise the `0006` column rename. An
+irreversible `0008` sits on that backward path. Orchestrator-reproduced.
+
+#### ORCHESTRATOR MEASUREMENT: the Worker's own recommended fix would have failed at the next gate
+
+The Worker recommended option A — expand the allowlist by `test_scoreless_turns_migration.py` and
+fake-unapply `0008` before the backward walk. That fixes line 14. **It does not fix line 34.**
+`restore_apps_to_leaf("game")` in that test's `finally` re-applies `0008` **forward** while the
+`GameSession` row created at line 17 still exists, and the fail-closed guard fires. Measured with a
+throwaway probe test against the test database, removed immediately afterwards:
+
+```text
+PROBE rows before teardown: 1
+PROBE teardown re-apply: RAISED RuntimeError: Refusing to purge non-empty game state because
+  ALLOW_DESTRUCTIVE_GAME_STATE_RESET is false.
+```
+
+So a data-destroying, fail-closed, irreversible migration is hostile to Django's own test harness in
+**two independent directions** — backward because it is irreversible, forward because its guard raises
+on re-apply. Patching the one visible symptom would have hit the second one immediately. This is the
+mechanism being wrong, not a test defect.
+
+A **third** hazard follows by the same mechanism and was deliberately not measured, because the chosen
+fix makes it unreachable: `test_creditless_migration.py::test_cleanup_migrations_are_irreversible`
+asserts that migrating `game` back to `0004` raises. With an irreversible `0008` in the graph it would
+raise at `0008` and never reach `0005`, so the test would keep passing while no longer proving what it
+was written to prove. Recorded because the reasoning must stay legible, and labelled unmeasured.
+
+### ORCHESTRATOR DECISION: the purge is a management command, not a migration
+
+**This deviates from accepted planning decision 2 and from `11/01/00_handout.md` section 7**, both of
+which specified migration `0008_purge_legacy_game_state`. The Cooperator-authorized *behaviour* is
+unchanged — delete development game state in those five tables, fail-closed, never any other table.
+Only the mechanism changes. Mechanism is Orchestrator-owned; the deviation is recorded here rather than
+absorbed silently.
+
+```text
+BEFORE   migration game.0008 deletes rows during `manage.py migrate`
+AFTER    manage.py purge_legacy_game_state deletes rows when an operator runs it, and F2b's schema
+         migration REFUSES to run while legacy rows remain
+```
+
+Six reasons, in descending weight:
+
+```text
+1  `manage.py migrate` must never be destructive. Under the migration design a production deployment
+   carrying ALLOW_DESTRUCTIVE_GAME_STATE_RESET=true in its environment — a plausible copy-paste —
+   would silently delete every production game during a routine migrate. The plan states in terms that
+   production deletion is not authorized and needs separate authority, a verified backup, and a
+   maintenance window. A command makes that accident impossible; a migration invites it.
+2  Onboarding stays intact. README.md documents `manage.py migrate` as the first command a fresh clone
+   runs, and acc-01-D06 was precisely "a fresh clone cannot boot and the documented onboarding path is
+   broken". A migration that aborts whenever game rows exist re-breaks that path.
+3  Both measured hazards disappear rather than being patched. No irreversible node enters the graph, so
+   test_scoreless_turns_migration.py needs no change and no fifth allowlist path. No forward guard sits
+   inside a migration, so the teardown re-apply hazard is gone for every current and future test.
+4  The third hazard above becomes unreachable.
+5  E4 wants stage separation. Hiding an irreversible deletion inside `migrate` is the opposite of it.
+6  It is directly testable with call_command, with no migration-graph gymnastics.
+```
+
+Costs, stated rather than minimised: the purge is no longer a `django_migrations` row, so its evidence
+lives in the command's logged pre/post counts, the Worker report, and this ledger. And ordering now
+depends on F2b's guard instead of graph position — which is why that guard is a mandatory F2b
+obligation, with its own test proving both the refusal and the clean pass on empty tables.
+
+Consequence for numbering: **F2b's schema migration is `0008_atomic_token_state_schema`, not `0009`.**
+The accepted plan called it `0009` because `0008` was to be the purge. There is no gap and nobody
+should hunt for a missing `0008`.
+
+Reissued as Worker session 04 **exchange 02**, `current-worker-session`, profile Bounded Correction
+Worker. Current-session renewal is proportionate: the session is healthy, mutated nothing beyond its
+own four candidate paths, holds the measured database facts and the migration-harness knowledge the
+correction needs, and independence is not required for implementation — the whole's independent
+acceptance remains the post-F3 R4 audit. The changed assumption is fully respecified in the new prompt,
+including an explicit instruction to delete the migration file, so no stale assumption survives.
+
+
+
+## Slice F2a landed at `3fd1a81d79b95a1244db9aa9d4b84ba75a59d6f0` — Worker session 04, exchange 02
+
+`feat(game): add a fail-closed command to purge legacy development game state`. Four files, +353 −0,
+parent `9f0c5b8`, one non-force push, public readback equal. Orchestrator verdict:
+**implementation-PASS, ACCEPTED.** Evidence is **non-independent**; the whole's fresh independent R4
+application audit is still owed after slice F3.
+
+**The Cooperator's development game state is gone, and the protected tables are provably untouched.**
+The Orchestrator re-measured all 24 tables against the pre-purge map independently rather than
+accepting the report: **zero mismatches.**
+
+```text
+five targets    game_chat_message 2->0   game_move 42->0   game_player_slot 58->0
+                game_session 29->0       game_consumed_ws_ticket 1->0
+protected       all NINETEEN other tables byte-identical: accounts_user 4, catalog_ai_model 12,
+                catalog_ai_prompt 4, token_blacklist 23 and 5, all four axes_* 0,
+                django_content_type 19, auth_permission 76, sqlite_sequence 17, django_session 0,
+                django_admin_log 0, auth_group 0, auth_group_permissions 0,
+                accounts_user_groups 0, accounts_user_user_permissions 0
+django_migrations  63 -> 63 and game leaf still 0007_consumedwsticket, zero rows matching game/0008%
+                   — a POSITIVE assertion: the purge is not a migration and left the graph alone
+billing_%       still ABSENT      integrity_check  ok      tables 24
+sqlite_sequence game_session seq is still 29, so primary keys did NOT reset. Preflight finding 5 is
+                now locked in observed reality, not only in a test.
+```
+
+### Gates at `3fd1a81`, Orchestrator-measured
+
+```text
+mypy               Success: no issues found in 82 source files   (81 + the new command module)
+ruff               All checks passed!
+manage.py check    System check identified no issues (0 silenced).
+pytest             361 passed, 4 skipped in 196.18s              (352 + 9 new cases)
+npm run typecheck  exit 0                        <- the code type-checks
+npx vitest run     342 passed | 3 skipped        <- unchanged, proving no frontend file was touched
+npm run lint       exit 0
+npm run build      exit 0, every route ƒ, Proxy registered      <- the build passed
+```
+
+**`tests/test_scoreless_turns_migration.py` is green again and was never touched** — verified by
+running it alone (`1 passed`) and by confirming it is absent from the commit. That is the direct proof
+that the mechanism change fixed the blocker instead of patching its symptom.
+
+### The recovery checkpoint, verified usable rather than merely present
+
+```text
+path        /tmp/opencode/mtt-f2a-checkpoint/db.sqlite3.f2a-checkpoint
+size        389120 B     mode 0644     created with /usr/bin/sqlite3 .backup, not cp
+SHA-256     af196f178cf1e711401c3d9912deb7896200c3a65365d8bc14b1718e06039931
+integrity   ok
+contents    the Orchestrator opened it read-only and read back chat 2, move 42, slot 58, session 29,
+            ticket 1, accounts_user 4 — the exact pre-purge state
+cleanup     retain-with-reason. Owner: the COOPERATOR. It is the ONLY recovery path for an
+            irreversible operation and must not be deleted until he is satisfied.
+```
+
+### Boundary discipline
+
+The commit contains exactly four paths: `backend/.env.example`, `backend/config/settings.py`,
+`backend/game/management/commands/purge_legacy_game_state.py`,
+`backend/tests/test_purge_legacy_game_state.py`. No `*.sqlite3` and no `.env` in the commit. No
+migration file was ever committed — `git log --all` over that path returns nothing, so the deleted
+`0008` candidate exists in no history anywhere. Porcelain after the push is exactly the ten flag
+images. Locks A–D untouched. No frontend file, no `models.py`, no `services.py`, no `gamecore/`.
+
+The command honours both preflight findings that constrained it: it deletes through ORM querysets and
+never raw SQL, inside `transaction.atomic()`, and it lists `ConsumedWsTicket` explicitly because that
+table has no foreign key in either direction and no cascade would reach it. `--dry-run` is checked
+**before** the flag, so the safe reporting path needs no privilege; the flag gate uses
+`getattr(settings, ..., False)` so a missing setting also fails closed.
+
+### One Worker near-miss worth keeping
+
+The first mypy run failed with `"type[Model]" has no attribute "objects"` because annotating the model
+tuple as `tuple[type[Model], ...]` erased the managers. Fixed by dropping the annotation and letting
+mypy infer the five concrete classes. Reported unprompted. It is the kind of adjacent detail that a
+Worker hiding friction would have quietly smoothed over.
+
+### Residual, accepted: the purge is no longer a `django_migrations` row
+
+```text
+Finding ID: mtt-F2a-R01
+Decision: accepted-residual
+Severity: low
+Approver: Orchestrator (below the INFOSEC 14 medium threshold requiring Cooperator sign-off)
+Regression test: not applicable — this is a property of the chosen mechanism, not a code defect
+Rationale: moving the purge from a migration to a command means it leaves no row in
+  django_migrations. Its durable evidence is instead the command's logged pre/post counts, the
+  Worker report 04_report_01.md, and the 24-table before/after map in this ledger. Ordering against
+  the schema migration is no longer guaranteed by graph position and is therefore a MANDATORY F2b
+  obligation: migration 0008_atomic_token_state_schema must REFUSE to run while any of the five
+  tables is non-empty, naming `manage.py purge_legacy_game_state`, with its own test for both the
+  refusal and the clean pass. If F2b omits that guard, this residual becomes a real defect.
+Recorded in: this ledger and 04_report_01.md item 13
+```
+
+### F2b obligations — the guard is now the first of them
+
+```text
+- MANDATORY, new: migration 0008_atomic_token_state_schema REFUSES to run while any of the five
+  game-state tables is non-empty, with an error naming `manage.py purge_legacy_game_state`. A refusal,
+  never a deletion. Two tests: refuses when non-empty, passes cleanly when empty.
+- F2b's schema migration is numbered 0008, NOT 0009. The accepted plan said 0009 because 0008 was to
+  be the purge. There is no gap; nobody should hunt for a missing 0008.
+- delete _word_passes_dictionary and re-point evaluate_scoring_move at WordAuthority. Two authority
+  paths must not become permanent.
+- invert Cell storage onto token/blank_as and remove the F1 derived properties
+- wire VariantDefinition.slot0_wins_starting_draw into _perform_starting_draw. uii-01-F07 is still
+  NOT corrected; only its pure ordering half exists.
+- correct uii-01-F06: bag_tiles string length, character split, and the _persist_board join
+- keep the REST and websocket payload shape UNCHANGED behind a documented temporary adapter, which
+  F2c deletes. The product must not be broken between two slices.
+- build_ai_state_dict is still lossy for multi-code-point cells; that is F3's, not F2b's
+```
+
+
+
+### Slice F2b scope, and why the Cooperator playing a game changed its stage 0
+
+F2b is scoped to **representation plus the two live defects, and nothing behavioural**: migration
+`0008_atomic_token_state_schema` with the mandatory refusal guard, structured `board_state`, JSON
+`bag_tiles`, `blanks` removed, `uii-01-F06` (the bag count that is a string length), `uii-01-F07` (the
+starting draw that sorts `Á` after `Z`), and a temporary wire adapter that keeps the emitted REST and
+websocket payloads byte-identical.
+
+Deliberately **excluded** from F2b and deferred to F2c: re-pointing `evaluate_scoring_move` at
+`WordAuthority` and deleting `_word_passes_dictionary`; relaxing the `serializers.py` one-code-point
+placement filter; and the wire format and frontend. Keeping "what is legal" and "what the browser sees"
+out of the persistence slice is what makes the diff reviewable, and the serializer filter staying in
+place is what guarantees no multi-token placement can arrive before the wire can carry it.
+
+The `Cell` storage inversion onto `token` / `blank_as` is **deferred and may be dropped entirely with a
+recorded decision.** F1's derived properties are functionally equivalent, and inverting the fields would
+force a rewrite of every `.letter` read and write in `game/` for no behavioural gain.
+
+Two adapter properties that make it safe rather than merely convenient: it is built from the structured
+grid so every existing consumer sees byte-identical output, and **it raises on any token longer than one
+code point** rather than truncating. Not reachable today — only English and Slovak variants exist and
+both are single-code-point — and the raise is what guarantees it can never be reached silently.
+
+**`backend/game/admin.py:112` is in the allowlist and that is not optional.** It lists `"blanks"` in
+`GameSession.readonly_fields`; removing the model field without removing that entry makes Django's admin
+system check fail, so `manage.py check` would go red. Found by the Orchestrator before issuing the
+prompt, which is the era-09 "allowlist too narrow" lesson applied prospectively for once.
+
+#### The Cooperator played a game, exactly as he was invited to
+
+Measured while writing the F2b prompt: `game_session 1`, `game_player_slot 2`. He was asked to verify the
+product still works after the F2a purge, so this is expected and correct behaviour, not a problem. But
+F2b's schema migration must run on empty tables.
+
+Resolution, written into the prompt as a two-branch stage 0 rather than a blocking stop: if the five
+tables are empty the Worker proceeds; if any holds a row the Worker takes a **fresh** checkpoint into
+`/tmp/opencode/mtt-f2b-checkpoint/` — explicitly forbidden from touching the F2a checkpoint, which
+belongs to the Cooperator — proves it usable, runs `--dry-run`, then runs the committed
+`purge_legacy_game_state` command with the one-shot flag, and asserts the five empty with every
+protected table unchanged. That is inside his standing authorization (`obetovatelne - vsetky rozohrate
+vymazat predsa, su to len testovacie hry`) and it doubles as second real-use evidence that the F2a
+command works.
+
+Recurring consequence worth stating once: **every game he starts before a schema slice lands will be
+deleted by that slice.** He has accepted the class of loss; the per-instance cost is a fresh checkpoint
+and one command.
+
+
+
+## Slice F2b landed at `8c00a331560f16b7d27eae04dc789a5124dd4497` — Worker session 05, exchange 01
+
+`feat(game): store atomic tokens and fix the bag count and starting draw`. Nine files, parent
+`3fd1a81`, one non-force push, public readback equal. Orchestrator verdict: **implementation-PASS,
+ACCEPTED.** Evidence non-independent; the whole's fresh independent R4 audit is still owed after F3.
+
+**Two live shipped defects are now corrected**, both with pre-fix evidence:
+
+```text
+uii-01-F06   bag_remaining was a STRING LENGTH. Retyping bag_tiles to a JSON token array makes
+             len() correct by construction. Pre-fix captured: len("SZA") == 3 where 2 tiles exist.
+uii-01-F07   the starting draw compared raw tile strings, so ('Á' <= 'Z') was False and all
+             seventeen single-copy Slovak diacritic tiles lost to Z. Now routed through F1's
+             variant.slot0_wins_starting_draw. Pre-fix captured: slot0_first False for Á vs Z.
+```
+
+### Orchestrator-verified at `8c00a33`
+
+```text
+blanks column       ABSENT from game_session          <- the schema change actually landed
+bag_tiles           present, now JSON
+game leaf           0008_atomic_token_state_schema    django_migrations 63 -> 64
+five game tables    all 0        accounts_user 4      catalog_ai_model 12     integrity_check ok
+mypy                Success: no issues found in 83 source files
+ruff                All checks passed!
+manage.py check     System check identified no issues (0 silenced.)
+pytest              370 passed, 4 skipped in 197.79s   (361 + 9 new P-cases)
+frontend            typecheck exit 0, vitest 342 passed | 3 skipped, lint exit 0, build exit 0
+both checkpoints    F2a af196f17…39931 and F2b 3e9438ac…70a4 intact and unmodified
+```
+
+The temporary wire adapter is `_legacy_wire_board_and_blanks` at `services.py:327-364`, called from
+`_build_state:442`. Verified in source: it **raises** `ValueError` on any token or `blank_as` longer than
+one code point rather than truncating, and its removal condition is recorded in both the docstring and
+the raise message — deleted when the wire format moves to `state_schema_version` 4.
+
+`_word_passes_dictionary` is byte-identical, `serializers.py` has an empty diff, `gamecore/` is
+untouched, and the emitted wire shape is unchanged. The frontend suite staying at 342 across three
+consecutive slices is the standing proof that no frontend file has been touched yet.
+
+### ORCHESTRATOR ERROR: the ninth path was my allowlist failure, and I had already measured the hazard
+
+The Worker disclosed a **ninth path** beyond my eight-path allowlist:
+`backend/tests/test_scoreless_turns_migration.py`, one four-line addition deleting a leftover
+`game_session` row before `restore_apps_to_leaf("game")`.
+
+Cause, and it is mine. During F2a I **measured** with a throwaway probe that
+`restore_apps_to_leaf("game")` re-applies a forward-raising migration while that test's row still
+exists, and I used that measurement to move the purge out of the migration graph. Then F2b's refusal
+guard reintroduced **exactly the same shape** — a forward-raising `RunPython` on the `game` graph — and I
+did not put that test in the allowlist. I had the evidence in hand two slices earlier and failed to
+apply it. That is failure mode 7 from the handout, repeating despite a measurement.
+
+Disposition: **accepted.** The Worker did the right thing rather than the compliant thing. It had
+already blocked once on this slice family, AP prohibits a third equivalent cycle without new evidence,
+the correction is four lines in a test's `finally`, it mirrors the P1 harness, and leaving it out would
+have published a red suite. It disclosed the deviation prominently with its reasoning. Recorded as an
+Orchestrator allowlist defect, not a Worker boundary breach.
+
+### Two latent items, recorded not fixed
+
+```text
+1  tests/diagnostics/test_turn_probe.py apply_scenario still writes a joined-string board_state and
+   sets session.blanks as a NON-FIELD attribute, which now silently does nothing. Empty-board fixtures
+   still pass because a skipped string row reads as empty; a seeded-board diagnostic fixture would
+   load as an empty board. Outside the allowlist, correctly not fixed. Owner: F3.
+2  TileBag(tiles=[]) treats an empty list as "fill from the distribution", so an empty persisted bag
+   would silently reload as a full 100-tile bag. The Worker hit this as a real test failure
+   (game_end_reason empty instead of BAG_EMPTY_AND_PLAYER_OUT) and fixed _bag_from_session before the
+   full suite. Reported unprompted. This is exactly the class of persistence bug the slice existed to
+   catch, and it is the strongest single piece of evidence that the slice was worth doing.
+```
+
+## Logical whole `czech-polish-hungarian-variant-activation` (Meta 11/02) — the dictionary blocker is NOT what it appeared to be
+
+**The Cooperator was right and the recipe was already in the repository.** He recalled that an earlier
+Orchestrator sourced dictionaries from LibreOffice with licences and was certain it could be repeated.
+Verified rather than taken on trust:
+
+```text
+backend/assets/dicts/slovak.LICENSE:2
+  Source: LibreOffice dictionaries sk_SK at commit 75f5dff8c972fff4a32e4ea8434722c277f02a3f
+  hunspell-sk v2.4.8
+  SPDX-License-Identifier: GPL-2.0-only OR LGPL-2.1-only OR MPL-1.1
+
+backend/scripts/build_slovak_lexicon.py      209 lines, a complete reproducible build tool
+  pinned commit, four pinned files with SHA-256 assertions, tri-licence check on README_en.txt,
+  `unmunch <dic> <aff>`, NFC + casefold + isalpha + len>=2 filter, dedupe, sort,
+  bounds check [80_000, 5_000_000], provenance header, attribution + verbatim upstream licence
+/usr/bin/unmunch and /usr/bin/hunspell are both present on the host
+```
+
+So `11/02` was never blocked on manual hunting. It is blocked on **running the existing recipe three
+more times**. Issued as a read-only Fresh Evidence Probe, session 01 exchange 01, writing only to
+`/tmp/opencode/cph-dicts/` so it cannot collide with a concurrent repository slice.
+
+### Two findings that materially shrink 11/02
+
+```text
+1  TWO-LETTER AUTHORITY FILES ARE NOT REQUIRED. VariantDefinition.two_tile_words_file is optional;
+   English ships without one and the word authority then routes physical-2 words to the main
+   dictionary. Czech, Polish and Hungarian ship the same way. What looked like a second sourcing
+   blocker — official cs/pl/hu two-letter Scrabble lists — is not a blocker at all. The dictionary
+   probe reports the length-2 word inventory per language so a curated filter can be judged later on
+   evidence rather than assumed necessary.
+2  THE BOUND IS A REPORT-AND-STOP, NOT A KNOB. Slovak expanded to 3 005 252 unique words. Polish
+   hunspell is known to expand very large and Hungarian compounds aggressively, so either may exceed
+   MAX_UNIQUE = 5_000_000. The probe is forbidden from raising the bound, truncating, sampling, or
+   filtering harder to fit; it must report the count and stop for that language. An out-of-range count
+   is evidence, not an obstacle.
+```
+
+Licence caution written into the probe: Slovak's tri-licence must **not** be assumed for the other
+three. The probe quotes the actual licence text per language and derives SPDX from it, and a licence
+that does not clearly permit redistribution and modification makes that language `BLOCKED` — a material
+Cooperator decision, not a Worker judgement.
+
+
+
+### Dictionary acquisition probe — Worker session 01 exchange 01 of `11/02`, read-only at `8c00a33`
+
+Verdict: **Czech and Polish ACCEPTED as candidates. Hungarian REJECTED for gameplay.** Repository
+untouched — `HEAD` still `8c00a33`, porcelain still exactly the ten flag images, nothing created,
+edited, or staged. Artifacts retained in `/tmp/opencode/cph-dicts/`, cleanup owned by the Cooperator.
+
+All three from LibreOffice `dictionaries` at the **same pinned commit** as Slovak,
+`75f5dff8c972fff4a32e4ea8434722c277f02a3f`, every upstream SHA-256 recorded and reproduced.
+
+```text
+language   unique words   bytes        vs Slovak   licence (derived SPDX)
+slovak      3 005 250     45 456 204     1.00x     GPL-2.0-only OR LGPL-2.1-only OR MPL-1.1  (shipped)
+czech       3 930 497     54 105 021     1.31x     GPL-2.0-only
+polish      3 721 704     51 607 141     1.24x     GPL / LGPL / MPL-1.1 / Apache-2.0 / CC-SA-1.0
+hungarian      81 509        897 386     0.027x    LGPL-3.0-or-later OR MPL-2.0-or-later
+```
+
+#### Orchestrator-verified independently, not accepted from the report
+
+All three files exist with the reported byte sizes, line counts, and SHA-256s. All three are sorted with
+exactly two provenance header comment lines. Unique counts recomputed: cs 3 930 497, pl 3 721 704,
+hu 81 509 — exact matches.
+
+**Czech and Polish are fully inflected**, which is the property that decides playability:
+
+```text
+czech    dum HIT  dům HIT  domu HIT  domy HIT  pes HIT  psa HIT  psi HIT  kniha/knihy/knihu HIT
+polish   dom HIT  domu HIT  domy HIT  domach HIT  pies HIT  psa HIT  psy HIT  książka/książki HIT
+         `ksiazka` without diacritics correctly MISS — the list is diacritic-exact, as it must be
+```
+
+**Hungarian is a stem list and is unusable as a playable lexicon.** Measured, and this is decisive:
+
+```text
+ház HIT   házak HIT   kutya HIT   asztal HIT
+házat MISS   házban MISS   házakat MISS   kutyát MISS   kutyák MISS   szeretem MISS   asztalon MISS
+```
+
+Ordinary case endings are absent. `unmunch` stdout was 96 940 lines against a `.dic` stem count of
+96 955 — it emitted essentially the stem list. The affix table carries ~24 303 `SFX` and 370 `PFX` lines
+plus `COMPOUNDFLAG`, and none of it was expanded. Cause, honestly labelled: `/usr/bin/unmunch` does not
+expand Hungarian's morphological FLAG-num affix structure the way it expands the Czech, Polish and
+Slovak SFX/PFX tables. This is **not** compound explosion and **not** a bound problem — the count sits
+inside `[80_000, 5_000_000]`, which is exactly why a bound check alone would have passed it silently.
+
+Worth noting for the engine story: the digraph coverage IS present (`sz` in 14 958 words, `gy` 4 931,
+`ny` 5 990, `cs` 4 720, `ly` 2 111, `zs` 1 347, `ty` 827), so Hungarian would still exercise the
+atomic-token architecture. The problem is purely lexical completeness.
+
+Shipping `hungarian.txt` as-is would tell a Hungarian player that `házat` is not a word. That is a
+broken game and it is not acceptable. Hungarian activation is **blocked on a different lexicon source**,
+which is a separate bounded acquisition task and NOT a bound change, a silent extra filter, or an
+invented expander.
+
+Two licence cautions the probe raised honestly and that a reader rather than an engineer should settle:
+Czech's English README says only "GNU/GPL" while the embedded text is GPL-2.0; Polish names five
+licences without pinning GPL/LGPL/MPL versions; Hungarian's README grant is a disjunction while its
+English one-liner reads as a conjunction, and its `.aff` comments still mention the older tri-licence.
+Redistribution and modification are clearly permitted in all three regardless of which option is taken.
+
+### ORCHESTRATOR RE-SEQUENCING: Czech and Polish are reachable NOW, ahead of the rest of `11/01`
+
+Measured, not assumed. Two facts together change the plan:
+
+```text
+1  backend/game/serializers.py:178-183 and :213-218 validate variant_slug against
+   list_installed_variants(), which globs backend/assets/variants/*.json. Dropping czech.json and
+   polish.json into that directory makes the BACKEND accept them with ZERO code change.
+2  Czech (40 tile kinds) and Polish (33) have NO multi-character tokens. They are single-code-point
+   languages exactly like Slovak, so the F2b temporary wire adapter carries them losslessly, the
+   `Zod .length(1)` guard in the AI move route passes, and the serializer one-code-point placement
+   filter does not block them.
+```
+
+Therefore **Czech and Polish need neither F2c (wire v4) nor F3 (AI boundary).** Those remain required
+for Hungarian alone, which is the only V4 language with digraph tiles.
+
+The only hardcoding in the way is the frontend: `frontend/src/hooks/useGameStore.ts:25`
+`SelectedVariantSlug = "english" | "slovak"` and its persist check at `:285`.
+
+So the next slice is **A1: activate Czech and Polish** — commit the two lexicons with their licences and
+provenance, add two manifests carrying the `alphabet_order` arrays already validated in
+`PROJECT_CONTEXT.md` section 14, and replace the frontend's hardcoded union with the installed-variant
+list. That delivers **three of the four Visegrád languages playable** — Slovak shipped, Czech and Polish
+new — on the foundation that already exists.
+
+One thing A1 must establish rather than assume: whether a per-variant AI move/judge prompt spec exists
+for a new variant, or whether it falls back to English. The central product fact bounds the risk — the
+engine authors every move and the free LLM has authored zero backend-valid placements — so a missing
+spec degrades prompt quality and not playability. It must still be measured and reported, not inferred.
+
+
+
+## Slice A1 landed at `2917251aba19706e59aea5d50df8cbf353cea7ad` — Worker session 02, exchange 01 of `11/02`
+
+`feat(variants): activate Czech and Polish as playable variants`. Parent `8c00a33`, one non-force push,
+public readback equal. Orchestrator verdict: **implementation-PASS, ACCEPTED.** Evidence non-independent.
+
+**Three of the four Visegrád languages are now playable: Slovak, Czech, Polish.** Hungarian is
+deliberately absent and blocked on a real inflection lexicon.
+
+### The strongest verification in this era: two independent sources agree exactly
+
+The Worker sourced the Czech and Polish tile distributions from the same Wikipedia page `slovak.json`
+already cites, with no access to the Cooperator's original JSONs. The Orchestrator then loaded both
+manifests through the real F1 loader and checked them against the invariants recorded from the
+Cooperator's own supplied data, which a previous Orchestrator had arithmetically validated. **Every
+number matches:**
+
+```text
+czech    tiles 100   entries 40   blanks 2   nominal points 205   non-blank kinds 39
+         tileless alphabet letters exactly {CH, Q, W}      alphabet_order 42 tokens
+polish   tiles 100   entries 33   blanks 2   nominal points 190   non-blank kinds 32
+         tileless alphabet letters {}                      alphabet_order 32 tokens
+both     multi-codepoint TILES: none        two_tile_words_file: None
+```
+
+That is two independent derivations of the same data agreeing to the point, including the
+`40 − 1 = 39 = 42 − 3` and `33 − 1 = 32 = 32 − 0` cross-checks. It is much stronger evidence than either
+source alone.
+
+`playable_letters` proves the alphabet order is actually in force rather than code-point order:
+Czech starts `A, Á, B, C` and Polish `A, Ą, B, C`. Under the old code-point sort `Á` and `Ą` would have
+landed after `Z`.
+
+Lexicon membership through the real loader and the real dictionary path:
+
+```text
+czech    domu HIT   knihy HIT   dům HIT   qxqxqxqxq MISS
+polish   domach HIT  książki HIT  pies HIT  qxqxqxqxq MISS
+```
+
+Those are inflected forms, which is the property that separates a playable lexicon from a stem list.
+
+### Gates at `2917251`, Orchestrator-measured
+
+```text
+mypy               Success: no issues found in 83 source files
+ruff               All checks passed!
+manage.py check    System check identified no issues (0 silenced).
+pytest             381 passed, 4 skipped in 219.00s      (370 + 11 backend cases)
+npm run typecheck  exit 0                                <- the code type-checks
+npx vitest run     352 passed | 3 skipped  (28 files)    <- 342 + 10 frontend cases
+npm run lint       exit 0
+npm run build      exit 0                                <- the build passed
+```
+
+The frontend suite moved off 342 for the first time in four slices, deliberately: this is the first
+slice to touch the frontend. Every added test is accounted for.
+
+Assets verified byte-for-byte against the probe originals — all four SHA-256s identical after copy.
+`czech.txt` 54 105 021 B, `polish.txt` 51 607 141 B, repository grew ~100.2 MB. No `.gitattributes`, no
+LFS introduced, neither file ignored. Hungarian assets confirmed absent from `dicts/` and `variants/`.
+
+`GET /api/game/variants/` returns exactly four keys per row, `IsAuthenticated` not overridden, 401 for an
+unauthenticated request, malformed manifests omitted rather than surfaced as `unavailable`, and no path,
+filename, word count, or exception text anywhere in the body — locked by three tests.
+
+### Two findings recorded rather than fixed
+
+```text
+1  Czech and Polish receive the ENGLISH MOVE/JUDGE prompt CORE. Measured by the Worker in
+   frontend/src/lib/prompts.ts: MovePromptLexiconId is "collins2019" | "slovak", and any other
+   lexicon_id falls through to the English spec. So the free LLM is primed on Collins while the engine
+   scores Czech or Polish. Severity is bounded by the central product fact — the engine authors every
+   move and the LLM has authored zero backend-valid placements — so this degrades prompt quality, not
+   playability. Owner: a later slice, not this one.
+2  english.json declares no `language_code`, so the endpoint returns `"language_code": null` for
+   English while the other three return "cs" / "pl" / "sk". Cosmetic, and correctly not patched inside
+   this allowlist. Whoever adds it must remember the F1 loader treats the key as optional.
+```
+
+Also noted by the Worker unprompted: GitHub printed a large-file **warning** for `czech.txt` at
+51.60 MB, over its 50 MB recommendation but under the 100 MB hard limit. The push succeeded as an
+ordinary blob. LFS remains forbidden in this project, so if GitHub ever tightens that recommendation
+into a limit the lexicon would need splitting or compressing rather than LFS.
+
+## Hungarian lexicon research — the answer is Route A, and it is NOT yet verified
+
+Cooperator-run Deep Research, retrieved 2026-09-01, on the brief at
+`11/02/90_hungarian-lexicon-research-brief.md`. Full report archived as `deep-research-report.md`.
+
+**Root cause of the `unmunch` failure is now established from source, not guessed.** Two independent
+mechanisms, and the first is decisive:
+
+```text
+1  FLAG-ALIAS COMPRESSION. Magyar Ispell's own Makefile runs a `makealias` step, so the distributed
+   hu_HU.dic is alias-compressed: entries carry ordinals like /39 which an `AF` table maps back to the
+   real affix flag sets. hunspell's unmunch.cxx recognizes only FULLSTRIP, PFX and SFX while parsing
+   the .aff, stores an affix class as a SINGLE character (`achar = *piece`), and has no AF handling at
+   all. So most Hungarian stems never reach their suffix classes. That alone explains
+   96 940 output lines against 96 955 stems.
+2  NO TWO-LEVEL SUFFIXATION. hunspell's own manual names twofold suffix stripping as important for
+   agglutinative languages, and hunspell issue #404 — open since 2016-09-13 — explicitly asks for an
+   unmunch/wordforms replacement supporting LONG/UTF/NUM flags and twofold affixes. unmunch has no
+   continuation-class handling.
+Eliminated as causes: SFX/PFX conditions (unmunch DOES implement them) and compound explosion
+   (irrelevant to the six missing ordinary inflections).
+Also established: hunspell's README marks unmunch DEPRECATED in favour of wordforms, and wordforms is
+   itself not the missing complete expander.
+```
+
+**Question B — does a ready redistributable inflected Hungarian list exist? No candidate passed.** Nine
+were checked and every one fails at least one hard constraint:
+
+```text
+Webcorpus 2 Frequency List v1.0   MIT, has orthographic forms — but corpus-observed, so it cannot
+                                  satisfy the human-curated-provenance constraint; diacritic and
+                                  six-word audits not establishable from metadata
+LibreOffice hu_HU 1.8.1           the pinned source itself; not distributed expanded
+magyarispell upstream             excellent curated source; publishes no flat all-forms artifact
+older Hungarian Webcorpus         MetaShare states CC BY-NC-SA 3.0 — NonCommercial disqualifies
+morphdb.hu                        licence version could not be certified from primary text
+UD_Hungarian-Szeged v2.17         CC BY-NC-SA 3.0, and only 42 032 running tokens
+MNSZ2                             registration-gated, no public redistribution grant
+Hungarian Wiktionary dumps        not a word list as distributed; exact licence scope unresolved
+browser/distro hu_HU forks        the same compressed dictionary, so the same problem
+Hungarian Scrabble authority      none found under a licence permitting redistribution
+```
+
+**Recommendation adopted: Route A. Keep the already-licensed, already-pinned LibreOffice/Magyar Ispell
+source and replace the expander.** The leading candidate is **Spylls**, a Python reimplementation of
+hunspell whose reader resolves `AF` aliases and whose `examples/unmunch.py` follows suffix continuation
+flags into secondary suffixes — precisely the two mechanisms that defeat the C `unmunch`.
+
+⚠ **Not verified, and the research says so honestly.** Spylls' author labels that script "not
+extensively tested, just a demo", it deliberately does not enumerate compounds, no primary source
+reports it succeeding on Hungarian, and its licence metadata is internally inconsistent (repository says
+MPL-2.0, `setup.py` carries an MIT classifier). The research declined to call Route A proven, which is
+exactly the behaviour the brief asked for.
+
+### The acceptance gate for any future Hungarian expansion attempt
+
+```text
+MUST contain, after the same NFC / casefold / isalpha / len>=2 filter:
+    házat   házban   házakat   kutyát   kutyák   asztalon
+MUST be plausibly in the MILLIONS, not near the 96 955 stem count. Compare: sk 3 005 250,
+    cs 3 930 497, pl 3 721 704. No source publishes a gold-standard Hungarian total, so this is a
+    sanity check rather than an exact target.
+MUST be independently re-validated: generate with Spylls, then re-check emitted standalone forms with
+    hunspell 1.7.3 itself as an oracle. Spylls' demo checks FORBIDDENWORD and NEEDAFFIX but not every
+    exclusion; hunspell can remove a bad generated form, though it cannot reveal a legal form Spylls
+    never generated — which is why the six-word gate is indispensable.
+MUST pin the exact Spylls implementation, not "latest": 0.1.7 dates from 2022-01-23.
+MUST resolve the Spylls licence contradiction before any of its code or output ships.
+```
+
+Two things explicitly out of scope for that work, both from the brief: no two-letter authority file for
+Hungarian, and no runtime spell-checker call replacing the in-memory sorted index — the prefix-probe
+search performs millions of lookups per move.
+
+
+
+### Cooperator acceptance batch B16 — blanket PASS, 2026-09-01
+
+Cooperator-executed acceptance of slice A1, in the running product, in his own browser. His reply was a
+single **`PASS`** for the whole batch. Recorded honestly as a **blanket pass rather than five itemized
+results** so a future reader knows the granularity of the evidence.
+
+```text
+B16-1  four variants visible in Settings                                  PASS (blanket)
+B16-2  English, Slovak, Czech, Polish present; Hungarian ABSENT           PASS (blanket)
+B16-3  Czech game created; DOMU or KNIHY accepted                          PASS (blanket)
+B16-4  Polish game created; DOMACH or KSIĄŻKI accepted                     PASS (blanket)
+B16-5  nonsense string rejected                                            PASS (blanket)
+```
+
+This is the first Cooperator-verified rendered evidence that Czech and Polish are genuinely playable, and
+it closes the acceptance loop on slice A1. It is Cooperator-observed evidence, not independent audit
+evidence — logical whole `11/01` still owes its fresh independent R4 application audit after slice F3.
+
+A single-word reply on a multi-item batch is his established style (`A`, `ano`, `hotovo`,
+`obetovatelne`). It was not re-queried for itemization because he has explicitly asked to be asked less,
+and a blanket `PASS` has one plain reading. If any of those five items later turns out to have been
+untested, the evidence class above is what tells a reader why.
+
+### 10/00 handout written — `93_orchestrator-handout.md`, 2026-09-01
+
+41 783 B, second handout for `ui-internationalization`, written at his explicit request for a fresh
+Orchestrator. Supersedes `00_handout.md` where they disagree, with every disagreement named in its
+section 4. Measured Stage-1 evidence gathered fresh at `2917251` rather than copied forward:
+
+```text
+localized so far   55 keys / six areas:  draw 13  landing 11  error 11  settings 10  auth 10  meta 2
+NOT localized      game/[id]/page.tsx 70 literals (1822 lines) · settings/page.tsx 41 (813)
+                   api.ts 25 (partly done) · GameHistoryPanel 18 · ScorePanel 15 · ProfileModal 15
+                   play 11 · waiting 6 · PromptPreviewModal 3 · plus JSX text nodes a grep cannot see
+OVER-counted       provider-registry 17 (LOCK A) · prompts.ts 13 (LOCK B) · api/ai/move 37 ·
+                   api/ai/judge 12 · security-headers 8 · six more internal modules
+                   -> classify before translating; a localized CSP directive is a defect
+R2                 DONE by slice A1 — GameLanguagePanel already consumes VariantSummary[] with
+                   readiness and falls back to display_name. Recorded so it is not rebuilt.
+R5 / uii-01-F04    VERIFIED STILL OPEN: no LocaleProvider anywhere in frontend/src; layout.tsx:12-37
+                   reads the cookie server-side while the body renders from the client store
+Locale union       still ["en","sk"] at frontend/src/lib/i18n/locales.ts — cs/pl/hu UI not started
+```
+
+The one **open Cooperator decision** it isolates: which interface locales to ship — `en+sk` only,
+`en+sk+cs+pl` to match the playable game languages, or all five. Recommendation put in the handout is
+`en+sk+cs+pl`, with the cost stated honestly as roughly tripling translation volume. Interface locale and
+game variant are two independent axes and the handout says so in terms.
+
+Terminology for Polish and Hungarian is recorded as **unverified candidates, explicitly labelled**, with
+the method that produced the correct Slovak answer — offer evidenced options and let him overrule, which
+is exactly what happened when he rejected both `kameň` and `dlaždica` for `písmeno` and was right.
+
+### Slice S4 issued — Worker session 05, exchange 01, at `e0d3b64`
+
+`feat(ui): the player no longer chooses the AI model or the prompt preset`. Prompt staged at
+`/tmp/opencode/uii-s4-worker-05-prompt.md`, 436 lines. Archive as `05_implementation_00.md` **only after
+its report exists**. Fresh Implementation Worker, E2, independent acceptance not required.
+
+This is R6 and it is the Cooperator's **stated single most important product outcome**: the player stops
+choosing, the choice moves to Django Admin, and a player sees only the model's name.
+
+### What the slice does, and the one thing it must NOT do
+
+```text
+REMOVE  the selectable rival panel in settings (it becomes a read-only display_name)
+REMOVE  "Choose AI" in play/page.tsx — after this the value is always resolved, so a choose-prompt is
+        wrong copy for a state that can no longer occur
+REMOVE  the whole prompt-preset surface: the switch effect, the ScorePanel control, selectedPromptId,
+        and the two picker components, which are DELETED because game/[id]/page.tsx is their only
+        importer (Orchestrator-verified)
+REMOVE  the raw model id rendered to the player at draw/[id]/page.tsx:178 — an internal id like
+        `nvidia/nemotron-3-super-120b-a12b` in a mono pill, which contradicts his "only ever the name"
+KEEP    `selectedModelId` in the store, in partialize, and at game/[id]/page.tsx:917
+KEEP    resolveEligibleModelId and its repair write-back — automatic repair is not the player choosing
+KEEP    `preferred_ai_model_id`, its migrations, its admin field, and its is_selectable_model validation
+KEEP    the entire backend. Zero backend change is authorized.
+```
+
+⛔ **The trap the prompt spends a whole section on.** `selectedModelId` is not merely a picker value: it
+is the preference that becomes **attempt 1 of the provider fallback queue** via
+`game/[id]/page.tsx:917` -> `lib/ai-fallback.ts:90-96`. Deleting it with the picker would silently break
+every AI turn while leaving all eight gates green, because no test exercises the queue's preference
+input. The report is required to quote the surviving store field, the `partialize` entry, line 917, and
+`git diff --name-only backend/` as proof of emptiness.
+
+### The one authorized persist-version bump in this whole
+
+`selectedPromptId` is a removed persisted key, so `version` goes 4 -> 5 with a `version < 5` branch that
+deletes the stale key. Justified because that is precisely what `migrate` exists for. Logical whole
+`11/01` shares this store's versioning, so the prompt names this as the ONE authorized bump and forbids
+touching any other field. `AC-PERSIST-5` and `AC-MODEL-KEPT` are the regression tests, the second one
+existing purely because the whole risk of the slice is deleting `selectedModelId` by accident.
+
+### Two riders folded in, because they live in files R6 already opens
+
+```text
+RIDER 1  the `Invalid Word(s)!` heading from S3c — one ONE/OTHER parameterized key per locale, not the
+         three-form helper, because no number is displayed. sk "Neplatné slovo!" / "Neplatné slová!"
+RIDER 2  the four `AI route failed (${status})` variants in getStreamStartError. That function sits
+         outside any component, so the prompt requires the locale to be passed in and explicitly forbids
+         a module-level mutable locale or a conditional hook.
+RIDER 3  delete the unread `message?: string` on `aiPassBodyKey` — dead API surface that invites a
+         reader to think the field matters, in the very helper that exists to stop keying on it.
+```
+
+### Orchestrator pre-verification before issuing
+
+```text
+AC-HEADING-4    sk 1 -> "Neplatné slovo!"  2 and 5 -> "Neplatné slová!"; cs and pl equivalents; en
+                "Invalid Word!" / "Invalid Words!"                                     SATISFIABLE
+AC-ROUTEFAIL-4  none of the sk / cs / pl route-failure strings contains "route failed"  SATISFIABLE
+backend defaults  _resolve_ai_model and _resolve_ai_prompt both return row 1 when the field is omitted,
+                and both fields are `required=False`                        measured, not assumed
+sole importer   PromptCatalogModal and PromptPreviewModal are imported from exactly one file
+```
+
+### A vitest-count caveat written into the prompt
+
+Deleting two components may delete their tests, so the frontend count may legitimately DROP below 374.
+The prompt requires that a drop be accounted for test by test and that no surviving test be weakened. A
+drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
+where the suite may shrink, so the rule is stated rather than left to judgement.
+
+## Slice S4 landed at `383011b389a9b3690647b6fa673060633572ab9d` — Worker session 05, exchange 01
+
+`feat(ui): the player no longer chooses the AI model or the prompt preset`. 15 files changed, **two
+deleted**, +214 −674 — a net removal of 460 lines. Parent `e0d3b64`, one non-force push, public readback
+equal. Orchestrator verdict: **implementation-PASS, ACCEPTED**, with four follow-ups routed to S5 and
+R11. Evidence non-independent; rendered acceptance requested as batch `B20`.
+
+Archived as `05_implementation_00.md` + `05_report_00.md`.
+
+**R6 is delivered. This is the Cooperator's stated single most important product outcome.** The player
+no longer chooses the AI model or the prompt preset; both defaults come from Django Admin catalog row 1;
+a player sees only a display name.
+
+### The three audits the prompt demanded, all re-verified by the Orchestrator
+
+```text
+1  BACKEND UNTOUCHED       git diff --name-only e0d3b64 383011b -- backend/   ->  0 files
+                           migrations touched                                 ->  0 files
+                           preferred_ai_model_id, its migrations, its admin field and its
+                           is_selectable_model validation are all byte-identical
+2  selectedModelId SURVIVES  useGameStore.ts:37-38 interface, :138-139 initial + setter,
+                           :319 partialize; game/[id]/page.tsx:833 preferenceModelId;
+                           lib/ai-fallback.ts diff EMPTY
+                           selectedPromptId now appears ONLY in the migrate delete and its own test
+3  LOCKED FORKS INTACT     provider-registry, openai-compatible, ibm-watsonx, ai-runtimes,
+                           catalog/selection.py, README.md, AGENTS.md, prompts.ts, constants.ts,
+                           api.ts and proxy.ts — every one untouched. No provider or model added,
+                           removed, renamed or reordered.
+```
+
+Audit 2 was the whole risk of the slice: `selectedModelId` feeds attempt 1 of the provider fallback
+queue, and deleting it with the picker would have broken every AI turn while leaving all eight gates
+green, because no test exercises the queue's preference input.
+
+### Gates at `383011b`, Orchestrator-measured
+
+```text
+mypy 83 files · ruff · manage.py check · pytest 381 passed, 4 skipped in 222.35s
+typecheck exit 0 · vitest 378 passed | 3 skipped · lint exit 0 · build exit 0, 11 dynamic, ZERO static
+persist migration  `if (version < 5) { delete incoming.selectedPromptId; }` appended after the four
+                   existing branches, all of which are intact
+```
+
+**The vitest-count accounting checks out exactly.** Test files in the tree: **29 before, 29 after** — no
+test file was deleted, so 374 + 4 new = 378 and the two removed components genuinely had no tests of
+their own. The prompt's "a drop needs an accounting" rule turned out not to be needed, but it was the
+right rule to state.
+
+The disclosed near-miss is verified recovered: deleting `persistModelSelection` briefly took the Escape
+`useEffect` and `handleNewGame` with it, and both are present again at `settings/page.tsx:514` and `:526`.
+Reported unprompted, which is the behaviour that makes the rest of the report trustworthy.
+
+### FOUR follow-ups, three of them created or exposed by this slice
+
+#### uii-01-F10 — the settings panel is titled "Choose the rival" but nothing can be chosen
+
+    Classification:  product-defect (UI coherence), CREATED by this slice
+    Severity:        low functionally, medium for interview presentability
+    Confidence:      high
+    Evidence class:  established-static — settings/page.tsx:622-623 read
+                       title="Choose the rival"
+                       description="Provider-diverse free rivals from the live catalog, newest first."
+                     while the selectable rows, the click handler and `savingModelId` are all gone.
+    Impact:          a user reads an instruction to choose and then looks for a control that does not
+                     exist. "A control that does nothing" is explicitly a first-class defect in the
+                     Cooperator's frame, and this is its inverse — copy that promises a control.
+    Note:            this is NOT merely an untranslated string. S5 owns the settings copy, but the title
+                     is now factually wrong and must be REPLACED, not translated. Something of the shape
+                     "Your rival" / "Tvoj súper" plus a description saying the administrator sets it.
+    Owner:           ui-internationalization, slice S5
+    Status:          open
+
+#### uii-01-F11 — the AI status line shows a raw model id to the player, and it is the Orchestrator's own string
+
+    Classification:  product-defect (leaks an internal identifier to a player)
+    Severity:        low
+    Confidence:      high
+    Evidence class:  established-static — game/[id]/page.tsx:845
+                       setAIStatusMessage(tf("game.ai.exploring", { model: preferenceModelId }))
+                     and `preferenceModelId` is a raw catalog `model_id` such as
+                     `nvidia/nemotron-3-super-120b-a12b`.
+    Impact:          the player sees `Hľadám platné slová cez nvidia/nemotron-3-super-120b-a12b...`,
+                     which contradicts the Cooperator decision this very slice implements — that a
+                     player should only ever see the model's NAME.
+    ORCHESTRATOR ORIGIN, stated plainly: `game.ai.exploring` is a string the Orchestrator authored in
+                     slice S3c and it was authored to interpolate whatever the call site already had.
+                     S4 then fixed the same class of leak on the draw page while leaving this one.
+                     The defect is mine, not the Worker's; the Worker found and named it.
+    Correction direction: pass the resolved `display_name` — the same value the settings panel and the
+                     draw pill now show — and fall back to `humanizeModelId(...)` which the project
+                     already uses for exactly this purpose.
+    Regression test: with a catalog entry present, the rendered status message contains the display name
+                     and does NOT contain a `/` character from a provider-qualified id.
+    Owner:           ui-internationalization, slice S5
+    Status:          open
+
+#### uii-01-F12 — `showRivalPicker` still offers a picker affordance that leads to a read-only panel
+
+    Classification:  product-defect (misleading affordance), consequence of this slice
+    Severity:        low
+    Confidence:      high
+    Evidence class:  established-static — ScorePanel.tsx:260,263,278,281,398,401 and
+                     game/[id]/page.tsx:1519 `showRivalPicker`, :1522
+                     `onOpenRivalPicker={() => router.push("/settings?focus=rival")}`
+    Impact:          clicking the rival name in the game header still navigates to settings expecting a
+                     picker, and the prop name `showRivalPicker` is now a lie. Nothing is broken; the
+                     destination is simply a read-only display.
+    Correction direction: keep the navigation if a read-only "who am I playing" view is wanted, but
+                     rename the props to say so, or drop the click entirely. A Cooperator preference
+                     question rather than a pure defect — put it in B20 rather than deciding it alone.
+    Owner:           ui-internationalization, slice S5
+    Status:          open
+
+#### uii-01-F13 — `api.getPrompts` and the `/api/prompts` Next.js proxy are now dead code
+
+    Classification:  dead code / attack-surface hygiene
+    Severity:        info
+    Confidence:      high
+    Evidence class:  established-static — `grep -rn "getPrompts()"` outside `api.ts` returns ZERO call
+                     sites; the build still lists `ƒ /api/prompts`.
+    Impact:          a callerless Next.js route remains published. Not a vulnerability — it proxies a
+                     read-only authenticated catalog list — but it is surface with no consumer.
+    Note:            `/api/prompts` is one of the two catalog proxies in `audit-01-F06`, which slice R11
+                     already owns. R11 should decide there: delete the proxy and `api.getPrompts`, or
+                     keep them for the future `11/00 admin-provider-model-console` whole and say so.
+                     Do NOT delete the Django `catalog/prompts/` endpoint — the admin console needs it.
+    Owner:           ui-internationalization, slice R11
+    Status:          open
+
+### One unauthorized-but-proportionate change, disclosed and accepted
+
+The five-card settings skeleton collapsed to a single pulse bar. Not in the prompt. Judged proportionate
+and accepted: the five-card skeleton existed to match five selectable rival cards, and with a read-only
+single name a five-card placeholder would actively mislead during load. It is a consequence of the
+authorized removal rather than an independent redesign, it introduced no new copy, and it was disclosed.
+Recorded rather than left implicit.
+
+Also dead-code removals the Worker disclosed and the Orchestrator accepts: `accountSyncAvailable`,
+`formatContextWindow`, `persistModelSelection`, and `humanizeModelId` in `play/page.tsx`. All became
+unreachable when the click handler went.
+
+### Cooperator acceptance batch B19 — blanket PASS, 2026-09-02
+
+
+His reply, verbatim: `B19. PASS`. Fourteen items, recorded as a **blanket pass rather than fourteen
+itemized results**, consistent with B16 and with his established style. Not re-queried for itemization
+because he has explicitly asked to be asked less and a blanket `PASS` has one plain reading.
+
+```text
+B19-1   Czech game shows "Není v českém lexikonu", NOT Collins            PASS (blanket)
+B19-2   Polish game shows "Nie ma w polskim leksykonie"                   PASS (blanket)
+B19-3   English game still shows Collins Scrabble Words 2019              PASS (blanket)
+B19-4   AI exchange shows the rack-refresh subtitle, not the no-move one   PASS (blanket)
+B19-5   AI pass shows the no-move subtitle                                PASS (blanket)
+B19-6   turn status in sk / cs / pl                                       PASS (blanket)
+B19-7   game over, winner/draw wording, "Nová partia"                     PASS (blanket)
+B19-8   the window.confirm give-up dialog is in Slovak                    PASS (blanket)
+B19-9   in-game action buttons in three locales    (was B18-1, untested)  PASS (blanket)
+B19-10  the three-form tile counter at 1 / 2 / 5   (was B18-2, untested)  PASS (blanket)
+B19-11  blank-picker heading                       (was B18-4, untested)  PASS (blanket)
+B19-12  b. / b. / pkt on tiles, and "Reset zoomu"  (was B18-5, untested)  PASS (blanket)
+B19-13  rack empty state and chat                  (was B18-6/7, untested) PASS (blanket)
+B19-14  the known English "Invalid Word(s)!" leftover                     CONFIRMED (blanket)
+```
+
+**Two things this closes that no automated gate could.** `B19-1` through `B19-3` are the rendered
+acceptance of `uii-01-F08` — a Czech player is no longer told their word is missing from an English
+dictionary — and `B19-4` / `B19-5` are the rendered acceptance of `uii-01-F09`, the data-keyed toast
+subtitle. Both defects were found by the Orchestrator during inventory, corrected in one slice, and are
+now Cooperator-verified in the running product.
+
+It also closes the six `NOT TESTED` items carried forward from B18, so there is no longer an untested gap
+behind the localized turn surface. Last used batch prefix is now **B19**.
+
+### R6 reconnaissance — the backend already does exactly what R6 needs, measured not assumed
+
+Performed by the Orchestrator before writing the S4 prompt, because R6 is the Cooperator's stated single
+most important outcome and it touches the AI turn path.
+
+```text
+backend/game/services.py:366-384  _resolve_ai_model
+    ai_model_model_id omitted -> `return selectable_models[0] if selectable_models else None`
+backend/game/services.py:386-393  _resolve_ai_prompt
+    ai_prompt_id omitted      -> `return selectable_prompts[0] if selectable_prompts else None`
+backend/game/serializers.py:174-175   BOTH fields are `required=False`
+```
+
+**So R6 needs ZERO backend change.** Omitting both fields from the create request makes the backend pick
+row 1 of each catalog, and both catalogs are ordered `("sort_order", ...)` with `sort_order` in
+`list_editable` in Django Admin (`catalog/admin.py:43` and `:113`).
+
+⚠ **A correction to the plan's own claim, in his favour.** `92_orchestrator-glossary-and-plan.md` slice
+S4 says this "does NOT deliver 'the admin sets the GLOBAL default', which is still catalog row 1
+determined in code". Measured: catalog row 1 **is** admin-settable today, by editing `sort_order`
+inline in Django Admin, with `is_active` as the kill switch. So R6 delivers more of his top priority than
+the plan credited — with one honest caveat: that holds while
+`DYNAMIC_FREE_MODEL_CATALOG_ENABLED` is `false`, which is the default. With the flag on, model ordering
+is by release date and the admin influences it only through `is_active`.
+
+### R6 surface map, and the trap inside it
+
+`selectedModelId` is **not** purely a picker value and must not simply be deleted:
+
+```text
+game/[id]/page.tsx:917   const preferenceModelId = selectedModelId || gameState.ai_model_id || ""
+lib/ai-fallback.ts:90-96 that preference is attempt 1 of the fallback queue
+settings/page.tsx:474 · play/page.tsx:123 · app/page.tsx:63
+                         resolveEligibleModelId repairs a stale id and writes the repair back
+play/page.tsx:188        ai_model_model_id: resolved   is SENT at game creation
+draw/[id]/page.tsx:178   renders the RAW model id in a mono font — an internal id shown to a player,
+                         which contradicts his "the player should only ever see the model's name"
+```
+
+So R6 is "the player stops CHOOSING", not "the value stops existing". `selectedModelId` survives as a
+resolved preference derived from `preferred_ai_model_id` or catalog row 1; only the selection UI and the
+player-initiated write disappear. The automatic repair write-back stays, because it keeps the stored id
+consistent and is not the player choosing.
+
+`selectedPromptId` is different: it has no fallback-queue role, so it can be removed outright, and
+omitting `ai_prompt_id` at creation makes the backend use prompt row 1.
+
+### ORCHESTRATOR SEQUENCING DECISION: S4 is R6 ONLY; the header and settings copy move to S5
+
+`92_orchestrator-glossary-and-plan.md` and the earlier entry in this ledger folded R6 together with the
+ScorePanel and settings copy, to avoid two passes over one file. That fold is now **reversed**, and the
+reason is better than the original one:
+
+```text
+R6 is a BEHAVIOURAL change on the AI turn path across eight files. The copy work is ~47 strings x 4
+locales. Mixing a behavioural deletion with 190 translations produces a diff nobody can review honestly
+— exactly what P05 and the era-09 S7 split exist to prevent.
+```
+
+Doing R6 **first** also means the copy slice never translates a string that is about to be deleted, so
+the churn the fold was meant to avoid is avoided anyway — better, because each diff has one purpose:
+
+```text
+S4  R6 only: remove the player-facing model and prompt pickers. Plus two tiny riders that live in files
+    R6 already touches — the `Invalid Word(s)!` heading and the four `AI route failed` variants left over
+    from S3c, and deleting the unread `message?` field on aiPassBodyKey.
+S5  ScorePanel + the settings copy remainder, in four locales, over the ALREADY-SIMPLIFIED files.
+```
+
+## Slice S3c landed at `e0d3b64cbccf1a1d9983ba5c394762f55961325a` — Worker session 04, exchange 02
+
+
+`feat(i18n): localize the game screen and fix the lexicon and toast defects`. 8 files, +563 −85, parent
+`e421c66`, one non-force push, public readback equal. Orchestrator verdict: **implementation-PASS,
+ACCEPTED, with two leftover string groups routed to S4.** Evidence non-independent; rendered acceptance
+requested as batch `B19`.
+
+Archived as `04_implementation_00.md` + `04_report_00.md` (the BLOCKED exchange 01) and
+`04_implementation_01.md` + `04_report_01.md` (this exchange).
+
+The three continuity strings were echoed correctly — `Není v českém lexikonu`,
+`AI wymieniło płytki`, `Tvoj ťah` — so the string table survived in the session and nothing was
+re-translated. It took the PRIMARY route: `ss -tlnp | grep :3000` printed nothing, the Cooperator having
+stopped his dev server.
+
+### Both defects are corrected, verified in source rather than accepted from the report
+
+```text
+uii-01-F08   lexiconRejectionKey(lexiconId) at messages.en.ts:173 — an exhaustive switch over
+             collins2019 / slovak / czech / polish with `default -> game.lexicon.unknown`, which also
+             absorbs null, undefined and "". No parameterized "Not in ${lexicon}" sentence, so no
+             locative-case problem. The two-value ternary is gone.
+uii-01-F09   `passKind?: "pass" | "exchange"` added to the existing ai_pass toast; producers set it
+             explicitly at page.tsx:1047 and :1065; the consumer at :310 calls
+             `t(aiPassBodyKey({ passKind: toast.passKind }))`. `aiPassBodyKey` reads ONLY passKind.
+             `includes("exchanged")` returns ZERO matches in the file. Localized prose is no longer
+             load-bearing anywhere in that path.
+```
+
+The Worker chose `passKind` over splitting the toast type and justified it concretely: the overlay
+timeout already treats pass and exchange as one `type === "ai_pass"` at 4200 ms, so splitting types would
+have widened that union. That is the smaller change and the reasoning is sound.
+
+### Gates at `e0d3b64`, Orchestrator-measured
+
+```text
+mypy 83 files · ruff · manage.py check · pytest 381 passed, 4 skipped in 220.95s
+typecheck exit 0 · vitest 374 passed | 3 skipped (28 files) · lint exit 0
+build exit 0, 11 dynamic routes, ZERO `○` static
+```
+
+72 catalog lookups in `page.tsx` (65 `t`, 5 `tf`, 2 helper-selected), including the deliberate reuse of
+`auth.tab.login` and `controls.play` instead of duplicate keys.
+
+### ⛔ ORCHESTRATOR INVENTORY MISS, SECOND CONSECUTIVE SLICE — and the structural defence caught it
+
+Report item 14 names two user-facing English string groups for which **no key was authored**. Both
+confirmed by an independent Orchestrator sweep:
+
+```text
+page.tsx:222      Invalid Word{(toast.words?.length ?? 0) > 1 ? "s" : ""}!
+                  the big red heading on EVERY invalid-word rejection — the most visible string in the
+                  slice — and it carries the one-character English "s" pluralization
+page.tsx:90,93,98,99   `AI route failed (${response.status}).` and three variants in
+                  getStreamStartError, surfaced to the user through "Last error: {aiError}"
+```
+
+**Why my sweep missed line 222, diagnosed rather than hand-waved.** For S3c I deliberately ran a
+blind-spot sweep first, precisely because S3b had shipped one word in English. That sweep used
+`>([^<>]*?\{[^<>]*?)<`. Line 222's expression contains `>` in `(toast.words?.length ?? 0) > 1`, and the
+character class `[^<>]` forbids `>`, so the pattern could not span it. Relaxing it to `[^<]` matches
+immediately. **My blind-spot sweep had its own blind spot.**
+
+The `AI route failed` group was missed for a different reason: my template-literal filter required
+`[A-Z][a-z]{2,}`, a capitalized word, and "AI route failed" has none — `AI` is two capitals and the rest
+is lowercase.
+
+```text
+LESSON, and it is the durable one: two structure-based regex sweeps produced two different blind spots.
+Regex inventory of JSX is not reliable and a third regex would have a third blind spot. What actually
+worked BOTH times is the STRUCTURAL defence — a report field obliging the Worker to enumerate every
+user-facing English string it can still see. That field was added to the S3c prompt because of the S3b
+miss, and it paid for itself in the very next slice. Keep it in every remaining copy slice.
+```
+
+A third, independent word-based sweep by the Orchestrator (matching common English function words in
+string and text positions rather than matching structure) found exactly the same two groups and nothing
+else, so the leftover set is now corroborated by two methods that fail differently.
+
+Disposition: **both groups routed to slice S4**, which must touch `page.tsx` anyway to delete the three
+R6 strings. No extra slice and no extra pass over the file. `Invalid Word(s)!` needs a one/other plural
+per locale — Slovak "Neplatné slovo!" / "Neplatné slová!" — not the three-form helper, because no number
+is displayed.
+
+### Correctly disclosed non-issue: English matching that is NOT the F09 anti-pattern
+
+`normalizeAIBlocker` at page.tsx:148-173 still matches `"authentication failed"`, `"invalid api key"`,
+`"rate limit"` and `"temporarily unavailable"` in English. The Worker flagged it and drew the right
+distinction: those strings arrive from **external provider APIs** and are English by nature, so matching
+them is unavoidable. F09 was about matching **our own localized copy**, which is a different thing
+entirely. The displayed title and body now come from the catalog. No action.
+
+### Two small residuals for S4
+
+```text
+1  aiPassBodyKey still declares `message?: string` in its input type and never reads it — dead API
+   surface kept only so a test could pass the Slovak title through. Mildly ironic given F09 existed to
+   stop keying on `message`, and it invites a future reader to think the field matters. Delete the field.
+2  Layout items the Worker named and did not change, all for batch B19: Polish
+   "Błąd uwierzytelnienia rywala" and "Nieprawidłowe ułożenie" in toast/modal titles; Slovak/Czech
+   "AI si obnovilo zásobník a spotrebovalo ťah." in the ai_pass subtitle; Czech
+   "Vyber kameny na výměnu" in TurnStatusNotice; `game.ws.authExpired` and `game.ws.invalidSession` as
+   long sentences in a bottom toast; and the long window.confirm give-up copy whose OK/Cancel buttons
+   are browser chrome.
+```
+
+### S3c exchange 01 returned BLOCKED — the Worker was right and the prompt was the defect
+
+
+Worker session 04, exchange 01, at `e421c66`. It ran the repository gate, inventoried `page.tsx`
+read-only, hit the port-3000 condition at preflight, and **stopped without applying anything**, returning
+`Escalation disposition: NEEDS_ORCHESTRATOR_DECISION`.
+
+Orchestrator-verified: `HEAD` still `e421c66`, `ls-remote` equal, porcelain **empty**, `.next` mtime
+`10:37:27` which is the dev server writing rather than the Worker. Nothing was mutated.
+
+#### The blocker is real, and it is a consequence of the Orchestrator's own acceptance batch
+
+```text
+ss -tlnp
+  LISTEN  *:3000           next-server (v16.3.4)   pid 67401   child of pid 67389
+                           node .../node_modules/.bin/next dev --webpack   alive 41 minutes
+  LISTEN  127.0.0.1:8000   python                  pid 67368
+```
+
+Both are the **Cooperator's own** processes. He started them because the Orchestrator asked him to run
+acceptance batch `B18` inside the running product — and the Orchestrator then issued an implementation
+slice whose stop condition forbids exactly that state, without asking him to stop first.
+**That is an Orchestrator sequencing defect: I created the blocker in the previous message.**
+
+#### ORCHESTRATOR PROMPT DEFECT: the gate was scoped to the wrong moment
+
+The prompt said "Check `ss -tlnp | grep :3000` first; if occupied, STOP and report." I meant *first
+relative to `npm run build`*. Section 12 then listed "port 3000 is occupied" as a flat stopping
+condition with no scope. The Worker's reading — stop before doing anything — follows my text exactly,
+and it is the defensible reading of the two statements together.
+
+The consequence is that **a whole exchange was consumed by a gate that only matters at the very end.**
+Every one of the other seven gates is safe with a dev server live: mypy, ruff, `manage.py check`,
+pytest, typecheck, vitest and lint never touch `frontend/.next`. Only `npm run build` does.
+
+#### Correction, and why it is a current-session renewal rather than a fresh session
+
+Reissued as Worker session 04 **exchange 02**, `current-worker-session`, prompt staged at
+`/tmp/opencode/uii-s3c-worker-04-exchange02-prompt.md`, 279 lines. Current-session renewal is the
+AP-preferred route here and is proportionate: the session is healthy, it mutated nothing beyond reading,
+independence is not required for implementation, and it holds the read-only inventory of an 1822-line
+file which it explicitly offered forward ("Inventory from inspection is held for the renewed grant").
+The same pattern was used for era-11 F2a and for the era-10 planning repair.
+
+Two changes only; everything else is reaffirmed unchanged:
+
+```text
+CHANGE 1  the port-3000 condition is SCOPED TO THE BUILD GATE and is explicitly no longer a stopping
+          condition. All work and the other seven gates proceed regardless of what holds the port.
+CHANGE 2  a PRE-AUTHORIZED FALLBACK: if the port is still held at the build gate, run the other seven
+          gates, leave the candidate UNCOMMITTED, report PARTIAL with the exact `ss` output, and do not
+          commit — because the standing rule is that all eight gates must be green before a commit.
+          Killing anything remains forbidden on both routes.
+```
+
+That makes the slice converge in at most one more exchange whichever way the port goes, which is what
+the finite convergence contract requires after a blocker. The Cooperator was asked in the same message to
+stop his dev server, which `PROJECT_CONTEXT.md` section 3 explicitly permits.
+
+#### A continuity check the renewal needed, because the string table lives in the session
+
+The authored section-7 string table is ~200 values and is not re-pasted. Instead the renewal requires the
+Worker to echo three exact values back before starting — `game.lexicon.czech` in Czech,
+`game.toast.aiExchanged` in Polish, `game.status.yourTurn` in Slovak — and to STOP if it cannot reproduce
+all three from retained context. Expected answers, held by the Orchestrator:
+
+```text
+Není v českém lexikonu  ·  AI wymieniło płytki  ·  Tvoj ťah
+```
+
+The prompt states in terms that it must not reconstruct, re-translate, or approximate a single string,
+because translation is Orchestrator work by Cooperator decision and an invented Slavic string would be a
+silent product defect. That is the correct shape for a compaction risk: verify, do not regenerate.
+
+#### The Worker independently confirmed the S3b documentation claim was false
+
+Report item 13, unprompted: `frontend/node_modules/next/dist/docs/` **is present**, 452 markdown files,
+and it declined to repeat the previous session's "absent" claim. That is now confirmed by two
+independent sources — this Worker and the Orchestrator's own `ls` plus the verbatim line-46 readback —
+against one erroneous claim. The S3a `router.refresh()` citation stands.
+
+## Slice S3c issued — Worker session 04, exchange 01, at `e421c66`
+
+`feat(i18n): localize the game screen and fix the lexicon and toast defects`. Prompt staged at
+`/tmp/opencode/uii-s3c-worker-04-prompt.md`, 494 lines. Archive as `04_implementation_00.md` **only after
+its report exists**. Fresh Implementation Worker, E2 rather than E1 because the slice carries two
+behavioural corrections rather than pure string extraction.
+
+Scope: `game/[id]/page.tsx` — the largest single file in this whole at 1822 lines — plus the one-word
+`Board.tsx` correction the previous slice left behind. Roughly 60 keys including four parameterized ones,
+authored by the Orchestrator across all four locales.
+
+### The blind-spot sweep was run BEFORE writing the prompt this time
+
+S3b shipped `Board.tsx` with one word left in English because the prompt was written from a narrow grep
+after a broad inventory had already counted more. For S3c the blind spot — JSX text mixed with
+`{expressions}`, which a plain text-node regex partly misses — was swept first. It surfaced exactly two
+real residuals my earlier count had missed:
+
+```text
+page.tsx:1676   "Last error: {aiError}"     a text node mixed with an expression
+page.tsx:1709   `${s.username ?? "Waiting"}: ${s.score}` joined by " vs "
+```
+
+Both are now in the authorized string table. The `" vs "` separator stays English by glossary decision
+and only the `"Waiting"` fallback is localized. Report item 12 additionally requires the Worker to list
+ANY user-facing English string still left in the file, which is the structural fix for the S3b failure:
+the check no longer depends on the Orchestrator's inventory being complete.
+
+### Three string groups deliberately EXCLUDED because slice S4 deletes them
+
+```text
+"Choose rival"                            page.tsx:1502, :1504   model-picker fallback
+"Initial"                                 page.tsx:1513          prompt-preset name fallback
+"Could not switch AI prompt right now."   page.tsx:606           prompt switching
+```
+
+R6 removes the player-facing model and prompt pickers. Localizing them now would be wasted work and
+would double the review surface over the same lines. Same reasoning as folding R6 into the
+ScorePanel/settings slice.
+
+### Orchestrator pre-verification of the mandated regression tests, before issuing
+
+```text
+AC-LEX-4      for all four locales: the czech / slovak / polish messages contain no "Collins" while
+              the collins2019 message does                                            SATISFIABLE
+AC-TOAST-DISC "AI vymenilo písmená" contains "exchanged": False — which is exactly the property that
+              makes the current substring check break under translation, so the test discriminates
+AC-GAME-TERM  cs "Vyber kameny na výměnu" contains "kameny" and not "písmen"; pl contains "płytki"
+```
+
+### One design decision inside the F08 fix, recorded because the obvious shape is worse
+
+Five complete messages keyed on `lexicon_id`, not one parameterized `Not in ${lexicon}`. A single
+parameterized sentence would need the lexicon name in the **locative** case in Slovak and Czech
+("v slovenskom lexikón**e**", "ve slovenském lexikon**u**") and in its own oblique form in Polish
+("w słowackim leksykoni**e**"), which one nominative label cannot supply. Five keys per locale is both
+cheaper and grammatically safe. Recorded so nobody later "simplifies" it into the broken shape.
+
+`game.lexicon.*` is also the first key family in this project keyed on the GAME VARIANT rather than the
+interface locale. The two axes have been independent since the beginning; this is where they finally
+touch, and GLOSSARY.md is required to say so.
+
+### Cooperator acceptance batch B18 — THREE items answered, SIX not tested, 2026-09-02
+
+His reply, verbatim: `B18-3 PASS B18-8 PASS B18-9 potvrdzujem`.
+
+```text
+B18-3  Polish "Potwierdź wymianę" in the two-column mobile confirm row      PASS
+B18-8  Polish "Zoom dwoma palcami" / "Przesuń palcem" in the hint pill      PASS
+B18-9  the "Reset zoom" defect                                             CONFIRMED by him
+B18-1  in-game action buttons in sk / cs / pl                              NOT TESTED
+B18-2  the three-form tile counter at 1 / 2 / 5                            NOT TESTED
+B18-4  blank-picker heading in three locales                               NOT TESTED
+B18-5  points abbreviation b. / b. / pkt on board tiles                    NOT TESTED
+B18-6  rack empty state                                                    NOT TESTED
+B18-7  chat panel                                                          NOT TESTED
+```
+
+⛔ **This is NOT a blanket pass and must not be recorded as one.** He answered exactly the two items the
+Orchestrator flagged with ⚠ as the ones needing his eyes, plus the known defect. The other six are
+`NOT TESTED`. Missing evidence never becomes PASS — AP is explicit about that, and inflating six
+untested items would corrupt the closure evidence for this whole.
+
+Both PASS answers are the valuable ones, because they resolve the only two questions that were
+unmeasurable without a browser: **Polish does not overflow** either the `whitespace-nowrap` two-column
+confirm row (17 characters at `1rem font-black`) or the `uppercase tracking-[0.18em] 0.72rem` board hint
+pill. That materially lowers the standing "Slovak is 10-20 percent longer, Polish longer still" layout
+risk for the rest of the whole: the two tightest containers already survive the longest strings authored
+so far.
+
+Disposition for the six: **carried into batch B19 rather than re-queried now.** He has explicitly asked
+to be asked less, and B19 will put him back on the same game screen after slice S3c anyway, so he walks
+through it once instead of twice. Last used batch prefix is now **B18**.
+
+### uii-01-F08 — a Czech or Polish player is told their word is not in an ENGLISH dictionary
+
+    Classification:  product-defect (factually false user-facing message), PRE-EXISTING and REACHABLE
+                     NOW in the shipped product
+    Severity:        medium for interview presentability, low functionally — it does not change
+                     legality, only what the rejection message claims
+    Confidence:      high
+    Evidence class:  reproduced-dynamic — the Orchestrator loaded all four installed variants through
+                     the real loader and evaluated the real `_lexicon_id` expression
+    Found by:        the Orchestrator while inventorying `game/[id]/page.tsx` for slice S3c
+    Location:        frontend/src/app/game/[id]/page.tsx:231-233
+                       {lexiconId === "slovak"
+                         ? "Not in the Slovak lexicon"
+                         : "Not in Collins Scrabble Words 2019"}
+                     with `lexiconId` from `gameState.lexicon_id` at :181
+    Mechanism:       the ternary is a two-value test written when only English and Slovak existed.
+                     `backend/game/services.py:159` `_lexicon_id` returns
+                     `Path(variant.dictionary_file).stem`, so it emits FOUR distinct values. Measured
+                     through the real loader:
+                         english -> "collins2019"    slovak -> "slovak"
+                         czech   -> "czech"          polish -> "polish"
+                     Anything that is not exactly "slovak" therefore falls into the else branch.
+    Impact:          a Czech player who plays an invalid Czech word is told it is
+                     "Not in Collins Scrabble Words 2019", and so is a Polish player. The message is
+                     not merely untranslated, it is FALSE — it names an English dictionary that has
+                     nothing to do with the game being played. Era 11 slice A1 activated Czech and
+                     Polish and did not touch this frontend ternary, which is how it was introduced
+                     without anyone noticing; the frontend suite could not see it because no test
+                     renders that toast.
+    Why it surfaced now: the S3c inventory had to decide what the localized string should say, which
+                     forced the question "which lexicon is this actually?" that the ternary answers
+                     wrongly.
+    Correction direction: four complete messages keyed by `lexicon_id` plus one generic fallback for an
+                     unknown id, rather than one parameterized sentence. A parameterized
+                     "Not in ${lexicon}" would need the lexicon name in the LOCATIVE case in Slovak and
+                     Czech and the equivalent in Polish, which a single nominative label cannot supply.
+                     Five keys per locale is the cheaper and grammatically safe shape.
+    Regression test: with `lexicon_id: "czech"` the rendered message must NOT contain "Collins"; with
+                     "collins2019" it must. Must fail before the fix.
+    Owner:           ui-internationalization, slice S3c
+    Status:          open
+    Status:          **corrected at e0d3b64** (Worker session 04, exchange 02) — NOT verified-closed.
+                     `lexiconRejectionKey` in messages.en.ts:173 is an exhaustive switch over the four
+                     real `lexicon_id` values with `default -> game.lexicon.unknown`, which also absorbs
+                     null, undefined and "". Five complete messages per locale, so no locative-case
+                     problem. AC-LEX-4 pre-fix failure, quoted: `expected 'Not in Collins Scrabble
+                     Words 2019' not to contain 'Collins'`. Orchestrator-verified in source; the
+                     two-value ternary is gone. Not verified-closed because no independent audit has
+                     run and no Cooperator rendered acceptance exists yet — batch B19 covers it.
+
+### uii-01-F09 — localizing the AI toast will silently break its own subtitle
+
+    Classification:  latent product-defect that TRANSLATION WOULD INTRODUCE, not a defect today
+    Severity:        low today, certain to fire the moment the string is localized
+    Confidence:      high
+    Evidence class:  established-static — the Orchestrator read both the producer and the consumer
+    Location:        producer  frontend/src/app/game/[id]/page.tsx:1033-1054
+                       action "pass"     -> { type: "ai_pass", message: "AI passes" }
+                       action "exchange" -> { type: "ai_pass", message: "AI exchanged tiles" }
+                     consumer  frontend/src/app/game/[id]/page.tsx:305
+                       {toast.message.toLowerCase().includes("exchanged")
+                         ? "AI refreshed the rack and spent the turn."
+                         : "Couldn't find a valid move - your turn!"}
+    Mechanism:       pass and exchange share ONE toast type and are distinguished afterwards by
+                     substring-matching the English word "exchanged" out of the message. Once that
+                     message becomes "AI vymenilo písmená" / "AI vyměnilo kameny" / "AI wymieniło
+                     płytki", the substring is gone, the check always takes the else branch, and an
+                     EXCHANGE is explained to the player as "Couldn't find a valid move".
+    Why it matters:  this is the `err.message.includes("401")` anti-pattern that the security era
+                     deliberately removed from `api.ts` in favour of a numeric status. Re-introducing
+                     it through translation would be a regression in a pattern this project has already
+                     paid to eliminate.
+    Correction direction: carry the discriminator in the toast DATA, not in its prose — either two
+                     distinct toast types or an explicit field on the existing one — and key the
+                     subtitle off that. The localized strings then have no load-bearing content.
+    Regression test: an exchange toast must render the exchange subtitle in a locale whose message
+                     contains no English word, e.g. Slovak. Must fail if the substring check survives.
+    Owner:           ui-internationalization, slice S3c
+    Status:          open
+    Status:          **corrected at e0d3b64** (Worker session 04, exchange 02) — NOT verified-closed.
+                     `passKind?: "pass" | "exchange"` on the existing ai_pass toast; producers set it at
+                     page.tsx:1047 and :1065; the consumer at :310 calls
+                     `t(aiPassBodyKey({ passKind: toast.passKind }))` and the helper reads ONLY
+                     passKind. `includes("exchanged")` now returns ZERO matches in the file, verified by
+                     the Orchestrator. The Worker chose passKind over splitting the toast type because
+                     the overlay timeout already treats both as one `type === "ai_pass"` at 4200 ms, so
+                     splitting would have widened that union — the smaller change, with sound reasoning.
+                     Residual for S4: `aiPassBodyKey` still declares an unread `message?: string`.
+
+## Slice S3b landed at `e421c6690f091203a60636b3aebaeec71e7fba69` — Worker session 03, exchange 01
+
+`feat(i18n): localize the board, the rack, the action buttons and chat`. 11 files, +236 −24, parent
+`5a96b5e`, one non-force push, public readback equal. Orchestrator verdict: **implementation-PASS,
+ACCEPTED with one Orchestrator-caused defect to correct in the next slice.** Evidence non-independent;
+rendered acceptance is Cooperator-owned and requested as batch `B18`.
+
+Archived as `03_implementation_00.md` + `03_report_00.md`.
+
+### The three plural functions are live and the Orchestrator read them back through the real code path
+
+Not accepted from the Worker's test. A throwaway vitest harness was placed in the tree, run against the
+**shipped** catalogs through the real `tf()`, and removed immediately (porcelain verified clean after):
+
+```text
+sk   0 Výber: 0 písmen    1 Výber: 1 písmeno    2 Výber: 2 písmená    5 Výber: 5 písmen
+     22 Výber: 22 písmen                        25 Výber: 25 písmen
+cs   0 Výběr: 0 kamenů    1 Výběr: 1 kámen      2 Výběr: 2 kameny     5 Výběr: 5 kamenů
+     22 Výběr: 22 kamenů                        25 Výběr: 25 kamenů
+pl   0 Wybrane: 0 płytek  1 Wybrane: 1 płytka   2 Wybrane: 2 płytki   5 Wybrane: 5 płytek
+     22 Wybrane: 22 płytki   <- DIVERGES        25 Wybrane: 25 płytek
+en   1 tile selected · 2 tiles selected · 22 tiles selected
+```
+
+All 28 renderings are byte-for-byte what the Orchestrator predicted **before** issuing the prompt. The
+decisive case holds: Polish says `22 płytki` (few) where Slovak says `22 písmen` and Czech `22 kamenů`
+(many). The right plural function is wired to the right catalog.
+
+### Verified rather than accepted
+
+```text
+72 plain values (18 keys x 4 locales) checked verbatim against the authored table   0 mismatches
+catalog calls per component      GameControls 11 · BlankPicker 1 · ChatPanel 6 · TileRack 1 · Board 5
+                                 every count matches the report exactly
+useT() present in all five components
+"Enter" KeyboardEvent names preserved in ChatPanel:57 and TileRack:141 — not translated
+i18n.test.ts diff  +99 −1, and the single deleted line is an import move; ZERO assertions removed
+gates  mypy 83 · ruff · check · pytest 381/4 in 218.09s · typecheck 0 · vitest 369 passed | 3 skipped
+       · lint 0 · build 0 with 11 dynamic routes and ZERO `○` static
+```
+
+### ⛔ ORCHESTRATOR DEFECT: `Board.tsx` now reads "Reset zoom" with an English `zoom` in every locale
+
+`frontend/src/components/board/Board.tsx:689` is `<span className="text-white/34">zoom</span>`, the dim
+second half of the reset control whose first half is now `{t("board.reset")}`. So the control renders
+`Reset zoom` in Slovak, Czech and Polish — a visible half-localized string.
+
+**The cause is mine and it is failure mode 3 in a new costume.** My own broad inventory counted **six**
+JSX text nodes in `Board.tsx`. I then wrote the prompt from a narrow follow-up grep
+(`grep -nE "Pinch|Drag to|Hide|Reset|PTS"`) that returned **five**, and authorized exactly those five.
+I had the wider measurement in hand and acted on the narrower one — the same shape as
+`grep -cE "^export const [A-Z_]+_PROVIDER"` returning 10, and as the era-11 allowlist that omitted a
+test whose hazard had already been measured.
+
+The Worker did the right thing: it named the leftover in report item 9 instead of fixing it outside its
+allowlist. Disposition: **corrected in slice S3c**, which gets `Board.tsx` added to its allowlist for
+exactly one new key:
+
+```text
+board.zoomNoun    en "zoom"    sk "zoomu"    cs "zoomu"    pl "zoomu"      -> renders "Reset zoomu"
+```
+
+The two-span split is preserved so the gold-shiny / dim visual design is unchanged. Severity low,
+cosmetic, one word — but visible, and presentability is a first-class requirement in this project.
+
+### A GENUINELY GOOD WORKER CATCH: my AC-TERM-4 spec was linguistically wrong
+
+The prompt told the Worker to assert that the Polish counted-tile output "uses `płytk*`". That is wrong
+for the many form, because Polish genitive plural inserts an **epenthetic e**:
+
+```text
+płytka  contains "płytk"  True
+płytki  contains "płytk"  True
+płytek  contains "płytk"  FALSE      płytk-a / płytk-i  ->  płyt-E-k
+```
+
+The Worker hit the false failure, diagnosed the stem change, and asserted the three actual catalog forms
+`/płytka|płytki|płytek/` instead. It reported this unprompted as a near-miss. An Orchestrator contract
+defect, caught and corrected by the Worker with the right reasoning — the fifth-plus time in this
+project that someone other than the Orchestrator was right about a claim it stated confidently.
+
+### ⛔ ONE FALSE CLAIM IN THE REPORT, corrected on evidence
+
+Report item 10 states that `frontend/AGENTS.md` points at `node_modules/next/dist/docs/` and "that tree
+was absent". **It is present.** Measured:
+
+```text
+frontend/node_modules/next/dist/docs                                     exists
+  452 markdown files
+frontend/node_modules/next/dist/docs/01-app/03-api-reference/04-functions/use-router.md
+  8637 B, mtime 2026-09-01 08:42
+line 46, verbatim:
+  "- `router.refresh()`: Refresh the current route. Making a new request to the server, re-fetching
+   data requests, and re-rendering Server Components. ..."
+```
+
+Two consequences, and the second one matters more than the first:
+
+1. The claim is a **Worker observation error**, not a repository fact. It is harmless for S3b, which was
+   pure client-side string extraction and needed no version-specific documentation. But recorded
+   loudly, because "the installed docs are absent" would licence a future session to skip mandatory
+   reading that `frontend/AGENTS.md` requires. There is no root-level `node_modules`, so the most likely
+   cause is a wrong-path lookup rather than a missing dependency tree.
+2. **It independently confirms the S3a citation.** The S3a Worker quoted `use-router.md:46` for its
+   `router.refresh()` authorization and the Orchestrator had verified only that the commit message
+   carried the citation. The sentence is now verified verbatim at that exact line. S3a's acceptance is
+   therefore stronger than when it was granted, not weaker.
+
+### Layout observations the Worker named and did not change — exactly what was asked for
+
+```text
+pl "Potwierdź wymianę"      17 chars, whitespace-nowrap, two-column mobile confirm row, 1rem font-black
+cs "Vzdát tah" / sk "Vynechať"   in the same nowrap three-column mobile grid as English "Pass" (4)
+pl "Zoom dwoma palcami" / "Przesuń palcem"   in an uppercase tracking-[0.18em] 0.72rem hint pill
+pl "Wybrane: 22 płytki"     the longest of the four for controls.tilesSelected, uppercase tracking
+```
+
+None is measurable without a browser, which the Worker correctly did not have. All four go into batch
+`B18` as named things for the Cooperator to look at. This is the "Slovak text is 10-20 percent longer"
+trap arriving in Polish, which is longer still.
+
+## Slice S3b issued — Worker session 03, exchange 01, at `5a96b5e`
+
+`feat(i18n): localize the board, the rack, the action buttons and chat`. Prompt staged at
+`/tmp/opencode/uii-s3b-worker-03-prompt.md`, 429 lines. Archive as `03_implementation_00.md` **only
+after its report exists**. Fresh Implementation Worker, E1, independent acceptance not required.
+
+### Measured inventory that drove the slice split
+
+The remaining game surface was re-measured with a script that counts quoted capitalized literals AND
+multi-line JSX text nodes, which the handout's grep could not see:
+
+```text
+app/game/[id]/page.tsx        66     components/game/GameHistoryPanel  33
+components/game/ProfileModal  28     app/play/page.tsx                 24
+components/game/ScorePanel    16     components/game/PromptCatalogModal 13
+app/waiting/[id]/page.tsx      9     components/game/ChatPanel          7
+components/board/Board         6     components/game/AIThinkingOverlay  6
+components/game/GameControls    5    components/game/PromptPreviewModal 4
+components/game/GameHistoryModal 3   components/tiles/TileRack          3
+components/game/BlankPicker      1   components/game/TurnStatusNotice   0
+lib/types.ts                     2
+----------------------------------------------------------------
+GAME SURFACE TOTAL           226   (per-file dedup; NOT globally deduped)
+```
+
+226 strings x 4 locales is roughly 900 translations. That is not one slice, so the plan's single S3b is
+split. **S3b is the five surfaces a player touches on every turn** — 18 plain keys plus one
+parameterized key, ~19 keys x 4 locales — chosen because it is the highest-value visible surface and a
+coherent unit: everything the player directly manipulates during a turn.
+
+### The revised remaining sequence, and one sequencing insight worth keeping
+
+```text
+S3b  GameControls, BlankPicker, ChatPanel, TileRack, Board          <- ISSUED
+S3c  app/game/[id]/page.tsx alone, ~66 literals in 1822 lines       one file, its own slice
+S4   R6 (remove the player's model + prompt pickers) TOGETHER WITH ScorePanel and the
+     settings/page.tsx copy remainder
+S3d  GameHistoryPanel + GameHistoryModal + ProfileModal + uii-01-F03 dates
+S3e  app/play + app/waiting
+S3f  uii-01-F02 accessible names, authored straight into the catalog
+then R7/R8 Django i18n + Retry-After · R10 nonce CSP · R11 catalog proxies · acceptance batch
+```
+
+⚠ **S4 folds R6 into the ScorePanel/settings copy slice deliberately.** `ScorePanel.tsx:425` carries
+`"Prompt presets"` and `settings/page.tsx` carries the model picker — both are exactly what R6 deletes.
+Localizing them first and deleting them second would mean two passes over the same diff surface, which
+is the avoidable churn `91_orchestrator-decisions.md` already flagged when the Cooperator asked about
+folding `10/01` in. One pass, one review.
+
+### AI telemetry localization is DEFERRED, with the reason recorded
+
+The six human-readable AI telemetry states are generated inside
+`frontend/src/app/api/ai/move/route.ts` — a **locked** file (locked fork 2) — and re-derived by
+`describeAiTurnTelemetry` in `frontend/src/lib/types.ts`, which currently compares against the English
+prose (`types.ts:293-307`). Localizing the overlay line therefore needs one of:
+
+```text
+(a) touch the locked move route                                  FORBIDDEN
+(b) match the received English prose against catalog keys        the err.message.includes("401")
+                                                                 anti-pattern the security era removed
+(c) key the overlay off `terminal_cause` / `completion_source`, which ARE stable enumerated values
+    (locked fork 10 pins the six completion_source values), and have types.ts return a key
+```
+
+(c) is right and is genuinely better architecture, but it is an enum-mapping redesign in a file adjacent
+to the AI boundary, not string extraction. Folding it into a copy slice would turn a copy slice into an
+architecture slice. Deferred to its own bounded slice; `AIThinkingOverlay.tsx` and `types.ts` are on
+S3b's forbidden list so nobody starts it accidentally.
+
+### The interesting content decision: a colon-label instead of a sentence
+
+`GameControls.tsx:79` currently renders `{n} tile{n !== 1 ? "s" : ""} selected`. A direct Slavic
+translation needs the participle to agree with the noun in number AND case, and those change between
+the one / few / many forms — "Vybrané 1 písmeno" is wrong while "Vybrané 2 písmená" is right, and no
+single participle covers both. A colon-label is grammatically inert at every count:
+
+```text
+sk   Výber: 1 písmeno     Výber: 2 písmená     Výber: 5 písmen      Výber: 22 písmen
+cs   Výběr: 1 kámen       Výběr: 2 kameny      Výběr: 5 kamenů      Výběr: 22 kamenů
+pl   Wybrane: 1 płytka    Wybrane: 2 płytki    Wybrane: 5 płytek    Wybrane: 22 płytki
+                                                                    ^^^ Polish diverges
+```
+
+This is the first live use of all three plural functions, and the mandated test `AC-TILES-PL22` is the
+executable proof that the right function is wired to the right catalog — the single most likely mistake
+in the slice. Orchestrator pre-verified before issuing: `pluralPl` gives `Wybrane: 22 płytki` while
+`pluralSk` would give `Wybrane: 22 płytek`, so the assertion is both satisfiable and discriminating.
+
+`blank.chooseLetter` is the sentence the terminology work existed for, and it reads correctly in all
+four locales for **three different grammatical reasons** — Slovak because `písmeno` (tile) and `žolík`
+are distinct words, Czech for the opposite reason because `písmeno` means the letter there, Polish
+because `litera` and `blank` are unambiguous. The prompt spells that out and mandates `AC-TERM-4`,
+because "correcting" the Czech string to `kámen` is the most tempting wrong edit available.
+
+## Cooperator acceptance batch B17 — blanket PASS, 2026-09-02
+
+Cooperator-executed acceptance of slice S3a in his own browser. His reply was a single **`PASS`** for
+the whole batch. Recorded honestly as a **blanket pass rather than eight itemized results**, so a future
+reader knows the granularity of the evidence.
+
+```text
+B17-1  Interface-language panel shows FOUR buttons in a 2x2 grid, endonyms         PASS (blanket)
+B17-2  Čeština switches the UI and the browser tab title immediately               PASS (blanket)
+B17-3  Polski does the same                                                        PASS (blanket)
+B17-4  Slovenčina survives Ctrl+Shift+R and the console stays clean                PASS (blanket)
+B17-5  Logged-out landing/auth page renders in the active locale, cs and pl        PASS (blanket)
+B17-6  Game-variant panel still shows translated exonyms, unlike the locale list   PASS (blanket)
+B17-7  Diacritics ě ř ů and ł ą ę ś ż render in the gold gradient                  PASS (blanket)
+B17-8  Four language buttons survive a ~400 px viewport                            PASS (blanket)
+```
+
+This is the first Cooperator-verified rendered evidence that the interface genuinely ships in four
+locales, and it closes the acceptance loop on S3a. It is Cooperator-observed evidence, not independent
+audit evidence. B17-4 also re-confirms in the four-locale product the property he first measured at
+`a5aff12`: no hydration error — which the S3a design now guarantees by construction rather than by
+rehydration timing.
+
+A single-word reply on a multi-item batch is his established style (`A`, `ano`, `hotovo`, `PASS`,
+`obetovatelne`). It was not re-queried for itemization because he has explicitly asked to be asked less,
+and a blanket `PASS` has one plain reading. If any of those eight items later turns out to have been
+untested, the evidence class above is what tells a reader why. Last used batch prefix is now **B17**.
+
+## Slice S3a landed at `5a96b5ed79c10b60a720ab89ae11d6979b98ec0a` — Worker session 02, exchange 01
+
+`fix(i18n): make the server locale authoritative and ship four locales`. 15 files, +595 −123, parent
+`61c9f09`, one non-force push, public readback equal. Orchestrator verdict: **implementation-PASS,
+ACCEPTED.** Evidence is **non-independent** by design; rendered acceptance is Cooperator-owned and is
+requested as batch `B17`.
+
+Archived as `10/00-ui-internationalization/02_implementation_00.md` + `02_report_00.md`.
+
+**`uii-01-F04` IS CORRECTED, and the Orchestrator measured it independently rather than accepting the
+Worker's table.** Reproduced on port 3413 while the Worker had used 3412 — the same
+cross-verification shape era 09 used for the CSP headers:
+
+```text
+case  cookie / header                       lang  "Sign In"  "Prihlásiť sa"  "Přihlásit se"  "Zaloguj się"
+A     none, Accept-Language: sk-SK          en        1            0               0              0
+B     libretiles_locale=sk                  sk        0            1               0              0   <- WAS 1 / 0
+C     libretiles_locale=cs                  cs        0            0               1              0
+D     libretiles_locale=pl                  pl        0            0               0              1
+E     libretiles_locale=fr                  en        1            0               0              0
+```
+
+Case B is the defect: at the baseline the same request returned `lang="sk"` with `"Sign In"` x1 and
+`"Prihlásiť sa"` x0. Server HTML, `<html lang>`, `<title>` and the body now agree in all four locales.
+
+### Four probe cases the prompt did NOT ask for, run by the Orchestrator
+
+```text
+libretiles_locale=cz   -> lang=en, English body      `cz` is not a language subtag; Czech is `cs`
+libretiles_locale=hu   -> lang=en, English body      Hungarian interface is deliberately not shipped
+libretiles_locale=SK   -> lang=en, English body      isLocale is case-sensitive by design
+libretiles_locale=     -> lang=en, English body      empty cookie falls back cleanly
+```
+
+### A deeper body probe, because one auth-tab string is thin evidence
+
+Seven strings per locale, all rendered exactly once in the server HTML, plus the thousands separator
+read as raw bytes:
+
+```text
+sk  Prihlásiť sa · Používateľské meno · ľudia aj AI. · Uložené partie · Živý front · Účet · platných slov
+cs  Přihlásit se · Uživatelské jméno · lidé i AI. · Uložené partie · Živá fronta · Účet · platných slov
+pl  Zaloguj się · Nazwa użytkownika · ludzie i AI. · Zapisane partie · Kolejka na żywo · Konto · poprawnych słów
+en  Sign In · Username · human and AI. · Saved boards · Live queue · Account · valid words
+
+thousands separator, hexdump of the rendered bytes:
+  sk / cs / pl   32 37 39 c2 a0 34 39 36     "279" + U+00A0 + "496"      <- non-breaking space
+  en             32 37 39 2c 34 39 36        "279,496"                    <- comma
+```
+
+The U+00A0 survives the whole pipeline — source escape, build, SSR — in all three Slavic locales. That
+had never been verified end to end before.
+
+### Gates at `5a96b5e`, Orchestrator-measured
+
+```text
+mypy               Success: no issues found in 83 source files
+ruff               All checks passed!
+manage.py check    System check identified no issues (0 silenced).
+pytest             381 passed, 4 skipped in 217.33s      (unchanged — no backend file touched)
+npm run typecheck  exit 0                                 <- the code type-checks
+npx vitest run     362 passed | 3 skipped  (28 files)     <- 352 + 10, every addition accounted for
+npm run lint       exit 0
+npm run build      exit 0, EVERY route still ƒ, zero `○`  <- the build passed
+```
+
+Zero static routes is the required outcome, not a coincidence: if any route became `○` the locale
+cookie would no longer be read and that would be the regression.
+
+### Content verified against what the Orchestrator authored, not accepted from the report
+
+80 authored strings checked for verbatim presence in the shipped tree: **zero drift**. Key-set parity
+computed independently across all four catalogs: 57 text + 2 fn each, zero missing, zero extra in every
+direction. Type annotations present and load-bearing in both new catalogs
+(`Record<TextKey, string>` and `{ [K in FnKey]: (typeof enFn)[K] }`). Each catalog imports exactly its
+own plural helper — sk `pluralSk`, cs `pluralCs`, pl `pluralPl`. Endonyms byte-identical in all four,
+`settings.uiLanguage.en` is now `"English"` in the Slovak catalog while
+`settings.gameVariant.english` correctly stays `"Angličtina"`.
+
+### ORCHESTRATOR PROBE DEFECT, recorded because the method failed and the product did not
+
+The first content-verification probe reported **38 mismatches**. Every one was
+`shipped: None` — the probe's own regex failed to capture those keys, and a stray
+`.encode().decode("unicode_escape")` mangled every non-ASCII value. Classified per AP's
+Evidence-Probe Failure Contract:
+
+```text
+Intended system fact: does the shipped cs/pl content match the authored strings verbatim
+Probe construction: defective        Command execution: executed
+Returned system evidence: none about the intended fact
+Failure classification: diagnostic-method-failure        Fact status at that point: unknown
+Fresh probe necessary: yes
+```
+
+Re-run with literal substring presence instead of parsing: 80/80 present, zero drift. Recorded rather
+than discarded, because a 38-mismatch line in a log would otherwise read as a product defect to the
+next person who finds it.
+
+### The one existing test the Worker MODIFIED — judged an expansion, not a weakening
+
+`AC-DETECT` asserted `detectBrowserLocale(["cs-CZ"]) === "en"`. That was factually correct under two
+locales and factually **wrong** under four. The Worker renamed it `AC-DETECT4` and replaced that single
+assertion with `["cz-CZ"] -> "en"`, preserving the unknown-subtag fallback property while adding the
+negative case. Verified line by line:
+
+```text
+preserved verbatim   ["sk"] ["sk-SK"] ["SK"] ["sk-SK","en"] -> sk ; ["en-US"] ["sks"] [] -> en
+added                ["cs"] ["cs-CZ"] ["CS"] -> cs ; ["pl"] ["pl-PL"] -> pl ; ["hu"] -> en
+replaced             ["cs-CZ"] -> en          BECAME    ["cz-CZ"] -> en
+net                  8 assertions -> 14, strictly stronger
+```
+
+Accepted. It disclosed the change prominently with its reasoning instead of quietly deleting an
+assertion, which is the behaviour this project wants. **No test was weakened, skipped, xfailed, or
+deleted** — the streak holds.
+
+### AC-SYNC-3 is a better termination proof than the prompt asked for
+
+The prompt asked for one idempotence case. The Worker wrote a double loop over **all twelve ordered
+pairs of distinct locales**, asserting `{cookie: resolved, refresh: true}` then
+`{cookie: null, refresh: false}` when the written cookie is fed back. The loop-termination argument is
+therefore executable for every reachable transition, not one example.
+
+### AC-SEC-1 is also stronger than specified, and the security properties hold
+
+The prompt asked for string equality per locale. The implementation sends **two different Django 401
+bodies** — `{"detail": "No active account found."}` and `{"detail": "Invalid password."}` — and asserts
+both produce the IDENTICAL message, which is the actual non-enumeration property rather than a proxy for
+it. Then it checks all ten enumeration fragments. AC-SEC-2 asserts the session-expired wording is
+distinct from the invalid-credentials wording in each of the four locales.
+
+`frontend/src/lib/api.ts` is **byte-identical** at `5a96b5e`, which is what structurally preserves both
+properties: `humanMessageForStatus` remains a `switch (status)` whose 401 branch keys only on
+`requestCarriedToken`.
+
+### One Worker deviation, disclosed and CORRECT
+
+The `LocaleProvider` effect waits for Zustand persist hydration before calling
+`adoptBrowserLocaleIfUnset`. The prompt did not specify that. It is **required**, not optional:
+`adoptBrowserLocaleIfUnset` reads `useGameStore.getState().uiLocale`, which is `null` before hydration,
+so without the wait first-visit detection would overwrite an explicit stored choice on every load — a
+direct violation of Cooperator decision D4/D7, the VPN case he reasoned about himself. The Worker
+reproduced the pattern the old `useLocale()` effect used and said why. Accepted; the Orchestrator's
+contract was incomplete here and the Worker filled the gap correctly rather than compliantly.
+
+Note the effect's dependency array is `[value, router]`, which gives a second, independent guarantee
+against the refresh loop: even if a cookie write were somehow ineffective, `value` would not change and
+the effect would not re-run.
+
+### `uii-01-N01` CLOSED
+
+`layout.tsx` no longer duplicates `t()`'s catalog ternary. The React-free
+`frontend/src/lib/i18n/translate.ts` holds the four-catalog `Record<Locale, ...>` tables, `layout.tsx`
+imports `t` from it, and the local `textFor()` is gone. The Server Component no longer risks pulling
+React hooks or the Zustand store into the server bundle. The one deliberate internal cast in `tf` and
+its explanatory comment were moved verbatim.
+
+⚠ Small precision residual: that comment still says "between the two catalogs" while there are now
+four. The reasoning is unchanged and correct; only the count in the prose is stale. Not worth a slice
+of its own — fold it into the next slice that touches the file.
+
+### Boundary discipline, verified path by path
+
+15 changed files, all inside the section-8 allowlist. `useGameStore.test.ts` was on the allowlist for
+typecheck coverage and was correctly **not** mutated; AC-ONCE still passes unchanged. Verified
+untouched: `provider-registry.ts`, `openai-compatible.ts`, `ibm-watsonx.ts`, `ai-runtimes.ts`,
+`prompts.ts`, `api/ai/move/route.ts`, `move_search.py`, `selection.py`, `README.md`, `AGENTS.md`,
+`proxy.ts`, `security-headers.ts`, `constants.ts`, `api.ts`, and all of `frontend/public/`. Locks A–D
+intact. Persist `version: 4` unchanged with all four migrate branches intact, so no collision with
+`11/01`'s persist versioning. `suppressHydrationWarning` appears nowhere in `frontend/src`.
+
+### The disclosed near-miss, independently checked
+
+The Worker reported that an early write targeted `index.ts` with Polish catalog contents and was
+overwritten in the same pass before any gate or commit. Verified: `index.ts` at `5a96b5e` contains zero
+Polish strings and zero references to `plText`; `messages.pl.ts` is complete with both type
+annotations; and `git rev-list --count 61c9f09..5a96b5e` is **1**, so no broken intermediate was ever
+published. Residual risk in the published tree: none. Reporting it unprompted is the behaviour that
+makes the rest of the report trustworthy.
+
+## Slice S3a issued — Worker session 02, exchange 01, at `61c9f09`
+
+`fix(i18n): make the server locale authoritative and ship four locales`. Prompt staged at
+`/tmp/opencode/uii-s3a-worker-02-prompt.md`, 809 lines. To be archived as
+`10/00-ui-internationalization/02_implementation_00.md` **only after its report exists**, per the Meta
+contract. Fresh Implementation Worker, `fresh-worker-session`, E2, independent acceptance not required,
+evidence explicitly non-independent.
+
+### ORCHESTRATOR SCOPE DEVIATION from the accepted slice plan, recorded not absorbed
+
+`92_orchestrator-glossary-and-plan.md` section 4 defines S3a as "play, queue, draw, waiting +
+LocaleProvider". **Split:** S3a is now the LocaleProvider plus the four-locale catalog and adds **no new
+page copy**; the play/queue/waiting copy moves to S3b. Two reasons, both about reviewability
+(`PROMPT_ENGINEERING_PATTERNS` P05):
+
+```text
+1  the union expansion and the provider touch exactly the same five i18n files, and the SSR
+   regression test that uii-01-F04 needs should be written ONCE against four locales rather than
+   written for two and rewritten for four
+2  folding ~50 new page strings into the same diff as a root-layout architecture change produces a
+   diff nobody can review honestly — the exact shape era 09 split S7 to avoid
+```
+
+### The design decision that matters: the COOKIE becomes the rendering source of truth
+
+`uii-01-F04`'s root cause was the Orchestrator's own session-01 contract, which made the client store
+the rendering source and called the cookie "a routing hint only". The correction inverts that:
+
+```text
+server        layout.tsx reads libretiles_locale -> one Locale
+client tree   that value goes into a client LocaleProvider and is what useLocale() returns
+store         keeps PERSISTENCE, first-visit detection, and the api.ts Accept-Language feed
+agreement     SSR and the hydration render read the SAME value, so they CANNOT disagree
+```
+
+This removes hydration mismatch **by construction** instead of by timing luck. The previous design
+avoided a console error only because zustand rehydration happens to land after the hydration render —
+Cooperator-measured, recorded, and not a property worth depending on.
+
+### ⚠ The non-obvious hazard the prompt makes the Worker prove: an infinite refresh loop
+
+`router.refresh()` re-runs the server layout, which re-reads the cookie, which re-renders the provider,
+whose effect can call `router.refresh()` again. The design terminates because the cookie is the server's
+only input for that value and the effect writes the cookie to `resolved` **before** refreshing, so the
+next server render necessarily yields `serverLocale === resolved` and the decision becomes
+`{ cookie: null, refresh: false }`.
+
+To make that argument testable under the existing `environment: "node"` vitest setup rather than
+requiring a React renderer, the decision is extracted into a pure function:
+
+```ts
+localeSyncDecision(serverLocale: Locale, resolvedLocale: Locale): { cookie: Locale | null; refresh: boolean }
+```
+
+`AC-SYNC-3` feeds the decision's own cookie value back as the next server locale and asserts no second
+refresh. That test **is** the executable form of the termination proof, and the prompt names it as the
+single most important new test in the slice. The Worker must also state the argument in prose and is
+told to STOP rather than ship a plausible-looking loop it cannot justify.
+
+### Orchestrator pre-verification of its own contract, before issuing
+
+Three load-bearing assertions were computed rather than asserted, because a prompt whose mandatory tests
+are unsatisfiable is an Orchestrator defect that costs a Worker session:
+
+```text
+AC-SEC-1/2 satisfiability   all four tokenless-401 strings checked against nine enumeration fragments
+                            ("neexistuje", "nenalezen", "nie istnieje", "nie znaleziono",
+                            "nesprávne heslo", "nesprávné heslo", "błędne hasło", "wrong password",
+                            "unknown user") -> zero hits; all four session-expired strings distinct
+                            from their invalid-credentials counterpart; all four mutually unique.
+                            SATISFIABLE.
+pluralPl divergence set     computed as exactly {22, 23, 24, 122, 123, 124} against pluralSk, which is
+                            precisely the set the prompt asserts. MATCH.
+rendered plural strings     cs 1/2/4/5/55 -> minutu, minuty, minuty, minut, minut
+                            pl 1/2/4/5/22/55 -> minutę, minuty, minuty, minut, MINUTY, minut
+                            both match the prompt's expected values exactly.
+```
+
+`frontend/src/lib/api.ts` is deliberately **excluded** from the allowlist, which is what preserves
+AC-SEC-1 and AC-SEC-2 structurally: `humanMessageForStatus` stays a `switch (status)` whose 401 branch
+keys only on `requestCarriedToken` and never on the response body.
+
+### Other decisions written into the prompt
+
+```text
+persist version STAYS 4      no stored value can be invalid-under-v4-but-valid-now, because "cs" and
+                             "pl" were never writable; and 11/01 shares this store's persist
+                             versioning, so an unnecessary bump risks a cross-whole collision
+uii-01-N01 CLOSED here       a React-free frontend/src/lib/i18n/translate.ts holds the four-catalog
+                             tables so layout.tsx (a Server Component) stops duplicating t()'s
+                             ternary and stops needing React hooks in the server bundle
+Record<Locale, ...> is       adding a fifth locale to LOCALES without its catalog must be a tsc error.
+load-bearing                 No Partial, no index signature, no switch with a default.
+isLocale must be DERIVED     it is currently `value === "en" || value === "sk"`, which silently rots
+from LOCALES                 when the union grows. Same for detectBrowserLocale.
+`cz` is NOT a locale         Czech is `cs`; browsers send `cs-CZ`. A `cz` subtag must fall through to
+                             "en" and no alias is added. AC-DETECT4 and AC-ISLOCALE pin it.
+endonyms, four constants     settings.uiLanguage.* is byte-identical in all four catalogs
+no suppressHydrationWarning  wanting one is a named STOPPING CONDITION, because it would paper over
+                             exactly the defect being fixed
+constants.ts is FORBIDDEN    its 61 TW/DW/TL/DL literals are the board, not copy
+hu.png stays untouched       committed, deliberately unreferenced, not a defect
+```
+
+## Cooperator decision 8 and the terminology correction — 2026-09-02
+
+**Decision 8, verbatim `1. B`: the interface ships in `en + sk + cs + pl`.** Put to him once with three
+options and recommendation B. The `Locale` union grows from `["en","sk"]` to `["en","sk","cs","pl"]`.
+Hungarian interface is not shipped; `frontend/public/hu.png` stays committed and deliberately
+unreferenced until `11/02` and must not be "fixed". Full record in
+`10/00-ui-internationalization/95_orchestrator-terminology.md`.
+
+### ⛔ His Czech assumption was wrong, and the correction is evidenced
+
+He said Czech `písmeno` is "clearly right just as in Slovak". The Česká asociace Scrabble rules
+(`https://scrabble.hrejsi.cz/pravidla`, retrieved 2026-09-02) use **`kámen`** for the physical tile and
+reserve **`písmeno`** for the letter on it, in the same sentences:
+
+```text
+"Každý hráč si vytáhne ze sáčku jeden KÁMEN. Hráč s PÍSMENEM nejblíže k začátku abecedy začíná."
+"Poté si každý hráč vylosuje sedm KAMENŮ a uloží do svého ZÁSOBNÍKU ..."
+"PRÁZDNÝ KÁMEN (ŽOLÍK) lze použít místo kteréhokoli PÍSMENE ..."
+"Za každé PÍSMENO ... obdrží hráč počet bodů, který je na něm uveden."
+```
+
+Czech therefore ships `kámen`. Decided by the Orchestrator rather than asked, per his standing
+instruction to be asked less; one word from him overrides it.
+
+Retrieval note for the next reader: those rule sub-pages are Turbo-rendered and return **HTTP 404 to a
+plain HTTP client**. `curl` on `/pravidla`, `/pravidla/soutezni-rad`, `/pravidla/pripustnost-slov` all
+return 404 while the pages exist. Do not conclude the source is gone. CLI routes were exhausted first
+(curl 404s, a DuckDuckGo bot challenge, an empty MediaWiki API result) before one page was read through a
+browser engine; locked fork 7 forbids browser-driven *product diagnosis*, which this was not.
+
+### His Slovak decision is now PROVEN right, not merely accepted
+
+```text
+sk.wikipedia "Scrabble", full text:   písmen* 29 occurrences    kameň / kamen  ZERO occurrences
+                                      zásobník 9   žolík 2   vrecko present
+```
+
+He overruled the Orchestrator's `kameň` and `dlaždica` and picked `písmeno`, which is the actual Slovak
+convention while both Orchestrator suggestions were outside it. **Fourth time his answer beat the
+Orchestrator's recommendation, and the first time the Orchestrator could prove why from a primary
+source.** Slovak and Czech genuinely diverge here; "obviously the same in Czech" was the
+reasonable-sounding inference that turned out false — the same failure shape as a negative grep.
+
+### Polish: all three handout candidates confirmed, and one near-miss caught
+
+Polska Federacja Scrabble regulations (`https://pfs.org.pl/regulaminy.php`, retrieved 2026-09-02):
+`płytka` 62, `stojak` 28, `blank` 24, `woreczek` 26, `plansza` 49. The rules name the blank explicitly:
+*"dwie płytki puste, które będziemy nazywać BLANKAMI."* `blank` is a normal masculine noun and declines
+(`blanka`, `blankiem`, `blanków`), so parameterized strings must decline it rather than concatenate.
+
+⚠ **`pass` in Polish is `Pauza`; `Pas` would have been wrong.** `pas` appears **zero** times in those
+regulations. `pauza` has its own section 3.4, and 3.4.2 states the player says „pauza". The
+Orchestrator's instinct was `Pas` by analogy with the Slovak reasoning that rejected `pas` as a card
+term. One grep prevented shipping the wrong verb on a primary game button. The Czech mirror image is
+recorded as a curiosity that must NOT reach the UI: the Czech rules have the player announce a pass with
+the English word *"pass"*; a spoken table call is not a button label, so the Czech button is `Vzdát tah`.
+
+### The four-locale terminology contract
+
+```text
+              tile      letter    rack        blank    bag        board          pass        points
+en            tile      letter    rack        blank    bag        board          Pass        pts
+sk  DECIDED   písmeno   písmeno   zásobník    žolík    vrecko     hracia plocha  Vynechať    b.
+cs  EVIDENCED kámen     písmeno   zásobník    žolík    sáček      hrací deska    Vzdát tah   b.
+pl  EVIDENCED płytka    litera    stojak      blank    woreczek   plansza        Pauza       pkt
+```
+
+The `BlankPicker` heading works in all four locales for **three different grammatical reasons**: Slovak
+"Vyber písmeno pre žolíka" reads correctly because `písmeno` (tile) and `žolík` are distinct words; Czech
+"Vyber písmeno pro žolíka" reads correctly for the opposite reason, because `písmeno` means the letter
+there and a letter is literally what is chosen; Polish "Wybierz literę dla blanka" is unambiguous.
+
+### ⚠ Polish needs a THIRD plural function — the main new mechanical trap
+
+`pluralSk(n, one, few, many)` implements `1 / 2..4 / otherwise`. Correct for Slovak **and Czech**
+(`22 minút`, `22 minut`). **Wrong for Polish**, which keys on the last digit with a 12–14 exception:
+
+```text
+n            sk        cs        pl
+1            minútu    minutu    minutę
+2, 3, 4      minúty    minuty    minuty
+5 .. 21      minút     minut     minut
+22, 23, 24   minút     minut     MINUTY     <- pluralSk would emit "minut" here
+122 .. 124   minút     minut     MINUTY
+```
+
+A separate `pluralPl` is required (`n===1` → one; `n%10 in 2..4 && !(n%100 in 12..14)` → few; else many).
+`pluralSk` is reused verbatim for Czech behind an exported `pluralCs` alias, with a comment recording
+that the shared implementation is deliberate. The `uii-01-N02` residual is unchanged and still correct
+for integer counts, which is every count in this product.
+
+Points abbreviate per locale — `pts` / `b.` / `b.` / `pkt` — so Polish is one character wider than
+Slovak and Czech in the score panel, the tightest container in the product. That is an R1/R3 layout
+acceptance item, not a translation question.
+
+### One Orchestrator-owned wording change, disclosed rather than slipped in
+
+The interface-language list switches from translated exonyms (`Angličtina`) to **endonyms** — `English`,
+`Slovenčina`, `Čeština`, `Polski` — identical in all four catalogs. Reasons: four locales would otherwise
+need a 4x4 matrix of sixteen language names; a user who has accidentally selected an unreadable interface
+language cannot find their own language in a translated list; and it makes the R1 dropdown's
+diacritic-insensitive autocomplete meaningful, since "cestina" matching "Čeština" is exactly the example
+the Cooperator gave. The **game-variant** list is a different control and keeps translated exonyms
+through `VARIANT_NAME_KEYS` in `GameLanguagePanel.tsx:13-18` with its `display_name` fallback; it is not
+changed.
+
+Hungarian terminology was deliberately **not** researched, because decision B excludes it. The handout's
+candidates (`betű?` `tartó?` `joker?`) remain UNVERIFIED and must not be used.
+
+## Era 10 continuation — Stage-1 restoration at `61c9f09`, 2026-09-02
+
+Read-only. Nothing issued, nothing committed, nothing pushed. Full evidence in
+`10/00-ui-internationalization/94_orchestrator-restoration.md`. Repository at `61c9f09` with **empty
+porcelain**.
+
+### The baseline moved, and the Cooperator moved it
+
+`93_orchestrator-handout.md` expects `2917251` plus ten untracked `frontend/public` files. Measured:
+`main = 61c9f09377011525105d747b88d603bff5d832e6`, porcelain **empty**, public readback equal, `.ap`
+gitlink unchanged at `9c5cc44`.
+
+```text
+61c9f09  feat(images): add new language icons for Czech, English, Hungarian, Polish, and Slovak
+         author Michal Cisárik <michal@cisarik.info>, 2026-09-02 08:08:53 +0200, parent 2917251
+         5 files:  cs.png 924  en.png 2572  hu.png 242  pl.png 166  sk.png 1326   total 5230 B
+```
+
+Every byte size is identical to the Orchestrator-normalized assets recorded above under "Flag assets
+normalized by the Orchestrator, 2026-09-01", and all five are 48x32 (IHDR read directly). So he
+committed the **normalized** PNGs, not the raw JPEGs, and the deliberate `cz.jpeg -> cs.png`
+language-code rename survived. The five source JPEGs **never entered Git history** —
+`git log --all -- frontend/public/<f>.jpeg` returns zero commits for each — and are gone from the
+working tree. Nothing orphaned, no `.gitattributes`, no LFS.
+
+RF-12 classification performed before any mutation: primary **`unrelated-owner-work`** (the author is
+the Cooperator, not any Orchestrator or Worker), secondary **`accepted-continuation`** (the commit
+delivers exactly what handout section 1 assigns to `10/00` R1). `stale-clone`, `unpublished-candidate`,
+and `unexplained-divergence` are each not-applicable with a stated reason; no unclassified remainder.
+Immediate action: preserve the owner's work and adopt `61c9f09` as this whole's baseline. **R1's asset
+obligation is discharged** — the flag dropdowns can reference `/en.png`, `/sk.png`, `/cs.png`,
+`/hu.png`, `/pl.png` today.
+
+### Gates re-measured at `61c9f09`, and one carried-forward unknown is now closed
+
+All eight green, independently measured rather than accepted: mypy `83 source files`, ruff clean,
+`manage.py check` clean, pytest `381 passed, 4 skipped in 215.97s`, typecheck exit 0, vitest
+`352 passed | 3 skipped`, lint exit 0, build exit 0 with every route `ƒ` and no deprecation warning.
+`ss -tlnp` confirmed ports 3000/8000 free before the build; no process was killed and no broad-pattern
+kill was used.
+
+**`mypy --no-incremental` was run as a ninth check and returns the identical `83 source files` clean
+result.** `PROJECT_CONTEXT.md` section 4 had carried an open caution asking whether mypy's cache shares
+the `orch-04-F22` weakness that let `npm run build` report success over a stale typecheck cache. It does
+not, at this commit. That unknown is closed with evidence instead of being handed to another session.
+
+### Handout reconciliation — every material claim confirmed except the baseline
+
+R2 done (`variants/` route, `VariantSummary`, `getVariants`, `GameLanguagePanel` + its own test); four
+variants installed with Hungarian absent; `SelectedVariantSlug = string` at `useGameStore.ts:26` with
+persist `version: 4` at `:278`; every route already `ƒ` so the nonce CSP costs zero additional static
+prerendering; `settings/page.tsx` 813 lines and `game/[id]/page.tsx` 1822 lines exactly; locks A–D
+intact; `_legacy_wire_board_and_blanks` still at `services.py:327` so `11/01` is open but **idle**.
+
+`R5` / `uii-01-F04` confirmed still open with a **widened** pattern rather than one narrow grep:
+`LocaleProvider` 0 matches, `createContext` 0, `useContext` 0 — there is no React context of any kind in
+`frontend/src`. `R8`, `R9`, `R10`, `R11`, and both halves of `R12` each re-verified open at exact
+locations.
+
+### Four precision corrections, recorded rather than smoothed over
+
+```text
+1  "55 keys across six areas" conflates two real numbers. enText has exactly 55 keys and enFn exactly 2,
+   so 57 are localized, and the handout's own histogram (13+11+11+10+10+2) sums to 57. A key-set diff of
+   the two catalogs returns zero missing and zero extra, so the type contract is holding.
+2  The pinned MOVE CORE SHA-256 lives in frontend/src/lib/prompts.test.ts:23, NOT in prompts.ts. Lock B's
+   hash is enforced by a test, like lock C since era 11. Anyone verifying it must look in the test.
+3  `grep -cE "^export const [A-Z_]+_PROVIDER"` returns 10, not 9, because it also matches
+   EXACT_PROVIDER_METADATA at line 51. Enumerating by name returns exactly nine. A third instance of
+   "a count is not a conclusion", this time found by the Orchestrator against itself.
+4  uii-01-F02's a11y inventory is understated. Re-measured over all of frontend/src:
+       aria-hidden 5  aria-disabled 5  aria-pressed 4  aria-live 2  aria-current 1  = 17
+       title= 10  placeholder= 6  onKeyDown 5
+       ZERO: aria-label, aria-labelledby, aria-describedby, role=, alt=, tabIndex, sr-only,
+             screen-reader, htmlFor, autoFocus, <dialog, aria-modal
+   `aria-disabled` (5) is new since the era-10 histogram of 10; era 11's GameLanguagePanel added it. The
+   finding's substance is unchanged. Two consequences: `alt=` is zero and R1 adds five flag images, so R1
+   is the first change in this product's history that NEEDS alt text; and `htmlFor` is zero, so no input
+   is programmatically associated with its label.
+```
+
+### The remaining-scope table is incomplete in a way that matters, exactly as the handout warned
+
+Eight more UI files carry visible copy that the handout's per-file table does not list, and one of them
+holds the primary game buttons:
+
+```text
+components/game/GameControls.tsx      "Play" "Pass" "Exchange" "Cancel" "Confirm exchange"   <- primary
+components/game/AIThinkingOverlay.tsx "AI Thinking" "Searching for moves..." "Best"/"BEST"
+                                      "Filtering weak or invalid lines before showing a serious move..."
+components/game/ChatPanel.tsx         "Game Chat" "Say something" "Send" "No messages yet."
+                                      "Chat unavailable" "You"
+components/board/Board.tsx            "Pinch to zoom" "Drag to pan" "Hide" "Reset" "PTS"
+components/game/GameHistoryModal.tsx  "Games" "Close" "Review past boards, switch between AI and ..."
+components/game/BlankPicker.tsx       "Choose a letter for blank tile"
+components/tiles/TileRack.tsx         "No tiles on rack"
+components/game/TurnStatusNotice.tsx  none — pure presentation
+components/game/LuxeHoverText.tsx     none — pure presentation
+```
+
+This confirms rather than contradicts the R3 area list (`play`, `queue`, `waiting`, `game`, `controls`,
+`board`, `overlay`, `chat`, `history`, `profile`, `prompt`, `a11y`): every one of those areas has a real
+home. Three of these are already decided by the glossary — `BlankPicker`'s heading becomes
+"Vyber písmeno pre žolíka" (which reads correctly *only* because `písmeno` and `žolík` are distinct
+words), `Board`'s `"PTS"` becomes `b.`, and `GameControls` becomes "Zahrať / Vynechať / Vymeniť".
+
+⛔ **A NEW over-count the handout does not warn about, and it is the most dangerous one.**
+
+```text
+frontend/src/lib/constants.ts   61 quoted capitalized literals, ALL of them TW / DW / TL / DL
+```
+
+Those 61 are the premium-square board layout — the physical Scrabble board. They are game data, not
+copy. A translator subagent handed that file would silently corrupt the board. It belongs on the
+"classify before you translate" list beside `provider-registry.ts` (LOCK A), `prompts.ts` (LOCK B),
+`security-headers.ts`, the two AI routes, and `provider-logging.ts` / `provider-capability.ts` /
+`types.ts`. Separately, `messages.en.ts` (52) and `messages.sk.ts` (46) appear in any raw sweep and are
+the dictionary itself: a future inventory must exclude `frontend/src/lib/i18n/` or it double-counts its
+own output.
+
+
+
+### Sequencing decision: F1 before the destructive-migration preflight
+
+The `11/01` handout capsule reads "issue slice F1 ... whose first action is the read-only
+destructive-migration preflight and NOT migration execution". Taken literally that folds a database
+preflight into a slice that touches no database. The accepted plan's section 16 is explicit that slice
+F1 is pure `gamecore` with `Dependency: none`, `Rollback: revert code/assets; no DB effect`, and a
+negative scope of "no app persistence"; migrations `0008`/`0009` belong to slice F2. Handout section 12
+independently recommends landing F1 first because it is the cheapest place to discover that the
+architecture is wrong.
+
+Resolution by the era-11 Orchestrator: **F1 first, at E2 / INFOSEC R1, with an explicit prohibition on
+any migration file, model change, database write, or `manage.py migrate` invocation.** The read-only
+destructive-migration preflight is issued as its own fresh bounded exchange immediately before F2, which
+is where the plan's own section 19 E4 staging puts it ("fresh preflight and backup/count evidence") and
+where its row-count evidence is still current — the Cooperator plays test games, so counts measured two
+slices early would expire anyway. The safety intent of the capsule line is preserved in full: nothing
+touches the database before a read-only preflight.
 
 ### ORCHESTRATOR ERROR at Worker session 01 exchange 01 — the planning prompt was structurally incomplete
 
@@ -1036,6 +3437,17 @@ audit-01-F06 public prompt text + swallow-to-HTTP-200 in the catalog proxies   a
     Regression test: a server-render assertion. Request `/` from a production `next start` with
                      Cookie: libretiles_locale=sk and assert the SSR HTML contains the Slovak
                      auth-tab string and does NOT contain "Sign In". Must fail at a5aff12.
+    Status:          **corrected at 5a96b5e** (Worker session 02 exchange 01) — NOT verified-closed.
+                     The prescribed regression test was performed as a loopback SSR probe and the
+                     Orchestrator reproduced it independently on a different port: with
+                     Cookie: libretiles_locale=sk the server HTML now contains "Prihlásiť sa" x1 and
+                     "Sign In" x0, against x0 / x1 at the baseline. Also correct for cs and pl, and
+                     English for fr / cz / hu / SK / empty. It is NOT verified-closed because no
+                     independent audit has run; rendered acceptance is requested as batch B17.
+                     ROOT-CAUSE NOTE PRESERVED: this was an Orchestrator design defect. The
+                     correction inverts the original contract — the cookie is now the rendering
+                     source of truth and the store only persists — so the class of defect is removed
+                     rather than patched.
     Owner:           ui-internationalization, slice S3a. Routing history, kept legible: first a
                      dedicated bounded correction in Worker session 02; then folded into slice S2
                      (proxy.ts locale routing) once the Cooperator's browser check dropped the
@@ -1144,6 +3556,13 @@ uii-01-N01  frontend/src/app/layout.tsx duplicates t()'s catalog ternary as a lo
             It is a one-line duplication with two lookup paths. Cleaner shape: split a React-free
             translate.ts out of index.ts. Fold into the bounded correction, since that slice touches
             these files anyway. Severity info.
+            CLOSED at 5a96b5e: frontend/src/lib/i18n/translate.ts is exactly that React-free split.
+            layout.tsx imports `t` from it, the local textFor() is gone, and the catalog tables live in
+            one `Record<Locale, ...>` so a fifth locale without a catalog is a tsc error. The single
+            deliberate cast inside `tf` and its explanatory comment were moved verbatim. Small residual:
+            that comment still says "between the two catalogs" while there are now four — the reasoning
+            is unchanged, only the count in the prose is stale; fold it into the next slice touching
+            the file.
 uii-01-N02  pluralSk implements one | 2..4 | otherwise, which the Worker flagged as not CLDR.
             ORCHESTRATOR VERIFICATION: for Slovak this is CORRECT for integer counts. Slovak, unlike
             Polish or Russian, uses the genitive plural from 5 upward AND for 21, 101, and so on —
