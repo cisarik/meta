@@ -1585,6 +1585,82 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice S8 issued — Worker session 09, exchange 01, at `4bf4365`
+
+`feat(i18n): localize the saved-boards history and its dates`. Prompt staged at
+`/tmp/opencode/uii-s8-worker-09-prompt.md`, 419 lines. Archive as `09_implementation_00.md` **only after
+its report exists**. Fresh Implementation Worker, E2 because it carries a behavioural correction.
+
+29 new keys across `GameHistoryPanel` and `GameHistoryModal`, plus the first half of `uii-01-F03`.
+
+### ✅ uii-01-F03: `Intl` was MEASURED to produce correct Slavic dates, not assumed
+
+The ledger's correction direction said "prefer Intl with the sk locale over hand-built strings" because a
+Slovak month in a date is GENITIVE — "1. septembra", not "1. september". That advice is now verified
+rather than trusted. Run with Node in this repository against the two exact field sets in use:
+
+```text
+locale   {month:long,day,year}        {month:short,day,hour,minute}
+en-US    September 2, 2026            Sep 2, 4:35 PM
+sk       2. septembra 2026            2. 9., 16:35
+cs       2. září 2026                 2. 9. 16:35
+pl       2 września 2026              2 wrz, 16:35
+```
+
+`Intl` gets the genitive right in all three Slavic locales AND switches to a 24-hour clock automatically.
+So the fix is one argument, no hand-built month tables, and no date library. The prompt forbids adding one.
+
+**The `en` -> `en-US` mapping is load-bearing and the prompt says why:** it keeps today's English output
+byte-identical, so this correction can never be blamed for an English rendering change. Verified:
+`Sep 2, 4:35 PM` from `"en"`-mapped equals `Sep 2, 4:35 PM` from hardcoded `"en-US"`.
+
+### The slice is SPLIT and F03 is corrected in two halves deliberately
+
+`uii-01-F03` has two independent call sites in two independent files —
+`GameHistoryPanel.tsx:70-79` `formatUpdatedAt` and `ProfileModal.tsx:18-28` `formatJoinedDate`. They share
+no code. Combining them would mean one slice touching three files with ~56 keys, and the S5 Worker
+reported >70% context on less. So:
+
+```text
+S8  GameHistoryPanel + GameHistoryModal + formatUpdatedAt      29 keys   <- ISSUED
+S9  ProfileModal + formatJoinedDate                            ~16 keys
+S10 uii-01-F02 accessible names
+```
+
+The prompt explicitly forbids "fixing both date sites while you are here", because that would silently
+widen an authorized allowlist — the failure mode this project has recorded four times.
+
+### Three grammar decisions worth recording, because each avoids a broken Slavic string
+
+```text
+1  history.showing DROPS the counted noun in sk/cs/pl. English says "Showing 1-8 of 24 games"; the
+   Slavic forms say "Zobrazené 1-8 z 24". Keeping the noun would need the genitive plural `partií`,
+   correct for 5+ and WRONG for 2-4, with a variable number. Dropping it is grammatical at every count
+   and the panel already says what is being counted. Fourth time this whole has solved a counted noun
+   without a plural function — after tilesSelected, queueFor and the stats bar.
+2  history.pageOf also absorbs the bare "Page 1" fallback by being called with {page:1,total:1} rather
+   than adding a second key for a degenerate case.
+3  Polish history.col.result and history.col.score are BOTH `Wynik`. That is correct Polish. A dedicated
+   test, AC-POLISH-DUP, pins the duplication so a future reader cannot "correct" it into a false
+   distinction — the same shape of defence as AC-NO-TELEMETRY-KEY.
+```
+
+### One leftover named in advance rather than discovered later
+
+`GameHistoryPanel` renders `item.game_end_reason` as a row hint fallback. That is a BACKEND ENUM string
+such as `BAG_EMPTY_AND_PLAYER_OUT`, and localizing it needs a keyed mapping of the engine's end reasons —
+which belongs with the Django localization work, not a copy slice. The prompt localizes the three literals
+around it, leaves the enum passthrough alone, and REQUIRES the Worker to name it in the report so it lands
+on the record rather than being found by the Cooperator later.
+
+### Orchestrator pre-verification before issuing
+
+```text
+AC-DATE-LOCALE  en differs from sk/cs/pl: true · no AM/PM in sk/cs/pl: true ·
+                en byte-identical to the hardcoded en-US: true                        SATISFIABLE
+AC-POLISH-DUP   the duplication exists in the authored table, so the assertion is meaningful
+```
+
 ## Slice S7 landed at `4bf436581c1b6382183411259e25c6a409b7d54f` — Worker session 08, exchange 01
 
 `feat(i18n): localize the settings screen and the overlay stats bar`. 8 files, +524 -53, parent
