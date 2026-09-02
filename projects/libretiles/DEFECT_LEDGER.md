@@ -1585,6 +1585,86 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice R15 landed at `f40d8a0ef2a8c157fde7caddc4a6f64e2695d495` — ORCHESTRATOR-AUTHORED, no Worker session
+
+`fix(a11y): keyboard activation for named rack tiles, and no name without a role`. 4 files, +61 -28, none
+created, none deleted, parent `74b5339`, one non-force push, public readback equal, `.ap` gitlink untouched.
+
+⚠ **RF-12 class: `orchestrator-authored-correction`.** Cooperator decision 12, 2026-09-02, in reply to a
+direct question about who should implement it: *"Oprav to sama"*. Precedent is `f26e92a`, the earlier
+Orchestrator-authored follow-up in this same whole. The reasoning offered and accepted: a 500-line Worker
+prompt for a ten-line correction of the Orchestrator's own defect is disproportionate, and every line of it
+would have been the Orchestrator dictating the exact edit anyway.
+
+⛔ **Evidence class here is NON-INDEPENDENT in a way no previous slice's was.** For every Worker slice, the
+Orchestrator re-measured what a different agent had produced. Here the author and the reviewer are the same
+agent, so nothing corroborates the judgement calls — only the mechanical gates. Record that honestly; do not
+let a later session read this entry as equally verified.
+
+### What it fixes
+
+```text
+uii-01-F24  DraggableTile gains an explicit Enter/Space onKeyDown calling onSelect when selectEnabled,
+            mirroring TapSelectableTile:147-151. Declared BEFORE the listeners spread, so a future
+            KeyboardSensor would take precedence on a draggable turn while this handler still serves
+            exchange mode, where listeners are not spread at all. Ordering is asserted, not just present.
+uii-01-F23  the six aria-label={t("a11y.status.turn")} are deleted from the toast branches. page.tsx
+            aria-label count goes 6 -> 0; the single remaining match is aria-labelledby="ai-blocker-title"
+            on the blocker dialog, which is correct and untouched. a11y.status.turn stays in use on
+            LiveAnnouncer, so no key went dead and no catalog changed.
+```
+
+### Pre-fix failures, captured by checking the two source files back out to `74b5339`
+
+The Orchestrator applied to itself the rule it imposes on Workers. The parent versions of
+`TileRack.tsx` and `page.tsx` were checked out, the focused suite run, and the edits then restored from a
+backup — porcelain verified clean afterwards:
+
+```text
+AC-NO-TOAST-LIVE aria-label count   AssertionError: expected 6 to be +0
+AC-RACK-KEYBOARD handler            AssertionError: expected 'function DraggableTile({\n  letter,\n…'
+                                    to contain 'onKeyDown'
+AC-RACK-KEYBOARD ordering           AssertionError: expected -1 to be greater than -1
+                                    Tests  3 failed | 62 passed (65)
+```
+
+`expected 6 to be +0` is the direct measurement that F23 was real: six dead labels, not an inference.
+
+⚠ **AC-RACK-ROLE did NOT fail pre-fix, and that is stated rather than glossed.** Strengthening it from a
+bare `/role="/` match to `role="button"` plus `tabindex="0"` closes the test-strength gap this ledger
+recorded against R14. It passes at both commits. It is a test improvement, not a regression test, and
+calling it the latter would be the exact overclaiming this pair of slices exists to correct.
+
+### Gates at `f40d8a0`
+
+```text
+mypy 83 files clean · ruff clean · manage.py check clean · pytest 381 passed, 4 skipped in 220.70s
+typecheck exit 0 · vitest 420 passed | 3 skipped · lint exit 0
+build exit 0, 11 dynamic routes, ZERO static · grep -c sr-only .next/static/css/*.css -> 1
+```
+
+`418 -> 420` is exactly the two new `AC-RACK-KEYBOARD` `it` blocks. The `AC-NO-TOAST-LIVE` and
+`AC-RACK-ROLE` changes added assertions inside existing blocks, so they move no count.
+
+### The evidence ceiling on the F24 fix, stated because it is real
+
+React does not serialize event handlers into static markup, so `AC-RACK-KEYBOARD` asserts the handler and
+its declaration order **from source**, not from rendered output. That proves the handler exists and matches
+`TapSelectableTile`'s shape. It does NOT prove a browser dispatches it. Combined with Cooperator decision 10
+— no screen reader, ever — the remaining verification is his keyboard observation: Tab onto a rack tile,
+press Enter, the tile is selected. That single observation is now the ONLY outstanding evidence for F24, and
+unlike F21 and F22 it is genuinely available to him.
+
+### GLOSSARY.md records the rule, not just the change
+
+> A named control must also be an operable one. Rack tiles take dnd-kit's `role="button"`, so they carry an
+> explicit Enter/Space handler: a `div[role=button]` does not synthesize a click the way a native `<button>`
+> does, and a focusable control that no key activates is worse than one that is not focusable at all. Toast
+> containers carry no role, so they carry no `aria-label` either.
+
+That is the operational form of lesson 14. It lives in the repository rather than only in Meta, because the
+four defects in this chain were all authored by someone reading the repository and not the Meta ledger.
+
 ## Slice R14 landed at `74b5339e5bdcdd036041b6bf908c5454f7d8a400` — Worker session 13, exchange 01
 
 `fix(a11y): one persistent announcer and a role on every named rack tile`. 7 files, +223 -35, one created,
@@ -6061,9 +6141,10 @@ HE OBSERVES — keyboard only, no screen reader needed
   2  Escape closes each of those four
   3  Tab still walks the page and never becomes unescapable (no trap was written, by design)
   4  focus is NOT restored to the opener on close — expected, uii-01-F19, accepted residual
-  5  ⛔ AFTER R15 ONLY: Tab onto a rack tile, press Enter or Space, and the tile is selected. At `74b5339`
-     this FAILS — uii-01-F24, the tile is focusable and no key activates it. Do not ask him before R15
-     lands; a confirmed failure he already has on paper is not worth his time.
+  5  ⛔ THE ONE OUTSTANDING ITEM, available from `f40d8a0`: Tab onto a rack tile, press Enter or Space,
+     and the tile is selected. At `74b5339` this FAILED (uii-01-F24). `AC-RACK-KEYBOARD` asserts the
+     handler from SOURCE, because React does not serialize event handlers into static markup, so his
+     observation is the only thing that can prove a browser dispatches it.
 CLOSED BY INSPECTION ONLY — never observable in this project
   6  whether the rack tile announces "Písmeno A, 1 bod"
   7  whether the turn banner, toasts and AI overlay announce at all              uii-01-F22
