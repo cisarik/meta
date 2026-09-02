@@ -1585,6 +1585,118 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice S5 landed at `d40b230e8071f609f1a26fbea70106664326673a` — Worker session 06, exchange 01
+
+`feat(i18n): localize the lobby screens and fix the queue label`. 11 files, +406 -70, parent `383011b`,
+one non-force push, public readback equal. Orchestrator verdict: **implementation-PASS, ACCEPTED**, with
+one cosmetic residual recorded. Evidence non-independent; rendered acceptance requested as batch `B22`.
+
+Archived as `06_implementation_00.md` + `06_report_00.md`.
+
+**Both lobby screens are now in four locales and all four open corrections are closed.**
+`/play` 23 keys, `/waiting` 10 keys, plus `nav.*`, `queue.*` and `settings.rival.*`.
+
+### uii-01-F14 verified by an independent readback through the real code path
+
+Not accepted from the Worker's test. A throwaway vitest harness was placed in the tree, run against the
+**shipped** catalogs through the real `tf()` and the real `variantDisplayName()`, and removed immediately
+(porcelain verified clean afterwards):
+
+```text
+        english            slovak              czech            polish            hungarian
+en      English queue      Slovak queue        Czech queue      Polish queue      hungarian queue
+sk      Front: Angličtina  Front: Slovenčina   Front: Čeština   Front: Poľština   Front: hungarian
+cs      Fronta: Angličtina Fronta: Slovenština Fronta: Čeština  Fronta: Polština  Fronta: hungarian
+pl      Kolejka: Angielski Kolejka: Słowacki   Kolejka: Czeski  Kolejka: Polski   Kolejka: hungarian
+```
+
+Compare the defect this replaces: `czech -> "English queue"` and `polish -> "English queue"`. All four
+installed variants now name themselves in every locale; the Czech label in the Slovak locale contains
+neither `Angličtina` nor `Slovenčina`, and no locale's Czech label contains the word `English`.
+
+### The other three corrections, verified in source
+
+```text
+uii-01-F10  settings/page.tsx now uses `settings.rival.title` / `settings.rival.description` —
+            "Tvoj súper" plus "Súpera pre nové partie vyberá správca." The title no longer instructs
+            the user to choose something they cannot choose.
+uii-01-F11  game/[id]/page.tsx:845-851 resolves a NAME before interpolating:
+              gameState.ai_model_display_name when preferenceModelId matches the session's model,
+              else humanizeModelId(preferenceModelId), else the id as a last resort.
+            ⛔ THE CRITICAL PART: `preferenceModelId` at :833 is unchanged and is still what reaches
+            `buildFallbackQueue`, `fallbackQueueForCatalogFailure` and `aiMoveRequestBody` at :861,
+            :868 and :911. `lib/ai-fallback.ts` diff is EMPTY. Only what is DISPLAYED changed.
+uii-01-F12  `showRivalPicker` and `onOpenRivalPicker` return ZERO matches in both ScorePanel.tsx and
+            game/[id]/page.tsx. The rival NAME still renders as static text at ScorePanel.tsx:394,
+            which is what the Cooperator's `zrušiť` meant — remove the click, not the information.
+```
+
+### Gates at `d40b230`, Orchestrator-measured
+
+```text
+mypy 83 files · ruff · manage.py check · pytest 381 passed, 4 skipped in 218.75s
+typecheck exit 0 · vitest 382 passed | 3 skipped (378 + 4 new) · lint exit 0
+build exit 0, 11 dynamic routes, ZERO `○` static
+```
+
+An independent word-based leftover-English sweep of both lobby files returns **zero candidates**. The
+report's item-15 list is therefore complete: what remains is only `err.message` passthrough from the API,
+the catalog `display_name`, and `providerBadgeLabel(...)` — none of which is this project's copy.
+
+### uii-01-F15 — the F14 fallback shows a raw lowercase slug, not the manifest display name
+
+    Classification:  cosmetic residual introduced by the uii-01-F14 fix, NOT reachable today
+    Severity:        info
+    Confidence:      high
+    Evidence class:  reproduced-dynamic — the Orchestrator rendered the label for a fifth slug through
+                     the real code path and observed `Front: hungarian`
+    Location:        frontend/src/app/play/page.tsx:61-67 — the page constructs a SYNTHETIC
+                     `VariantSummary` as `{ slug, display_name: slug, language_code: null,
+                     readiness: "playable" }` rather than fetching the real one.
+    Mechanism:       `variantDisplayName` falls back to `display_name` when a slug has no
+                     `VARIANT_NAME_KEYS` entry. The real `GET /api/game/variants/` payload carries a
+                     proper manifest `display_name`, but the synthetic object throws it away and passes
+                     the slug, so an unkeyed variant renders lowercase and untranslated.
+    Why NOT reachable today: all four installed slugs — english, slovak, czech, polish — have catalog
+                     keys in all four locales, verified by the readback above.
+    Why it is nearly unreachable in future too, which is why this is `info` and not a defect: the
+                     fallback is only reached by a variant with no catalog key, and the whole that ADDS a
+                     variant is the same whole that adds its `settings.gameVariant.*` key. `11/02`
+                     Hungarian activation would add `settings.gameVariant.hungarian` and close this path
+                     in the same commit that could open it.
+    Trade-off the Worker chose deliberately and disclosed: not fetching the variant list on mount avoids
+                     an extra network round trip on every `/play` load purely to label a pill. That is a
+                     defensible call and it is strictly better than the F14 bug it replaces — a lowercase
+                     honest slug versus a confidently WRONG variant name.
+    Correction direction: if `11/02` ever ships a variant without a catalog key, fetch the real
+                     `VariantSummary` on mount alongside the existing model-catalog fetch and drop the
+                     synthetic object. Do not add per-locale queue strings.
+    Regression test: not required at `info`. If corrected, assert that an unkeyed slug renders its
+                     manifest `display_name` rather than the slug.
+    Owner:           accepted residual; revisit only if `11/02` adds a variant without its catalog key
+    Status:          accepted-residual (Orchestrator, below the INFOSEC 14 medium threshold)
+
+### A genuine near-miss the Worker caught in itself, and it is a good one
+
+Putting `useT()`'s `t` into the waiting-room `useEffect` dependency list would have recreated the closure
+on every render and **torn down and reopened the websocket on every state update** — in the one screen
+whose entire purpose is holding a websocket open while waiting for an opponent. It resolved it by using
+the module-level `t(locale, key)` inside effects with the string `locale` in the deps, keeping `useT` for
+JSX only.
+
+⚠ It also disclosed that **the same `useT`-in-deps pattern already exists in `game/[id]/page.tsx`** and was
+out of scope. Recorded as a latent item to check when a later slice next opens that file: whether any
+effect there has an unstable `t` in its dependency list, and whether that effect owns a socket or a timer.
+Not a finding yet — it is `not established` whether the game page's effects are affected — and it must not
+be treated as one until measured.
+
+### Context-pressure disclosure, recorded rather than ignored
+
+Report item 16 states visible context usage exceeded 70% of the session window, driven by the mandatory
+reading plus four catalogs and two full pages. It completed against repository evidence rather than
+compacted memory and said so. That is the required behaviour, and it is a routing signal: the remaining
+copy slices S6, S7 and S8 should each be scoped tighter than this one rather than combining screens.
+
 ## Slice S5 issued — Worker session 06, exchange 01, at `383011b`
 
 `feat(i18n): localize the lobby screens and fix the queue label`. Prompt staged at
@@ -1715,6 +1827,11 @@ authorized here, and the prompt requires the Worker to name it rather than tidy 
                      English or Slovak variant name. Must fail before the fix.
     Owner:           ui-internationalization, slice S5
     Status:          open
+    Status:          **corrected at d40b230** (S5) — NOT verified-closed. Composed from
+                     `variantDisplayName` + `play.humanQueue.queueFor`; the two-value ternary returns ZERO
+                     matches in play/page.tsx. Orchestrator-verified by rendering all four installed
+                     slugs in all four locales through the real code path. Residual uii-01-F15 records
+                     the lowercase-slug fallback for an unkeyed fifth variant.
 
 ### COOPERATOR DECISION 9, 2026-09-02: B21 is FROZEN and admin work leaves this whole
 
@@ -1924,6 +2041,8 @@ Reported unprompted, which is the behaviour that makes the rest of the report tr
                      "Your rival" / "Tvoj súper" plus a description saying the administrator sets it.
     Owner:           ui-internationalization, slice S5
     Status:          open
+    Status:          **corrected at d40b230** (S5) — NOT verified-closed. Title/description replaced
+                     with `settings.rival.title` / `settings.rival.description`, not translated.
 
 #### uii-01-F11 — the AI status line shows a raw model id to the player, and it is the Orchestrator's own string
 
@@ -1948,6 +2067,9 @@ Reported unprompted, which is the behaviour that makes the rest of the report tr
                      and does NOT contain a `/` character from a provider-qualified id.
     Owner:           ui-internationalization, slice S5
     Status:          open
+    Status:          **corrected at d40b230** (S5) — NOT verified-closed. game/[id]/page.tsx:845-851
+                     resolves a display NAME before interpolating; `preferenceModelId` still reaches the
+                     fallback queue unchanged and `lib/ai-fallback.ts` is byte-identical.
 
 #### uii-01-F12 — `showRivalPicker` still offers a picker affordance that leads to a read-only panel
 
@@ -1968,6 +2090,10 @@ Reported unprompted, which is the behaviour that makes the rest of the report tr
                      than renamed. His decision, not an Orchestrator choice.
     Owner:           ui-internationalization, slice S5
     Status:          open — correction direction now fixed by his decision
+    Status:          **corrected at d40b230** (S5) — NOT verified-closed. Both props return ZERO
+                     matches in ScorePanel.tsx and game/[id]/page.tsx; the rival NAME still renders as
+                     static text at ScorePanel.tsx:394. `?focus=rival` is now an unreachable inbound
+                     path, deliberately left in place.
 
 #### uii-01-F13 — `api.getPrompts` and the `/api/prompts` Next.js proxy are now dead code
 
