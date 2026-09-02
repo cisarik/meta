@@ -1585,6 +1585,102 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice S11 issued — Worker session 12, exchange 01, at `c3f75e3`
+
+`feat(a11y): accessible names, dialog semantics and status regions`. Prompt staged at
+`/tmp/opencode/uii-s11-worker-12-prompt.md`, 420 lines. Archive as `12_implementation_00.md` **only after
+its report exists**. Fresh Implementation Worker, E2, reasoning HIGH.
+
+Nine new keys, ten component files — the widest allowlist in this whole, deliberately, because
+accessibility attributes are one-line additions per site and splitting them would multiply review passes
+over the same markup. The prompt pairs that width with an explicit discipline clause: in those ten files,
+change ONLY a11y attributes, `id`s for `aria-labelledby`, Escape handlers and the initial-focus target.
+
+### ⛔ The one distinction the slice turns on: DIALOG versus STATUS
+
+Six overlays use `fixed inset-0`. Treating them alike would make screen-reader output **actively worse
+than today's silence**, so the prompt classifies each one:
+
+```text
+REAL DIALOGS — the user must act; focus belongs inside; Escape dismisses
+  ProfileModal · GameHistoryModal · BlankPicker · the aiBlockerModal
+  -> role="dialog"  aria-modal="true"  aria-labelledby=<visible heading id>
+TRANSIENT ANNOUNCEMENTS — the user must NOT be interrupted; focus must NOT move
+  ToastView · AIThinkingOverlay
+  -> role="status"  aria-live="polite"
+```
+
+`polite` and not `assertive` is reasoned in the prompt: these announcements accompany a turn the player
+initiated, so they must queue rather than interrupt. And `BlankPicker` is explicitly a dialog, not a
+decorative overlay — it blocks the game until the player picks a letter for the žolík.
+
+`AC-STATUS-NOT-DIALOG` is a NEGATIVE test asserting the toast markup contains neither `role="dialog"` nor
+`aria-modal`, so a later slice cannot "improve" a toast into a modal. Fourth such pinning assertion in this
+catalog after `AC-NO-TELEMETRY-KEY`, `AC-POLISH-DUP` and `AC-PROFILE-DUP`.
+
+### A KEYBOARD FOCUS TRAP IS DELIBERATELY OUT OF SCOPE, and that is a decision not an omission
+
+The prompt forbids implementing one and states the reason: a correct trap needs a focusable-element query,
+Tab and Shift+Tab interception and focus restoration on close, across four components with different
+internal structures — and a subtly wrong trap **strands a keyboard user with no escape**, which is worse
+than no trap. `aria-modal="true"` plus Escape plus initial focus delivers most of the value at a fraction
+of the risk. If the Worker starts writing a Tab handler it must STOP and report.
+
+Recorded here as the accepted residual so it cannot be mistaken for an oversight at closure:
+
+```text
+uii-01-F19   no keyboard focus trap in the four dialogs
+Severity     low.  aria-modal constrains assistive technology; Escape dismisses; initial focus lands
+             inside. What is missing is Tab containment for a sighted keyboard user, who can still reach
+             the page behind the dialog.
+Owner        a future accessibility pass, if one is ever justified
+Status       accepted-residual (Orchestrator, below the INFOSEC 14 medium threshold)
+```
+
+### ⛔ THE HONEST EVIDENCE CEILING, stated in the prompt rather than implied
+
+vitest runs with `environment: "node"`, there is no axe, no jsdom, and Browser MCP is a locked fork. So
+**rendered accessibility cannot be proven by this suite.** The prompt says the ceiling out loud: the
+attributes ARE PRESENT in the markup, asserted by string tests where a component can be string-rendered,
+plus Cooperator keyboard observation — and nothing more. `AC-DIALOG-PRESENT` explicitly instructs the
+Worker to name which components it could and could not cover and to NOT fake an assertion for the rest.
+
+This is the same structural blindness that let `uii-01-F04` ship eleven slices ago. Naming it is the
+required behaviour; claiming an audit would be the failure.
+
+### The rack tile is the FIFTH live use of the plural functions and the first for `bod`
+
+`a11y.rackTile` announces `Písmeno A, 1 bod` / `2 body` / `5 bodov`. Pre-verified before issuing:
+
+```text
+  1   sk 'Písmeno A, 1 bod'      cs 'Kámen A, 1 bod'      pl 'Płytka A, 1 punkt'
+  2   sk 'Písmeno A, 2 body'     cs 'Kámen A, 2 body'     pl 'Płytka A, 2 punkty'
+  5   sk 'Písmeno A, 5 bodov'    cs 'Kámen A, 5 bodů'     pl 'Płytka A, 5 punktów'
+ 10   sk 'Písmeno A, 10 bodov'   cs 'Kámen A, 10 bodů'    pl 'Płytka A, 10 punktów'
+```
+
+Three terminology points ride on this one key, and the prompt states all three: Czech says `Kámen` and
+Polish `Płytka` while Slovak says `Písmeno`, so it must NOT be harmonized; `2 bodov` would be broken
+Slovak and the test forbids it; and a BLANK gets its own `a11y.rackBlank` key rather than
+`a11y.rackTile` with a `?`, because a žolík has no letter until it is resolved — which is the entire reason
+`písmeno` and `žolík` are separate words in this product.
+
+### Two corrections the prompt carries forward from the Orchestrator's own errors
+
+```text
+1  the three ProfileModal password inputs are ALREADY correctly labelled by nesting. The prompt says so
+   and forbids adding htmlFor/id, because redundant labelling is a regression. An earlier Orchestrator
+   draft called them unlabelled on the strength of `htmlFor` returning zero.
+2  AIThinkingOverlay ALREADY has aria-live in two places. The prompt requires the Worker to check before
+   adding a third, because nested live regions produce duplicate or dropped announcements — and to report
+   what it found. That is a defect the Orchestrator would have caused by instructing blindly.
+```
+
+### The key count matched on the first try, for the first time
+
+`prose NINE == 9 enumerated`. The programmatic check has now run on four consecutive prompts; it caught
+errors in three of them (S8 29-for-35, S9 14-for-16, R1 8-for-5) and confirmed this one clean.
+
 ## The accessibility slice is now scoped from MEASUREMENT, at `c3f75e3`
 
 Every input in the product enumerated, rather than a `htmlFor` count inferred into a conclusion:
