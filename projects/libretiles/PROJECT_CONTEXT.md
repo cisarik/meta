@@ -941,6 +941,49 @@ instead.
    preset" is **MET** at `383011b` and Cooperator-verified by `B20-5`. It does not require the admin side
    to be demonstrated, and after this decision it must not.
 
+10 NO SCREEN READER, AND HE WILL NOT INSTALL ONE. Decided 2026-09-02 in reply to a direct question, his
+   answer: *"Nemám a nechcem ju inštalovať"*. Consequence, and it is a **hard evidence ceiling on every
+   accessibility claim this whole makes**:
+
+   ```text
+   VERIFIABLE by him, keyboard only   initial focus into the four dialogs · Escape closes each ·
+                                      Tab never becomes unescapable · focus NOT restored on close
+                                      (uii-01-F19, expected)
+   NOT VERIFIABLE by observation      whether the rack tile announces "Písmeno A, 1 bod" · whether the
+                                      turn banner, toasts and AI overlay announce AT ALL (uii-01-F22) ·
+                                      whether the AI overlay re-reads itself every second (uii-01-F21)
+   ```
+
+   So `uii-01-F20`, `uii-01-F21` and `uii-01-F22` are **closed by inspection only**, and any closure
+   record must say exactly that instead of implying an observed pass. Do not quietly ask him again, and do
+   not let a later session write "accessibility verified" over this. The same discipline the S11 report
+   applied to its own node-only suite applies to the whole slice: attributes are present in the markup;
+   rendered assistive-technology behaviour is unaudited in this project, by his decision, permanently.
+
+   ⚠ This also retires one line from the ledger's manual-acceptance list: "modal focus trap and ESC" —
+   ESC is observable, the focus trap does not exist by design, and the announcement half cannot be
+   observed at all.
+
+11 REMEDIATION BEFORE BACKEND. Decided 2026-09-02, his answer to the ordering question: keep the
+   Orchestrator's order. Sequence for the rest of `10/00`:
+
+   ```text
+   R14  the S11 remediation — uii-01-F21, F22, F20 and one vacuous test assertion
+   R7   Django localization: USE_I18N, LocaleMiddleware after SessionMiddleware, Accept-Language,
+        plus uii-01-F17 (game_end_reason enum reaching the player raw)
+   R8   uii-01-F01 — read the numeric Retry-After header instead of parsing an English 429 body
+   R9   orch-02-D11 — SECURE_HSTS_INCLUDE_SUBDOMAINS, and NEVER SECURE_HSTS_PRELOAD
+   R10  orch-01-F18 — the nonce CSP, the ONLY authorized proxy.ts touch in this whole, plus a loopback
+        re-probe of every header against the audit-03 baseline
+   R11  audit-01-F06 — the catalog proxies stop swallowing failures into an empty HTTP 200, plus
+        uii-01-F13 (the dead /api/prompts route)
+   B25+ the final acceptance batch, then the residual signatures and 99_closure.md
+   ```
+
+   R14 goes first deliberately: it fixes a regression S11 itself introduced, and doing it now means the
+   accessibility markup is correct at the moment it is last touched, rather than closing the whole over a
+   known-wrong announcement design.
+
 ## 14. Authoritative game alphabet orders — Cooperator-sourced 2026-09-01, Orchestrator-validated
 
 `alphabet_order` is a DECLARED language order for game purposes: tile order, the starting draw, and the
