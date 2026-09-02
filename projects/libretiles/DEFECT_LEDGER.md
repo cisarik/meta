@@ -1585,6 +1585,177 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice S5 issued — Worker session 06, exchange 01, at `383011b`
+
+`feat(i18n): localize the lobby screens and fix the queue label`. Prompt staged at
+`/tmp/opencode/uii-s5-worker-06-prompt.md`, 470 lines. Archive as `06_implementation_00.md` **only after
+its report exists**. Fresh Implementation Worker, E2 because it carries four corrections rather than pure
+string extraction.
+
+Scope: the two lobby screens — `/play` 398 lines and `/waiting/[id]` 144 lines — plus the four open
+corrections that live on surfaces the slice already opens.
+
+### Why `/play` jumped the queue in the plan
+
+The Cooperator volunteered it unprompted at the end of batch B20: *"cela stranka 'Choose the next board'
+komplet je stale v anglictine"*. It was correctly in scope for the later S3e, but he raised it himself and
+`/play` is the screen he lands on after login. This project's record is that his unprompted remarks are
+worth acting on — the nginx answer and the dictionary re-sourcing both came that way — so `/play` and
+`/waiting` moved out of S3e and into this slice, and ScorePanel plus the settings copy remainder moved
+back to S6.
+
+### The four corrections, and why none of them is a translation
+
+```text
+uii-01-F10  settings still titled "Choose the rival" after S4 made the panel read-only. REPLACED, not
+            translated — a translated lie is still a lie. New copy: "Your rival" / "Tvoj súper" plus a
+            description naming the administrator as the one who picks it.
+uii-01-F11  the AI status line interpolates a raw model_id. The defective string is the ORCHESTRATOR's
+            own, authored in S3c, and S4 fixed the same class of leak on the draw page while leaving
+            this one. Fix passes a display NAME; the strings themselves do not change.
+uii-01-F12  the rival-name click is REMOVED per Cooperator decision B20-8 (`zrušiť`), not renamed.
+uii-01-F14  the queue label's two-value ternary, fixed by COMPOSITION rather than by four more strings.
+```
+
+### The F14 fix is deliberately structural, not additive
+
+The obvious fix — four per-locale queue strings — would let a fifth variant reintroduce exactly the same
+bug. Instead the label is composed from the variant name the catalog already owns:
+`GameLanguagePanel.tsx` already exports `variantDisplayName(variant, t)` over `VARIANT_NAME_KEYS` with a
+`display_name` fallback, and the `settings.gameVariant.*` keys already exist in all four locales. The
+prompt forbids duplicating `VARIANT_NAME_KEYS` into a second table and requires the Worker to state which
+lookup shape it chose and why.
+
+One parameterized key does the rest, and the Slavic forms are a colon-label for the same grammatical
+reason `controls.tilesSelected` is: a natural phrase would need the variant name in an oblique case
+("slovenský front"), while the name arrives as a nominative label. A colon-label is inert for every
+variant including a future one.
+
+### Orchestrator pre-verification, computed against the REAL catalogs before issuing
+
+The four `settings.gameVariant.*` values were read out of all four shipped catalogs rather than assumed,
+then the label was rendered for every (slug, locale) pair:
+
+```text
+english  en 'English queue'  sk 'Front: Angličtina'  cs 'Fronta: Angličtina'  pl 'Kolejka: Angielski'
+slovak   en 'Slovak queue'   sk 'Front: Slovenčina'  cs 'Fronta: Slovenština' pl 'Kolejka: Słowacki'
+czech    en 'Czech queue'    sk 'Front: Čeština'     cs 'Fronta: Čeština'     pl 'Kolejka: Czeski'
+polish   en 'Polish queue'   sk 'Front: Poľština'    cs 'Fronta: Polština'    pl 'Kolejka: Polski'
+
+versus the CURRENT buggy behaviour the test must fail against:
+english -> 'English queue'   slovak -> 'Slovak queue'
+czech   -> 'English queue'   polish -> 'English queue'      <- the defect, twice
+```
+
+`AC-QUEUE-VARIANT` is therefore both satisfiable and discriminating: the czech case in the sk locale
+contains neither `Angličtina` nor `Slovenčina`, and no locale's czech label contains the word `English`.
+
+### Two smaller things folded in
+
+```text
+nav.settings / nav.account   authored NOW as shared keys, precisely so slice S6 does not duplicate them
+                             when it localizes ScorePanel's own Settings button
+play.rival.unavailable       play/page.tsx:57-58 currently uses the whole CATALOG_EMPTY_MESSAGE sentence
+                             as the label inside a small pill. A short label is authored for the pill
+                             while the full sentence stays in the error area.
+```
+
+Also carried forward as a named non-action: `settings/page.tsx` keeps a `rivalSectionRef` and a
+`?focus=rival` query path whose only link F12 removes. Leaving it is harmless, removing it is not
+authorized here, and the prompt requires the Worker to name it rather than tidy it.
+
+### uii-01-F14 — a Czech or Polish player is told they are joining the "English queue"
+
+
+    Classification:  product-defect (factually false user-facing label), PRE-EXISTING and REACHABLE NOW
+    Severity:        low functionally, medium for interview presentability
+    Confidence:      high
+    Evidence class:  established-static — the Orchestrator read the expression and the installed
+                     variant directory
+    Found by:        the Orchestrator while inventorying `/play` for slice S5
+    Location:        frontend/src/app/play/page.tsx:337-339
+                       : selectedVariantSlug === "slovak"
+                           ? "Slovak queue"
+                           : "English queue"
+    Mechanism:       a TWO-VALUE test written when only English and Slovak variants existed. Measured:
+                     `backend/assets/variants/` contains czech.json, english.json, polish.json and
+                     slovak.json, and `selectedVariantSlug` has been typed `string` since era 11 with
+                     fetch-time reconciliation. Anything that is not exactly "slovak" therefore renders
+                     "English queue".
+    Impact:          a player who has selected the Czech or Polish game variant and joins the human
+                     queue is told they are joining the ENGLISH queue. The label is not merely
+                     untranslated, it is FALSE about which game they are about to play.
+    ⛔ THIS IS THE SAME DEFECT CLASS AS uii-01-F08, in a second file. F08 was the lexicon rejection
+                     message; this is the queue label. Both are two-value ternaries left behind when era
+                     11 slice A1 activated Czech and Polish, and neither was caught because no test
+                     renders either string. That makes it a PATTERN rather than an incident: any
+                     `=== "slovak" ? … : …` expression in the frontend is now suspect.
+    Orchestrator sweep, with the exact patterns and ALL four matches stated rather than a count:
+                     `grep -rn '=== "slovak"\|=== "english"\|!== "slovak"\|!== "english"' frontend/src`
+                       play/page.tsx:337        THIS FINDING
+                       useGameStore.ts:280      the `version < 2` persist branch — deliberate legacy
+                                                handling of a payload written when the union had two
+                                                values. Correct as-is; do not "modernise" it.
+                       prompts.ts:198 and :208  `context.lexicon_id === "slovak" || context.variant ===
+                                                "slovak"`. These are the ALREADY-RECORDED era-11 finding
+                                                that Czech and Polish receive the ENGLISH MOVE/JUDGE
+                                                prompt CORE, because `MovePromptLexiconId` is
+                                                `"collins2019" | "slovak"`. prompts.ts is LOCKED (locked
+                                                fork 2) and this is not S5's to touch.
+                     ⚠ An earlier draft of this entry said "no third instance exists". That was WRONG —
+                     it counted before it enumerated, which is the exact failure this project keeps
+                     recording. There are four matches; two belong to a locked file and a known finding,
+                     one is deliberate, one is this defect.
+    Correction direction: reuse the variant name the catalog already provides. `GameLanguagePanel.tsx`
+                     already exports `variantDisplayName(variant, t)` over `VARIANT_NAME_KEYS`, and the
+                     `settings.gameVariant.*` keys already exist in all four locales. Compose the label
+                     from that rather than adding four more per-locale queue strings, so a fifth variant
+                     never reintroduces the bug.
+    Regression test: with `selectedVariantSlug: "czech"` the rendered queue label must NOT contain the
+                     English or Slovak variant name. Must fail before the fix.
+    Owner:           ui-internationalization, slice S5
+    Status:          open
+
+### COOPERATOR DECISION 9, 2026-09-02: B21 is FROZEN and admin work leaves this whole
+
+
+Verbatim: *"PROSIM daj B21 do backlogu pripadne vytvor na zaklade vsetkeho co sa tyka admin rozhrania
+chcem v logickom celku v meta libretiles/11/00-admin-provider-model-console tam budem riesit vsetko
+ohladom admina takze daj tam aj toto, ze je NOT TESTED teraz dokoncme prosim tvoj logicky celok, admin
+bola odbocka, je to najdolezitejsie pre mna okrem hry proti AI a lokalizacia + UI/UX perfektne.. Toto sa
+ale netyka tvojho logickeho celku prosim Freeze B21"*
+
+**He is right and the Orchestrator was drifting.** Batch B21 would have had him log into Django admin,
+reorder catalog rows and inspect `GameSession` rows — none of which is `ui-internationalization`. R6
+removed a player-facing control, which IS this whole's work; verifying the admin surface that now owns the
+setting is `11/00`'s work. The Orchestrator had followed the evidence across a boundary instead of
+depositing it and stopping.
+
+```text
+B21             FROZEN, every item NOT TESTED. Not an open obligation on 10/00.
+Admin scope     leaves this whole entirely
+Deposited to    11/00-admin-provider-model-console/90_admin_surface_evidence_from_era10.md
+His priority    game-vs-AI first, then localization + UI/UX "perfektne", then admin
+```
+
+`11/00`'s own `00_handout.md` was **not** read while writing that deposit — his standing
+do-not-read instruction for that directory is unchanged — so the file says in terms that the handout is
+that whole's own artifact and wins on any overlap.
+
+What the deposit carries, so no measurement is lost: Django admin reachable on **port 8000** with a
+`302 -> /admin/login/ -> 200` readback and an existing superuser; the full `AIModel` and `AIPrompt` tables
+with `sort_order` and `is_active`; proof that **row 1 is already admin-settable** through
+`list_editable` plus the two `_resolve_*` defaults, which corrects the plan's own too-pessimistic claim;
+the `DYNAMIC_FREE_MODEL_CATALOG_ENABLED` caveat; the frozen B21 items; and the two traps — that a naive
+"reorder and see" test is invalid while a per-user `preferred_ai_model_id` outranks row 1, and that
+`selectedModelId` feeds fallback attempt 1 and must never be deleted.
+
+**Consequence for `10/00`'s closure conditions.** Handout section 11 item 3 requires "the player no longer
+chooses a model or a prompt preset". That is satisfied at `383011b` and Cooperator-verified by `B20-5`.
+It does NOT require the admin side to be demonstrated, and after decision 9 it must not: closure item 3 is
+**met**. Everything remaining in this whole is copy, accessibility, Django localization, and the three
+security residuals.
+
 ### Cooperator acceptance batch B20 — 3 answered, 1 FAIL that is an ORCHESTRATOR instruction defect
 
 His reply, verbatim: `B20-5 PASS B20-6 FAIL localhost:3000/admin vracia 404 This page could not be found.
