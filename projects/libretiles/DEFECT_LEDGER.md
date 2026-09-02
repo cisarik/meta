@@ -1585,6 +1585,219 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+### uii-01-F18 — five accepted PremiumPicker behaviours, Cooperator-signed
+
+    Classification:  accepted product behaviour, NOT defects
+    Severity:        info
+    Approver:        Cooperator, 2026-09-02, batch B24 item 2, verbatim `nevadi`
+    Regression test: not applicable — these are accepted behaviours, not corrections
+    Rationale:       the R1 prompt asked the Worker what it would question having read the finished
+                     markup. It named five things. The Cooperator was shown all five and accepted all
+                     five. They are recorded so a later reader cannot mistake them for defects and
+                     "fix" them without knowing he had already seen them:
+                       a  opening the picker replaces the selected name with an empty search field
+                       b  the filter is substring over folded text, so `en` matches both `English` and
+                          `Slovenčina` (which folds to `slovencina`)
+                       c  the open list overlays the panels below and can clip at the settings
+                          scrollport when scrolled
+                       d  picker labels are NOT CSS-uppercased, unlike the 2x2 grid they replaced,
+                          because `text-transform: uppercase` does not round-trip Slavic diacritics
+                          reliably in this font stack
+                       e  `frontend/public/hu.png` remains committed and unreferenced
+    Note:            (e) is not merely accepted but REQUIRED — Hungarian is neither a shipped interface
+                     locale nor a playable variant, and the file is pre-positioned for `11/02`.
+    Recorded in:     this ledger and the closure record for ui-internationalization
+    Status:          accepted-residual
+
+### ✅ Cooperator acceptance batch B24 — 8 of 8 PASS, itemized. CLOSURE CONDITION 2 IS MET.
+
+His reply, verbatim: `1.) B24-1 PASS B24-2 PASS B24-3 PASS B24-4 PASS B24-5 PASS B24-6 PASS B24-7 PASS
+B24-8 PASS 2.) nevadi`
+
+```text
+B24-1  the interface-language panel is a DROPDOWN with flag + name + arrow, not four buttons   PASS
+B24-2  it opens into a search field and a list with flags                                      PASS
+B24-3  ⛔ HIS OWN EXAMPLE: typing "cestina" finds "Čeština"; also CESTINA and slovencina        PASS
+B24-4  ArrowUp/Down navigate, Enter selects, Escape closes without changing the value          PASS
+B24-5  the game-variant panel is also a dropdown with flags                                    PASS
+B24-6  typing "slowacki" finds "Słowacki" — the `ł` case NFD cannot fold                        PASS
+B24-7  an unavailable variant is a row that cannot be selected and that arrows skip            PASS
+B24-8  clicking outside closes without changing the value                                      PASS
+```
+
+**Handout closure condition 2 — "both Settings dropdowns exist with flags, diacritic-insensitive
+autocomplete and the arrow, and he has accepted them" — is now SATISFIED**, itemized rather than blanket.
+
+`B24-3` is the strongest single result in this whole. The Cooperator described that exact behaviour in his
+own words months of work ago — *"'cestina' must match 'Čeština'"* — and he has now confirmed it working in
+his own browser. `B24-6` confirms the `ł` trap the prompt named in advance is genuinely handled, not
+merely asserted in a unit test.
+
+`B24-7` is rendered acceptance of the disabled-row behaviour, which is the part the prompt forced into a
+pure function because the node-environment suite cannot render it. Both halves of that evidence now exist:
+`nextPickerHighlight` proven in a test, the visible behaviour proven by him.
+
+#### The five design questions: `nevadi` — he accepts all of them
+
+Asked whether any of the five things the Worker flagged bothered him, he answered `nevadi`. So all five are
+now **accepted product behaviour**, not open items:
+
+```text
+a  opening the picker replaces the selected name with an empty search field         ACCEPTED
+b  the filter is substring, so "en" matches both English and Slovenčina             ACCEPTED
+c  the open list overlays the panels below and can clip at the scrollport           ACCEPTED
+d  picker labels are not CSS-uppercased, unlike the old 2x2 grid                    ACCEPTED
+e  hu.png remains unreferenced                                                      ACCEPTED (required)
+```
+
+Recorded as accepted rather than left silent, because (a) and (d) are visible behaviour changes a later
+reader could mistake for defects, and (c) is a real layout limitation someone might otherwise "fix"
+without knowing he had seen and accepted it. Asking him and recording the answer is what makes them
+decisions instead of unexamined residue.
+
+Last used batch prefix is now **B24**.
+
+## Slice R1 landed at `c3f75e32533b6c4abd38d2c006f46c2c59eaa68e` — Worker session 11, exchange 01
+
+`feat(ui): premium searchable language and variant pickers with flags`. 12 files, +615 -94, two created,
+parent `8f44022`, one non-force push, public readback equal. Orchestrator verdict: **implementation-PASS,
+ACCEPTED**, pending the Cooperator's rendered acceptance which is closure condition 2. Evidence
+non-independent.
+
+Archived as `11_implementation_00.md` + `11_report_00.md`.
+
+**The last feature work in this whole is done.** The five flag PNGs the Cooperator committed at `61c9f09`
+are finally referenced, and `frontend/src/components/settings/PremiumPicker.tsx` is the first
+combobox — and the first `role`, `aria-label` and `<img>` — this codebase has ever had.
+
+### Both cited documentation sentences verified VERBATIM at the exact lines
+
+Not accepted from the report:
+
+```text
+image.md:8   "The Next.js Image component extends the HTML `<img>` element for automatic image
+              optimization."
+image.md:96  "If the image is purely decorative or not intended for the user, the `alt` property should
+              be an empty string (`alt="")."
+```
+
+Both exact. The `<img>`-over-`next/image` choice is sound for 48x32 PNGs totalling 5230 B — the optimizer
+would add a `/_next/image` route for no benefit, and `grep -c "_next/image"` in the build output returns
+**0**, so it did not.
+
+### ⛔ THE WORKER OVERRULED MY AUTHORED STRING, AND IT WAS RIGHT
+
+Section 7.4 authored `picker.flagAlt` as `Vlajka: {language}` and then explicitly permitted the Worker to
+choose `alt=""` instead if it judged the images decorative. **It chose `alt="" aria-hidden="true"`**, and
+cited `image.md:96` plus the reason: a flag beside its own label would make a screen reader announce
+"Vlajka: Slovenčina, Slovenčina".
+
+That is the better accessibility answer and it is the answer I could not have reached — it depends on the
+finished markup, which the Worker had read and I had not. The five keys are in all four catalogs anyway, so
+the decision is reversible without a new slice, exactly as the prompt required.
+
+**This is the value of writing a prompt that permits being overruled on a judgement that needs
+information the Orchestrator does not have.** Contrast the failure mode this project keeps recording:
+prompts that state a conclusion more precisely than their evidence supports.
+
+### The diacritic fold, verified through the REAL shipped function over every label this product ships
+
+A throwaway harness imported `foldForSearch`, `filterPickerOptions` and `nextPickerHighlight` from the
+shipped module, then was removed (porcelain verified clean):
+
+```text
+English      -> english        Angličtina  -> anglictina      Czeski    -> czeski
+Slovenčina   -> slovencina     Slovenština -> slovenstina     Polština  -> polstina
+Čeština      -> cestina        Poľština    -> polstina        Angielski -> angielski
+Polski       -> polski         Słowacki    -> slowacki   <- the ł case NFD cannot do
+Ł            -> l
+```
+
+`Čeština -> cestina` is the Cooperator's own example, working. `Słowacki -> slowacki` is the trap the
+prompt named in advance: the Worker's explicit map covers `ł/Ł -> l`, `đ/Đ -> d` and `ø/Ø -> o` beyond
+NFD's reach.
+
+Navigation verified over a disabled middle row: down from index 0 lands on 2, **up from 0 also lands on
+2** — so it wraps at both ends and skips the disabled row in both directions, and an all-disabled list
+returns `-1`. Those are the three cases most likely to be subtly wrong, which is why the prompt forced the
+arithmetic into a pure exported function.
+
+### Accessibility emitted, counted from the shipped source
+
+```text
+role="combobox" x2 · role="listbox" · role="option" · aria-label x2 · aria-expanded x2 ·
+aria-controls x2 · aria-haspopup · aria-autocomplete · aria-activedescendant · aria-selected ·
+aria-disabled · aria-hidden x2 · alt=""
+```
+
+Matches report item 11 exactly.
+
+### Gates at `c3f75e3`, Orchestrator-measured
+
+```text
+mypy 83 files · ruff · manage.py check · pytest 381 passed, 4 skipped in 220.68s
+typecheck exit 0 · vitest 405 passed | 3 skipped (29 files) · lint exit 0
+build exit 0, 11 dynamic routes, ZERO static, ZERO /_next/image
+```
+
+### The test change was a real judgement, disclosed properly
+
+`GameLanguagePanel.test.ts` dropped three selectors — `data-variant-slug`, `data-variant-readiness` and
+the HTML `disabled` attribute — because the control is now a listbox where `disabled` is not a valid
+attribute on an option. It replaced them with `data-option-value` plus `aria-disabled`, **inverted the
+assertion accordingly** (`.not.toMatch(/\bdisabled\b/)` where it previously required a match), and ADDED
+a `display_name`-fallback assertion that did not exist before.
+
+Assessed line by line: the property under test — an unavailable variant is not selectable — is still
+proved, now by `aria-disabled` plus the click/Enter guards plus `nextPickerHighlight` skipping disabled
+rows. Net assertions went UP. Accepted; the Worker named exactly what it removed and why, which is the
+only lawful way to change a test in this project.
+
+### Two disclosed deviations, both accepted
+
+```text
+overflowVisible on the internal SettingsPanel   default false, set ONLY by the interface-language panel,
+                                                verified at settings/page.tsx:101,107,111,368. Necessary
+                                                because `overflow-hidden` would clip the open list. A
+                                                minimal, opt-in, single-caller change.
+eslint-disable @next/next/no-img-element         one line, with a comment citing the optimizer rationale.
+                                                Honest: the rule exists to push people to next/image, and
+                                                the report argues the exception on documented grounds
+                                                rather than silencing it quietly.
+```
+
+### FIVE things the Worker says the Cooperator may want changed — and it was asked to say so
+
+Report item 17, in response to a prompt field asking what it would question having read the finished
+markup:
+
+```text
+a  opening the picker REPLACES the selected name with an empty search field. He may want the current
+   language to stay visible while typing.
+b  the filter is substring, so a query of `en` matches BOTH `English` and `Slovenčina` (which folds to
+   `slovencina`). Defensible, but not what everyone expects.
+c  the open list overlays the panels below and can still clip at the settings scrollport if he has
+   scrolled far down.
+d  picker labels are NOT CSS-uppercased, unlike the old 2x2 grid, because Slavic diacritics do not
+   round-trip through `text-transform: uppercase` reliably in this font stack. A deliberate visual
+   change he will notice.
+e  hu.png remains unreferenced, as required.
+```
+
+⚠ Item (b) is worth keeping: it is the honest cost of a substring filter over folded text, and the
+Orchestrator's `AC-PICKER-FILTER` fixture initially got it wrong in the same way — the Worker's near-miss
+in item 19 is exactly that, an over-narrow expectation that `EN` would match only English. It corrected
+the fixture rather than the behaviour, which was the right call.
+
+Item (d) is the fourth time in this whole that Slavic diacritics have forced a typography decision, after
+`overlay.bestBadge`, the `b.`/`pkt` abbreviations and the U+00A0 thousands separator.
+
+### Context-pressure disclosure
+
+The Worker reported ~75% visible context usage and still completed against repository evidence. That is
+the second slice to cross 70%, and both were the two largest — S5 and this one. The remaining slices are
+smaller.
+
 ## Slice R1 issued — Worker session 11, exchange 01, at `8f44022`
 
 `feat(ui): premium searchable language and variant pickers with flags`. Prompt staged at
