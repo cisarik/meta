@@ -27,7 +27,7 @@ and `1b7b05d0de854d7936c5fcd2b0d55a5cc5d14cfd` (the starting-draw screen, plus a
 fix). `uii-01-F04` is owned by slice **S3a**, not S2 — Cooperator decision 7 cancelled S2 altogether by
 removing URL locale prefixes. An earlier version of this paragraph said S2 and was stale.
 
-`main` is now `6ca85de7ee1e5a1db33253eeb9e7e47922e2718a`. Porcelain is EMPTY — the ten
+`main` is now `4bf436581c1b6382183411259e25c6a409b7d54f`. Porcelain is EMPTY — the ten
 deliberately untracked `frontend/public` flag files are gone. The **Cooperator himself** committed the
 five normalized 48x32 PNGs at `61c9f09` on 2026-09-02 (`feat(images): add new language icons for Czech,
 English, Hungarian, Polish, and Slovak`, 5 files, 5230 B total, byte sizes identical to the
@@ -60,21 +60,22 @@ Commit lineage of era 11, all Orchestrator-verified:
     383011b  S4   R6: the player no longer chooses model or prompt   15 files, -460 net
     d40b230  S5   the two lobby screens + F10 F11 F12 F14 corrected   11 files
     6ca85de  S6   the game header cluster and the AI overlay           8 files
+    4bf4365  S7   the settings screen and the overlay stats bar         8 files, 38 keys
 
 Anything below that speaks of `19cfec9`, `f26e92a`, `1b7b05d`, `9f0c5b8`, `3fd1a81`, `8c00a33`,
-`2917251`, `61c9f09`, `5a96b5e`, `e421c66`, `e0d3b64`, `383011b` or `d40b230` as "current" describes an
-earlier commit and is history.
+`2917251`, `61c9f09`, `5a96b5e`, `e421c66`, `e0d3b64`, `383011b`, `d40b230` or `6ca85de` as "current"
+describes an earlier commit and is history.
 
-**All eight standing gates re-measured green at `6ca85de` by the era-10 continuation Orchestrator**,
+**All eight standing gates re-measured green at `4bf4365` by the era-10 continuation Orchestrator**,
 independently rather than accepted from the Worker report:
 
     mypy config game gamecore accounts catalog   Success: no issues found in 83 source files
     mypy --no-incremental (same scope)           Success: no issues found in 83 source files
     ruff check .                                 All checks passed!
     manage.py check                              System check identified no issues (0 silenced).
-    pytest                                       381 passed, 4 skipped in 219.26s
+    pytest                                       381 passed, 4 skipped in 221.09s
     npm run typecheck                            exit 0
-    npx vitest run                               386 passed | 3 skipped  (28 files passed | 1 skipped)
+    npx vitest run                               390 passed | 3 skipped  (28 files passed | 1 skipped)
     npm run lint                                 exit 0
     npm run build                                exit 0, EVERY route ƒ, zero static, no deprecation warning
 
@@ -590,6 +591,18 @@ Two structural patterns worth reusing rather than reinventing:
 - `.env` values **override** code defaults and are read at process start. Changing `.env` requires restarting the affected server. This is how `GAME_WS_TICKET_MAX_AGE_SECONDS='60'` silently kept the old TTL after the code default became 10.
 - **The documented Django start command binds every interface.** `README.md:56`, `README.md:180`, and `AGENTS.md:32` all say `runserver 0.0.0.0:8000`. The Cooperator's live listener happens to be `127.0.0.1:8000` (verified with `ss`), but anyone following the documentation is reachable from their whole LAN. Any "not reachable today" claim must say which of the two it means. Found by the session-15 re-auditor.
 - `frontend/.env.local` is read by the Next.js server at startup; a new provider key needs `npm run dev` restarted.
+- ⛔ **An App Router page module may export ONLY the enumerated Next.js set.** Discovered and reproduced
+  at `4bf4365`. `frontend/.next/types/app/<route>/page.ts` contains a
+  `checkFields<Diff<{ default: Function; config?: {}; generateStaticParams?: Function; metadata?: any;
+  generateMetadata?: Function; revalidate?; dynamic?; ... }, TEntry, ''>>()` assertion, so ANY other named
+  export from a `page.tsx` is a `tsc` error:
+
+      error TS2344: ... does not satisfy the constraint '{ [x: string]: never; }'.
+        Property 'TIMEOUT_CHOICES' is incompatible with index signature.
+
+  Consequence for prompts: never instruct a Worker to "export it for the test" from a page file. Either
+  authorize a separate module in the allowlist, or accept a static property on the default export.
+  `frontend/AGENTS.md` warns that this is not the Next.js you know; this is a concrete instance of it.
 - Login and register throttles are IP-keyed and shared across browser profiles. At `bbba2e9` login is 60/hour and register 20/hour, sized for a same-NAT demo of roughly 16 logins and 12 registrations. **Restarting Django clears the counters** in DEBUG, because the cache is per-process LocMem. A single account is separately locked by `django-axes` after 8 failures for 30 minutes, and that lockout lives in the **database**, so a Django restart does NOT clear it — delete the `AccessAttempt` row in Django admin instead.
 - Multiplayer needs Redis (`docker compose up -d redis`; only the redis service — the project uses SQLite in dev). **Tailscale with an exit node can route the Docker bridge range into the tunnel**, making Redis unreachable from the host while healthy inside the container. Symptom: `docker exec … redis-cli PING` returns `PONG` but a host connection times out. Check with `ip route get 172.18.0.2` — it must show `dev br-…`, not `dev tailscale0`. Fix with `sudo tailscale set --exit-node-allow-lan-access=true`.
 - Two browser profiles are required for multiplayer. Two tabs in one profile share `localStorage` and the second login overwrites the first.
