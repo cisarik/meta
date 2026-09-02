@@ -1585,7 +1585,104 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+### Cooperator acceptance batch B20 — 3 answered, 1 FAIL that is an ORCHESTRATOR instruction defect
+
+His reply, verbatim: `B20-5 PASS B20-6 FAIL localhost:3000/admin vracia 404 This page could not be found.
+B20-8 zrušiť B20-9 ano cela stranka "Choose the next board" komplet je stale v anglictine`
+
+```text
+B20-5  an AI game still plays normally                                    PASS  <- the critical one
+B20-6  admin sets catalog row 1 from Django Admin, no SSH                 FAIL — see below
+B20-8  should the rival-name click be kept or removed?                    "zrušiť" = REMOVE
+B20-9  the known leftovers                                                CONFIRMED, plus a new report
+B20-1..4, B20-7                                                            NOT TESTED
+```
+
+**B20-5 PASS is the one that mattered most.** It is the rendered evidence that removing the picker did
+not break the provider fallback queue — the single risk the S4 prompt spent a whole section guarding.
+
+#### ⛔ B20-6 is NOT a product defect. It is an Orchestrator instruction defect.
+
+He opened `localhost:3000/admin` and got Next.js's 404. **Django admin is on port 8000, not 3000.** The
+batch said "v Django Admin (/admin/)" without a port, and he is a self-described operations novice, so an
+ambiguous URL is the Orchestrator's failure, not his. `PROJECT_CONTEXT.md` section 2 is explicit: make his
+steps unambiguous instead.
+
+Measured before telling him anything, rather than asserted:
+
+```text
+ss -tlnp        127.0.0.1:8000 python (Django)      *:3000 next-server
+Next.js routes  /  ·  /play  ·  /settings  plus the dynamic ones — there is correctly NO /admin,
+                so the 404 he saw is Next.js behaving properly
+GET http://127.0.0.1:8000/admin/   -> HTTP 302 -> /admin/login/?next=/admin/ -> HTTP 200, 4173 B
+                <title>Log in | Django site admin</title>
+superuser       EXISTS: id=1 'admin', is_staff=True, is_superuser=True
+```
+
+So the test is fully performable and nothing is broken. Reissued in batch B21 with the full URL.
+
+#### ⛔ AND A SUBTLETY THAT WOULD HAVE MADE THE RETEST FAIL FOR THE WRONG REASON
+
+Read from source rather than guessed — `frontend/src/lib/model-catalog.ts:95-103`:
+
+```ts
+if (preferredId && eligibleIds.includes(preferredId)) return preferredId;   // per-user, admin-settable
+if (storedId    && eligibleIds.includes(storedId))    return storedId;      // device memory
+return eligibleIds[0] ?? null;                                              // catalog row 1
+```
+
+And the live database says:
+
+```text
+user id=1 'admin'  preferred_ai_model_id = 'nvidia/nemotron-3-super-120b-a12b'   (eligible, active)
+get_selectable_models() -> 5 rows, ROW 1 = google/gemma-4-31b-it:free  (sort_order 10)
+   nvidia/nemotron-3-super-120b-a12b is sort_order 20
+get_selectable_prompts() -> 4 rows, ROW 1 = Grandmaster (sort_order 5); Initial is 10
+```
+
+**He plays as `admin`, whose per-user preference is already set and eligible.** So reordering
+`sort_order` alone would change row 1 and change nothing about his game, because his own
+`preferred_ai_model_id` wins the precedence. He would have seen "no effect" and reasonably concluded R6
+does not work.
+
+That is not a defect — per-user preference beating the global default is correct and is itself
+admin-settable — but it makes the naive test invalid. B21 therefore gives him **two** demonstrations:
+clear `preferred_ai_model_id` on his user and then reorder to prove the global default, or set
+`preferred_ai_model_id` directly to prove the per-user override. Both are Django Admin, both without SSH.
+
+Recording this because "the retest would have failed for a reason unrelated to the thing under test" is
+exactly the shape of evidence that gets misread as a product failure.
+
+#### B20-8 answered: `zrušiť` — the rival-name click is REMOVED
+
+That settles `uii-01-F12`. `showRivalPicker`, `onOpenRivalPicker` and the header click navigation to
+`/settings?focus=rival` are removed rather than renamed. A Cooperator decision, not an Orchestrator
+choice.
+
+#### B20-9 plus an unprompted report that changes the plan
+
+He confirmed the two known leftovers and added: **`cela stranka "Choose the next board" komplet je stale
+v anglictine`** — the entire `/play` page. That is true and was the declared scope (S3e owned play and
+waiting), but he volunteered it, and `/play` is the screen he lands on after login. The previous era's
+most valuable moments came from exactly this kind of unprompted remark, so it is treated as a
+prioritisation signal rather than as a re-report of known scope.
+
+**Slice order revised:** `/play` and `/waiting` move OUT of the later S3e and INTO S5, together with the
+three open corrections. The ScorePanel and the settings copy remainder move to S6.
+
+```text
+S5  play + waiting full copy · F10 settings panel title · F11 raw model id in the AI status line
+    · F12 remove the rival-name click                                   <- next
+S6  ScorePanel + the settings copy remainder
+S7  GameHistoryPanel + GameHistoryModal + ProfileModal + uii-01-F03 dates
+S8  uii-01-F02 accessible names, authored straight into the catalog
+then R7/R8 Django i18n + Retry-After · R10 nonce CSP · R11 catalog proxies + F13 · acceptance
+```
+
+Last used batch prefix is now **B20**.
+
 ## Slice S4 landed at `383011b389a9b3690647b6fa673060633572ab9d` — Worker session 05, exchange 01
+
 
 `feat(ui): the player no longer chooses the AI model or the prompt preset`. 15 files changed, **two
 deleted**, +214 −674 — a net removal of 460 lines. Parent `e0d3b64`, one non-force push, public readback
@@ -1695,8 +1792,11 @@ Reported unprompted, which is the behaviour that makes the rest of the report tr
     Correction direction: keep the navigation if a read-only "who am I playing" view is wanted, but
                      rename the props to say so, or drop the click entirely. A Cooperator preference
                      question rather than a pure defect — put it in B20 rather than deciding it alone.
+    COOPERATOR DECISION, B20-8, 2026-09-02: `zrušiť` — REMOVE the click. `showRivalPicker`,
+                     `onOpenRivalPicker` and the `/settings?focus=rival` navigation are deleted rather
+                     than renamed. His decision, not an Orchestrator choice.
     Owner:           ui-internationalization, slice S5
-    Status:          open
+    Status:          open — correction direction now fixed by his decision
 
 #### uii-01-F13 — `api.getPrompts` and the `/api/prompts` Next.js proxy are now dead code
 
