@@ -1585,6 +1585,102 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+### Cooperator acceptance batch B22 — 8 of 8 PASS, plus one unprompted find
+
+His reply, verbatim: `B22-1 PASS B22-2 PASS vidim "Front: Čeština" B22-3 PASS B22-4 PASS B22-5 PASS
+B22-6 PASS B22-7 PASS + vidim tam Searching for moves.. alebo take nieco stale v anglictine B22-8 PASS`
+
+```text
+B22-1  /play fully localized in sk / cs / pl                                        PASS
+B22-2  the queue label reads "Front: Čeština" for a Czech variant                   PASS, quoted
+B22-3  the waiting room is localized, including "Miestnosť <code>"                  PASS
+B22-4  the websocket does NOT tear down while waiting                               PASS
+B22-5  the settings rival panel says "Tvoj súper", not "Choose the rival"           PASS
+B22-6  the rival name is no longer clickable but is still visible                   PASS
+B22-7  the AI status line shows a NAME, not a raw model id                          PASS
+B22-8  the longest error string wraps without overflow                              PASS
+```
+
+**This is the first fully itemized PASS batch in this whole**, and four of the eight items are rendered
+acceptance of Orchestrator-found defects:
+
+```text
+B22-2  uii-01-F14   he QUOTED the corrected string back — "Front: Čeština" — which is the strongest
+                    form of confirmation available for a defect whose symptom was a wrong variant name
+B22-4  the S5 Worker's own near-miss: had `useT`'s unstable `t` gone into that effect's deps, the
+                    websocket would have been torn down on every state update on the one screen whose
+                    purpose is holding it open. PASS is the rendered proof the fix works.
+B22-5  uii-01-F10   the panel no longer promises a control that does not exist
+B22-7  uii-01-F11   the player no longer sees `nvidia/nemotron-3-super-120b-a12b`
+```
+
+Together with `B20-5` (an AI game still plays after R6) and `B19-1..5` (the lexicon and toast fixes),
+every Orchestrator-found defect corrected in this whole now has Cooperator-verified rendered evidence.
+
+#### His unprompted find on B22-7 — and it is exactly the surface I had scheduled next
+
+*"vidim tam Searching for moves.. alebo take nieco stale v anglictine"*. Measured immediately rather than
+assumed: `AIThinkingOverlay.tsx:355` `Searching for moves...` and `:333`
+`Filtering weak or invalid lines before showing a serious move...`, plus `AI Thinking` at `:287`,
+`Best` / `BEST` at `:305` and `:122`, and `pts` at `:110`.
+
+Six strings, and **the overlay is on screen during every single AI turn** — roughly 21 seconds per turn
+by the measured central product fact. He is right that it is one of the most-seen surfaces in the product.
+
+⚠ **The overlay had been deferred as a whole, and that was too coarse.** It was deferred because it
+renders `{humanState}` at `:234`, the AI telemetry prose that needs an enum-keyed redesign. But the
+telemetry is ONE of the seven things it renders; the other six are ordinary copy with no coupling to the
+locked move route at all. Splitting the file's copy from its telemetry is both possible and cheap, and
+treating the file as atomic hid six high-visibility strings behind one architectural blocker.
+
+Last used batch prefix is now **B22**.
+
+## Slice S6 issued — Worker session 07, exchange 01, at `d40b230`
+
+`feat(i18n): localize the game header and the AI overlay`. Prompt staged at
+`/tmp/opencode/uii-s6-worker-07-prompt.md`, 352 lines. Archive as `07_implementation_00.md` **only after
+its report exists**. Fresh Implementation Worker, E1.
+
+### Scope, and why it is deliberately NARROWER than planned
+
+The plan had S6 as ScorePanel plus the whole settings remainder. Measured inventory: ScorePanel 14
+distinct strings, settings **40**, overlay 6. The S5 Worker reported visible context above 70 percent on a
+smaller surface than that, so combining them would invite a compaction mid-slice on a 40-string screen.
+
+```text
+S6  ScorePanel + AIThinkingOverlay   13 new keys + 5 reuses   <- ISSUED, this slice
+S7  settings remainder                ~40 strings, its own slice
+S8  GameHistoryPanel + GameHistoryModal + ProfileModal + uii-01-F03 dates
+S9  uii-01-F02 accessible names
+```
+
+The split is by SURFACE, not arbitrary: S6 is the chrome visible during a turn, S7 is a screen you visit
+between games. That also puts his unprompted find into the very next slice.
+
+### Five existing keys reused rather than duplicated
+
+`nav.settings`, `chat.you`, `game.newGame`, `game.starting`, `board.pts`. Verified present in all four
+catalogs before writing the prompt. One accepted wart, named in the prompt: `game.newGame` is spelled
+"New Game" in the en catalog while ScorePanel's literal is "New game" — one key with one casing beats two
+keys with drifting Slovak.
+
+### The deferral is now PINNED BY A NEGATIVE TEST, not by prose
+
+`AC-NO-TELEMETRY-KEY` asserts that **no** key in the en catalog contains `providers exhausted`,
+`dead rack` or `legal rescue`. Without it, a future copy slice could quietly localize the telemetry
+through the message catalog instead of through the enum redesign — which would rebuild the
+`err.message.includes("401")` anti-pattern the security era paid to remove, and which `uii-01-F09` already
+had to correct once in this same whole. A prose instruction would not have survived three more slices; an
+executable assertion will.
+
+### One typography decision worth recording
+
+`overlay.best` and `overlay.bestBadge` are two keys for one word. The badge at `:122` renders uppercase
+through a CSS class today, and CSS `text-transform: uppercase` on Slavic diacritics is less dependable
+across this project's fallback font stack than it is for ASCII. The badge therefore carries its own
+pre-uppercased value — `NAJLEPŠÍ` / `NEJLEPŠÍ` / `NAJLEPSZY` — and `AC-BADGE-CASE` asserts it equals its
+own uppercase form in every locale. Orchestrator-verified satisfiable before issuing.
+
 ## Slice S5 landed at `d40b230e8071f609f1a26fbea70106664326673a` — Worker session 06, exchange 01
 
 `feat(i18n): localize the lobby screens and fix the queue label`. 11 files, +406 -70, parent `383011b`,
