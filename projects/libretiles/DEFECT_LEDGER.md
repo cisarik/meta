@@ -1585,6 +1585,90 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice S8 landed at `d806e313c7f5b6198452fa68afa5d079059b6f48` — Worker session 09, exchange 01
+
+`feat(i18n): localize the saved-boards history and its dates`. 8 files, +400 -51, parent `4bf4365`, one
+non-force push, public readback equal. Orchestrator verdict: **implementation-PASS, ACCEPTED.** Evidence
+non-independent.
+
+Archived as `09_implementation_00.md` + `09_report_00.md`.
+
+### uii-01-F03 half-corrected, verified through the REAL shipped function
+
+Not accepted from the Worker's test. A throwaway harness imported `formatUpdatedAt` from the shipped
+component and called it, then was removed (porcelain verified clean):
+
+```text
+en -> Sep 2, 4:35 PM          <- byte-identical to the old hardcoded "en-US" output
+sk -> 2. 9., 16:35            <- 24-hour clock, no AM/PM
+cs -> 2. 9. 16:35
+pl -> 2 wrz, 16:35
+```
+
+The `en` -> `en-US` mapping holds, so this correction provably changed nothing for English while fixing
+the other three locales. `formatUpdatedAt(value, locale)` takes the locale as a parameter and the caller
+resolves it with `useLocale()`, so no hook is called from module scope.
+
+⚠ `uii-01-F03` is **half** corrected. `ProfileModal.tsx:18-28` `formatJoinedDate` still hardcodes
+`"en-US"` and is slice S9's. The finding stays OPEN until both call sites are done.
+
+### The catalog after eight slices
+
+```text
+en / sk / cs / pl   text=246  fn=18  total=264 each
+PARITY OK — zero missing, zero extra, both tables, every direction
+1056 Orchestrator-authored strings
+```
+
+### Gates at `d806e31`, Orchestrator-measured
+
+```text
+mypy 83 files · ruff · manage.py check · pytest 381 passed, 4 skipped in 220.39s
+typecheck exit 0 · vitest 394 passed | 3 skipped · lint exit 0
+build exit 0, 11 dynamic routes, ZERO static
+```
+
+### ⛔ AN ORCHESTRATOR COUNTING ERROR, caught by the Worker and confirmed against my own prompt
+
+Report item 14: *"the prompt labels the set 'twenty-nine new keys,' but its exact enumerated contract
+contains 35 keys."*
+
+Verified by counting the `history.*` keys in my own section 6: **35**, not 29. The prose count was wrong
+and the table was right. The Worker implemented all 35 — the enumerated contract — and flagged the
+discrepancy instead of silently implementing 29 or asking.
+
+That is the correct resolution and it is worth naming why: an enumerated table is evidence, a prose
+summary is a claim. When they disagree the table wins, and this project has now recorded that shape twice
+in two slices — the S6 prompt said "seven existing keys" while listing five, and this one said 29 while
+listing 35. **Both times the Worker took the table.** For the remaining slices I will count the table
+programmatically before writing the prose number, which is what I did to confirm this.
+
+### Item 13 leftover list: no real findings, second slice running
+
+Emoji, `item.opponent_label` as a server identity, and `item.game_end_reason` as the backend enum I named
+in the prompt in advance. `Leftovers that should have received keys: none.` The structural report field has
+now come back clean twice in a row, after catching a real leftover in four consecutive slices before that.
+
+### The `game_end_reason` passthrough is now formally on the record
+
+```text
+uii-01-F17   `GameHistoryPanel` renders `item.game_end_reason` — a backend enum such as
+             BAG_EMPTY_AND_PLAYER_OUT — directly as a user-facing row hint.
+Severity     low; it is an uppercase machine string shown to a player, in a fallback position that only
+             appears for a finished game that is neither the player's turn nor waiting.
+Owner        the Django-localization slice (R7), because the end reasons are engine values and a keyed
+             mapping belongs next to the other backend-produced strings, not in a frontend copy slice.
+Status       open, deliberately deferred, named in the S8 prompt BEFORE implementation rather than
+             discovered afterwards.
+```
+
+### One disclosed tooling hiccup, correctly classified
+
+The first pytest invocation outran its captured session handle so its summary was unavailable; the Worker
+re-ran the exact authorized command with a retained handle and quoted the real summary. Classified as a
+diagnostic-method issue, not a product failure — the same distinction the Orchestrator had to make about
+its own broken sweep two slices ago.
+
 ## Slice S8 issued — Worker session 09, exchange 01, at `4bf4365`
 
 `feat(i18n): localize the saved-boards history and its dates`. Prompt staged at
@@ -4198,6 +4282,16 @@ audit-01-F06 public prompt text + swallow-to-HTTP-200 in the catalog proxies   a
     Regression test: with the sk locale active, neither call site emits an English month name
     Owner:           ui-internationalization
     Status:          open
+    Status:          **HALF corrected at d806e31** (S8) — still OPEN.
+                     GameHistoryPanel.tsx `formatUpdatedAt(value, locale)` now takes the active locale
+                     and maps `en` -> `en-US` so English output is byte-identical. Orchestrator-verified
+                     through the real shipped function: en `Sep 2, 4:35 PM`, sk `2. 9., 16:35`,
+                     cs `2. 9. 16:35`, pl `2 wrz, 16:35` — 24-hour clock, no AM/PM.
+                     `Intl` was MEASURED to produce the correct GENITIVE month for the long form in all
+                     three Slavic locales (`2. septembra 2026`, `2. září 2026`, `2 września 2026`), so no
+                     hand-built month table and no date library were needed.
+                     ⛔ ProfileModal.tsx:18-28 `formatJoinedDate` still hardcodes "en-US". The finding
+                     stays OPEN until slice S9 corrects that second, independent call site.
 
 ### uii-01-F04 — the server renders the body in English while `<html lang>` says `sk`
 
