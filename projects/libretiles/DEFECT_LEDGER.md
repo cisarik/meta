@@ -1585,6 +1585,80 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice S7 issued — Worker session 08, exchange 01, at `6ca85de`
+
+`feat(i18n): localize the settings screen and the overlay stats bar`. Prompt staged at
+`/tmp/opencode/uii-s7-worker-08-prompt.md`, 436 lines. Archive as `08_implementation_00.md` **only after
+its report exists**. Fresh Implementation Worker, E2.
+
+**38 new keys — the highest string volume of any slice in this whole**, plus the S6 leftover.
+
+### Why settings is the right screen to do now
+
+It is the screen where the player chooses their interface language, so an English settings screen is the
+single most self-contradicting surface left in the product: you pick "Slovenčina" from a panel titled
+"Interface language" surrounded by "Board Surface", "Shiny Effect" and "Premium Look".
+
+### The one structural decision, and why the obvious shape is wrong
+
+`TIMEOUT_CHOICES`, `STEP_CHOICES` and `BOARD_THEME_CHOICES` are **module-level constants** holding literal
+English strings. A module-level constant cannot call a hook, so they must carry `TextKey` values resolved
+at render time instead:
+
+```ts
+const TIMEOUT_CHOICES: Array<{ value: number; label: string; descriptionKey: TextKey }> = [
+  { value: 30, label: "30s", descriptionKey: "settings.timeout.30" }, ...
+];
+```
+
+⚠ The explicit `TextKey` annotation is the load-bearing part and the prompt says so: without it a typo in
+a key name is a runtime `undefined` in rendered copy instead of a `tsc` error. The arrays must also STAY
+module-level — moving them inside the component or converting them to functions would work but would
+throw away the constant-folding and make the diff larger than the problem.
+
+`ChoiceGrid`'s prop type changes from `description: string` to `descriptionKey: TextKey`. It is a local
+component in the same file, so nothing else is affected; the prompt requires the Worker to verify that and
+say so rather than assume it.
+
+### Three things deliberately NOT localized, stated so nobody "finishes the job" later
+
+```text
+"Escape" at settings/page.tsx:515        a KeyboardEvent key name, not copy
+TIMEOUT_CHOICES labels "30s" "1m" ...    compact unit abbreviations in a tight grid; `s` and `m` read
+                                         internationally and translating them would break the layout
+STEP_CHOICES labels "10" "20" ...        they are numbers
+```
+
+### The S6 leftover becomes three colon-labels
+
+`{n} tried` / `{n} valid` / `{n} rejected` cannot be translated word-for-word: Slovak needs an adjective
+agreeing in number AND case across one/few/many — "1 skúsený ťah", "2 skúsené ťahy", "5 skúsených ťahov" —
+and no single form covers all three. So `Skúsené: 3` / `Platné: 3` / `Zamietnuté: 3`, which is the third
+time this whole has used that pattern after `controls.tilesSelected` and `play.humanQueue.queueFor`. The
+prompt also requires preserving today's behaviour that the `rejected` span renders empty at zero rather
+than "Zamietnuté: 0".
+
+### Orchestrator pre-verification before issuing
+
+```text
+AC-TOGGLE-4   the four toggle *Desc values are distinct within every locale (4/4 in all four).
+              That assertion exists because the two toggle panels SHARE their On/Off labels but not
+              their descriptions, and a copy-paste would make them silently identical.
+AC-STATS-4    no sk/cs/pl stats form contains `tried`, `valid` or `rejected`.        SATISFIABLE
+              Noted and accepted: cs `Platné: 3` is identical to sk `Platné: 3` — the words genuinely
+              coincide, and the assertion is per-locale content rather than cross-locale difference.
+AC-KEYTYPED   a new runtime assertion that every key in the three arrays resolves to a NON-EMPTY string
+              in all four locales. `tsc` is the real gate; this catches a key that exists but is empty,
+              which the type system cannot see.
+```
+
+### The telemetry deferral is re-asserted, not assumed
+
+`AC-NO-TELEMETRY-KEY` already exists and must keep passing with 38 more keys in the catalog. The prompt
+restates in full why `{humanState}` stays English — locked move route, prose comparison in
+`describeAiTurnTelemetry`, enum redesign needed — because this is the first slice since that guard was
+written whose author might reasonably think "while I am in this file anyway".
+
 ## Slice S6 landed at `6ca85de7ee1e5a1db33253eeb9e7e47922e2718a` — Worker session 07, exchange 01
 
 `feat(i18n): localize the game header and the AI overlay`. 8 files, +253 −17, parent `d40b230`, one
