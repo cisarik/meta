@@ -87,3 +87,40 @@ B1-8  Run, from the repository root:
 product. B1 is a read-and-confirm batch by nature. The first entry with a rendered
 expectation will be the first language slice, and it will carry the loopback-probe evidence
 the rendered-output rule requires.
+
+---
+
+## B2 · exchange 02/01 — the orphan-asset guard
+
+```text
+slice        MEC-V3d-guard
+commits      4f6f38d  chore(dicts): remove obsolete SOWPODS dictionary file   ⛔ COOPERATOR'S OWN
+             86ec39e  test(lexicons): no unclaimed file may sit in the shipped dictionary directory
+             pushed; public readback equals local HEAD at 86ec39e
+what changed the deleted orphan can never silently return, and no other unclaimed file may sit
+             in backend/assets/dicts/ either. P14 names the one file; P15 is the class rule.
+```
+
+```text
+B2-1  Confirm backend/assets/dicts/ contains exactly EIGHT files and no sowpods.txt:
+        collins2019.txt  czech.LICENSE  czech.txt  polish.LICENSE  polish.txt
+        slovak.LICENSE   slovak.txt     slovak_two_tile_words.txt
+B2-2  Run, from backend/ :
+        env -u APPIMAGE -u ARGV0 -u APPDIR .venv/bin/python -m pytest \
+            tests/test_lexicon_provenance.py -k "p14 or p15"
+      EXPECT: 2 passed.
+B2-3  ⛔ THE ONE THAT MATTERS, and it is a NEGATIVE step. Read the docstring of
+      test_p15_every_present_dictionary_file_is_claimed_by_a_manifest and confirm it states
+      that the invariant runs ONE DIRECTION ONLY — present implies claimed, never the reverse.
+      EXPECT the docstring to name Hungarian as the reason. If a future contributor
+      "tightens" P15 into a symmetric check, the Hungarian variant can never ship, because its
+      lexicon is deliberately claimed-and-absent until a local build runs.
+B2-4  Optional, and it is the fastest way to see the guard work: create an empty file
+        backend/assets/dicts/zzz_delete_me.txt
+      run B2-2 again, EXPECT P15 to FAIL naming zzz_delete_me.txt, then DELETE that file and
+      confirm `git status --porcelain=v1 -- backend/assets/` is empty again.
+      ⚠ Delete it. Leaving it there leaves the suite red.
+B2-5  Confirm `manage.py validate_lexicons` still reports FIVE assets, 0 failed. The deleted
+      file was never one of the five — that is precisely why it could rot unnoticed.
+```
+

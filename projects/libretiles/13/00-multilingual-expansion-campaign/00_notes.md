@@ -416,6 +416,11 @@ python3 /home/agile/meta/projects/libretiles/apfieldcheck.py <prompt.md>   exit 
 2026-09-03  Exchange 01/01 issued: V9a + V9b. Subagent Worker, bounded, non-independent.
 2026-09-03  Exchange 01/01 returned implementation-PASS at a199d0e. ACCEPTED by the
             Orchestrator after independent re-measurement of every gate. See section 9.
+2026-09-03  COOPERATOR deleted backend/assets/dicts/sowpods.txt himself at 4f6f38d and pushed.
+            Classified accepted-continuation. V3d's mutation half done by owner action.
+            See section 10.
+2026-09-03  Exchange 02/01 (MEC-V3d-guard) returned implementation-PASS at 86ec39e. P14 and
+            P15 landed. ACCEPTED after independent re-measurement. See section 11.
 ```
 
 ### 8.1 Carried forward, not lost
@@ -568,18 +573,226 @@ The English ledger row's two recorded debts are discharged.
 
 ---
 
-## 10. Next step
+## 10. Owner commit `4f6f38d` — the deletion done by the Cooperator himself
+
+On 2026-09-03 20:57 the Cooperator wrote *"sowpods.txt vymazane, pokracujeme"* and had
+already performed the deletion himself.
 
 ```text
-V3d — delete backend/assets/dicts/sowpods.txt with a test asserting its absence.
-      baseline a199d0e4086231a5f39853cbca0a94e7c734a37a
-      tier E2 (the blob survives in Git history at bd2d63f, so a revert restores it
-      byte-for-byte — that is why it is not E4)
-      reasoning Medium
-      the absence assertion belongs in backend/tests/test_documentation_dictionary_claims.py,
-      which now exists for exactly this purpose
+4f6f38d  chore(dicts): remove obsolete SOWPODS dictionary file
+         Michal Cisárik <michal@cisarik.info>   2026-09-03 20:57:20 +0200
+         backend/assets/dicts/sowpods.txt | 172872 deletions
+         1 file changed, 172872 deletions(-)      ONE path, nothing else
+         pushed; git ls-remote == git rev-parse HEAD == 4f6f38d
 ```
 
-Then the sourcing probe, which is the campaign's real critical path: twenty ledger rows are
-blocked on a sourced tile distribution and a licence-clean lexicon, not on code.
+⚠ **The instruction was ambiguous — "vymazane" could mean "it has been deleted" or "delete
+it" — and I resolved it by MEASURING rather than by asking.** The repository answered in one
+command. That is the right resolution for an ambiguous one-word instruction whose truth is
+observable, and it is cheaper than a round trip.
+
+### 10.1 Recovery classification, all five classes
+
+```text
+unexplained-divergence  NO. The commit is explained three ways: the Cooperator announced it,
+                        the message states exactly what it does, and the diff is one path.
+unrelated-owner-work    NO — and this is the interesting one. It IS owner work, but it is not
+                        UNRELATED: it performs V3d, which was the next planned slice of this
+                        campaign. Naming it `unrelated` would misfile it.
+stale-clone             NO. Local HEAD equals the public readback.
+unpublished-candidate   NO. Pushed, porcelain empty.
+accepted-continuation   YES. The baseline advanced by owner work that implements planned
+                        campaign work, is published, and leaves no material remainder.
+```
+
+⛔ **A Cooperator commit to `main` is not a defect and is not something to undo.** It is his
+repository. The Orchestrator's job is to classify it, verify the product still holds, and
+adjust the plan — not to re-do it or to complain that it bypassed a slice.
+
+### 10.2 What I verified before accepting the new baseline
+
+```text
+diff                    one path, 172 872 deletions, nothing else                    ✔
+mypy                    Success: no issues found in 85 source files                  ✔
+ruff                    All checks passed!                                           ✔
+manage.py check         System check identified no issues (0 silenced).              ✔
+pytest                  540 passed, 4 skipped in 242.54s        unchanged from a199d0e ✔
+pytest --collect-only   544 tests collected                     unchanged             ✔
+validate_lexicons       5 asset(s) audited, 0 failed            STILL FIVE            ✔
+83 dictionary-related tests (validation, documentation, provenance, health)  all pass  ✔
+git grep -in sowpods    3 hits, ALL inside the guard test; excluding it: 0            ✔
+blob survives at        bd2d63f (Initial commit)  ->  revert restores it byte-for-byte ✔
+```
+
+### 10.3 ⛔ The V3d third clause is now SATISFIED, and by direct evidence
+
+V3d's inherited condition was: *"enumerate every env-var-resolved asset path and state
+whether the deployed value was confirmed or accepted as unknown."* There is exactly one such
+path, `PRIMARY_DICTIONARY_FILE`, and the hazard was that an operator `.env` might name the
+file being deleted. I resolved it **without reading `backend/.env`**:
+
+```text
+backend/.env                                     PRESENT on this host (existence only)
+resolved PRIMARY_DICTIONARY_PATH exists on disk  True
+resolved basename == collins2019.txt             True
+manage.py check                                  clean
+tests/test_dictionary_validation.py              passes
+```
+
+⇒ **CONFIRMED, not accepted-as-unknown, for this deployment.** A boolean plus a comparison
+against the known default is enough evidence, and it never printed the contents of a file the
+security boundary forbids. For any other deployment the value remains unknown by
+construction, which is precisely why exchange 01/01 documented the knob.
+
+⚠ **One improvement in failure mode worth recording.** Before the deletion, an operator
+`.env` naming `sowpods.txt` would have made Django silently validate moves against a
+172 872-word list while every asset gate reported `english ok words=279496`. Now the file does
+not exist, so the same misconfiguration fails loudly at dictionary load instead of silently.
+The deletion did not only remove dead weight; it converted a silent failure into a loud one.
+
+---
+
+## 11. Exchange 02/01 — MEC-V3d-guard. P14 and P15
+
+```text
+prompt        02_implementation_00.md          task MEC-V3d-guard, tier E2, reasoning Medium
+report        02_report_00.md                  status PASS, implementation-PASS
+baseline      4f6f38d09ec3c0b1cc671b7df752b3f713b52506
+end commit    86ec39e08cfe28caa2919279a6123b0814e6032d
+commit        86ec39e  test(lexicons): no unclaimed file may sit in the shipped dictionary directory
+routing       fresh-worker-session, session ordinal 02, exchange 01
+evidence      ⛔ NON-INDEPENDENT. Bounded subagent delegation, never independent acceptance.
+```
+
+⚠ **Why session 02 and not session 01 exchange 02.** The baseline moved by owner work between
+the two exchanges, and the previous session's retained context contained the belief
+*"`sowpods.txt` is present, by decision, and must not be deleted"* — true when it was written,
+false afterwards. Retained context that CONTRADICTS the current task is a hazard rather than a
+convenience, which is exactly AP's changed-external-state trigger for fresh routing. Fresh
+session, exchange reset to `01`, per `PROMPT_CONTRACTS.md:493-495`.
+
+### 11.1 What landed
+
+```text
+P14  backend/assets/dicts/sowpods.txt does not exist. The named absence era 12 deferred, with
+     its original identifier preserved so the archive and the code agree.
+P15  ⛔ ONE DIRECTION: every FILE PRESENT under backend/assets/dicts/ must be CLAIMED by a
+     manifest through dictionary_file, two_tile_words_file, or lexicon_provenance.license_file.
+     NOT the reverse — a claimed-but-ABSENT file must pass, because Hungarian's gitignored
+     lexicon will legitimately be claimed and absent until a local build runs, and fail-closed
+     readiness owns that case.
+     NO exemption list. An exemption list is where the next orphan hides.
+     Claim set gathered by RAW JSON SCAN, deliberately not through list_installed_variants(),
+     which swallows load failures and would misattribute a broken manifest's legitimate assets
+     as orphans.
+```
+
+This is the durable generalization of the sowpods defect, installed **before** roughly twenty
+lexicons and twenty licence files arrive rather than after.
+
+### 11.2 What I verified myself
+
+```text
+git rev-parse HEAD           86ec39e08cfe28caa2919279a6123b0814e6032d
+git ls-remote origin main    86ec39e08cfe28caa2919279a6123b0814e6032d          EQUAL
+porcelain / assets porcelain EMPTY / EMPTY
+.ap gitlink == submodule     9c5cc44                                          unchanged
+git diff --numstat           97 insertions, ZERO deletions  ->  P1-P13 provably untouched
+proof scaffolding remaining  grep for zzproof / monkeypatch.setitem  ->  0 hits
+new symbols at               :481 :482 :485 :518 :528     module 462 -> 559 lines
+P14 + P15 alone              2 passed, 45 deselected
+ruff / mypy / manage.py check   clean / 85 files / 0 issues
+pytest                       542 passed, 4 skipped in 245.77s          540 + 2
+pytest --collect-only        546 tests collected                       544 + 2
+validate_lexicons            5 asset(s) audited, 0 failed              STILL FIVE
+npm typecheck / lint         exit 0 / exit 0
+npx vitest run               450 passed | 3 skipped (31 passed | 1 skipped of 32)  IDENTICAL
+npm run build                exit 0, ELEVEN dynamic rows, ZERO static
+```
+
+**Every claim reproduced. Result accepted: implementation-PASS at `86ec39e`.**
+
+⚠ The Worker's most valuable act was procedural: it proved P14 and P15 have teeth by
+monkeypatching the module's directory globals to `tmp_path`, rather than briefly creating a
+file under `backend/assets/`. It also proved the TOLERANT direction explicitly — a
+claimed-but-absent file does not fail P15 — which is the assertion that protects the Hungarian
+slice, and it is proof by execution rather than by comment.
+
+### 11.3 The Worker's findings, dispositioned
+
+```text
+MEASURED 1  frontend/public/ has ELEVEN files and SIX with ZERO references:
+              hu.png · file.svg · globe.svg · next.svg · vercel.svg · window.svg
+            referenced: en.png sk.png cs.png pl.png (2 each) · drevo.jpeg (1)
+            -> ⛔ VERIFIED BY ME, count for count. This is the same defect shape as sowpods:
+               an asset in the tree that nothing claims. FIVE are Next.js scaffolding
+               leftovers. hu.png is NOT — it is a flag for a language with no manifest, no
+               lexicon and no entry in the flag map, and I had already recorded its existence
+               in section 4.4 without recognizing it as an ORPHAN. The Worker's framing is
+               better than mine.
+               ROUTED: its own bounded exchange, before twenty flags arrive. It needs a
+               product decision I will take under the autonomy grant — delete the five
+               scaffolding files, and let hu.png be CLAIMED by the Hungarian slice rather than
+               deleted, because deleting and re-adding an identical asset is churn.
+MEASURED 2  backend/assets/premiums.json and backend/assets/diagnostics/{2 files} are claimed
+            only by CODE, not by a manifest, and have no mechanical invariant.
+            -> VERIFIED BY ME: those are exactly the three files outside dicts/ and variants/.
+               No orphan there today. Recorded as a known gap; NOT worth an invariant now,
+               because the campaign adds nothing to either directory. Revisit only if it does.
+MEASURED 3  the variants/ side is ALREADY guarded: test_variant_invariants.py G1 fails on an
+            empty variant list and G9 fails when the manifest file count and the loaded count
+            disagree, with G9c proving G9 can fail.
+            -> VERIFIED BY ME at test_variant_invariants.py:174 and :184. ⇒ IMPORTANT AND
+               REASSURING for the campaign: twenty new manifests enrol themselves in P1-P13
+               and G1-G25 automatically the moment they land, and a broken manifest cannot
+               silently shrink the parametrized matrix. This lowers the cost of every future
+               language row.
+MEASURED 4  P15 would pass vacuously on an empty dicts/ directory; no non-emptiness assertion
+            was added. -> ACCEPTED as a recorded decision, not an oversight. P2 and P4 read
+               shipped lexicons by path and validate_lexicons audits five assets, so an empty
+               directory fails loudly several tests earlier. No action.
+MEASURED 5  P15 compares exact basenames, so a manifest writing "dicts/czech.txt" would report
+            czech.txt as an orphan. -> ACCEPTED as correct fail-closed behaviour; P2 already
+               enforces basename-only for license_file, and the failure message says so.
+LEAD 1      hu.png may have been added as part of a planned flag batch, so a
+            "present ⇒ referenced" invariant over frontend/public/ could block future flags.
+            -> ⚠ ADOPTED AS A CONSTRAINT ON THE NEXT EXCHANGE. Whatever invariant is written
+               there must be one-directional in the same sense as P15, or it will fight the
+               campaign. This is the second time in two exchanges that DIRECTION was the
+               load-bearing design decision.
+LEAD 2      a SUBDIRECTORY under dicts/ is invisible to P15 (`if p.is_file()`).
+            -> ACCEPTED as a bounded limitation. No planned language needs a multi-file
+               bundle; every shipped lexicon is a flat .txt plus a .LICENSE. Recorded so a
+               future bundle format is a deliberate decision.
+LEAD 3      the .gitignore rule for the Hungarian output is unverified and should be pinned in
+            the SAME slice that adds the build script.
+            -> ADOPTED into B1's condition set. It joins inherited conditions 11, 15, 16, 18.
+```
+
+---
+
+## 12. Next step
+
+```text
+NEXT   frontend/public/ orphan disposition, one bounded exchange:
+         delete file.svg globe.svg next.svg vercel.svg window.svg  (Next.js scaffolding, zero
+           references, measured by me)
+         KEEP hu.png and record it as claimed-by-the-Hungarian-slice rather than deleting it
+         install a ONE-DIRECTIONAL invariant analogous to P15, scoped so that a flag shipped
+           ahead of its language does not fail it — LEAD 1 is the reason, and getting the
+           direction right is the whole design, exactly as it was for P15
+       baseline 86ec39e08cfe28caa2919279a6123b0814e6032d, tier E2, reasoning Medium
+THEN   the SOURCING PROBE. Twenty ledger rows are blocked on a sourced tile distribution and a
+       licence-clean lexicon, not on code. This is the campaign's critical path and everything
+       after it depends on its output.
+THEN   B2 — af · ms first, the two cheapest languages, to prove "adding a language is boring"
+       on real data before the single E3 slice this campaign contains.
+```
+
+⚠ **What two exchanges have taught me about this campaign.** Both were nominally trivial —
+five documentation lines, then two tests — and in both the load-bearing decision was the
+DIRECTION of an invariant or the SCOPE of a claim, not the code. P15's direction protects a
+language slice that does not exist yet. The next exchange's direction protects twenty flags
+that do not exist yet. The engine is not the risk; the assertions written around it are.
+
 

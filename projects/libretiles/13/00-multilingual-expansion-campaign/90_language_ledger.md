@@ -115,10 +115,12 @@ blockers               none for gameplay. TWO documentation debts DISCHARGED in 
                        changes what submit_move validates against while every asset gate
                        keeps reporting english ok words=279496. Documented, not detected.
                        🐞 mle-01-F02, severity low, confirmed.
-                       ⚠ backend/assets/dicts/sowpods.txt is still present, deliberately.
-                       Its deletion is the next exchange, and its unreferenced premise must
-                       be proved with the PATH-EXCLUDING grep, because the guard test itself
-                       necessarily contains the string it forbids.
+                       ⚠ backend/assets/dicts/sowpods.txt is GONE — deleted by the Cooperator
+                       himself at 4f6f38d, and guarded at 86ec39e by P14 (that one file may
+                       never return) and P15 (⛔ ONE DIRECTION: every file PRESENT under
+                       assets/dicts/ must be CLAIMED by a manifest, never the reverse).
+                       ⇒ assets/dicts/ is now EXACTLY manifest-claimed: eight files, eight
+                       claims, zero orphans, zero claimed-but-absent. Measured twice.
 ```
 
 ## 02 · Slovak
@@ -202,6 +204,12 @@ gameplay status        not-started. BLOCKED on C1: Hungarian is the first target
 UI-localization        staged, not implemented. MEASURED: frontend/public/hu.png EXISTS
                        while LOCALES has no "hu" and there is no messages.hu.ts.
                        ⇒ B1's UI half inherits a flag asset, not a gap.
+                       ⚠ RECLASSIFIED 2026-09-03: hu.png is not merely pre-staged, it is an
+                       ORPHAN — zero references anywhere in frontend/src or the configs,
+                       measured twice. It is the same defect shape as the deleted sowpods.txt:
+                       an asset in the tree that nothing claims. DECISION: keep it and let the
+                       Hungarian slice CLAIM it, rather than delete and re-add an identical
+                       file. B1 must add the flag-map entry that claims it.
 dictionary status      MEASURED and it does NOT fit. 12/00/90_hungarian-expansion-probe.md,
                        non-independent, fourteen sections:
                          ~4.27 BILLION non-compound forms  (~77 GB)
