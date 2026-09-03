@@ -1585,6 +1585,602 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## R10 planning exchange 03 returned BLOCKED — a FIFTH defect, and a repair caused this one too
+
+Worker session 15, exchange 03, at `f983c3d`. `status: BLOCKED`,
+`Escalation disposition: NEEDS_ORCHESTRATOR_DECISION`, zero mutations, tree clean. **Three stops, five
+defects, zero plans.**
+
+### ⛔ ORCHESTRATOR ERROR at Worker session 15 exchange 03 — a coordinate contradiction
+
+```text
+header      :5    Worker exchange ordinal: 04   (was 03 in that prompt)
+section 9   :401  "Worker session ordinal 15, Worker exchange ordinal 02"
+spec        PROMPT_CONTRACTS.md:38-41 — "Every standard terminal report begins its metadata with exactly
+                  one occurrence of the coordinate fields ... and echoes the authoritative prompt's values
+                  UNCHANGED."
+```
+
+The prompt declared one exchange and instructed the Worker to report a different one. Both cannot stand.
+
+**Mechanical cause, and it is embarrassingly simple:** I built every reissue by string-patching the previous
+file, and the ordinal occurs in TWO textual forms — `ordinal: NN` with a colon in the header, `ordinal NN`
+without one in the report instructions. My patch matched the first and silently left the second. The
+`apfieldcheck.py` I had just written could not see it either, because it compares field VALUES and this was
+an internal-consistency fault.
+
+### The tally, stated plainly rather than buried
+
+```text
+exchange 01   3 defects   native planning mode against a Default-mode client · new-analysis · planning-PASS
+exchange 02   1 defect    Execution authority event — INTRODUCED BY THE FIX FOR 01
+exchange 03   1 defect    coordinate contradiction — INTRODUCED BY THE PATCH FOR 02
+```
+
+**Three of the five were introduced by repairs.** The failure is not carelessness about any one field; it is
+treating a structural artifact as prose to be edited rather than as data to be regenerated and checked. Every
+one was caught by the Worker before it reached code, which is the protocol working exactly as designed — and
+also five deliveries of the Cooperator's time spent on Orchestrator conformance rather than on R10.
+
+### `apfieldcheck.py` extended, and validated against the new known answer
+
+Added a coordinate-consistency check: extract the header's session and exchange ordinals, find the
+report-format section's echo instruction, and require them to match. Plus a `note` listing every other
+exchange ordinal mentioned in prose, so deliberate historical references stay visible instead of being
+flagged.
+
+```text
+exchange 03 prompt   DEFECT coordinate consistency — reproduces the Worker's finding verbatim
+exchange 02 prompt   still exactly 1 field defect, no coordinate false positive
+exchange 04 prompt   0 DEFECTS, 0 WARNINGS
+```
+
+The tool has now been extended twice, each time after a defect it could not see, and each time validated
+against the failing artifact before being trusted. That is the honest way to grow a checker: it never
+anticipates a class it has not been burned by.
+
+### Reissued as exchange 04
+
+`/tmp/opencode/uii-r10-planner-15-exchange-04-prompt.md`, 448 lines, tool-verified clean. Every coordinate
+form updated coherently this time — header, continuity anchor, planning-cycle accounting, the stopping
+condition, and section 9 item 1 — and each historical reference to exchanges 01-03 checked by eye against the
+tool's `note` output.
+
+The correction block now opens "YOU WERE RIGHT FIVE TIMES ACROSS THREE STOPS" and states that three of the
+five came from repairs. A Worker that has refused three times needs to see the mechanism change, not another
+corrected value.
+
+Planning cycle still `initial`; `Maximum plan-only cycles: 1` still unconsumed. Three structural stops
+produced no plan, so nothing has been repeated and `AP.md:2516` is not engaged.
+
+## R10 planning exchange 02 returned BLOCKED — and MY FIX caused the fourth defect
+
+Worker session 15, exchange 02, at `f983c3d`. `status: BLOCKED`,
+`Escalation disposition: NEEDS_ORCHESTRATOR_DECISION`, zero mutations, tree clean. Still no plan, and still
+correctly so. All three exchange-01 defects were confirmed corrected; a fourth was exposed.
+
+### ⛔ ORCHESTRATOR ERROR at Worker session 15 exchange 02 — one field, introduced by the previous repair
+
+```text
+required   Execution authority event: explicit ORCHESTRATOR prompt with Native planning mode: not-used
+I wrote    Execution authority event: explicit ORCHESTRATOR prompt with explicit implementation authority
+spec       PROMPT_CONTRACTS.md:725, inside the block at :716-728
+```
+
+Cause, stated exactly: because the planner prompt itself now carries `Native planning mode: not-used`, the
+required value read to me as self-contradictory, so I "improved" it. But that spec block has three kinds of
+entry and I collapsed two of them:
+
+```text
+<angle brackets>   a fill-in           e.g. Worker planning scope
+a | b | c          a closed enum       e.g. Plan disposition
+a bare string      a CLOSED LITERAL    e.g. Execution authority event, Planning stop event
+```
+
+The Worker's reading is precise and right: the implementation prompt does separately need explicit
+implementation authority, and that requirement does not license rewriting this field.
+
+⚠ **This is the same error as defects 2 and 3 wearing a different coat — treating a closed structural value
+as prose.** It is worse than those two, because it was introduced BY THE REPAIR. Lesson 17 had already been
+written, in this same session, saying "read the enum, do not recall it" — and I then hand-edited a field
+without re-reading its spec line. A lesson that says "be careful" does not survive contact with a hand edit.
+
+### The response: a validated tool, not another resolution to be careful
+
+`/tmp/opencode/apfieldcheck.py`. It extracts the spec blocks from the pinned `.ap` — Plan-to-Execution at
+`PROMPT_CONTRACTS.md:716-728`, the Planning Record at `:89-101`, the justification enum in `AP.md:2452-2454`,
+the result enum at `:203` — and diffs every field value in a prompt against them.
+
+Validated against three prompts with known answers before being trusted, the same discipline `jsxsweep.py`
+got:
+
+```text
+exchange 01 prompt   1 DEFECT (new-analysis) + 4 WARNINGS  -> reproduces all three defects the Worker found
+exchange 02 prompt   1 DEFECT (Execution authority event)  -> reproduces the fourth, exactly
+exchange 03 prompt   0 DEFECTS, 0 WARNINGS
+```
+
+Two bugs were found and fixed in the tool during that validation, which is itself the argument for
+validating tools against known answers:
+
+```text
+1  it merged the initial and targeted-revision Planning Record blocks, then demanded targeted-revision
+   values from an initial prompt — three false positives
+2  it flagged its own correction notes, because a line QUOTING `planning-PASS` in order to forbid it looks
+   identical to a line instructing it
+```
+
+Two limits are honest and recorded in the tool's own comments: it cannot judge
+`Native planning mode: required` (that depends on the Cooperator's client, not on a value) and it catches
+invented result values only by prose scan. Both are emitted as WARNINGS rather than silently skipped.
+
+### Reissued as exchange 03
+
+`/tmp/opencode/uii-r10-planner-15-exchange-03-prompt.md`, 432 lines. One field value corrected, the
+continuity anchor re-pointed at the exchange-02 report, and the correction block rewritten to explain that
+the fourth defect came from the third's repair — because a Worker that has now refused twice needs to see
+that the mechanism changed, not just the value.
+
+The stopping condition was updated too. It used to say "an Orchestrator that got three fields wrong once can
+get a fourth wrong". It now says: you have caught four across two exchanges, so check for a fifth rather
+than assuming the mechanical checker is exhaustive.
+
+Planning cycle still `initial`; `Maximum plan-only cycles: 1` still unconsumed. Two structural stops produced
+no plan, so nothing has been repeated.
+
+## R10 planning exchange 01 returned BLOCKED — and the Worker was right three times over
+
+Worker session 15, exchange 01, at `f983c3d`. `status: BLOCKED`,
+`Escalation disposition: NEEDS_ORCHESTRATOR_DECISION`, zero mutations, working tree verified clean by the
+Worker and by the Orchestrator. **No plan was produced, and none should have been.**
+
+### ⛔ ORCHESTRATOR ERROR at Worker session 15 exchange 01 — three protocol-conformance defects in one prompt
+
+Every claim was verified against the pinned `.ap` before accepting it. All three hold:
+
+```text
+1  `Native planning mode: required` delivered to a Default-mode session.
+   PROMPT_CONTRACTS.md:695-698 — "If the client lacks that mode, the prompt must not be pasted. The
+   Orchestrator reissues a complete `not-used` prompt and, when the task is planning or Discovery, grants
+   explicit prompt-level read-only planning authority."
+   AP_WORKER.md:38-39 — "Missing, duplicated, mismatched, or contradictory routing stops work."
+2  `Report justification: new-analysis` — NOT IN THE CLOSED ENUM. AP.md:2452-2454 lists exactly six:
+   new-mutation | new-evidence | new-material-risk | changed-external-state | final-acceptance |
+   explicit-closure. I invented a seventh value.
+3  `planning-PASS | planning-PARTIAL | planning-BLOCKED` — NOT THE STRUCTURAL RESULT ENUM.
+   PROMPT_CONTRACTS.md:203 lists implementation-PASS | acceptance-PASS | publication-PASS |
+   deployment-PASS | production-acceptance-PASS | not-applicable. Planning uses `not-applicable`.
+```
+
+⚠ **A NEW CLASS OF AUTHORING DEFECT, and the pattern is now legible.** The earlier ones were technical
+(F20/F21/F23/F24) or internal contradictions (session 14, section 7 versus section 10). These three are
+**protocol conformance**: I verify `file:line` claims mechanically and have done so for four prompts
+running — nine claims checked with zero misses on this very prompt — while never once checking the prompt's
+own AP field VALUES against the pinned enums. The technical content was right; the frame was invalid.
+
+The Worker's reasoning for refusing is the part worth preserving: issuing the plan anyway "would falsely
+claim a valid planning exchange". It read two documents against each other, cited exact lines, mutated
+nothing, and stopped. That is the second time in this whole a Worker has caught a structural fault in an
+Orchestrator prompt before it could do damage — and the first time one correctly refused to proceed at all.
+
+### The remedy is protocol-defined, not improvised
+
+`PROMPT_CONTRACTS.md:695-698` prescribes the exact route, and the Worker's proposed next step matched it
+almost word for word. Reissued as **exchange 02 to the SAME session**,
+`/tmp/opencode/uii-r10-planner-15-exchange-02-prompt.md`, 414 lines:
+
+```text
+Worker session target: current-worker-session      Native planning mode: not-used
+Prompt-level planning authority: GRANTED, read-only, bounded to this prompt
+Report justification: new-evidence                 Phase-qualified result: not-applicable
+Evidence posture: non-independent
+Continuity anchor: the terminal BLOCKED report for session 15 exchange 01
+Authority renewal: prior planning authority expired with that report; complete NEW bounded grant
+Planning cycle effect of exchange 01: none
+```
+
+Every `current-worker-session` requirement from `PROMPT_CONTRACTS.md:359-365` is present and was verified by
+grep: continuity anchor, prior-authority expiry, complete new bounded authority, an explicit reuse
+rationale, preserved WORKER role, mandatory repository re-gating, retained context classified as
+**convenience not authority**, non-independent evidence posture, stop-on-conflict with current repository
+evidence, and a new terminal report.
+
+⚠ **CURRENT-SESSION REUSE, not a fresh session, and the reasoning is on the record.** The task is read-only
+planning and independence is not required — `PROMPT_CONTRACTS.md:359-371`, "Freshness alone never
+establishes independence". The session is healthy, already performed lawful reconnaissance, and mutated
+nothing. Post-plan implementation stays `fresh-worker-session`, so INFOSEC 4.10's no-self-certification
+property is untouched.
+
+**The planning cycle is NOT consumed.** Exchange 01 produced no plan; it was a structural stop.
+`Planning cycle: initial` still stands and `Maximum plan-only cycles: 1` remains available. `AP.md:2516`
+forbids repeating a plan-only cycle without new evidence — nothing is being repeated, because nothing was
+produced. The reissue states that reasoning so the Worker can verify it rather than accept it.
+
+### One clause added to the reissue that was not in the original
+
+The stopping conditions now begin: stop if **any** field in this prompt still conflicts with the pinned
+protocol — "because an Orchestrator that got three fields wrong once can get a fourth wrong". Inviting the
+next refusal explicitly is cheaper than discovering a fourth defect after a plan is built on it.
+
+The technical body — sections 3 through 8, the five decisions D1-D5, the measured facts, the negative
+authority — is carried over unchanged. The Worker disputed none of it, and none of it was the problem.
+
+## Slice R10 PLANNING issued — Worker session 15, exchange 01, at `f983c3d` — PLAN-ONLY
+
+Prompt staged at `/tmp/opencode/uii-r10-planner-15-prompt.md`, 361 lines. Archive as
+`15_implementation_00.md` **only after its report exists**. Implementation-Planning Worker, read-only,
+`Native planning mode: required`, reasoning HIGH.
+
+⚠ **FIRST PLAN-ONLY EXCHANGE IN THIS LOGICAL WHOLE.** Cooperator decision 14, 2026-09-03: *"R10 Ano
+vygeneruj expertny prompt aj pre Planner Workera nie obycajneho Workera a ten budes nasledne schvalovat,
+takto postupujeme pri infosec zalezitostiach a velkych rezoch resp. komplexnych rezoch"* — infosec matters
+and large or complex cuts get a Planner Worker whose plan the Orchestrator approves before any
+implementation prompt is written.
+
+Plan-to-Execution contract as issued, per `.ap/PROMPT_CONTRACTS.md:716-728` and the Planning Record at
+`:89-101`:
+
+```text
+Planning layer: implementation-planning        Plan disposition: approval-gated
+Orchestration planning owner: ORCHESTRATOR     Implementation in same Worker session: PROHIBITED
+Post-plan implementation session: fresh-worker-session      Maximum plan-only cycles: 1
+Planning cycle: initial · Prior planning report: none · Automatic targeted revisions used: 0
+```
+
+`fresh-worker-session` and `prohibited` were chosen rather than the cheaper
+`allowed`/`current-worker-session`, because INFOSEC 4.10 says the corrector never self-certifies. A planner
+that then implements its own plan is the closest thing to self-certification available in this flow.
+
+INFOSEC primary route: **R3**. `orch-01-F18` is an accepted finding re-dispositioned for correction, the
+change alters a security header on every response, and the blast radius is the whole frontend.
+
+### ⛔ THE BLOCKER THE MEASUREMENT FOUND, which is why this is not an ordinary slice
+
+```text
+app-render.js:209-210            Next reads the nonce from the REQUEST headers:
+                                 headers['content-security-policy'] || ...-report-only
+get-script-nonce-from-header.js  :11 regex /^'nonce-([A-Za-z0-9+/_-]+={0,2})'$/ · :17 prefers script-src,
+                                 falls back to default-src · :22-23 a MALFORMED NONCE IS SILENTLY IGNORED
+proxy.ts:12                      NextResponse.next() with NO argument — it sets the RESPONSE only
+consequence                      a nonce added to the current code path would never reach the renderer, and
+                                 the header would still look perfectly correct
+```
+
+⚠ **`x-nonce` is not read by Next.js.** It appears in exactly ONE file under `node_modules/next/dist/`: the
+documentation. It is purely an application convention for reading the value back via `headers()`. A plan
+built around it would be building on a doc example's incidental detail.
+
+### The five decisions the planner must make, and why each is real
+
+```text
+D1  _global-error IS PRERENDERED. prerender-manifest.json routes = ['/_global-error','/favicon.ico'].
+    Its built HTML carries 5 inline scripts and NO nonce attribute — measured in the artifact. Under
+    script-src 'self' 'nonce-X' those are blocked, so the global error page fails to hydrate exactly when
+    something has already gone wrong. 'strict-dynamic' does NOT rescue it: the first inline script itself
+    needs a nonce.
+D2  'strict-dynamic' makes CSP3 browsers IGNORE 'self' for script-src, so the five external
+    /_next/static/chunks tags stop being covered by 'self'. The Next doc recommends it at
+    content-security-policy.md:52 anyway. Copying that without reasoning is the failure mode.
+D3  THE MATCHER TENSION. Request-header propagation also reaches the four /api/* handlers because this
+    matcher does not exclude /api — unlike every Next doc example. But audit-03 VERIFIED headers ARE
+    present on /api/models, /api/prompts and /api/ai/move, so excluding /api would REMOVE headers a
+    recorded audit confirmed.
+D4  dev vs prod: 'unsafe-eval' is required in development. A plan that makes `npm run dev` unusable is
+    rejected up front.
+D5  nonce generation must satisfy the regex or Next ignores it SILENTLY, which is the dangerous failure
+    mode: correct-looking header, no nonce applied anywhere.
+```
+
+### What the measurement de-risked
+
+```text
+ZERO app-authored inline scripts. <script, dangerouslySetInnerHTML, eval(, new Function, <style,
+  next/script, next/font — all seven patterns return zero matches in frontend/src.
+  So script-src 'unsafe-inline' is permitting Next/React-generated script only.
+Dynamic rendering already universal. Every real page is ƒ because layout.tsx:13 awaits cookies(). The
+  doc's dynamic-rendering requirement costs nothing.
+No existing assertion blocks the change. The nine security-headers.test.ts blocks never assert that
+  'unsafe-inline' is PRESENT and never assert script-src by equality.
+```
+
+### And what it exposed as the real coverage hole
+
+**`proxy.ts` has NO test at all** — no `proxy.test.ts`, no `middleware.test.ts`, nothing imports `proxy`.
+The 30 frontend test files cover the pure header BUILDER in isolation. The wiring at `proxy.ts:12-15` is
+precisely what R10 changes, and it is the one part of this subsystem with zero coverage.
+`12_report_01.md:199-203` already recorded that limitation. The prompt makes designing a wiring test a
+required plan item (6.4), with an evidenced "it cannot be tested here" as the only acceptable alternative.
+
+### ⛔ AN ORCHESTRATOR NOTE CORRECTED INSIDE THE PROMPT ITSELF
+
+Section 4.7 of the prompt carries a correction to the Orchestrator's own R7 hand-off note. That note said a
+frontend loopback re-probe would show `Vary: Accept-Language` and `Content-Language` as additions against
+the audit-03 baseline. **False.** The baseline at `DEFECT_LEDGER.md:141-153` is the **Next.js** readback;
+`LocaleMiddleware` is **Django** middleware and cannot touch a Next.js response.
+
+Corrected before issuing rather than after, because a planner told to expect two spurious additions would
+have had a ready-made explanation for a real difference. The prompt states the corrected expectation — the
+frontend diff should differ ONLY by what R10 changes — and asks the planner to report anything else as a
+finding.
+
+### Orchestrator pre-verification before issuing
+
+Nine `file:line` claims checked mechanically against the shipped source and the installed runtime, **zero
+misses**: `proxy.ts:12` `NextResponse.next()`, `:22` the matcher source, `security-headers.ts:80/81/87`,
+`:70`/`:102` the two exported builders, `layout.tsx:13` `await cookies()`, and
+`get-script-nonce-from-header.js:11` the nonce regex. File lengths confirmed: proxy 29, security-headers
+114, its test 168, layout 38.
+
+## Slices R8 and R9 landed at `f983c3dcce19534466a86b06605e1a02f8bd2bf3` — ORCHESTRATOR-AUTHORED, no Worker
+
+Two commits, one push, parent `8f096e1`, public readback equal, `.ap` gitlink untouched.
+
+```text
+8ef5992  fix(i18n): read the 429 wait time from Retry-After, not from localized prose      R8
+f983c3d  fix(security): HSTS includeSubDomains, with preload deliberately left off          R9
+```
+
+⚠ **RF-12 class: `orchestrator-authored-correction`, second use.** Cooperator decision 13, 2026-09-03:
+*"Na easy ulohy nevytvaraj Workerov ale ries ich sam"* — a general broadening of decision 12, which had been
+scoped to "the Orchestrator's OWN defect at this scale". Decision 12's written caveat that the authority
+"does not extend to backend, security, or anything with a trust boundary" is **superseded for tasks of this
+size**: R9 is a security setting and was performed under decision 13.
+
+⛔ **Evidence is NON-INDEPENDENT for both commits.** Same caveat as `f40d8a0`: author and reviewer are the
+same agent, so only the mechanical gates corroborate the judgement calls. Three of the four commits in this
+whole with non-independent evidence are now Orchestrator-authored.
+
+**Why two commits and not one:** R8 is frontend behaviour plus a CORS setting; R9 is a security flag with a
+production consequence. Separating them keeps R9 revertable on its own, which is the commit most likely to
+need it. The eight gates were run ONCE, on the combined tree at `f983c3d` — stated plainly rather than
+implied per-commit.
+
+### Gates at `f983c3d`
+
+```text
+mypy 83 files clean · ruff clean · manage.py check clean
+pytest 390 passed, 4 skipped in 220.11s      = 386 + 3 (R8) + 1 (R9)
+typecheck exit 0 · vitest 432 passed | 3 skipped = 427 + 5 (R8) · lint exit 0
+build exit 0, 11 dynamic routes, ZERO static
+```
+
+### ⛔ R8 WOULD HAVE SHIPPED BROKEN WITH GREEN GATES, AND THAT IS THE FINDING
+
+The obvious reading of `uii-01-F01` is "change `api.ts` to read the header". That alone produces a
+**regression**, and measurement is the only thing that caught it:
+
+```text
+rest_framework/views.py:91-92     DRF DOES set headers['Retry-After'] = '%d' % exc.wait — so the header
+                                  exists on the wire already
+Retry-After                       is NOT a CORS-safelisted response header
+corsheaders/middleware.py:120-122 emits Access-Control-Expose-Headers ONLY when CORS_EXPOSE_HEADERS is
+                                  non-empty
+settings.py                       CORS_EXPOSE_HEADERS was NOT SET (default `()`)
+topology                          frontend :3000 -> Django :8000 is cross-origin
+consequence                       res.headers.get("Retry-After") would have returned null, replacing a
+                                  WORKING prose parse with a dead read, and every gate would still be green
+```
+
+So R8 is two halves: `CORS_EXPOSE_HEADERS = ["Retry-After"]` on the backend, and the header-first read on
+the frontend. An "easy task" that is one line in the obvious file and broken without a second file.
+
+⚠ **The prose fallbacks were KEPT, not replaced.** The header is preferred; `parsed.detail` and the raw text
+remain behind it. Rationale recorded in the code: the header is readable only while CORS exposes it and a
+reverse proxy may strip it, so losing it must degrade to today's behaviour rather than to "unknown wait". A
+`Retry-After` HTTP-date also falls through correctly, because DRF only ever sends an integer.
+
+### R8 pre-fix failures, captured by checking the two files back out to `8f096e1`
+
+```text
+AC-RETRY-AFTER header-vs-prose      AssertionError: expected 'Too many requests. Try again in about…' to be
+                                    'Too many requests. Try again in about…'   (got 2 minutes from the
+                                    prose "120 seconds"; expected 55 minutes from the header "3300")
+AC-RETRY-AFTER localized body       AssertionError: expected 'Too many requests. Please wait and tr…' to be
+                                    'Too many requests. Try again in about…'
+test_retry_after_is_exposed…        FAILED — CORS_EXPOSE_HEADERS did not contain Retry-After
+                                    1 failed, 2 passed
+```
+
+The second frontend failure is the one that shows the user-visible value: with a **fully localized** 429
+body — the realistic post-R7 shape, `Żądanie zostało zdławione.` with no English number — the old code fell
+all the way to the useless `error.throttled.unknown` copy. The header fixes exactly that case.
+
+⚠ Honest split, stated rather than glossed: of the three new backend tests only the CORS one is a regression
+test. The other two document DRF behaviour the fix DEPENDS on — that the header is emitted, and that a
+throttle with no known wait emits none and the client must survive it. Two of three passed pre-fix, which is
+correct and is reported as such.
+
+The two numbers in the header-vs-prose test disagree ON PURPOSE (3300s = 55 min versus 120s = 2 min), so the
+assertion can only pass if the header actually won. An equal pair would have proved nothing.
+
+### R9: W005 is closed, W021 is kept standing on purpose
+
+Measured under production-like settings BEFORE the change — this is the whole evidence for the slice:
+
+```text
+HSTS seconds 31536000 · includeSubDomains False · preload False
+deploy check ids: ['security.W005', 'security.W021']
+```
+
+`security.W005` is "HSTS without includeSubDomains" and is now CORRECTED. `security.W021` is "HSTS without
+preload" and is an **ACCEPTED RESIDUAL** per Cooperator decision 5. The new test asserts BOTH — W005 absent
+AND W021 present:
+
+```text
+pre-fix: assert payload["secure_hsts_include_subdomains"] is True   ->  assert False is True
+pre-fix: assert "security.W005" not in check_ids
+         ->  AssertionError: assert 'security.W005' not in {'security.W005', 'security.W021'}
+```
+
+⚠ Asserting that W021 is STILL REPORTED is the point. It stops a later session from "finishing the job" by
+enabling preload. Sixth pinning assertion in this project, and the first one that pins a *warning* rather
+than an attribute.
+
+**`SECURE_HSTS_PRELOAD` was deliberately not added at all**, not even as `= False`. Decision 5 says do not
+add it; the guard lives in the test and in the settings comment instead, so the letter and the intent both
+hold. The DEBUG branch keeps `includeSubDomains` off beside the zero max-age, because a browser that saw the
+header once over `http://localhost` would pin the whole domain.
+
+⛔ **OPERATIONAL CONSEQUENCE, recorded because one line hides it.** Once served from a real host this
+instructs browsers to force HTTPS on **every subdomain** of that host for a year. Any HTTP-only subdomain
+breaks, and undoing it requires serving `max-age=0` and waiting for clients to return. This repository does
+not deploy and the flag only activates when `DEBUG=false`, so nothing changes today — but whoever deploys
+must confirm every subdomain is HTTPS first. That belongs in the deployment whole's checklist.
+
+### The `uii-01-F01` chain, now closed, and what it demonstrates
+
+```text
+handout claim       R7 makes the 429 coupling live; Slovak is safe "by luck"
+R7 measurement      FALSE — the wait-suffix msgid is absent from all three catalogs AND DRF formats before
+                    the ngettext lookup, so it is structurally English in every locale, forever
+R8 consequence      F01 was therefore never urgent — but it was still worth fixing, because the FIRST
+                    sentence IS translated and the whole design coupled a user-facing number to upstream
+                    catalog contents nobody here controls
+```
+
+Correcting the handout's urgency claim did not turn into an argument for skipping the work. The reason to fix
+it changed from "it is about to break" to "it should never have depended on prose", which is a better reason
+and a smaller change.
+
+## Slice R7 landed at `8f096e1f148f3ca53aff582e9bf283594aac7303` — Worker session 14, exchange 01
+
+`feat(i18n): Django resolves the player's locale, and end reasons are localized`. 10 files, +377 -8, one
+created, none deleted, parent `f40d8a0`, one non-force push, public readback equal, `.ap` gitlink untouched.
+Build gate PRIMARY. **The first backend change in this logical whole.**
+
+Orchestrator verdict: **implementation-PASS, ACCEPTED as delivered.** Evidence independent — all eight gates
+re-measured, the two middleware-assertion files re-run separately, and the DRF/Django catalog behaviour
+probed again through the shipped settings rather than a synthetic module.
+
+Archived as `14_implementation_00.md` + `14_report_00.md`.
+
+### Gates at `8f096e1`, Orchestrator-measured
+
+```text
+mypy 83 files clean · ruff clean · manage.py check clean (no translation.E004)
+pytest 386 passed, 4 skipped in 217.79s      = 381 + 5 new
+focused tests/test_security_settings.py + tests/test_admin_login_brake.py -> 35 passed in 9.83s
+typecheck exit 0 · vitest 427 passed | 3 skipped = 420 + 7 · lint exit 0
+build exit 0, 11 dynamic routes, ZERO static
+a11y invariants intact: aria-live 1 · role=status 1 · role=dialog 4 · aria-modal 4 · role=group 1
+catalogs 299 keys x 4 = 1196, five history.endReason.* in each, parity exact
+```
+
+### The diff is exactly three settings edits and one header
+
+```text
+settings.py  LocaleMiddleware inserted as index 3, between SessionMiddleware and CommonMiddleware
+             LANGUAGES = [("en","English"),("sk","Slovak"),("cs","Czech"),("pl","Polish")]
+             USE_I18N False -> True.  LANGUAGE_CODE, TIME_ZONE, USE_TZ untouched. No LOCALE_PATHS.
+api.ts       acceptLanguageFromCookie() with the `typeof document === "undefined"` guard, then four lines
+             in request(). It PARSES the cookie — split on ";", trim, startsWith(prefix) — rather than
+             substring-matching, and uses isLocale() so an unsupported value omits the header instead of
+             coercing to "en". parseRetryAfterSeconds, humanMessageForStatus and the 401 branch untouched.
+GameHistory  exported GAME_END_REASON_KEYS plus historyEndReasonText with the specified fallback order:
+             mapped -> translation; unmapped non-empty -> RAW STRING; empty -> history.hint.boardReady.
+```
+
+### The locale really resolves, measured through the real stack
+
+`POST /api/auth/register/` with a 14-digit password, `HTTP_ACCEPT_LANGUAGE` varied:
+
+```text
+en  {"password": ["This password is entirely numeric."]}
+sk  {"password": ["Toto heslo pozostáva iba z číslic."]}
+cs  {"password": ["Heslo se skládá pouze z čísel."]}
+pl  {"password": ["Hasło składa się wyłącznie z cyfr."]}
+no header -> English, which is AC-LOCALE-FALLBACK and the regression that catches a mis-ordered insert
+```
+
+### ⛔ ORCHESTRATOR ERROR at Worker session 14 exchange 01 — section 7 FORBADE what section 10 REQUIRED
+
+Section 7 said `CREATE: nothing` and "`backend/tests/` is NOT on this list". Section 10 mandated three
+BACKEND tests: `AC-LOCALE-RESOLVES`, `AC-LOCALE-FALLBACK`, `AC-MIDDLEWARE-ORDER`. **Those cannot both hold** —
+a backend test requires creating or editing a file under `backend/tests/`.
+
+The Worker resolved it the right way: created `backend/tests/test_locale_resolution.py`, edited no existing
+backend test, and disclosed the contradiction as a deviation in report item 18. `git diff --name-only
+f40d8a0..HEAD -- backend/tests/` returns only the new file — verified.
+
+What I MEANT was "do not edit an existing backend test to make it pass". What I WROTE conflated that with
+"do not add a backend test at all". A negative-authority clause aimed at one behaviour silently banned a
+different, required one.
+
+⚠ This is the fifth authoring defect in this whole, but it is a DIFFERENT class from F20/F21/F23/F24. Those
+shipped and had to be corrected by later slices. This one was caught by a Worker reading two sections
+against each other before writing code, and the failure mode was over-restriction rather than
+under-specification. THE RULE THIS ADDS: after writing section 8, re-read section 10 and ask whether any
+mandated artifact is forbidden by the negative authority. Prohibitions and obligations are written in
+different passes and never cross-checked.
+
+### `uii-01-F25` is UNREACHABLE through any shipped endpoint — downgraded, with the measurement
+
+Both password fields carry `min_length=8` — `accounts/serializers.py:17` (register) and `:62`
+(`new_password`). DRF's own field validation therefore rejects a short password **before**
+`validate_password` ever runs `MinimumLengthValidator`. And that DRF message IS translated in all four
+locales, measured through the real serializer:
+
+```text
+en  Ensure this field has at least 8 characters.
+sk  Uistite sa, že toto pole má viac ako 8 znakov.
+cs  Zkontrolujte, že toto pole obsahuje alespoň 8 znaků.
+pl  Upewnij się, że pole ma co najmniej 8 znaków.
+```
+
+So F25 stops being a user-visible defect and becomes a latent upstream curiosity, reachable only if someone
+removes `min_length` from a serializer. Recorded at that severity rather than the one I first assigned.
+
+⚠ **A NEW observation from that same probe, `uii-01-F26`: the Slovak DRF `min_length` translation is
+semantically wrong.** "Uistite sa, že toto pole má **viac ako** 8 znakov" says "MORE THAN 8", but the
+constraint is "at least 8" — an 8-character password satisfies the rule while the message says it must
+exceed 8. Czech (`alespoň`) and Polish (`co najmniej`) are correct. This is upstream
+`djangorestframework-3.17.0`'s `sk` catalog, not our string, and it is now visible to every Slovak player
+who types a short password. Fixing it needs the same blocked route as F25: a project-level
+`backend/locale/sk/` override plus `compilemessages`. Accepted residual, owner: a later whole.
+
+### Two new headers, and they are a hand-off to R10
+
+`LocaleMiddleware` adds `Accept-Language` to `Vary` and sets `Content-Language`. Observed on the register
+400: `Vary: Accept-Language, Cookie, origin` and `Content-Language: sk` / `en`.
+
+⛔ **R10 must account for these — but NARROWLY, and my first note about it was wrong.** I originally wrote
+that R10's loopback re-probe would show these two as additions against the `audit-03` baseline. It will not.
+That baseline (`DEFECT_LEDGER.md:141-153`) is the **Next.js frontend** readback on a loopback port, and
+`LocaleMiddleware` is **Django** middleware — it cannot touch a Next.js response. The correct statement:
+
+```text
+frontend loopback baseline   UNAFFECTED by R7. A re-probe should differ ONLY by whatever R10 itself changes.
+Django response headers      gained Vary: Accept-Language and Content-Language. Those are asserted in
+                             backend/tests/test_security_settings.py territory, not in the audit-03 block.
+```
+
+Corrected here rather than left standing, because a planner told to expect two spurious additions in the
+frontend diff would have explained away a real difference.
+
+Nothing currently asserts either header — verified with a `Vary|Content-Language` sweep over
+`backend/tests/`, `frontend/src` and `frontend/tests`: zero matches. So nothing broke, and nothing pins them
+either.
+
+### Two residual-guard tests that will fail on a dependency upgrade, by design
+
+```text
+test_czech_minimum_length_validator_catalog_mismatch   asserts the cs message IS still English
+test_drf_throttle_wait_suffix_stays_english            asserts the wait suffix IS still English
+```
+
+Both pin a known-broken UPSTREAM state rather than our own behaviour. That is defensible — it alerts us the
+moment Django or DRF fixes it — but it means a future dependency bump breaks the suite with a failure that
+looks like a regression and is actually good news. Both carry explanatory docstrings. Recorded because
+`audit-02` established a standing dependency-upgrade posture, and whoever performs the next bump needs to
+know these two are expected casualties.
+
+### One correction the Worker made to my section 4.3, and it is right
+
+My section 4.3 listed three password-validator messages measured from a synthetic `validate_password("123")`
+call. Through the real API only the NUMERIC validator is reachable for a 14-digit password, because
+`min_length=8` intercepts short input first. Report item 8 narrowed the claim to what the endpoint actually
+produces. Third consecutive slice in which a Worker tightened an Orchestrator measurement.
+
 ## Slice R7 issued — Worker session 14, exchange 01, at `f40d8a0`
 
 `feat(i18n): Django resolves the player's locale, and end reasons are localized`. Prompt staged at
