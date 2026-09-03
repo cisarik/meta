@@ -1585,6 +1585,174 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice R7 issued — Worker session 14, exchange 01, at `f40d8a0`
+
+`feat(i18n): Django resolves the player's locale, and end reasons are localized`. Prompt staged at
+`/tmp/opencode/uii-r7-worker-14-prompt.md`, 560 lines. Archive as `14_implementation_00.md` **only after
+its report exists**. Fresh Implementation Worker, E2, reasoning HIGH.
+
+**The first backend change in this logical whole.** Five new keys, nine files, zero migrations, zero new
+dependencies, zero wrapped strings.
+
+### ⛔ The trap the whole slice is built around
+
+Turning on `USE_I18N` and inserting `LocaleMiddleware` **changes nothing by itself.** `api.ts:226-231` sets
+exactly two headers, neither is `Accept-Language`, and it sets no `credentials`, so no cookie crosses from
+:3000 to :8000 either — `locales.ts:41-44` writes the locale cookie with no `Domain`. Django would resolve
+every request to `LANGUAGE_CODE`, all eight gates would be green, and a Slovak player would see identical
+English. The prompt states this in section 3 and again in 6.2: the frontend half is what makes the backend
+half real.
+
+### What R7 does, and the one thing it deliberately does NOT
+
+```text
+DO   settings.py:218 USE_I18N False -> True
+DO   add LANGUAGES restricted to exactly en, sk, cs, pl — without it Django's default is ~100 languages
+     and LocaleMiddleware would honour Accept-Language: de
+DO   insert LocaleMiddleware as index 3, between SessionMiddleware (:144) and CommonMiddleware (:145)
+DO   api.ts sends Accept-Language derived from the locale COOKIE, the same source S3a made authoritative
+     for rendering, with a mandatory `typeof document === "undefined"` guard
+DO   uii-01-F17 — five history.endReason.* keys and a frontend-only mapping
+DON'T wrap the ~70 hardcoded backend strings in gettext. Routed as a residual, with reasons.
+```
+
+The `gettext` exclusion is argued rather than asserted: `gamecore/legality.py:31-46` already exposes stable
+`REASON_*` codes that ~17 tests assert, so the right architecture for those strings is a code the frontend
+translates through its own catalog — which is exactly how `uii-01-F09` and this slice's own `F17` are
+solved. Wrapping them would mean `backend/locale/{sk,cs,pl}`, roughly 210 new translations, and a
+`compilemessages` step needing gettext binaries on every deploy host. Half-doing it adds 70 lazy objects,
+risks lazy strings leaking into JSON, and produces zero visible change.
+
+### The value delivered, MEASURED rather than predicted
+
+The Orchestrator ran the real DRF exception and the real Django validators under a settings module that
+imports `config.settings` and flips `USE_I18N = True`:
+
+```text
+[sk] Toto heslo je príliš krátke. Musí obsahovať aspoň 8 znakov. · Toto heslo je používané príliš často.
+     · Toto heslo pozostáva iba z číslic.
+[pl] To hasło jest za krótkie... · To hasło jest zbyt powszechne. · Hasło składa się wyłącznie z cyfr.
+[cs] This password is too short...  <- NOT translated · Heslo je příliš běžné. · Heslo se skládá pouze z čísel.
+[sk] 429: Požiadavok bol obmedzený, z dôvodu prekročenia limitu. Expected available in 3300 seconds.
+```
+
+Those password messages reach the player through `accounts/serializers.py:33` -> `accounts/views.py:60` ->
+`ProfileModal.tsx:115`. That is the most visible win available for zero new translations.
+
+### ⛔ TWO HANDOUT CLAIMS CORRECTED BY MEASUREMENT
+
+**1. `R7` does NOT make `R8` live, and Slovak is not safe "by luck".** The handout says the 429 parsing
+"works today only by luck: the Slovak DRF catalog happens to leave that fragment untranslated. R7 makes the
+coupling live." Measured:
+
+```text
+rest_framework/exceptions.py:229-230   msgids 'Expected available in {wait} second.' / '... seconds.'
+sk, cs, pl catalogs                    NEITHER msgid is PRESENT. Probed by loading each .mo and searching
+                                       its catalog KEYS — not by grepping prose, which is the trap that
+                                       produced lesson 10.
+exceptions.py:238-243                  DRF calls ngettext(singular.format(wait=wait), ...) — it FORMATS
+                                       BEFORE the lookup, so the key carries the literal number and can
+                                       never match any msgid.
+live probe                             api.ts:129 `/(\d+)\s+seconds/i` matched 3300 in en, sk, cs AND pl
+```
+
+So the suffix stays English **structurally**, in every locale, forever. `uii-01-F01` remains a correctness
+improvement owned by R8, not an emergency, and the prompt forbids touching `parseRetryAfterSeconds`.
+
+⚠ Re-probing was correct rather than disobedient. The handout says "Do not re-run that probe; it is
+recorded as verified" — but the recorded probe covered **Slovak only**, and `cs`/`pl` were added by
+Cooperator decision 8 AFTER it was written. Re-measuring the part that the recording never covered is not
+the same as re-running it.
+
+**2. A new residual, `uii-01-F25`: Czech does not translate `MinimumLengthValidator`.** Cause measured, not
+guessed: `django/contrib/auth/password_validation.py:118-119` uses the msgid
+`"This password is too short. It must contain at least %d character."`, but `django-5.2.17`'s `cs` catalog
+still carries the OLD msgid `"... at least %(min_length)d character."`. Slovak and Polish were updated to
+`%d`; Czech was not. The Czech translation exists in the catalog and is unreachable. Fixing it needs a
+project-level `backend/locale/cs/` override plus `compilemessages` — deliberately out of scope, recorded so
+nobody reads the gap as our bug.
+
+### Middleware ordering, and why the two existing assertions survive
+
+```text
+0 Cors · 1 Security · 2 Session · [NEW 3 Locale] · 4 Common · 5 Csrf · 6 Auth · 7 Messages ·
+8 XFrameOptions · 9 AxesDrfLockoutFlag · 10 AxesMiddleware
+```
+
+Both existing assertions use NEGATIVE indices — `MIDDLEWARE[-2]` and `[-1]` at
+`test_security_settings.py:435-436` and again at `test_admin_login_brake.py:172-173` — so an index-3 insert
+does not disturb them. The prompt still requires both files re-run and quoted, because the handout names
+that as a required check, and requires `AC-MIDDLEWARE-ORDER` to assert POSITIONS by index arithmetic rather
+than a hardcoded list.
+
+### `uii-01-F17` scoping: frontend-only, and the stored values are load-bearing
+
+`game_end_reason` is a bare `CharField` with no choices (`game/models.py:58`). Values: `""`,
+`BAG_EMPTY_AND_PLAYER_OUT`, `SIX_CONSECUTIVE_ZERO_SCORES`, `queue_cancelled`, `give_up`.
+`NO_MOVES_AVAILABLE` is in the enum at `gamecore/game.py:22-25` but unreachable through Django, because
+`services.py:639` hardcodes `no_moves_available=False`; it is mapped anyway, for one line, so a later slice
+cannot print a raw token.
+
+⛔ The stored values must NOT change: `services.py:1156` compares `== "give_up"` to derive the outcome and
+`:1233` filters on it. No migration, no `choices`, no model change.
+
+Fallback order is specified exactly: mapped -> translation; unmapped non-empty -> the RAW STRING; empty ->
+`history.hint.boardReady`, today's behaviour. An unmapped value must not render empty, because that hides a
+backend change from whoever has to debug it.
+
+### The five strings, and the four things fixed about them in advance
+
+```text
+history.endReason.bagEmpty        Bag and rack empty  · Vrecko aj zásobník prázdne
+                                 Sáček i zásobník prázdné · Woreczek i stojak puste
+history.endReason.noMoves        No moves available  · Žiadny možný ťah · Žádný možný tah
+                                 · Brak możliwych ruchów
+history.endReason.sixZero        Six scoreless turns · Šesť ťahov bez bodov · Šest tahů bez bodů
+                                 · Sześć ruchów bez punktów
+history.endReason.gaveUp         Resigned · Partia vzdaná · Partie vzdána · Partia poddana
+history.endReason.queueCancelled Queue cancelled · Front zrušený · Fronta zrušena · Kolejka anulowana
+```
+
+```text
+1  bag nouns are BINDING from GLOSSARY.md:29-34 — sk vrecko, cs sáček, pl woreczek; rack sk/cs zásobník,
+   pl stojak. Czech must not be harmonized to Slovak.
+2  queue gender was taken from the ALREADY SHIPPED catalogs rather than invented: sk `front` masculine
+   (queue.leave "Opustiť front"), cs `fronta` feminine ("Opustit frontu"), pl `kolejka` feminine
+   ("Opuść kolejkę"). The adjective agreement follows from that, and the prompt forbids "correcting" it.
+3  every string is IMPERSONAL on purpose. `game_end_reason` does not record WHO resigned, so `Vzdal si`
+   would assert data the field does not contain. The informal `ty` register of decision 3 applies where a
+   person is addressed; here none is. Same discipline as the colon-label rule for counted nouns.
+4  no plural helper. `Šesť ťahov` is a fixed six, not a variable count.
+```
+
+### Orchestrator pre-verification before issuing
+
+Twenty-three `file:line` claims were checked mechanically against the shipped source, **zero misses**,
+after lesson 13 recorded an inventory stated more precisely than its measurement:
+
+```text
+settings.py 216 218 219 144 145 152 153 · 209-214 AUTH_PASSWORD_VALIDATORS · 238 HSTS · 121 INSTALLED_APPS
+  (an earlier draft said :124, which is a LIST ENTRY not the assignment — corrected before issuing)
+game/models.py:58 · services.py 566 639 660 1156 1233 1447 1518 · gamecore/game.py:22-25
+gamecore/legality.py:31-46 REASON_* · accounts/serializers.py:33 · accounts/views.py:60
+api.ts 224-236 request() with exactly two headers · 125-135 parseRetryAfterSeconds with /(\d+)\s+seconds/i
+locales.ts:4 LOCALE_COOKIE_NAME · locales.ts:41-44 writeLocaleCookie — which ALREADY carries
+  `if (typeof document === "undefined") return;` at :42, so the prompt points at the guard shape it wants
+  IN THE SAME FILE instead of describing one
+GameHistoryPanel.tsx:293 the sole render site · it already exports formatUpdatedAt, so exporting the
+  mapping is in-pattern · GameHistoryPanel.test.ts:27 the fixture
+config/urls.py is 9 lines — no i18n_patterns, so LocaleMiddleware cannot redirect
+enText holds 294 keys; five new makes 299
+```
+
+### The R7-specific test trap, written in
+
+Three tests assert Libre Tiles' OWN English prose: `test_api.py:102` `"Current password is incorrect."`,
+`:1395` `"Not your turn"`, `:1910` `"Placements are not coverable by the current rack"`. Because section
+4.2 forbids wrapping those strings, all three **must still pass**. The prompt makes a break in any of them
+a stopping condition and explicitly forbids editing the test: if one fails, the Worker wrapped something it
+should not have. `backend/tests/` is off the allowlist entirely for this slice.
+
 ## Slice R15 landed at `f40d8a0ef2a8c157fde7caddc4a6f64e2695d495` — ORCHESTRATOR-AUTHORED, no Worker session
 
 `fix(a11y): keyboard activation for named rack tiles, and no name without a role`. 4 files, +61 -28, none
