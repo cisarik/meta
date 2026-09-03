@@ -844,5 +844,158 @@ session/exchange   slice   phase            files                          outco
                                             01_report_01.md                PASS 61720aa
 ```
 
-New exact baseline for every subsequent slice: **`61720aa701132085809a9012ee29e446c622bd4f`**.
+---
+
+## 10. The Hungarian probe changed the plan — session 02 interrupted, probe completed by me
+
+### 10.1 What happened, in order
+
+```text
+02_probe_00.md          issued, 405 lines, apfieldcheck exit 0
+dispatch                KILLED by an external billing limit on the delivery account:
+                        "预扣费额度失败, 用户剩余额度: ＄0.285318,
+                         需要预扣费额度: ＄0.300000"
+                        Not a protocol failure, not a refusal, not a prompt defect.
+02_interruption_00.md   written by me from safely known facts, per AP.md:322-336. No
+                        terminal report exists, so NO 02_report_00.md may ever be created
+                        for this exchange, and session ordinal 02 is CONSUMED.
+probe completed by me   directly, read-only against the repository, under Cooperator
+                        decision 13 plus the 2026-09-03 autonomy instruction
+90_hungarian-expansion-probe.md   the evidence, filed in the 9N_ Orchestrator band
+                        precisely so nobody mistakes it for audited Worker evidence
+```
+
+⛔ **The permanent evidence cost:** that probe is **non-independent**. I was both measurer
+and reviewer, and only the mechanical hunspell oracle corroborates my judgement calls.
+Recorded here and in the artifact itself. Every mutation its findings imply still goes to a
+Worker under a complete prompt.
+
+⚠ **Operational fact that changes my strategy for the rest of this whole:** subagent
+delivery is now unreliable on an external account balance. I must therefore prefer fewer,
+larger Worker grants over many small ones, and I must be prepared to complete read-only
+evidence work myself. That is exactly the pressure the Cooperator anticipated in his
+`Worker Orchestrator` idea (`/home/agile/meta/BRAINSTORMING.md` section 1) — the economics
+argument for it is now measured, not theoretical.
+
+### 10.2 The finding, in three lines
+
+```text
+THE EXPANDER WORKS.   Spylls 0.1.7 resolves the 1 559-entry AF alias table and follows
+                      suffix continuations. Six-word gate 6/6. Twenty-three-word gate
+                      23/23. hunspell 1.7.3 accepted 3 000 of 3 000 sampled forms.
+THE ASSET DOES NOT FIT. ~4.27 billion non-compound forms (~77 GB). At a 15-code-point
+                      ceiling still ~301 million (~4.5 GB). Compare czech.txt at
+                      3 930 497 words / 54 105 021 B, which already drew a GitHub
+                      large-file warning.
+SO THE GATE OVERSHOT.  DEFECT_LEDGER.md:1447 required "plausibly in the MILLIONS". The
+                      answer is BILLIONS, and that overshoot is the blocker.
+```
+
+🐞 **DEFECT / BLOCKER `mle-01-B01`**, severity high, status `confirmed`, evidence class
+`reproduced-dynamic`, owner: Cooperator decision. *A flat enumerated Hungarian lexicon is
+not committable to this repository at any defensible board bound.* Full measurement in
+`90_hungarian-expansion-probe.md` sections 9 and 13.
+
+### 10.3 The decision I have taken, and how to overturn it in one word
+
+Four options were measured; three fail. Recorded in full at
+`90_hungarian-expansion-probe.md` section 13.
+
+```text
+A  commit the full list                  REJECTED on measurement (~4.5 GB, LFS forbidden)
+B  runtime spell-checker per lookup       REJECTED — kills the prefix probe, and the engine
+                                          authors EVERY move in this product, so this would
+                                          disable Hungarian AI rather than degrade it
+C  a frequency- or paradigm-bounded subset REJECTED — no licence-clean frequency source
+                                          exists, and it makes the lexicon a judgement call
+D  GENERATE LOCALLY AT SETUP from the      ADOPTED
+   pinned 4 MB .dic/.aff
+```
+
+**D in one sentence:** commit `build_hungarian_lexicon.py` plus the two pinned source
+hashes, have it materialize a bounded lexicon into `backend/assets/dicts/hungarian.txt` at
+setup time, gitignore that output, and let gap G2's fail-closed readiness report
+`unavailable` until the local build has run.
+
+Why this is his method rather than a deviation from it: his instruction was that the
+dictionaries be *downloaded by a script*. For Slovak, Czech and Polish the output happened
+to be small enough to commit too. For Hungarian it is not, so D keeps the method and drops
+only the incidental habit of committing the output.
+
+⛔ **This is a Cooperator-owned material decision** — it changes what "shipped" means for
+one language, and it introduces the first gitignored asset in the project. He can overturn
+it with one word. The four costs of D are written out in
+`90_hungarian-expansion-probe.md` section 13 so the choice is informed: a fresh clone has
+no Hungarian until setup runs; the build needs network and minutes and must stay opt-in;
+the gitignored asset and the fail-closed readiness path must be tested together; and the
+code-point ceiling must be **derived from 15 tiles**, not guessed — a 15-code-point ceiling
+is too tight once `DZS` is a tile.
+
+### 10.4 Revised slice plan
+
+Section 4.2's V4 / V5a / V5b are **superseded**. What replaces them, and what survives
+untouched:
+
+```text
+SURVIVES UNCHANGED
+  V2   fail-closed asset validation + manifest provenance, now MORE important: it is what
+       makes a generated-locally lexicon safe, because readiness must report `unavailable`
+       on a fresh clone rather than crashing. Also absorbs the three routed observations of
+       section 9.4 (slug_stem_mismatch at ingest, display_label, canonical stem).
+  V3   reproducible pinned build scripts for Czech and Polish. Unchanged, and it now
+       doubles as the proving ground for the exact script shape V4' needs.
+  V6   wire schema 4 end to end. UNCHANGED and still required — but note its product
+       justification now rests on "any future multigraph language" plus Hungarian-behind-a-
+       local-build, not on Hungarian shipping as a committed asset.
+  V7   AI boundary lossless for multi-code-point cells. Unchanged.
+  V9   documentation and closure. Now also documents the local-build step for Hungarian.
+REPLACED
+  V4'  build_hungarian_lexicon.py committed, with pinned hashes, a spylls `lexicon`
+       optional Poetry group, a DECLARED code-point ceiling derived from 15 tiles, and the
+       six-word gate asserted BY THE SCRIPT as a fail-closed post-condition. The script is
+       committed; its output is not.
+  V5a  DROPPED. There is no committable hungarian.txt to land.
+  V5b  hungarian.json manifest + .gitignore entry + the fail-closed readiness path proved
+       by test. Still lands only after V6 and V7 can carry SZ, GY and DZS.
+  V8   Hungarian interface locale. Unchanged, and section 3 Q3's condition is now
+       satisfiable: Hungarian gameplay is reachable, just not on a fresh clone.
+```
+
+### 10.5 Closure conditions amended
+
+Section 7 conditions 9, 10, 12, 13 and 14 stand unchanged. Condition 11 is replaced,
+because its original wording assumed a committed asset:
+
+```text
+11 (WAS)  Hungarian is playable end to end, OR the Hungarian lexicon gate is recorded as
+          honestly failed with its measured evidence.
+11 (NOW)  Hungarian is playable end to end AFTER a documented, opt-in local lexicon build,
+          and BEFORE that build the variant reports readiness `unavailable` without
+          crashing — both halves proved by test. The committed artifact is the build
+          script plus its pinned source hashes, never the lexicon.
+NEW 15    The Hungarian code-point ceiling is DERIVED from the 15-tile board bound and the
+          Hungarian tile set, declared in the manifest, and justified in writing. It is
+          never a guessed constant.
+NEW 16    The six-word gate — házat házban házakat kutyát kutyák asztalon — is asserted by
+          the build script itself as a fail-closed post-condition, so a future upstream
+          change that breaks expansion fails the build instead of shipping a broken lexicon.
+```
+
+### 10.6 Exchange ledger, updated
+
+```text
+session/exchange   slice   phase            files                              outcome
+01 / 01            V1      implementation   01_implementation_00.md
+                                            01_report_00.md                    PASS 3878847
+01 / 02            V1b     implementation   01_implementation_01.md
+                                            01_report_01.md                    PASS 61720aa
+02 / 01            V4 probe preflight       02_probe_00.md
+                                            02_interruption_00.md              INTERRUPTED
+                   evidence completed by ORCHESTRATOR, non-independent:
+                                            90_hungarian-expansion-probe.md
+```
+
+Next fresh Worker session ordinal: **03**. Exact baseline unchanged at
+`61720aa701132085809a9012ee29e446c622bd4f`.
+
 
