@@ -995,7 +995,144 @@ session/exchange   slice   phase            files                              o
                                             90_hungarian-expansion-probe.md
 ```
 
-Next fresh Worker session ordinal: **03**. Exact baseline unchanged at
-`61720aa701132085809a9012ee29e446c622bd4f`.
+---
+
+## 11. Slice V2a landed — Worker session 03, exchange 01, plus one Orchestrator-authored follow-up
+
+```text
+5f63e0da2a4c0aba0edcd905e488c0f7a32163e9   V2a  slug_stem_mismatch at ingest   3 files, +120 −20
+1f39ff4da678ffb519222e6cd97a90117298a371   --   ORCHESTRATOR-AUTHORED: the G26a
+                                                docstring correction the Worker
+                                                measured but was forbidden to make
+                                                                                1 file, +4 −3
+```
+
+Pair archived as `03_implementation_00.md` + `03_report_00.md`. Report `PASS`,
+`implementation-PASS`.
+
+### 11.1 What I re-verified myself
+
+```text
+git rev-parse HEAD                    1f39ff4da678ffb519222e6cd97a90117298a371
+git ls-remote origin refs/heads/main  1f39ff4da678ffb519222e6cd97a90117298a371   EQUAL
+git status --porcelain=v1             empty
+git diff --name-only 61720aa 5f63e0d  exactly the three allowlisted paths
+git rev-parse HEAD:.ap                9c5cc44…  unchanged
+variant_store.py:337-344              the new check, read by me; validate_dictionary_file
+                                      is at :353 and _parse_alphabet_order at :363, so the
+                                      ordering requirement of the prompt holds
+pytest --collect-only                 466 tests collected  (465 -> 466, +1 as claimed)
+repo-wide grep "variant_store.py:"    ten hits, ALL inside test_variant_invariants.py;
+                                      the Worker's claim that no anchor outside the
+                                      allowlist went stale is CONFIRMED
+```
+
+All eight gates re-measured green by me at `1f39ff4`:
+
+```text
+mypy config game gamecore accounts catalog   Success: no issues found in 83 source files
+ruff check .                                 All checks passed!
+manage.py check                              System check identified no issues (0 silenced).
+pytest                                       462 passed, 4 skipped in 220.23s (0:03:40)
+npm run typecheck                            exit 0
+npx vitest run                               450 passed | 3 skipped (31 files | 1 skipped)
+npm run lint                                 exit 0
+npm run build                                exit 0, ELEVEN dynamic routes, ZERO static
+```
+
+### 11.2 ⛔ A THIRD ORCHESTRATOR PROMPT DEFECT, and it is the one the archive warned about
+
+My section 5c said G26a "must remain **exactly as it is**". The same section's ⚠ said to
+correct any comment in that module claiming `G9` is blind to the divergence. **G26a's own
+docstring was exactly such a comment.** Both instructions could not hold.
+
+The Worker chose the byte-exact instruction, left the stale sentence, and reported it with
+the exact replacement text already written. That is the best available behaviour and it is
+the third time in this whole that a prompt of mine carried an internal contradiction or a
+false premise:
+
+```text
+defect 1  `-m manage.py check` — a gate command that cannot run           (exchange 01/01)
+defect 2  the `fetched_at` bare-year premise, inherited unmeasured        (exchange 01/02)
+defect 3  "remain exactly as it is" versus "correct the stale comments"   (exchange 03/01)
+```
+
+⚠ `PROJECT_CONTEXT.md` lesson 16 already names this class — *"after writing the negative
+authority, re-read the mandated tests and ask whether you just forbade one of them"* — and
+lesson 15 says that when a second slice in one domain also generates defects, **the
+Orchestrator's model of that domain is the fault, not the slice size.** Three in three
+exchanges is past that threshold. My operational correction, applied from V2b onward:
+
+```text
+R-A  A "do not change X" instruction must name WHY. If the reason is "its assertions are
+     still correct", then say that, so a Worker can see that a DOCSTRING is not an
+     assertion and is not covered.
+R-B  Prohibitions get written LAST, after the obligations, and then read against them in
+     one pass. Not in a separate drafting session where the two never meet.
+R-C  When a prompt tells a Worker to correct stale comments, it must ENUMERATE them, from
+     my own grep, rather than delegating the search. I had the grep output and did not use
+     it.
+```
+
+### 11.3 The docstring correction — Orchestrator-authored, and the cost recorded
+
+I applied the one-line replacement myself at `1f39ff4` under Cooperator decision 13. It
+qualifies on all five bar items: the whole path was measured first (repo-wide grep for
+`variant_store.py:` anchors, confirming the Worker's claim), the change is one docstring
+sentence in a test file with no assertion touched, the exact replacement text was already
+measured and quoted by the Worker, and all eight gates were run in full at the resulting
+commit.
+
+⛔ **Evidence cost, permanent:** `1f39ff4` is **non-independent**. Only the mechanical gates
+corroborate it. It joins `f40d8a0`, `8ef5992` and `f983c3d` from era 10 on that list, and
+it must never be read as equally verified to a Worker slice.
+
+### 11.4 Four measured observations routed forward
+
+```text
+M1  ROUTED TO V2b. `game/views.py`'s `except Exception` branch now has TWO structurally
+    different causes — a JSON syntax error and a slug/stem defect — and logs the identical
+    string `variant_list_omitted` for both, measured. An operator cannot tell them apart
+    without reading the `libretiles.variants` logger. V2b already touches the readiness
+    path, so it is the right place to give the omit branch a discriminator WITHOUT leaking
+    anything into the public payload.
+M2  ACCEPTED, NOT ACTIONED. `list_installed_variants` re-globs and re-parses every manifest
+    on each of three per-request call sites. The new check adds one `slugify` per manifest,
+    which is negligible — but it is the measurement that justifies why the fix went in at
+    ingest rather than into `load_variant`.
+M3  ROUTED TO V2b as one bounded assertion. LEAD 1 of the report: can a manifest reach
+    `_summary_from_payload` (the `FileNotFoundError` → `unavailable` branch) while its stem
+    and declared slug diverge? The Worker believes the new ingest check pre-empts it and
+    did not construct the case. V2b touches exactly that branch, so it should either prove
+    it unreachable or handle it.
+M4  RECORDED, NOT ACTIONED. `_variants_dir()` calls `path.mkdir(parents=True,
+    exist_ok=True)` at `variant_store.py:174` — a read-shaped helper with a filesystem side
+    effect on every catalog list. Latent, unrelated to this whole.
+    Also recorded: LEAD 3, a variant that now vanishes rather than showing `unavailable`
+    may leave a stale persisted `variant_slug` in the Zustand store. `frontend/src/lib/
+    variants.ts` already exposes `reconcileSelectedVariantSlug`, so a repair path probably
+    exists — but nobody has measured it against a vanished slug. Routed to V9's
+    documentation pass at the latest, earlier if V6 touches the picker.
+```
+
+### 11.5 Exchange ledger, updated
+
+```text
+session/exchange   slice   phase            files                              outcome
+01 / 01            V1      implementation   01_implementation_00.md
+                                            01_report_00.md                    PASS 3878847
+01 / 02            V1b     implementation   01_implementation_01.md
+                                            01_report_01.md                    PASS 61720aa
+02 / 01            V4probe preflight        02_probe_00.md
+                                            02_interruption_00.md              INTERRUPTED
+                   evidence completed by ORCHESTRATOR, non-independent:
+                                            90_hungarian-expansion-probe.md
+03 / 01            V2a     implementation   03_implementation_00.md
+                                            03_report_00.md                    PASS 5f63e0d
+--                 --      ORCHESTRATOR-AUTHORED, non-independent                   1f39ff4
+```
+
+New exact baseline for every subsequent slice: **`1f39ff4da678ffb519222e6cd97a90117298a371`**.
+
 
 
