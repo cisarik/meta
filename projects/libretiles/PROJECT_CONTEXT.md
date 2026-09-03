@@ -658,6 +658,40 @@ origin (`ALLOWED_HOSTS` contains `*` in the Cooperator's dev environment; the va
     backend/tests/test_game_app_has_no_dev_imports.py   AST guard: no pytest/pytest_django/ruff/mypy import under backend/game/**
     frontend/src/lib/ai-turn-simulation.test.ts   300-turn causal simulation with an injectable model
 
+Two ORCHESTRATOR instruments, both validated against known-bad inputs before being trusted. Neither lives in
+the repository; recreate them from these descriptions if `/tmp/opencode` is gone:
+
+    /tmp/opencode/jsxsweep.py        v2 sweep over JSX text nodes. Regex inventory of JSX is unreliable, so
+                                     this walks text nodes structurally. Validated against four historical
+                                     Orchestrator inventory errors.
+    /tmp/opencode/apfieldcheck.py    ⛔ AP STRUCTURAL FIELD CHECKER. Extracts the spec blocks from the pinned
+                                     .ap — Plan-to-Execution PROMPT_CONTRACTS.md:716-728, Planning Record
+                                     :89-101, justification enum AP.md:2452-2454, result enum :203 — and
+                                     diffs EVERY field value in a Worker prompt against them.
+                                     `python3 apfieldcheck.py <prompt.md>`; exit 1 on any defect.
+                                     Written after Worker session 15 returned BLOCKED TWICE on protocol
+                                     conformance: three invalid fields in exchange 01, then a FOURTH that the
+                                     Orchestrator introduced while hand-fixing the first three.
+                                     Validated: exchange-01 prompt -> 1 defect + 4 warnings (reproduces all
+                                     three findings), exchange-02 prompt -> 1 defect (reproduces the fourth),
+                                     exchange-03 prompt -> clean. Two bugs were found in the tool during that
+                                     validation, which is the argument for doing it.
+                                     Honest limits, emitted as WARNINGS not skipped: it cannot judge
+                                     `Native planning mode: required` (that depends on the Cooperator's
+                                     client, not on a value), and it catches invented result values such as
+                                     `planning-PASS` only by prose scan.
+                                     It ALSO checks COORDINATE CONSISTENCY: the header's session/exchange
+                                     ordinals must equal what the report-format section tells the Worker to
+                                     echo (PROMPT_CONTRACTS.md:38-41). Added after defect five, which the
+                                     field checker could not see because the ordinal occurs in two textual
+                                     forms and a patch on one silently left the other.
+                                     ⚠ RUN IT ON EVERY PROMPT BEFORE ISSUING. Lesson 17 said "read the enum,
+                                     do not recall it" and was written in the very session that then
+                                     hand-edited a field without re-reading its spec line.
+                                     ⛔ AND DO NOT BUILD A PROMPT BY STRING-PATCHING THE PREVIOUS ONE. Three
+                                     of the five structural defects in Worker session 15 were introduced BY
+                                     THE REPAIR of an earlier one.
+
 Two structural patterns worth reusing rather than reinventing:
 
 - **`executed_runtime_mode`.** The v1 report records what **actually executed**, separately from what was requested, and a mismatch is a sample **failure** with reason `runtime_mode_not_honored`. This exists because `--runtime-mode live` once accepted the flag, silently ran the fake path, and reported `exit 0 / verdict pass`. Apply "record what happened, not what was asked" to anything you build, and make sure any dashboard can say **"I did not measure."**
@@ -700,6 +734,28 @@ Two structural patterns worth reusing rather than reinventing:
     ```
 
     Read the enum, do not recall it. All three defects were confident inventions that read plausibly.
+
+    ⛔ **AND THEN THE REPAIR ITSELF ADDED A FOURTH.** Exchange 02 was rejected for
+    `Execution authority event`, which `PROMPT_CONTRACTS.md:725` fixes as a CLOSED LITERAL. Because the
+    planner prompt now carried `Native planning mode: not-used`, the required value read as
+    self-contradictory to me, so I "improved" it. The spec block has three kinds of entry and I collapsed
+    two: `<angle brackets>` is a fill-in, `a | b` is an enum, **a bare string is a literal to be copied
+    byte-for-byte.** This lesson existed already when I made that edit, which is the proof that a lesson
+    saying "be careful" does not survive contact with a hand edit. The operational form is a TOOL:
+    `/tmp/opencode/apfieldcheck.py`, section 8, run on every prompt before issuing.
+
+    ⛔ **AND THEN THE PATCH FOR THAT REPAIR ADDED A FIFTH.** Exchange 03 declared
+    `Worker exchange ordinal: 03` in its header while section 9 still instructed the Worker to echo `02`;
+    `PROMPT_CONTRACTS.md:38-41` requires the report to echo the authoritative coordinates UNCHANGED. Cause:
+    the ordinal occurs in two textual forms — `ordinal: NN` in the header, `ordinal NN` in the report
+    instructions — and a string patch matched only the first.
+
+    ⛔ **THE REAL LESSON IS NOT ABOUT FIELDS AT ALL: DO NOT BUILD A PROMPT BY STRING-PATCHING THE PREVIOUS
+    PROMPT.** Five structural defects in Worker session 15, and THREE of them were introduced by the repair
+    of an earlier one. Regenerate the whole coordinate-bearing region, then let the tool check it. The tool
+    now covers coordinate consistency as well — extended twice, each time after a defect it could not see,
+    each time validated against the failing artifact before being trusted. A checker never anticipates a
+    class it has not been burned by, so growing it after each miss is the method, not an admission.
 18. **A test that pins a known-broken UPSTREAM state is a tripwire, not a regression test, and it must be labelled as one.** R7 added `test_czech_minimum_length_validator_catalog_mismatch` and `test_drf_throttle_wait_suffix_stays_english`, both asserting that a Django/DRF translation gap still exists. They are useful — they fire the moment upstream fixes it — but the next dependency bump will break the suite with a failure that looks like a regression and is actually good news. Both carry explanatory docstrings. `audit-02` established a standing upgrade posture, so whoever performs the next bump must be told these two are expected casualties.
 
 ## 10. Known environment traps on the Cooperator's machine
