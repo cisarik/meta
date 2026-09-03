@@ -27,7 +27,7 @@ and `1b7b05d0de854d7936c5fcd2b0d55a5cc5d14cfd` (the starting-draw screen, plus a
 fix). `uii-01-F04` is owned by slice **S3a**, not S2 — Cooperator decision 7 cancelled S2 altogether by
 removing URL locale prefixes. An earlier version of this paragraph said S2 and was stale.
 
-`main` is now `f40d8a0ef2a8c157fde7caddc4a6f64e2695d495`. Porcelain is EMPTY — the ten
+`main` is now `f983c3dcce19534466a86b06605e1a02f8bd2bf3`. Porcelain is EMPTY — the ten
 deliberately untracked `frontend/public` flag files are gone. The **Cooperator himself** committed the
 five normalized 48x32 PNGs at `61c9f09` on 2026-09-02 (`feat(images): add new language icons for Czech,
 English, Hungarian, Polish, and Slovak`, 5 files, 5230 B total, byte sizes identical to the
@@ -67,9 +67,12 @@ Commit lineage of era 11, all Orchestrator-verified:
     e8cc7bb  S11  R12: accessible names, dialog semantics, status regions 16 files, 9 keys
     74b5339  R14  one persistent announcer; rack tiles get a role       7 files, 0 keys
     f40d8a0  R15  ORCHESTRATOR-AUTHORED: rack keyboard + dead labels    4 files, 0 keys
+    8f096e1  R7   Django resolves the client locale; F17 end reasons     10 files, 5 keys
+    8ef5992  R8   ORCHESTRATOR-AUTHORED: Retry-After header over prose     4 files, 0 keys
+    f983c3d  R9   ORCHESTRATOR-AUTHORED: HSTS includeSubDomains          2 files, 0 keys
 
 Anything below that speaks of `19cfec9`, `f26e92a`, `1b7b05d`, `9f0c5b8`, `3fd1a81`, `8c00a33`,
-`2917251`, `61c9f09`, `5a96b5e`, `e421c66`, `e0d3b64`, `383011b`, `d40b230`, `6ca85de`, `4bf4365`, `d806e31`, `8f44022`, `c3f75e3`, `e8cc7bb` or `74b5339`
+`2917251`, `61c9f09`, `5a96b5e`, `e421c66`, `e0d3b64`, `383011b`, `d40b230`, `6ca85de`, `4bf4365`, `d806e31`, `8f44022`, `c3f75e3`, `e8cc7bb`, `74b5339`, `f40d8a0`, `8f096e1` or `8ef5992`
 as "current" describes an earlier commit and is history.
 
 ⛔ **THE FRONTEND SURFACE OF `10/00` IS COMPLETE AT `e8cc7bb`** — copy (S1–S9), function (S4), presentation
@@ -108,12 +111,24 @@ vacuous `aria-live` count assertion. `role="status"` and `aria-live` each went 8
                        so the lookup key carries the literal number and can never match a msgid. The
                        suffix stays English structurally, in every locale. api.ts:129's
                        /(\d+)\s+seconds/i matched 3300 in all four locales under USE_I18N=True.
-    uii-01-F25         NEW residual. Czech does not translate MinimumLengthValidator:
+    uii-01-F25         DOWNGRADED after R7 measured it: UNREACHABLE through any shipped endpoint. Both
+                       password fields carry min_length=8 (accounts/serializers.py:17 and :62), so DRF's
+                       own field validation rejects a short password BEFORE validate_password runs
+                       MinimumLengthValidator — and that DRF message IS translated in all four locales.
+                       Latent upstream curiosity, reachable only if someone removes min_length.
+                       Original cause, still accurate: Czech does not translate MinimumLengthValidator:
                        django/contrib/auth/password_validation.py:118-119 uses msgid "... at least %d
                        character.", but django-5.2.17's cs catalog still carries the OLD
                        "%(min_length)d" form. sk and pl were updated, cs was not. The Czech string exists
                        and is unreachable. Fixing it needs a project-level backend/locale/cs/ override
                        plus compilemessages — out of scope, recorded so nobody reads it as our bug.
+    uii-01-F26         NEW accepted residual, found while measuring F25. The Slovak DRF min_length
+                       translation is SEMANTICALLY WRONG: "Uistite sa, že toto pole má viac ako 8 znakov"
+                       says MORE THAN 8, but the constraint is AT LEAST 8 — an 8-character password
+                       satisfies the rule while the message says it must exceed it. Czech `alespoň` and
+                       Polish `co najmniej` are correct. Upstream djangorestframework-3.17.0 sk catalog,
+                       not our string, and now visible to every Slovak player who types a short password.
+                       Same blocked fix route as F25. Owner: a later whole.
 
 ⚠ Re-probing was CORRECT, not disobedient. The handout says "Do not re-run that probe; it is recorded as
 verified" — but that recording covered **Slovak only**, and cs/pl were added by decision 8 afterwards.
@@ -133,17 +148,18 @@ named this after F21/F22 and R14 repeated it anyway, so the lesson was not opera
 reads: **for every ARIA attribute added or removed, write down what the user does, what the technology
 announces, and which key activates it. If nothing activates it, that is the defect.**
 
-**All eight standing gates measured green at `f40d8a0` by the era-10 continuation Orchestrator.** For
-`74b5339` and every commit before it this was independent re-measurement of another agent's work. For
-`f40d8a0` it is NOT independent — the Orchestrator authored that commit, so only the mechanical gates
-corroborate it and none of its judgement calls do. Do not read the two as equally verified:
+**All eight standing gates measured green at `f983c3d` by the era-10 continuation Orchestrator.** ⚠ THREE
+commits in this whole have NON-INDEPENDENT evidence because the Orchestrator authored them: `f40d8a0` (R15),
+`8ef5992` (R8) and `f983c3d` (R9). For those, only the mechanical gates corroborate the judgement calls —
+there is no second agent's reading. Every other commit is Worker work independently re-measured. Do not read
+them as equally verified. The gates below were run ONCE on the combined R8+R9 tree, not per commit:
 
     mypy config game gamecore accounts catalog   Success: no issues found in 83 source files
     ruff check .                                 All checks passed!
     manage.py check                              System check identified no issues (0 silenced).
-    pytest                                       381 passed, 4 skipped in 220.70s
+    pytest                                       390 passed, 4 skipped in 220.11s
     npm run typecheck                            exit 0
-    npx vitest run                               420 passed | 3 skipped  (29 files passed | 1 skipped)
+    npx vitest run                               432 passed | 3 skipped  (29 files passed | 1 skipped)
     npm run lint                                 exit 0
     npm run build                                exit 0, EVERY route ƒ, zero static, no deprecation warning
     grep -c sr-only .next/static/css/*.css       1, and the rule is clip-path:inset(50%), not display:none
@@ -664,6 +680,27 @@ Two structural patterns worth reusing rather than reinventing:
 13. **Do not state an inventory more precisely than the measurement that produced it.** Lesson 10 is about negative greps; this is its positive twin. At `c3f75e3` the Orchestrator wrote that `AIThinkingOverlay` "already has `aria-live` in two places". The measurement actually run counted `aria-label`, `role`, `alt`, `htmlFor`, `tabIndex`, `aria-modal` and `sr-only` — **never `aria-live`**. There were two occurrences repo-wide, in two different files, and the Worker read the source, found one in the named file, said so, and resolved both. Two consecutive slices now end with a Worker correcting an Orchestrator claim on evidence (R1's `alt=""`, S11's `aria-live`). Both times the prompt's own permission-to-overrule is what surfaced it. Write the count, or write "unmeasured".
 14. **An accessibility attribute is a behavioural change, so reason about the behaviour, not the attribute.** ⛔ THIS LESSON WAS WRITTEN AFTER TWO DEFECTS AND THEN REPEATED TWICE MORE, so it now carries an operational rule instead of an observation. Four defects, one error: `uii-01-F21` specified `role="status"` on a `fixed inset-0` container without modelling that `role="status"` implies `aria-atomic="true"` and that the container held a per-second countdown, so an assistive technology re-read the whole overlay once a second. `uii-01-F22` specified live regions that mount together with their text, which frequently never announce at all. `uii-01-F20` specified `aria-label` without modelling that the role it needs comes from a conditionally spread dnd-kit `attributes` object. `uii-01-F24` specified `tabIndex={0}` without modelling that a `div[role=button]` does not synthesize a click from Enter or Space, turning every desktop rack tile into a dead Tab stop — a regression against the commit before it. THE RULE: for every ARIA attribute you add or remove, write down (a) what the user does, (b) what the technology announces, (c) which key activates it. If the answer to (c) is "nothing", that is the defect and not a detail. None of these four is visible to `typecheck`, `lint`, `build`, or a node-environment vitest suite; all four are visible by reading the semantics before writing the prompt.
 15. **A remediation slice can produce its own remediation, and that is a signal to change method rather than iterate.** S11 produced F20/F21/F22; R14 fixed those three and produced F23/F24. Both Workers executed their prompts faithfully and reported the new problems themselves, in the report field that asks what they can still see — which is the only reason the chain was visible at all. Keep that field in every prompt. But when the second slice in a domain also generates defects, the Orchestrator's model of that domain is the fault, not the slice size: stop writing another confident prompt and write down the interaction model first.
+16. **After writing the negative authority, re-read the mandated tests and ask whether you just forbade one of them.** Worker session 14: section 7 said `CREATE: nothing` and "`backend/tests/` is NOT on this list", while section 10 mandated three BACKEND tests. Both cannot hold. What was MEANT was "do not edit an existing backend test to make it pass"; what was WRITTEN also banned adding one. The Worker caught it by reading the two sections against each other, created a new file, edited nothing existing, and disclosed it — the best available outcome. Prohibitions and obligations get drafted in separate passes and are never cross-checked, so make the cross-check explicit: for every artifact section 10 requires, confirm section 8 permits it.
+17. **⛔ VERIFY THE PROMPT'S OWN AP FIELD VALUES AGAINST THE PINNED ENUMS, NOT JUST ITS `file:line` CLAIMS.** Worker session 15 exchange 01 returned BLOCKED because one prompt carried THREE invalid protocol fields at once. Its technical content was fine — nine `file:line` claims mechanically checked, zero misses — while the frame was structurally invalid. The gap is exact: `file:line` claims get verified every time, AP field VALUES never did. **The three closed enums, written here so the check takes seconds:**
+
+    ```text
+    Report justification            AP.md:2452-2454
+      new-mutation | new-evidence | new-material-risk | changed-external-state | final-acceptance |
+      explicit-closure                                  <- there is NO `new-analysis`
+    Phase-qualified result          PROMPT_CONTRACTS.md:203
+      implementation-PASS | acceptance-PASS | publication-PASS | deployment-PASS |
+      production-acceptance-PASS | not-applicable       <- planning uses `not-applicable`, NOT `planning-PASS`
+    Native planning mode            PROMPT_CONTRACTS.md:695-698
+      `required` means the client MUST have the mode enabled before delivery. If it does not, the prompt
+      MUST NOT BE PASTED; reissue as `not-used` with explicit prompt-level read-only planning authority.
+    Plan-to-Execution fields        PROMPT_CONTRACTS.md:716-728    Planning Record  :89-101
+    current-worker-session needs    :359-365 — continuity anchor · prior-authority expiry · complete new
+      bounded grant · reuse rationale · preserved WORKER role · repository re-gating · retained context as
+      CONVENIENCE NOT AUTHORITY · non-independent posture · stop on conflict · new terminal report
+    ```
+
+    Read the enum, do not recall it. All three defects were confident inventions that read plausibly.
+18. **A test that pins a known-broken UPSTREAM state is a tripwire, not a regression test, and it must be labelled as one.** R7 added `test_czech_minimum_length_validator_catalog_mismatch` and `test_drf_throttle_wait_suffix_stays_english`, both asserting that a Django/DRF translation gap still exists. They are useful — they fire the moment upstream fixes it — but the next dependency bump will break the suite with a failure that looks like a regression and is actually good news. Both carry explanatory docstrings. `audit-02` established a standing upgrade posture, so whoever performs the next bump must be told these two are expected casualties.
 
 ## 10. Known environment traps on the Cooperator's machine
 
@@ -1017,13 +1054,23 @@ instead.
    ```text
    R14  DONE at 74b5339 — uii-01-F21, F22, F20 and the vacuous assertion
    R15  DONE at f40d8a0, ORCHESTRATOR-AUTHORED per decision 12 — uii-01-F24 and uii-01-F23
-   R7   ISSUED at f40d8a0, Worker session 14 — USE_I18N, LANGUAGES restricted to the four shipped
-        locales, LocaleMiddleware at index 3, api.ts sends Accept-Language from the locale COOKIE, plus
-        uii-01-F17 as a FRONTEND-ONLY mapping. It does NOT wrap the ~70 hardcoded backend strings; that is
-        routed as a residual because legality.py:31-46 already exposes REASON_* codes and the frontend
-        catalog is the right place to translate them.
-   R8   uii-01-F01 — read the numeric Retry-After header instead of parsing an English 429 body
-   R9   orch-02-D11 — SECURE_HSTS_INCLUDE_SUBDOMAINS, and NEVER SECURE_HSTS_PRELOAD
+   R7   DONE at 8f096e1 — USE_I18N, LANGUAGES restricted to the four shipped locales, LocaleMiddleware at
+        index 3, api.ts sends Accept-Language parsed from the locale COOKIE, plus uii-01-F17 as a
+        FRONTEND-ONLY mapping. It does NOT wrap the ~70 hardcoded backend strings; that stays a residual
+        because legality.py:31-46 already exposes REASON_* codes and the frontend catalog is the right
+        place to translate them.
+        ⛔ HAND-OFF TO R10, CORRECTED: LocaleMiddleware adds `Vary: Accept-Language` and `Content-Language`
+        to **Django** responses only. The audit-03 baseline at DEFECT_LEDGER.md:141-153 is the **Next.js**
+        loopback readback, which Django middleware cannot touch — so R10's frontend re-probe should differ
+        ONLY by what R10 itself changes. An earlier version of this note said otherwise and was wrong.
+   R8   DONE at 8ef5992, ORCHESTRATOR-AUTHORED — and it needed TWO halves, not one. Reading the header in
+        api.ts alone would have REGRESSED it: Retry-After is not CORS-safelisted, corsheaders emits
+        Access-Control-Expose-Headers only when CORS_EXPOSE_HEADERS is non-empty, and it was unset, so
+        res.headers.get() would have returned null while every gate stayed green. Prose fallbacks KEPT
+        behind the header, deliberately.
+   R9   DONE at f983c3d, ORCHESTRATOR-AUTHORED — security.W005 closed, security.W021 (no preload) kept
+        standing and PINNED BY TEST as an accepted residual. ⛔ Deployment checklist item: includeSubDomains
+        forces HTTPS on every subdomain for a year and is slow to undo.
    R10  orch-01-F18 — the nonce CSP, the ONLY authorized proxy.ts touch in this whole, plus a loopback
         re-probe of every header against the audit-03 baseline
    R11  audit-01-F06 — the catalog proxies stop swallowing failures into an empty HTTP 200, plus
@@ -1061,6 +1108,63 @@ instead.
 
    This authority is for correcting the Orchestrator's OWN defect at this scale. It is not a general
    licence to skip Workers, and it does not extend to backend, security, or anything with a trust boundary.
+
+   ⚠ **SUPERSEDED IN PART by decision 13 below.** That last sentence no longer holds: R9 was a security
+   setting and was performed by the Orchestrator under decision 13. What survives from decision 12 is the
+   EVIDENCE caveat and the four-item discipline, which now apply to every Orchestrator-authored commit.
+
+13 EASY TASKS DO NOT GET WORKERS. Decided 2026-09-03, his words: *"Na easy ulohy nevytvaraj Workerov ale
+   ries ich sam"*. A general broadening of decision 12 from "the Orchestrator's own defect" to "anything
+   easy", explicitly including backend and security work — R8 and R9 landed under it at `8ef5992` and
+   `f983c3d`.
+
+   ⛔ WHAT "EASY" MUST NOT BE ALLOWED TO MEAN: *looks* like one line. R8 looked like one line in `api.ts`
+   and was a REGRESSION as one line, because `Retry-After` is not CORS-safelisted and `CORS_EXPOSE_HEADERS`
+   was unset, so the new read returned null while every gate stayed green. The measurement that caught it
+   took longer than the fix.
+
+   ```text
+   THE BAR FOR SELF-IMPLEMENTING, and R8 is why each line is here
+   1  measure the whole path before writing, not just the file that obviously changes
+   2  capture pre-fix failures by checking the touched files back out to the parent commit, then restore
+      from a backup and re-verify porcelain clean
+   3  name any test that did NOT fail pre-fix as documentation rather than dressing it up as a regression
+      test
+   4  run all eight gates, and say plainly if they were run once across several commits
+   5  write the evidence ceiling and the NON-INDEPENDENCE into the record every time
+   ```
+
+   If a task fails bar 1 — if measuring reveals a second file, a trust boundary, or a design choice — it was
+   not easy, and it goes back to a Worker.
+
+14 INFOSEC AND LARGE OR COMPLEX CUTS GET A PLANNER WORKER FIRST. Decided 2026-09-03, his words: *"R10 Ano
+   vygeneruj expertny prompt aj pre Planner Workera nie obycajneho Workera a ten budes nasledne
+   schvalovat, takto postupujeme pri infosec zalezitostiach a velkych rezoch resp. komplexnych rezoch"*.
+
+   The flow, and it is the counterweight to decision 13 rather than a contradiction of it:
+
+   ```text
+   1  Orchestrator writes a PLAN-ONLY prompt, read-only, `Native planning mode: required`
+   2  Cooperator delivers it to a fresh Worker session
+   3  Planner returns a terminal planning report; planning authority EXPIRES with it
+   4  Orchestrator APPROVES, revises once, or rejects with a concrete reason
+   5  a separate implementation prompt, `Native planning mode: not-used`, in a FRESH session
+   ```
+
+   Contract fields come from `.ap/PROMPT_CONTRACTS.md:716-728` plus the Planning Record at `:89-101`. First
+   use: R10, Worker session 15, at `f983c3d`.
+
+   ⛔ `Post-plan implementation session: fresh-worker-session` and `Implementation in same Worker session:
+   prohibited` are the right defaults for infosec work, because INFOSEC 4.10 says the corrector never
+   self-certifies — a planner implementing its own plan is the closest thing to that this flow allows.
+   `Approve`, `Yes`, `Build` or an accepted plan grant NO implementation authority.
+
+   ⚠ "Called complex is not enough" — `.ap/PROMPT_CONTRACTS.md:711-714` routes to implementation planning
+   only when reconnaissance or unresolved alternatives, architecture, migration, security, rollback, or
+   cross-layer impact materially affect safe implementation. R10 qualified on three of those, and the
+   measurement proved it: Next reads the nonce from REQUEST headers while `proxy.ts:12` only sets the
+   response, so the obvious one-file change would have produced a correct-looking header and no nonce
+   anywhere.
 
 ## 14. Authoritative game alphabet orders — Cooperator-sourced 2026-09-01, Orchestrator-validated
 
