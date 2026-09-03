@@ -119,10 +119,10 @@ ledger opened with.
 05  Hungarian     not-started  staged      MEASURED too-big     in-compil. C1         no
 06  German        not-started  not-started af pair, lic unread  in-compil. C3         no
 07  French        not-started  not-started af pair, lic unread  in-compil. C3         no
-08  Italian       not-started  not-started af pair, lic unread  in-compil. none?      no
+08  Italian       PLAYABLE     not-started MEASURED ok GPL-3.0  sourced    none*      yes
 09  Spanish       not-started  not-started 23 pairs, lic LGPL+  in-compil. C1 C4 C5   no
 10  Portuguese    not-started  not-started 2 pairs, lic unread  in-compil. C5?        no
-11  Dutch         not-started  not-started af pair, lic unread  in-compil. none (C5?) no
+11  Dutch         PLAYABLE     not-started MEASURED ok BSD|CC   sourced    none**     yes
 12  Danish        not-started  not-started af pair, lic unread  in-compil. C3?        no
 13  Swedish       not-started  not-started 2 pairs, lic unread  in-compil. C3?        no
 14  Norwegian     not-started  not-started nb+nn, lic COPYING   in-compil. C3? C5?    no
@@ -138,12 +138,15 @@ ledger opened with.
 ```
 
 ```text
-playable  5 / 24        UI locales  4 / 24
+playable  7 / 24        UI locales  4 / 24
 lexicon reachable by the proven pipeline   22 / 24
 lexicon with NO known licence-clean source  2 / 24   Finnish · Malay
 `in-compil.` = present in the Wikipedia Official-editions compilation, table not yet extracted
-`none*`      = Afrikaans needed a diacritic rule and it was solved in the LEXICON at build
-               time rather than by a capability. See row 23.
+`none*`      = needed a DIACRITIC FOLD, solved in the LEXICON at build time rather than by a
+               capability. Afrikaans and Italian. See rows 23 and 08.
+`none**`     = needed the diacritic fold PLUS an IJ-LIGATURE REWRITE. Dutch, row 11, and it is
+               the sharpest asset-level rule so far: 125 444 upstream forms carry U+0133 and NFD
+               does not decompose a ligature, so a fold alone leaves 121 891 words unreachable.
 ```
 
 ⚠ **The two UNSOURCED columns are no longer the blocker. Licence READING is.** A `.dic` pair
@@ -368,19 +371,112 @@ tests                  none.
 blockers               distribution UNSOURCED · lexicon licence UNVERIFIED · C3 not landed.
 ```
 
-## 08 · Italian
+## 08 · Italian — ⭐ PLAYABLE, landed 2026-09-03 at `dab6d0d`
 
 ```text
-gameplay status        not-started.
-UI-localization        not-started.
-dictionary status      UNSOURCED. No probe run.
-distribution source    UNSOURCED.
-special-rule reqs      LEAD: none expected. Single-code-point tiles, no folding, no
-                       multigraph. A B2 candidate.
-capability required    none INFERRED — the shipped foundation should carry it unchanged.
-tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED.
+gameplay status        PLAYABLE. The sixth variant.
+UI-localization        not-started. Degrades gracefully — no VARIANT_NAME_KEYS entry, so
+                       variantDisplayName() falls back to the server display_name.
+dictionary status      MEASURED ok. italian.txt 3 128 429 words / 46 670 737 B, duplicates 0,
+                       non_nfc 0. LICENCE GPL-3.0-only, and -only rather than -or-later
+                       deliberately: the grant reads "version 3, as published by the Free
+                       Software Foundation" with no "or any later version" clause.
+                       ⚠ The asserted licence sentence quotes upstream's own typo,
+                       "The extensione is released under…", VERBATIM. A tidied quotation would
+                       never match and the gate would fail on a correct file.
+                       REPRODUCIBLE: build_italian_lexicon.py, pinned commit, four pinned
+                       SHA-256s, --check IDENTICAL on both artifacts.
+distribution source    SOURCED. 120 tiles, 2 blanks, 21 tile kinds.
+                       ⇒ alphabet_order is the 21-LETTER Italian alphabet (no J K W X Y), and
+                       tile kinds == alphabet exactly. First shipped variant with perfect
+                       equality in both directions. Authority for the 21 letters: Accademia
+                       della Crusca.
+special-rule reqs      DIACRITIC FOLD, sourced: the edition bears plain Latin tiles and ignores
+                       diacritic marks. MEASURED 34 114 of 3 135 500 forms (1.09%) carry
+                       ò é à ì è ù ç â ô; folding yields 3 128 429 with ZERO non a-z left.
+                       Without it CITTA, PERCHE, SARA and PIU are unplayable.
+                       ⚠ RECORDED GAP, not a blocker: the source says a blank MAY represent the
+                       five absent letters J K W X Y. Derived blank targets come from the TILE
+                       SET, so today a blank cannot become any of them. That is a C2-EXTENSION
+                       requirement — C2 was scoped as a RESTRICTION of the derived set, and
+                       Italian (like Afrikaans's X/Z) needs the opposite. Recorded in the
+                       capability section.
+capability required    none. The fold lives in the asset.
+tests                  auto-enrolled; probe row uses the folded witnesses `citta` and `perche`.
+blockers               none for gameplay.
 ```
+
+## 11 · Dutch — ⭐ PLAYABLE, landed 2026-09-03 at `dab6d0d`
+
+```text
+gameplay status        PLAYABLE. The seventh variant.
+UI-localization        not-started. Degrades gracefully, as above.
+dictionary status      MEASURED ok. dutch.txt 1 293 086 words / 16 525 202 B, duplicates 0,
+                       non_nfc 0. LICENCE ⭐ THE FIRST DUAL LICENCE IN THIS REPOSITORY:
+                       `BSD-3-Clause OR CC-BY-3.0`, offered by OpenTaal "at the discretion of
+                       the user". SPDX expresses user choice with OR, so the expression is an
+                       OR rather than one identifier, and the build asserts THREE strings — the
+                       availability grant plus each named option — because a dual licence is
+                       not proved by one sentence. If upstream ever drops an option, the gate
+                       fails rather than the manifest over-claiming.
+                       ⚠ OpenTaal's lemma list carries the Spelling Seal of the NEDERLANDSE
+                       TAALUNIE, the formal Dutch language institute. That is recorded in
+                       provenance and is NOT a claim of an official tournament list.
+                       REPRODUCIBLE: build_dutch_lexicon.py, five pinned SHA-256s,
+                       --check IDENTICAL on both artifacts.
+distribution source    SOURCED. 102 tiles, 2 blanks, 26 tile kinds = the full Latin alphabet,
+                       alphabet_order 26, exact equality both directions.
+                       ⚠ The IJ TILE WAS REMOVED in March 1998 — the pre-1998 Dutch edition had
+                       two Ĳ tiles at 4 points and the Flemish edition never did. The modern
+                       edition is what ships, so NO multigraph tile and NO C1 dependency. The
+                       historical edition is a C5 candidate, not scheduled.
+special-rule reqs      ⛔ TWO RULES, and the first is the sharpest asset-level finding of the
+                       campaign so far.
+                       RULE 1 — IJ LIGATURE. MEASURED: upstream nl_NL spells 125 444 of
+                       1 294 152 forms with U+0133 LATIN SMALL LIGATURE IJ. ⛔ NFD DOES NOT
+                       DECOMPOSE A LIGATURE — it is a compatibility mapping, not base plus
+                       combining mark — so a diacritic fold alone leaves 121 891 words
+                       unreachable. Verified ABSENT before the rewrite and PRESENT after:
+                       `ijs`, `dijk`, `ijzer`, `vrijheid`. Without rule 1 the Dutch words for
+                       ice, dike, iron and freedom cannot be played AT ALL.
+                       ⇒ Mapped as an EXPLICIT two-character table, not NFKD. NFKD would
+                         rewrite unrelated compatibility characters, and an aggressive
+                         normalizer on a shipped word list is how a silent corruption enters.
+                       RULE 2 — diacritic fold: ë 5694, ï 1907, é 1002, è 477, ö 344, ü 191,
+                       ê 135, ç 94, á 64, í 59, ó 56.
+                       Rule 1 runs FIRST so each rule's effect stays independently observable,
+                       which is what makes the three-category word gate meaningful.
+capability required    none. Both rules live in the asset.
+tests                  auto-enrolled; probe row carries TWO ligature witnesses (`ijs`, `dijk`)
+                       and one fold witness (`reeel`).
+                       Build post-condition: six required words across three categories, one
+                       forbidden control word, AND a character scan proving no finished word
+                       still contains U+0133 — a count or size check cannot see a partially
+                       applied mapping.
+blockers               none for gameplay.
+```
+
+## ⚠ CAPABILITY CORRECTION forced by three "boring" languages
+
+```text
+C2 WAS SCOPED WRONG. The campaign handout specified C2 as "a manifest field that RESTRICTS the
+derived blank-target set". Three shipped editions now need the OPPOSITE:
+    Afrikaans  a blank MAY represent X and Z, which have no tile   (source: citation-needed)
+    Italian    a blank MAY represent J K W X Y, which have no tile (source: stated)
+    Turkish    a blank may NOT represent Q W X                     (a restriction, as scoped)
+⇒ C2 must be "variant-declared blank targets" as an EXPLICIT SET, able to name tokens that are
+  alphabet letters WITHOUT tiles, not merely a filter over the derived set. Absent means derive
+  from the tile set exactly as today, which keeps every shipped variant byte-unchanged.
+NOT A BLOCKER for the three languages above: they ship today with derived targets and lose only
+the blank-as-absent-letter play. Recorded so C2 is designed once, correctly.
+
+AND A PATTERN WORTH NAMING: three of three "no capability needed" languages needed a TILE-FACE
+RULE — a rewrite from upstream orthography to the faces the edition actually prints. All three
+were expressible in the ASSET at build time. That works only when the rewrite is TOTAL for the
+edition. German (Ä stays, ß→SS), Slovak (A≠Á) and Czech cannot use it, and C3 remains required
+for them.
+```
+
 
 ## 09 · Spanish
 
@@ -420,20 +516,8 @@ tests                  none.
 blockers               distribution UNSOURCED · lexicon licence UNVERIFIED.
 ```
 
-## 11 · Dutch
+## 11 · Dutch — see the PLAYABLE entry above, filed with Italian at `dab6d0d`
 
-```text
-gameplay status        not-started.
-UI-localization        not-started.
-dictionary status      UNSOURCED. No probe run.
-distribution source    UNSOURCED.
-special-rule reqs      LEAD: the historical IJ tile was removed from the modern edition, so
-                       WHICH edition ships is a real question and may want C5.
-capability required    none for the modern edition INFERRED · C5 if two editions ship.
-tests                  none.
-blockers               distribution UNSOURCED · which edition ships is undecided ·
-                       lexicon licence UNVERIFIED.
-```
 
 ## 12 · Danish
 

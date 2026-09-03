@@ -922,19 +922,123 @@ posture     ⛔ NON-INDEPENDENT. Orchestrator-direct execution under decision D1
 
 ---
 
-## 16. Next step
+## 17. Italian and Dutch — sixth and seventh playable variants, `dab6d0d`
+
+Directly executed, no Worker, one commit. Both licences read BEFORE anything was built, per
+standing condition 5.
 
 ```text
-NEXT   B2 continues: Italian and Dutch. Both have an af pair at the pinned commit, both are
-       single-code-point with no folding expected. Read each licence FIRST — standing
-       condition 5 — then extract the distribution table and repeat the Afrikaans shape.
-THEN   the four remaining B2-class rows, then C3 (German · French · the Nordics) which is now
-       clearly the highest-leverage capability: it unlocks seven languages.
-WATCH  Turkish before scheduling: 36 MB upstream .dic, agglutinative, plus C2 and the
-       `.upper()` I≠İ question at variant_store.py:176-185.
-BLOCKED and recorded, not hidden:  Finnish (no plain affix pair) · Malay (no ms_MY source)
-E3     C1 remains the single slice that needs a Worker and fresh independent acceptance.
+ITALIAN   120 tiles · 21 tile kinds · the 21-LETTER Italian alphabet, exact equality both
+          directions — the first shipped variant with no letter lacking a tile and no tile
+          outside the alphabet. GPL-3.0-only. 3 128 429 words / 46.7 MB.
+          Diacritic fold, same sourced rule as Afrikaans: 34 114 of 3 135 500 forms (1.09%)
+          carry ò é à ì è ù ç â ô, and without folding CITTA, PERCHE, SARA, PIU are unplayable.
+          ⚠ Its licence gate quotes upstream's own typo — "The extensione is released…" —
+          VERBATIM. A tidied quotation would fail on a correct file. R-H in practice.
+DUTCH     102 tiles · 26 tile kinds · full Latin alphabet, exact equality.
+          ⭐ FIRST DUAL LICENCE: BSD-3-Clause OR CC-BY-3.0, OpenTaal, "at the discretion of the
+          user". The gate asserts THREE strings — the availability grant plus each named option
+          — because one sentence cannot prove a dual licence, and if upstream drops an option
+          the build fails rather than the manifest over-claiming. 1 293 086 words / 16.5 MB.
 ```
+
+### 17.1 ⛔ The find of the batch: NFD does not decompose a ligature
+
+```text
+MEASURED   upstream nl_NL spells 125 444 of 1 294 152 forms with U+0133, the IJ LIGATURE ĳ.
+           A diacritic fold ALONE leaves 121 891 words unreachable, because a ligature is a
+           COMPATIBILITY mapping, not base + combining mark — NFD walks straight past it.
+PROOF      verified ABSENT from the raw expansion and PRESENT after the rewrite:
+               ijs · dijk · ijzer · vrijheid
+           Without rule 1 the Dutch words for ice, dike, iron and freedom cannot be played
+           at all. That is not a 3% tail like Afrikaans; it is four everyday words.
+RULE       the modern Dutch edition dropped its IJ tile in March 1998 and spells the sound with
+           an I tile plus a J tile, so the build rewrites ĳ -> ij, THEN folds diacritics.
+           Rule order matters: rule 1 first keeps each rule's effect independently observable,
+           which is what makes a three-category word gate meaningful.
+⛔ EXPLICIT TABLE, NOT NFKD. NFKD would also rewrite unrelated compatibility characters, and an
+   aggressive normalizer on a shipped word list is how a silent corruption enters. The mapping
+   states the edition rule and nothing else.
+GATE       six required words in THREE categories (plain · ligature witness · fold witness),
+           one forbidden control word, a non-zero ligature-input assertion, AND a character
+           scan proving no finished word still contains U+0133. A count or size check cannot
+           see a partially applied mapping.
+```
+
+### 17.2 ⚠ C2 WAS SCOPED WRONG, and three shipped languages prove it
+
+The handout specified C2 as *"a manifest field that RESTRICTS the derived set"*. Measured:
+
+```text
+Afrikaans  a blank MAY represent X and Z — neither has a tile   (source citation-needed)
+Italian    a blank MAY represent J K W X Y — none has a tile    (source stated)
+Turkish    a blank may NOT represent Q W X                      (a restriction, as scoped)
+```
+
+⇒ **C2 must be an EXPLICIT declared set** able to name alphabet letters that have no tile, not
+a filter over the derived set. Absent still means "derive from the tile set", which keeps every
+shipped variant byte-unchanged. Not a blocker: all three ship today with derived targets and
+lose only the blank-as-absent-letter play.
+
+### 17.3 The pattern, now measured three times
+
+**Three of three "no capability needed" languages needed a TILE-FACE RULE** — a rewrite from
+upstream orthography to the faces the edition actually prints. All three were expressible in the
+**asset**, at build time, with zero engine change. That works only when the rewrite is TOTAL for
+the edition. German (Ä stays while ß→SS), Slovak (A≠Á) and Czech cannot use it, so **C3 is still
+required** and is still the highest-leverage capability left.
+
+### 17.4 Evidence
+
+```text
+--check    italian.txt      03bc29a56b62d8d31a0feee60615b138fddd6933d5cf7914cb16a00b7acabaaf  IDENTICAL
+           italian.LICENSE  8c82930583eb0f5490699fbb0fd9185e5c85c4368c068e97ff9c330c2061423f  IDENTICAL
+           dutch.txt        99d8ed478cca2781343807e611b9e213ce5e6d29832ca71941bc5192f1215baa  IDENTICAL
+           dutch.LICENSE    84bda1db98255d058fa445d28aabd85e6222f46fc3fb1875819a0650c09e1e9d  IDENTICAL
+gates      ruff · mypy 85 files · manage.py check · pytest 617 passed 4 skipped ·
+           collect-only 621 · validate_lexicons EIGHT assets 0 failed · typecheck 0 ·
+           vitest 450 passed 3 skipped · lint 0 · build 0, ELEVEN dynamic ZERO static
+arithmetic verified independently of the loader: italian 120 tiles / 21 kinds / 21 alphabet;
+           dutch 102 tiles / 26 kinds / 26 alphabet; zero tiles outside the alphabet and zero
+           alphabet letters without a tile, for both
+friction   the SAME four test inventories as Afrikaans. pytest 567 -> 617, ~50 cases enrolled
+           automatically from the two manifests. ZERO production-code changes.
+posture    ⛔ NON-INDEPENDENT. Orchestrator-direct under D13-8.
+```
+
+### 17.5 Recorded debt
+
+```text
+SIX build scripts now share ~350 near-identical lines. The 12/00 handout already flagged a
+shared backend/scripts/_lexicon_build.py at three copies. ⛔ NOT done now, deliberately:
+  · the shared interface should be designed from the REAL variation, and Dutch's two-rule
+    pipeline plus Italian's typo-quoting licence gate are exactly the variation to design from
+  · each script is a standalone host tool by design — `spec_from_file_location` in
+    test_lexicon_provenance.py does NOT put backend/scripts/ on sys.path, so a shared import
+    would break P9's import-safety test and need a sys.path hack in every script
+  · the refactor is verifiable: `--check` on all six proves byte-identity, so it is a safe
+    slice — just not one that should precede more languages
+TRIGGER: extract it before the tenth language, or when a rule must change in more than two
+scripts at once.
+```
+
+---
+
+## 18. Next step
+
+```text
+NEXT   C3 — variant-declared normalization. Now clearly the highest-leverage capability left:
+       it unlocks German, French, Danish, Swedish, Norwegian, Icelandic and part of Turkish,
+       and it is the ONLY way to handle a language where SOME accents fold and others do not.
+       German is the decisive case: ß -> SS while Ä Ö Ü stay distinct.
+       Design note earned this batch: absence of the field must mean today's behaviour exactly,
+       and the field must NOT be reachable by the build-time trick, because German's rule is
+       partial rather than total.
+THEN   the four remaining single-code-point rows, then C1 -> B1/B4/B6.
+BLOCKED and recorded:  Finnish (no plain affix pair) · Malay (no ms_MY source)
+E3     C1 remains the single slice needing a Worker and fresh independent acceptance.
+```
+
 
 
 
