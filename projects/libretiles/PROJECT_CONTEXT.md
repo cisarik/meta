@@ -27,7 +27,7 @@ and `1b7b05d0de854d7936c5fcd2b0d55a5cc5d14cfd` (the starting-draw screen, plus a
 fix). `uii-01-F04` is owned by slice **S3a**, not S2 — Cooperator decision 7 cancelled S2 altogether by
 removing URL locale prefixes. An earlier version of this paragraph said S2 and was stale.
 
-`main` is now `f983c3dcce19534466a86b06605e1a02f8bd2bf3`. Porcelain is EMPTY — the ten
+`main` is now `cb4efed9e1c3859e7839b5adb18a605a6c3ef102`. Porcelain is EMPTY — the ten
 deliberately untracked `frontend/public` flag files are gone. The **Cooperator himself** committed the
 five normalized 48x32 PNGs at `61c9f09` on 2026-09-02 (`feat(images): add new language icons for Czech,
 English, Hungarian, Polish, and Slovak`, 5 files, 5230 B total, byte sizes identical to the
@@ -70,9 +70,10 @@ Commit lineage of era 11, all Orchestrator-verified:
     8f096e1  R7   Django resolves the client locale; F17 end reasons     10 files, 5 keys
     8ef5992  R8   ORCHESTRATOR-AUTHORED: Retry-After header over prose     4 files, 0 keys
     f983c3d  R9   ORCHESTRATOR-AUTHORED: HSTS includeSubDomains          2 files, 0 keys
+    cb4efed  R10  per-request nonce CSP; orch-01-F18 corrected            4 files, 0 keys
 
 Anything below that speaks of `19cfec9`, `f26e92a`, `1b7b05d`, `9f0c5b8`, `3fd1a81`, `8c00a33`,
-`2917251`, `61c9f09`, `5a96b5e`, `e421c66`, `e0d3b64`, `383011b`, `d40b230`, `6ca85de`, `4bf4365`, `d806e31`, `8f44022`, `c3f75e3`, `e8cc7bb`, `74b5339`, `f40d8a0`, `8f096e1` or `8ef5992`
+`2917251`, `61c9f09`, `5a96b5e`, `e421c66`, `e0d3b64`, `383011b`, `d40b230`, `6ca85de`, `4bf4365`, `d806e31`, `8f44022`, `c3f75e3`, `e8cc7bb`, `74b5339`, `f40d8a0`, `8f096e1`, `8ef5992` or `f983c3d`
 as "current" describes an earlier commit and is history.
 
 ⛔ **THE FRONTEND SURFACE OF `10/00` IS COMPLETE AT `e8cc7bb`** — copy (S1–S9), function (S4), presentation
@@ -148,18 +149,19 @@ named this after F21/F22 and R14 repeated it anyway, so the lesson was not opera
 reads: **for every ARIA attribute added or removed, write down what the user does, what the technology
 announces, and which key activates it. If nothing activates it, that is the defect.**
 
-**All eight standing gates measured green at `f983c3d` by the era-10 continuation Orchestrator.** ⚠ THREE
-commits in this whole have NON-INDEPENDENT evidence because the Orchestrator authored them: `f40d8a0` (R15),
-`8ef5992` (R8) and `f983c3d` (R9). For those, only the mechanical gates corroborate the judgement calls —
-there is no second agent's reading. Every other commit is Worker work independently re-measured. Do not read
-them as equally verified. The gates below were run ONCE on the combined R8+R9 tree, not per commit:
+**All eight standing gates measured green at `cb4efed` by the era-10 continuation Orchestrator**,
+independently — `cb4efed` is Worker work re-measured, INCLUDING a full re-run of its loopback CSP proof on a
+different port with different nonces. ⚠ THREE commits in this whole have NON-INDEPENDENT evidence because
+the Orchestrator authored them: `f40d8a0` (R15), `8ef5992` (R8) and `f983c3d` (R9). For those, only the
+mechanical gates corroborate the judgement calls. Every other commit is Worker work independently
+re-measured. Do not read them as equally verified:
 
     mypy config game gamecore accounts catalog   Success: no issues found in 83 source files
     ruff check .                                 All checks passed!
     manage.py check                              System check identified no issues (0 silenced).
-    pytest                                       390 passed, 4 skipped in 220.11s
+    pytest                                       390 passed, 4 skipped in 218.74s
     npm run typecheck                            exit 0
-    npx vitest run                               432 passed | 3 skipped  (29 files passed | 1 skipped)
+    npx vitest run                               439 passed | 3 skipped  (30 files passed | 1 skipped)
     npm run lint                                 exit 0
     npm run build                                exit 0, EVERY route ƒ, zero static, no deprecation warning
     grep -c sr-only .next/static/css/*.css       1, and the rule is clip-path:inset(50%), not display:none
@@ -756,7 +758,8 @@ Two structural patterns worth reusing rather than reinventing:
     now covers coordinate consistency as well — extended twice, each time after a defect it could not see,
     each time validated against the failing artifact before being trusted. A checker never anticipates a
     class it has not been burned by, so growing it after each miss is the method, not an admission.
-18. **A test that pins a known-broken UPSTREAM state is a tripwire, not a regression test, and it must be labelled as one.** R7 added `test_czech_minimum_length_validator_catalog_mismatch` and `test_drf_throttle_wait_suffix_stays_english`, both asserting that a Django/DRF translation gap still exists. They are useful — they fire the moment upstream fixes it — but the next dependency bump will break the suite with a failure that looks like a regression and is actually good news. Both carry explanatory docstrings. `audit-02` established a standing upgrade posture, so whoever performs the next bump must be told these two are expected casualties.
+18. **A NUMBER YOU DID NOT COUNT YOURSELF IS NOT A MEASUREMENT, WHATEVER PRODUCED IT.** Lesson 13 was written after an inventory stated from recollection. Worker session 16 found the same failure with a different source: the R10 implementation prompt said `security-headers.test.ts` had "nine existing `it` blocks" when it had ELEVEN. The number came from an explore subagent's report and was repeated without counting — and the `12 call sites` figure in the same sentence WAS correct, which is exactly what made the wrong number look checked. One layer down, the same prompt claimed `constructRequest` was available from `next/experimental/testing/server`; it is declared in the internal `utils.d.ts` but the public barrel re-exports only `getRedirectUrl`, `getRewrittenUrl` and `isRewrite`. **Reading the file that DECLARES a symbol is not reading the file that EXPORTS it.** Subagent output is evidence to verify, not a measurement to quote.
+19. **A test that pins a known-broken UPSTREAM state is a tripwire, not a regression test, and it must be labelled as one.** R7 added `test_czech_minimum_length_validator_catalog_mismatch` and `test_drf_throttle_wait_suffix_stays_english`, both asserting that a Django/DRF translation gap still exists. They are useful — they fire the moment upstream fixes it — but the next dependency bump will break the suite with a failure that looks like a regression and is actually good news. Both carry explanatory docstrings. `audit-02` established a standing upgrade posture, so whoever performs the next bump must be told these two are expected casualties.
 
 ## 10. Known environment traps on the Cooperator's machine
 
@@ -1127,10 +1130,21 @@ instead.
    R9   DONE at f983c3d, ORCHESTRATOR-AUTHORED — security.W005 closed, security.W021 (no preload) kept
         standing and PINNED BY TEST as an accepted residual. ⛔ Deployment checklist item: includeSubDomains
         forces HTTPS on every subdomain for a year and is slow to undo.
-   R10  orch-01-F18 — the nonce CSP, the ONLY authorized proxy.ts touch in this whole, plus a loopback
-        re-probe of every header against the audit-03 baseline
-   R11  audit-01-F06 — the catalog proxies stop swallowing failures into an empty HTTP 200, plus
-        uii-01-F13 (the dead /api/prompts route)
+   R10  DONE at cb4efed — per-request nonce, 'strict-dynamic', 'self' kept as the CSP2 fallback, matcher
+        UNCHANGED with conditional /api request propagation. Orchestrator reproduced the loopback proof on
+        port 3208: ALL 15/15 <script> tags carried that response's nonce, four distinct nonces across two
+        ports, audit-03 diff shows exactly ONE changed directive.
+        ⛔ orch-01-F18 is `corrected`, NOT `verified-closed` — that needs the Cooperator's browser.
+   R11  ISSUED at cb4efed, Worker session 17 — and the measurement MOVED the defect. Both proxy routes have
+        ZERO callers; the app reaches Django directly via api.ts:356/:412. The user-visible swallow is in the
+        PAGES: play/page.tsx:104 `.catch(() => [])` then :147/:164 render "the catalog is empty", and
+        settings/page.tsx:426 already tracks `ok: false` but :477 ignores it. A slice fixing only the routes
+        would have closed audit-01-F06 on paper with every symptom intact.
+        uii-01-F13 DECIDED as keep-and-record: four documents describe /api/models, two of them
+        (README.md, AGENTS.md) are frozen, and whole 11/00 will need the proxy. Build must still show
+        ELEVEN dynamic routes.
+        One new key `play.error.catalogUnavailable` in four locales; informal `ty` because this sentence
+        addresses the player, deliberately unlike the impersonal history.endReason.* strings.
    B25+ the final acceptance batch, then the residual signatures and 99_closure.md
    ```
 
