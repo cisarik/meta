@@ -1585,6 +1585,223 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice R11 issued — Worker session 17, exchange 01, at `cb4efed` — THE LAST RESIDUAL
+
+`fix(catalog): an unreachable catalog stops reporting itself as an empty one`. Prompt staged at
+`/tmp/opencode/uii-r11-worker-17-prompt.md`, 388 lines, tool-verified `0 defects, 0 warnings`. Archive as
+`17_implementation_00.md` **only after its report exists**. Fresh Implementation Worker, E2, reasoning HIGH.
+
+### ⛔ THE MEASUREMENT MOVED THE DEFECT
+
+`audit-01-F06` was filed against the two catalog proxy routes. Measured at `cb4efed`:
+
+```text
+BOTH PROXY ROUTES HAVE ZERO CALLERS. Nothing in frontend/src fetches /api/models or /api/prompts except
+proxy.test.ts:44 and :91, which use the paths only as matcher fixtures.
+The app reaches Django DIRECTLY — api.ts:356 getModels -> "/api/catalog/models/", :412 getPrompts ->
+"/api/catalog/prompts/". api.getPrompts itself has ZERO callers outside api.ts, because S4 removed the
+prompt-preset surface.
+```
+
+So the filed swallow currently harms nobody. **The user-visible swallow is in the pages:**
+
+```text
+play/page.tsx:104     api.getModels().catch((): AIModel[] => [])       outage -> empty catalog
+play/page.tsx:147     setError(... "play.error.catalogEmpty")
+play/page.tsx:164     setError(t("play.error.catalogEmpty"))
+                      "The rival catalog is empty. Seed the free catalog to play AI matches."
+settings/page.tsx:426 ALREADY resolves to { ok: false, catalog: [] } on failure...
+settings/page.tsx:477 ...and then IGNORES catalogResult.ok, showing catalogEmpty either way
+```
+
+A Django outage tells the player they have not seeded a catalog. That is the `acc-01-D02` shape the ledger
+described — and a slice that fixed only the routes would have closed `audit-01-F06` on paper while leaving
+every symptom intact. **The prompt therefore covers both halves**, and says so in its reasoning basis.
+
+### `uii-01-F13` DECIDED: keep-and-record, not delete
+
+The `uii-01-F13` note asked R11 to choose between deleting the dead proxy or keeping it and saying so. Two
+pieces of evidence force keep:
+
+```text
+1  README.md:291, frontend/README.md:45, docs/architecture.md:38 and CONTRIBUTING.md:91 all document
+   /api/models as the architecture. README.md and AGENTS.md are under the STANDING COOPERATOR FREEZE
+   (locked fork 11), so deleting the route would require editing a frozen file.
+2  Whole 11/00 admin-provider-model-console will need a server-side catalog proxy, and the ledger already
+   says "Do NOT delete the Django catalog/prompts/ endpoint — the admin console needs it."
+```
+
+So the routes stay and stop lying. `api.getPrompts` survives with them. The build must still list ELEVEN
+dynamic routes; the prompt makes a count of nine a stopping condition, because that would mean a deletion
+section 8 forbids.
+
+### The third filed sub-defect, also fixed
+
+`models/route.ts:16` uses `next: { revalidate: 60 }` while `prompts/route.ts:8` uses `cache: "no-store"`. The
+ledger recorded that asymmetry: "a 60-second stale empty catalog can outlive a recovered backend." Both
+become `no-store`, and `AC-PROXY-NO-STORE` asserts it from the **fetch call arguments** rather than from
+source text.
+
+### ⛔ WHY THIS WENT TO A WORKER AND NOT TO ME
+
+Decision 13 lets me self-implement easy tasks, and decision 12's discipline says a task fails the bar if
+measuring reveals a second file, a trust boundary, or a design choice. This one fails on two counts: nine
+files, and a genuine design choice — `reconcileRival` must change its return type from
+`Promise<string | null>` to carry the reachability flag, which ripples to two call sites.
+
+It is also the last slice before closure, and it changes **user-visible copy in four locales**. After five
+protocol defects and four a11y defects of my own authorship in this whole, putting new player-facing
+sentences through a second pair of eyes is the cheaper option, not the more expensive one.
+
+### The one new key, and the register decision inside it
+
+```text
+play.error.catalogUnavailable
+  en  The rival catalog is temporarily unavailable. Try again in a moment.
+  sk  Katalóg súperov je práve nedostupný. Skús to za chvíľu.
+  cs  Katalog soupeřů je právě nedostupný. Zkus to za chvíli.
+  pl  Katalog rywali jest chwilowo niedostępny. Spróbuj za chwilę.
+```
+
+⚠ `Skús` / `Zkus` is informal `ty`, per Cooperator decision 3 — and that is a DELIBERATE contrast with the
+impersonal `history.endReason.*` strings authored in R7. This sentence addresses the player and tells them to
+do something; those described a fact about a finished game with no known actor. `rival` follows the shipped
+`súper` / `soupeř` / `rywal`, not a synonym. `play.error.catalogEmpty` is explicitly unchanged: it keeps its
+meaning for a catalog that really is empty.
+
+299 keys becomes 300.
+
+### Orchestrator pre-verification before issuing
+
+Sixteen `file:line` claims checked mechanically, **zero misses**, including the four documentation sites that
+justify keep-and-record. `apfieldcheck.py` reports zero defects and zero warnings. Written from scratch rather
+than patched, per the lesson from the five structural defects.
+
+## Slice R10 landed at `cb4efed9e1c3859e7839b5adb18a605a6c3ef102` — Worker session 16, exchange 01
+
+`fix(security): per-request nonce replaces script-src unsafe-inline`. 4 files, +224 -20, one created, none
+deleted, parent `f983c3d`, one non-force push, public readback equal, `.ap` gitlink untouched. Build gate
+PRIMARY; 3000 and 3107 both free.
+
+Orchestrator verdict: **implementation-PASS, ACCEPTED.** `orch-01-F18` is CORRECTED, pending the Cooperator's
+browser acceptance which INFOSEC 4.10 requires and which this Worker explicitly declined to self-certify.
+
+Archived as `16_implementation_00.md` + `16_report_00.md`.
+
+### ⛔ THE LOOPBACK PROOF, INDEPENDENTLY REPRODUCED BY THE ORCHESTRATOR ON A DIFFERENT PORT
+
+The Worker proved it on 3107. The Orchestrator re-ran the whole thing on **3208** with a fresh build, got
+**different nonces**, and every assertion held. This is the audit-03 pattern applied to a correction.
+
+```text
+response 1   nonce OGQ1N2JkMjAtMWM3OS00ZDBkLWJmMDEtNzkzZGMxNmQxOWJj -> 8d57bd20-1c79-4d0d-bf01-793dc16d19bc
+response 2   nonce ODc4OWE5OTktMDY3ZS00M2RiLWJhOGQtZjQwMTcwMTRmNjI1 -> 8789a999-067e-43db-ba8d-f4017014f625
+
+1  exactly ONE nonce per CSP, grammar-valid, decodes to a real UUID        PASS
+2  'strict-dynamic' present                                               PASS
+3  script-src has NO 'unsafe-inline'                                      PASS
+4  style-src still exactly 'self' 'unsafe-inline'                          PASS
+5  15 <script> tags per body: 6 inline + 9 external                        PASS  (Worker saw the same counts)
+6  ⛔ ALL 15/15 scripts carry THIS response's nonce                         PASS  <- the decisive assertion
+7  the two nonces differ                                                  PASS
+8  neither body contains the other response's nonce                       PASS
+port 3208 released cleanly after a PID-exact stop
+```
+
+**Assertion 6 is the whole slice.** A CSP header containing a nonce proves nothing; only the annotated HTML
+proves Next discovered the Proxy, received the forwarded REQUEST header, ran
+`getScriptNonceFromHeader`, and passed the value into Fizz. 15 of 15, twice, on two ports, with four distinct
+nonces.
+
+### The audit-03 byte comparison, re-run by the Orchestrator
+
+```text
+directive count   11 base / 11 observed — identical count, identical ORDER
+the ONLY diff     script-src 'self' 'unsafe-inline'  ->  script-src 'self' 'nonce-PH' 'strict-dynamic'
+six other headers x-content-type-options · referrer-policy · x-frame-options · permissions-policy ·
+                  cross-origin-opener-policy · strict-transport-security — ALL byte-identical
+Vary: Accept-Language   ABSENT · Content-Language   ABSENT
+```
+
+That last line vindicates the correction I made to my own R7 hand-off note before issuing the planner prompt.
+Had I left the original claim standing, a Worker would have had a ready-made explanation for two headers that
+must never appear on a Next.js response.
+
+### Gates at `cb4efed`, Orchestrator-measured
+
+```text
+mypy 83 files clean · ruff clean · manage.py check clean · pytest 390 passed, 4 skipped in 218.74s
+typecheck exit 0 · vitest 439 passed | 3 skipped (30 files passed, 1 skipped) · lint exit 0
+build exit 0, 11 dynamic routes, ZERO static, ƒ Proxy (Middleware)
+a11y invariants intact: aria-live 1 · role=status 1 · role=dialog 4 · aria-modal 4 · role=group 1
+style-src line 98 unchanged · matcher source line 43 unchanged
+```
+
+`432 -> 439` is `+7`: three header tests and four proxy tests. `security-headers.test.ts` went from 11 to 14
+`it` blocks; `proxy.test.ts` has 4.
+
+### The code is exactly the approved design, and one property is STRUCTURAL rather than merely asserted
+
+```text
+security-headers.ts  NONCE_GRAMMAR = /^[A-Za-z0-9+/_-]+={0,2}$/ with assertNonceGrammar() THROWING before
+                     any policy is emitted — Next's silent-ignore failure mode is now loud
+                     script-src: 'self' + 'nonce-X' + 'strict-dynamic' + dev-only 'unsafe-eval'
+proxy.ts             one nonce per invocation; isApiPath(pathname) selects the branch
+⚠ the forwarded REQUEST CSP and the RESPONSE CSP are the SAME STRING — `headers["Content-Security-Policy"]`
+  is reused for both, so they cannot drift. That is a structural guarantee, not a test-enforced one, and it is
+  worth more than the assertion that checks it.
+```
+
+### ⛔ THREE ORCHESTRATOR INVENTORY ERRORS, all caught by the Worker
+
+```text
+1  "nine existing it blocks" — the file had ELEVEN. Measured: 11 at f983c3d, 14 now. All eleven preserved.
+   Source of the error: I took the count from an explore agent's report and repeated it without counting.
+   `12 call sites` in the same sentence WAS accurate, which is what made the wrong number look checked.
+2  `constructRequest` is NOT re-exported from `next/experimental/testing/server`. The public barrel is
+   `export * from './config-testing-utils'; export * from './middleware-testing-utils';
+    export { getRedirectUrl, getRewrittenUrl, isRewrite } from './utils';`
+   I read the internal `utils.d.ts` and reported the symbol as publicly available. The Worker used
+   `NextRequest` plus the public matcher helper instead.
+3  `_global-error.html` has 5 EXTERNAL scripts as well as the 5 inline ones. My section 4 said "5 inline
+   scripts, 0 nonce attributes" — true but incomplete in a section whose whole purpose was completeness.
+```
+
+Error 1 is lesson 13 again — an inventory stated more precisely than my own measurement — and this time the
+number came from a subagent rather than from recollection. **A number I did not count myself is not a
+measurement, whatever produced it.** Error 2 is the same shape one layer down: I read the file that declares
+a symbol instead of the file that exports it.
+
+### The accepted residual, with the evidence that keeps it low
+
+`_global-error` remains a static prerender: 10 `<script>` tags, 0 nonce attributes, so its scripts are
+blocked under the new policy. It still renders "This page couldn't load / A server error occurred. Reload to
+try again." with a native `<form style="margin:0">` and a `<button type="submit">Reload</button>`.
+
+Severity low, confidence high on the artifact fact, and the recovery path does not depend on JavaScript. The
+ordinary-page policy was not weakened to accommodate it, which was the explicit instruction and the
+temptation.
+
+### One near-miss the Worker resolved, and it matters for anyone repeating the probe
+
+`npx next start` returns the PID of the **npm wrapper**, not the listener. After killing the wrapper the owned
+`next-server` child was still bound to 3107. The Worker killed that owned child only, never a pattern, and
+confirmed the port released. The Orchestrator's own reproduction avoided the problem by invoking
+`./node_modules/.bin/next` directly and resolving the listener PID from `ss -tlnpH "sport = :3208"`.
+
+Both routes are safe. `pkill -f next-server` would have killed the Cooperator's own server, which is why the
+prompt forbids it in three separate places.
+
+### What is NOT proven, and who has to prove it
+
+The loopback proves the header, the annotation and the API coverage. It does not prove that a browser enforces
+the policy, that hydration succeeds, that client navigation works, that Fast Refresh survives in development,
+or that the game is playable. INFOSEC 4.10: the corrector does not self-certify, and this Worker said so
+itself in its own smallest-next-step.
+
+⛔ **`orch-01-F18` must NOT be recorded as `verified-closed` until the Cooperator has loaded the app.**
+It is `corrected at cb4efed`, pending independent acceptance.
+
 ## R10 plan APPROVED — Worker session 15 exchange 04, and the implementation prompt is issued
 
 Worker session 15, exchange 04 at `f983c3d`. `status: PASS`, `Phase-qualified result: not-applicable`, tree
