@@ -6463,7 +6463,29 @@ deliberately rather than papered over with a lookup table.
 
 
 
-## Era 10 — `ui-internationalization`, opened 2026-09-01
+## Era 10 — `ui-internationalization`, CLOSED 2026-09-03 at `47ed8bf`
+
+⛔ **Logical whole `ui-internationalization` is CLOSED by the ORCHESTRATOR at
+`47ed8bff5a6548d2d954c68d9ea13f05a2222e4a`.** See `10/00-ui-internationalization/99_closure.md` for the
+closure record, all ten conditions with their evidence, and the full residual register with every preserved
+sign-off. Cooperator acceptance batch `B25. PASS`, blanket, eight items.
+
+```text
+delivered   four interface locales (en sk cs pl), 300 keys x 4 = 1200 strings, three Slavic plural functions,
+            server-authoritative locale · the player chooses no model and no prompt · accessible names,
+            dialog semantics, one working live region, keyboard-operable rack tiles · per-request nonce CSP
+            with script-src 'unsafe-inline' gone, proved on eleven routes
+corrected   orch-01-F18 · orch-02-D11 · audit-01-F06 · uii-01-F01 F03 F04 F08 F09 F10 F11 F12 F14 F17 F20
+            F21 F22 F23 F24 · uii-01-F02 (as R12)
+signed off  uii-01-F05 F13 F15 F16 F18 F19 F25 F26 F27, style-src 'unsafe-inline', the _global-error
+            non-hydration, and the English {humanState}
+gates       mypy 83 · ruff · check · pytest 390/4 · typecheck 0 · vitest 450/3 · lint 0 · build 0, 11 ƒ, 0 ○
+```
+
+Entries below this line are the era's working history and are kept as evidence. Nothing in them grants
+authority.
+
+## Era 10 working history — `ui-internationalization`, opened 2026-09-01
 
 Baseline `19cfec9ed27c57e9499b71c55be6c2fb709b0c63`. Nothing below has been corrected yet. No Worker has
 been issued. Full restoration evidence, including the exact probe commands and their output, is in
