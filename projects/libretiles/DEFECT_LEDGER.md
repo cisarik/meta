@@ -1585,6 +1585,105 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## R10 plan APPROVED — Worker session 15 exchange 04, and the implementation prompt is issued
+
+Worker session 15, exchange 04 at `f983c3d`. `status: PASS`, `Phase-qualified result: not-applicable`, tree
+clean, no mutations. **The first plan-only exchange in this project's history to return a plan**, on the
+fourth attempt, after three Orchestrator structural defects and five findings.
+
+Archive as `15_implementation_04.md` + `15_report_04.md` alongside the three earlier BLOCKED reports.
+
+### Orchestrator verdict: APPROVED, with the three load-bearing claims independently verified
+
+I did not accept the plan on its reasoning. Each claim it stands on was checked against the installed
+runtime and the built artifact:
+
+```text
+1  next/experimental/testing/server EXISTS in this install and re-exports
+   unstable_doesMiddlewareMatch({config,url,headers,cookies,nextConfig}) and constructRequest(...).
+   -> `node_modules/next/dist/experimental/testing/server/middleware-testing-utils.d.ts:13` and `utils.d.ts:4`.
+   CONFIRMED. This is a genuinely new capability the planning exchange found and I had not: it makes the
+   FIRST EVER test of proxy.ts possible, against a file with zero coverage since it was written.
+2  Proxy defaults to the NODE.JS RUNTIME in Next 16 -> proxy.md:255 and the v16.0.0 row at :806. So `Buffer`
+   and `crypto.randomUUID()` are available. CONFIRMED.
+   BONUS from the same line, now in the implementation prompt as a prohibition: the `runtime` config option
+   is NOT available in Proxy files and SETTING IT THROWS.
+3  _global-error.html contains exactly one `<form style="margin:0">` and one `<button type="submit">`,
+   5 inline scripts, 0 nonce attributes. Parsed from the artifact. CONFIRMED.
+   This is the fact that makes the accepted residual LOW rather than medium: the reload path does not depend
+   on JavaScript, so a fatal error still shows styled text and a working native reload.
+Also confirmed: content-security-policy.md:48 uses exactly
+`Buffer.from(crypto.randomUUID()).toString('base64')`, so the plan conforms to the pinned doc rather than
+inventing a nonce scheme. And `buildSecurityHeaders` has exactly ONE production caller — proxy.ts:6 — plus
+12 test call sites, so adding a required parameter has a fully known blast radius.
+```
+
+### The five decisions, as decided
+
+```text
+D1 _global-error   ACCEPT non-hydration as a low residual, narrowed by the native reload form. Do not force
+                   the document dynamic — no supported request-time path exists inside the authorized files.
+                   Do not weaken the ordinary-page policy to accommodate it.
+D2 strict-dynamic  INCLUDE it, and RETAIN 'self' as the CSP2 fallback: CSP3 browsers ignore 'self' when
+                   strict-dynamic is present, CSP2 browsers ignore strict-dynamic and honour 'self'.
+                   Falsification named: any script element without the response nonce in the loopback proof.
+D3 matcher         KEEP IT BYTE-FOR-BYTE, including /api coverage, and propagate request headers
+                   CONDITIONALLY — rendered pages get the request CSP, /api gets response headers only.
+                   This is the decision I could not have made from the outside, and it resolves the tension
+                   exactly: excluding /api would have removed headers audit-03 verified, while forwarding a
+                   randomized CSP into route handlers that render no framework scripts is pointless.
+D4 dev vs prod     Nonce in BOTH; development keeps 'unsafe-eval'. Reason given: "A production-only nonce
+                   would conceal integration failures until deployment." Better than the Next doc's own
+                   dev/prod split.
+D5 nonce           Buffer.from(crypto.randomUUID()).toString("base64"), created in proxy.ts, passed
+                   explicitly into a builder that stays pure, with a non-exported validator that THROWS on
+                   anything Next's regex would silently ignore.
+```
+
+### ⛔ THE PLANNER CAUGHT AN ORCHESTRATOR ERROR I HAD NOT SEEN
+
+Plan finding 2: `DEFECT_LEDGER.md` and `12_report_01.md` are **not in the repository**. Section 4.7 of my
+planner prompt told it to compare against the audit-03 baseline recorded in those documents — which live in
+`/home/agile/meta/projects/libretiles`, OUTSIDE the checkout, where a Worker has neither authority nor reason
+to look. It refused to claim a provenance-backed byte comparison it could not perform, and asked me to supply
+the raw baseline.
+
+Correct, and exactly the right refusal shape: it did not block the design on it, it scoped the objection to
+the acceptance claim. **The baseline is now inlined verbatim in the implementation prompt, section 8.1.**
+
+That is the sixth Orchestrator error this whole has surfaced, and the second caused by pointing a Worker at
+Meta as though it were repository evidence.
+
+### The implementation prompt
+
+`/tmp/opencode/uii-r10-impl-worker-16-prompt.md`, 444 lines, **fresh** Worker session 16, `E3`,
+`Native planning mode: not-used`, explicit implementation authority, tool-verified `0 defects, 0 warnings`.
+
+⚠ **Written from scratch, not string-patched.** That is the lesson from the five structural defects applied
+rather than restated.
+
+`apfieldcheck.py` caught two defects in it before issuing — `Plan disposition: approval-gated -> APPROVED by
+ORCHESTRATOR` and `Post-plan implementation session: fresh-worker-session   <- you are it`, both broken by
+trailing annotations on a closed-literal field. It also caught a wrong doc citation I had made
+(`content-security-policy.md:47`, actually `:48`). The tool paid for itself on the very next prompt after it
+was written.
+
+Two things the prompt adds beyond the plan:
+
+```text
+E3 evidence tier   raised from the plan's implicit level because a mis-wired nonce silently disables script
+                   execution on EVERY page and the failure mode is a correct-looking header with no effect.
+assertion 6        the loopback proof must show EVERY raw <script> carrying nonce="<this response's CSP
+                   nonce>". Header-contains-a-nonce proves nothing; only the HTML annotation proves Next
+                   discovered the Proxy, received the request CSP and extracted the nonce.
+                   And an explicit prohibition: if assertion 6 fails, do NOT restore 'unsafe-inline' or drop
+                   'strict-dynamic' — report and stop. Mixed nonce wiring is worse than either end state.
+```
+
+`AC-PROXY-MATCH` is carried into the prompt with the label the plan gave it: a **decision-lock** test that is
+expected to pass before the change, not a regression test. The plan volunteered that distinction unprompted,
+which is the same honesty R15 had to be forced into by its own ledger entry.
+
 ## R10 planning exchange 03 returned BLOCKED — a FIFTH defect, and a repair caused this one too
 
 Worker session 15, exchange 03, at `f983c3d`. `status: BLOCKED`,
