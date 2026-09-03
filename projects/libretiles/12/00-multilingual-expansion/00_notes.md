@@ -1304,8 +1304,188 @@ session/exchange   slice   phase            files                              o
                                             03_report_01.md                    PASS 21f0a14
 ```
 
-New exact baseline for every subsequent slice: **`21f0a149bd5591bac492d6f024ddd6a46998c0cf`**.
-Next fresh Worker session ordinal: **04** (slice V3).
+---
+
+## 13. Slice V3 landed in three exchanges — Worker session 04
+
+```text
+a3ed00f192bcbbfc3cf1f226d0d2bbc63b383ef8  V3   build scripts + manifest provenance  9 files, +1112 −11
+--                                        V3b  BLOCKED, zero mutation
+ad4ce038e1bd3511bdd5b7431eb9c163d4788130  V3c  --check + expander pin + AGENTS.md    5 files, +555 −18
+```
+
+Three pairs archived: `04_implementation_00/_report_00`, `04_implementation_01/_report_01`
+(BLOCKED — a terminal report, so a report and **not** an interruption companion),
+`04_implementation_02/_report_02`.
+
+### 13.1 The Cooperator's directive is now mechanically true
+
+His instruction was that every needed dictionary be **downloaded by a script**. Before this
+slice, `backend/scripts/` held exactly one file and two of three non-English lexicons were
+reproducible from nothing in the repository. Now:
+
+```text
+build_slovak_lexicon.py · build_czech_lexicon.py · build_polish_lexicon.py
+each pins the upstream commit and the SHA-256 of every source file it fetches
+each pins the host expander (hunspell 1.7.3) and EXITS NON-ZERO on a mismatch
+each has --check, which re-verifies a committed asset WITHOUT writing to it
+every manifest declares lexicon_provenance: upstream · upstream_commit · expander ·
+    entry_count · spdx · license_file · build_script
+test P3 asserts that a lexicon claiming a build script HAS one
+test P4 asserts entry_count equals the real whole-file count, not a sample
+```
+
+**Closure conditions 3 and 4 of section 7 are satisfied.**
+
+### 13.2 What I verified myself — including the claim the whole slice rests on
+
+The value of V3 is one claim: *the committed asset is reproducible*. The only honest proof is
+byte-identity, and the two ways to fake it are to overwrite the oracle and compare it with
+itself, or to relax the comparison to a word count. I checked both.
+
+```text
+git diff --stat 21f0a14 ad4ce03 -- backend/assets/dicts/    EMPTY — the oracle never moved
+my own sha256sum, six artifacts, reproduced vs committed:
+    czech.txt 919d6bac… · czech.LICENSE bde41b51… · polish.txt 605d5a43…
+    polish.LICENSE 869efade… · slovak.txt edca5453… · slovak.LICENSE f3ad399b…
+    SIX OF SIX IDENTICAL
+my own --check run (slovak):   both digests IDENTICAL, "CHECK all artifacts identical", exit 0
+my own refusal test:           --check --check-dir assets/dicts/rebuild -> exit 2, and
+                               git status --porcelain=v1 -- backend/assets/ still EMPTY,
+                               nine files in dicts/ before and after
+my own no-dir test:            --check with no --check-dir -> exit 2
+pytest --collect-only          542 collected (495 -> 535 -> 542, +47 across the slice)
+```
+
+The reproduction is also **deterministic across processes and across a day**: exchange 01
+produced these digests once, exchange 03 reproduced them again in fresh processes from
+different working directories, and all twelve agreed.
+
+### 13.3 ⛔ MY FIFTH AND SIXTH PROMPT DEFECTS — and the sixth was nearly destructive
+
+```text
+defect 5  MY NETWORK ALLOWLIST OMITTED sk_SK WHILE I MANDATED THE SLOVAK CONTROL.
+          V3's prompt allowlisted cs_CZ/ and pl_PL/ and then required running
+          build_slovak_lexicon.py as the falsification control, which fetches four sk_SK
+          files. The Worker proceeded and disclosed it rather than abandoning the one cheap
+          test of the whole approach. Corrected in V3c's field block. My defect.
+
+defect 6  ⛔ A NEGATIVE GREP, RECORDED AS PROOF, THAT WOULD HAVE DELETED A REFERENCED ASSET.
+          I ran `grep -rn "sowpods"` — case-sensitive, lowercase — got zero hits, and wrote
+          "ZERO references anywhere in the repository" into a prompt that authorized
+          `git rm`. MEASURED BY ME AFTERWARDS:
+              git grep -n  "sowpods"  -> 0 hits
+              git grep -in "sowpods"  -> 5 hits, all in libretiles_PRD.md :35 :65 :66 :127 :150
+          The Worker widened the pattern because my own section 4a item 1 told it to, found
+          the five uppercase hits, and returned BLOCKED with zero mutation.
+```
+
+⛔ **`PROJECT_CONTEXT.md` lesson 10 is exactly this failure, by name:** *a negative grep is
+not a conclusion; when a grep returns few results, widen the pattern before writing a
+finding, and a finding built on absence must state the exact pattern that failed to match.*
+I wrote the finding from the narrow pattern and then instructed the Worker to widen it. The
+instruction saved the asset; the finding would have destroyed it.
+
+Two operational corrections, added to R-A…R-D from sections 11.2 and 12.2:
+
+```text
+R-E  AN ABSENCE CLAIM IS NOT A FINDING UNTIL IT NAMES ITS PATTERN AND THAT PATTERN IS
+     CASE-INSENSITIVE. I now run `git grep -in` and `git grep -n` and report both counts
+     before writing any "there are no references" sentence.
+R-F  NEVER AUTHORIZE A DELETION IN THE SAME EXCHANGE THAT ESTABLISHES THE ASSET IS
+     UNREFERENCED. The proof and the deletion belong in different exchanges, because a
+     prompt that carries both invites the Worker to treat my premise as the proof.
+```
+
+### 13.4 The Worker's BLOCKED was the right call and its reasoning was better than mine
+
+It could have read "any reference" narrowly — the five hits are prose, not code — and
+proceeded. It did not, and it said why: *"Reading 'any reference' narrowly enough to permit
+the deletion would be me granting myself the scope decision."* It also refused to
+half-execute: my section 7 required a commit message naming the deletion and my section 5
+required a test asserting the file absent, so shipping the unrelated two thirds would have
+meant rewriting my commit message and dropping my test — *"three inventions of authority."*
+It left a pristine tree instead.
+
+Its recommended split was adopted verbatim and shipped as V3c.
+
+### 13.5 Findings routed forward
+
+```text
+F1  ROUTED TO V9 (documentation), and it is now a BLOCKER for the sowpods deletion.
+    libretiles_PRD.md is stale in three ways at once, all measured: it names SOWPODS as the
+    Tier-1 dictionary (the product ships collins2019.txt), it claims 172 823 words, and that
+    count matches NEITHER the shipped Collins list (279 496) NOR the committed sowpods.txt
+    (172 872, off by 49). Correcting PRD:35 :65 :66 :127 :150 is the one edit that unblocks
+    the deletion, and it is a documentation fix that was owed anyway.
+F2  🐞 NEW DEFECT mle-01-F02, severity low, status `confirmed`, evidence class
+    established-static. `backend/config/settings.py:375`
+        PRIMARY_DICTIONARY_PATH = DICTS_DIR / os.getenv("PRIMARY_DICTIONARY_FILE", "collins2019.txt")
+    is an UNDOCUMENTED env knob — verified by me absent from backend/.env.example — that can
+    repoint the English Tier-1 dictionary at any *.txt under assets/dicts/, bypassing the
+    manifest and the whole provenance machinery this slice built. It is also a reference
+    surface no source grep can settle, which is why the Worker could not exclude an operator
+    .env naming sowpods.txt. Routed to V9: document it or remove it, deliberately.
+F3  ROUTED TO THE DELETION EXCHANGE. "Prove it is unreferenced" needs a THIRD clause beyond
+    grep and manifests: enumerate every env-var-resolved asset path and state whether the
+    deployed value was confirmed or accepted as unknown. Without it, any future asset
+    deletion carries the same undetectable start-up risk.
+F4  ROUTED TO V4'. The three build scripts now share ~90 duplicated lines
+    (is_inside_assets, require_check_dir_outside_assets, _require_expander,
+    _compare_against_committed). P13 guards the one shared constant; nothing guards the four
+    function bodies, and a FOURTH language will copy them a fourth time. V4' is that fourth
+    language, so it is the right moment for backend/scripts/_lexicon_build.py.
+F5  RECORDED. lexicon_provenance carries entry_count but no SHA-256. A digest field would let
+    one cheap test assert the shipped bytes are the exact bytes the provenance describes,
+    strictly stronger than P4 and without reading 154 MB. Candidate for V4'.
+F6  RECORDED, and it is the sharpest small finding of the slice. A SAME-LENGTH alteration is
+    invisible to every check except the digest: the Worker changed `aachen` to `aachex` in a
+    copy and validate_lexicons still reported words=3930497 duplicates=0 non_nfc=0. Word
+    counts, sizes and the audit all agreed on a file with a corrupted word. That is the
+    concrete reason a word-count comparison was forbidden.
+F7  RECORDED. slovak_two_tile_words.txt has no provenance, and it AFFECTS LEGALITY. A second
+    asset that changes what is playable deserves the same treatment as the main lexicon.
+F8  RECORDED. Nothing schedules --check, so the byte claim is only ever verified when a human
+    runs it. A route that runs the three --checks after any hunspell package change would
+    close the last gap between "documented as reproducible" and "known to be reproducible".
+    ⛔ Configuring that on a host is separate production authority, not this cut.
+```
+
+### 13.6 Closure conditions status
+
+```text
+ 1 generic per-variant invariant harness                     SATISFIED  3878847
+ 2 fail-closed lexicon validation, two readiness values      SATISFIED  21f0a14
+ 3 provenance in the MANIFEST, not only in a Meta report     SATISFIED  a3ed00f
+ 4 every non-English lexicon reproducible by a COMMITTED
+   script, proved against the committed asset                SATISFIED  a3ed00f + ad4ce03
+ 5 malformed manifest and corrupt lexicon each fail, proved
+   by a test that fails before the fix                       SATISFIED  21f0a14 + a3ed00f
+ 6 per-variant membership probe for every playable variant   SATISFIED  3878847 (G14)
+ 7 en/sk/cs/pl behaviour unchanged; four-key payload; no
+   seeded bag change; MOVE CORE hash unchanged               SATISFIED so far, re-prove at closure
+ 8-18                                                        OPEN
+```
+
+### 13.7 Exchange ledger, updated
+
+```text
+session/exchange   slice   phase            files                              outcome
+01 / 01            V1      implementation   01_implementation_00 / 01_report_00   PASS 3878847
+01 / 02            V1b     implementation   01_implementation_01 / 01_report_01   PASS 61720aa
+02 / 01            V4probe preflight        02_probe_00 / 02_interruption_00      INTERRUPTED
+                   ORCHESTRATOR evidence, non-independent: 90_hungarian-expansion-probe.md
+03 / 01            V2a     implementation   03_implementation_00 / 03_report_00   PASS 5f63e0d
+--                 --      ORCHESTRATOR-AUTHORED, non-independent                     1f39ff4
+03 / 02            V2b     implementation   03_implementation_01 / 03_report_01   PASS 21f0a14
+04 / 01            V3      implementation   04_implementation_00 / 04_report_00   PASS a3ed00f
+04 / 02            V3b     implementation   04_implementation_01 / 04_report_01   BLOCKED
+04 / 03            V3c     implementation   04_implementation_02 / 04_report_02   PASS ad4ce03
+```
+
+New exact baseline: **`ad4ce038e1bd3511bdd5b7431eb9c163d4788130`**.
+Next fresh Worker session ordinal: **05**.
+
 
 
 
