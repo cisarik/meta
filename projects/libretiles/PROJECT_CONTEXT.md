@@ -1215,6 +1215,17 @@ instead.
    self-certifies — a planner implementing its own plan is the closest thing to that this flow allows.
    `Approve`, `Yes`, `Build` or an accepted plan grant NO implementation authority.
 
+   ✅ **FIRST USE COMPLETED, and the planning exchange earned its keep.** Session 15 needed four exchanges
+   because of Orchestrator structural defects, but exchange 04's plan delivered three things the Orchestrator
+   did not have: `next/experimental/testing/server` exposes `unstable_doesMiddlewareMatch`, which makes the
+   first ever test of `proxy.ts` possible; the prerendered `_global-error` document contains a native
+   `<form>` + `<button type="submit">`, which narrows that residual to LOW because reload does not need
+   JavaScript; and the conditional `/api` propagation decision, which preserves the response headers
+   `audit-03` verified while refusing to forward a randomized CSP into route handlers. It also caught an
+   Orchestrator error — the audit-03 baseline lives in Meta, OUTSIDE the checkout, so a Worker cannot compare
+   against it. ⛔ NEVER point a Worker at `/home/agile/meta/...` as though it were repository evidence;
+   inline the evidence into the prompt.
+
    ⚠ "Called complex is not enough" — `.ap/PROMPT_CONTRACTS.md:711-714` routes to implementation planning
    only when reconnaissance or unresolved alternatives, architecture, migration, security, rollback, or
    cross-layer impact materially affect safe implementation. R10 qualified on three of those, and the
