@@ -1132,7 +1132,181 @@ session/exchange   slice   phase            files                              o
 --                 --      ORCHESTRATOR-AUTHORED, non-independent                   1f39ff4
 ```
 
-New exact baseline for every subsequent slice: **`1f39ff4da678ffb519222e6cd97a90117298a371`**.
+---
+
+## 12. Slice V2b landed — Worker session 03, exchange 02
+
+```text
+21f0a149bd5591bac492d6f024ddd6a46998c0cf   V2b  readiness fails closed on an invalid
+                                                lexicon; the filename-slug hazard closed
+                                                7 files, +953 −24
+```
+
+Pair archived as `03_implementation_01.md` + `03_report_01.md`. `PASS`,
+`implementation-PASS`. Gaps **G2 is CLOSED** and the reverse half of `mle-01-F01` is closed.
+
+### 12.1 What I re-verified myself, not accepted from the report
+
+```text
+git rev-parse HEAD                       21f0a149bd5591bac492d6f024ddd6a46998c0cf
+git ls-remote origin refs/heads/main     21f0a149bd5591bac492d6f024ddd6a46998c0cf  EQUAL
+git status --porcelain=v1                empty
+git diff --name-status 1f39ff4 HEAD      exactly the seven allowlisted paths:
+                                         A validate_lexicons.py · A lexicon_health.py ·
+                                         A test_lexicon_health.py · M views.py ·
+                                         M variant_store.py · M two test modules
+git rev-parse HEAD:.ap                   9c5cc44…  unchanged
+grep -c django gamecore/lexicon_health.py    0   — the pure-engine boundary held
+pytest --collect-only                    495 tests collected   (466 -> 495, +29 as claimed)
+manage.py validate_lexicons              run by me: five assets, 0 failed, exit 0
+```
+
+I re-ran the cheap tier through the shipped code path myself. The performance claim — the
+whole point of the named risk — holds:
+
+```text
+slug     ok    reason  file size     bytes read   fraction
+czech    True  ok      54 105 021       65 536    0.12 %
+english  True  ok       3 103 812       65 536    2.11 %
+polish   True  ok      51 607 141       65 536    0.13 %
+slovak   True  ok      45 456 204       65 536    0.14 %
+slovak two-tile  True  ok       586          586   100 %  (smaller than the bound)
+TOTAL 262 730 B read against 154 272 565 B of shipped lexicon
+```
+
+And I re-ran the fail-closed direction against my own synthetic corpus rather than the
+Worker's:
+
+```text
+empty.txt              ok=False  empty
+bom.txt                ok=False  bom
+badutf8.txt            ok=False  invalid_utf8
+onlycomments.txt       ok=False  no_surviving_word
+junk.txt               ok=False  no_surviving_word          (single chars, digits, punctuation)
+good.txt               ok=True   ok
+crlf_prose_first.txt   ok=True   ok    <- trap T1 + the CRLF finding, in one case
+```
+
+The CRLF finding is confirmed independently: `collins2019.txt` line 1 ends `\r\n`, read as
+raw bytes. Nothing in the repository documented that, and English is the default variant.
+
+### 12.2 The Worker corrected my prompt again — twice — and both times it was right
+
+```text
+W3  MY 5b INSTRUCTION WAS SELF-CONTRADICTORY. It said mirror `fastdict._read_words`
+    "exactly" AND apply `len >= 2`. `_read_words` has no length floor; the floor lives at
+    game/services.py:216. The Worker implemented the conjunction, said so in the module
+    docstring, and added a test asserting the only difference from the real index is the
+    single-code-point token. Had it obeyed literally, N6's single-character lexicon would
+    have reported `ok` and the slice would have shipped a hole.
+    ⛔ Same class as defect 3. This is the FOURTH prompt defect of this whole and the
+    second of the "two instructions that cannot both hold" kind.
+W4  MY 5c SCOPE WAS TOO NARROW. I named the `except Exception` branch. A `{not json` file
+    never reaches it — it is caught at a different site — so a discriminator on that branch
+    alone could not have supported the test I demanded. The Worker gave all five omit sites
+    a token. That is a wider change than I authorized in words and a smaller one than my own
+    required test implied; it disclosed the discrepancy rather than silently picking either
+    reading, which is the correct behaviour.
+```
+
+⚠ **My rules R-A/R-B/R-C from section 11.2 did not prevent W3.** R-B says prohibitions get
+written last and read against the obligations in one pass — but W3 was not a
+prohibition-versus-obligation clash, it was **two obligations in the same paragraph that
+disagree**. Added:
+
+```text
+R-D  When a prompt says "mirror X exactly" AND adds a condition, that is two obligations,
+     not one. Either say "mirror X and additionally apply Y, and here is why Y is not in X",
+     or do not say "exactly". I now grep my own drafts for the words `exactly`, `identical`
+     and `mirror` and check each one against the sentence that follows it.
+```
+
+### 12.3 Six measured observations, and where each goes
+
+```text
+M5  ROUTED TO V9 DOCUMENTATION, and worth stating loudly: the hazard was PUBLIC, not
+    internal. Pre-change, `De_Ch.json` reached GET /api/game/variants/ and read
+    `readiness: playable`. My section 2 framed it through list_installed_variants and the
+    three validation sites only. The Worker's T14 pre-change capture shows the public row.
+    The blast radius of mle-01-F01 was one step wider than I wrote, and the ledger entry
+    must say so.
+M6  ACCEPTED, PINNED BY TEST. collins2019.txt is CRLF. Confirmed by me from raw bytes. Any
+    future rule using rstrip("\n"), splitlines(keepends=True) or a byte comparison breaks
+    ENGLISH ONLY — the default variant. N9 now pins the shape.
+M7  ROUTED TO V3. The Collins header is self-certifying: it claims 279 496 words and the
+    audit counted exactly 279 496. That is a free integrity oracle and nothing compares
+    them. V3's build scripts are the natural place to make a declared count and a measured
+    count agree, for every language.
+M8  RECORDED. `_variants_dir()` calls mkdir on every list — a read-shaped helper with a
+    filesystem side effect. Latent; not this whole.
+M9  RECORDED. `test_dictionary_validation.py:61` holds a fourth, ad-hoc copy of the line
+    filter that drops the `isalpha` step. Correct for what it asserts. The repository now
+    has one canonical filter (`lexicon_health.surviving_word`) plus that reimplementation.
+    A future consolidation slice, not this one.
+M10 ACCEPTED WITH A BOUND. The audit's exact duplicate count costs ~500 MB peak RSS on
+    czech.txt because it materializes a set of 3 930 497 tokens, and it now runs inside the
+    pytest process. Acceptable at current sizes. ⛔ It will NOT be acceptable for Hungarian:
+    the probe measured ~301 million forms at the tightest board bound, so a set-based
+    duplicate count would need ~40 GB. V4' must therefore audit Hungarian by a streaming
+    or sorted-adjacency method, never by a set. Recorded now so it is designed in, not
+    discovered.
+```
+
+### 12.4 One decision I am taking now, from the Worker's smallest-next-step
+
+Its closing question: should `readiness: unavailable` also make a variant **unselectable**
+at `game/serializers.py:180`, `:215` and `game/services.py:173`? Today readiness is advisory
+to the client while those three sites accept any *installed* slug.
+
+**Decision: YES, and it is routed to V5b, not to a slice of its own.** Reasoning: it is
+currently unreachable in practice — all four shipped variants are `playable`, and an
+unloadable manifest is already omitted from the list those sites read. It becomes reachable
+exactly when a variant is installed-but-not-ready, and the first such variant in this
+project's history is **Hungarian under the local-build model** of section 10.3. So the fix
+belongs in the slice that creates the condition, where it can be tested against a real
+`unavailable` variant instead of a synthetic one.
+
+⚠ Carried as an open obligation so it cannot be lost: **V5b must make an `unavailable`
+variant unselectable at all three sites, and must prove that a fresh clone cannot create a
+Hungarian game before the local lexicon build has run.** Without that, a player on a fresh
+clone could start a Hungarian game against an absent dictionary.
+
+### 12.5 Closure conditions amended
+
+```text
+NEW 17  An `unavailable` variant is unselectable at game/serializers.py:180, :215 and
+        game/services.py:173, proved against a real `unavailable` variant rather than a
+        synthetic one.
+NEW 18  The Hungarian lexicon audit uses a streaming or sorted-adjacency duplicate check,
+        never an in-memory set, because ~301 million forms would need roughly 40 GB.
+```
+
+Condition 2 of section 7 is now **satisfied**: readiness fails closed, still on exactly two
+values, and proved by T13 through the real HTTP endpoint. Condition 1 was satisfied at
+`3878847`. Condition 5's synthetic-corrupt half is satisfied by N1-N6 and T13.
+
+### 12.6 Exchange ledger, updated
+
+```text
+session/exchange   slice   phase            files                              outcome
+01 / 01            V1      implementation   01_implementation_00.md
+                                            01_report_00.md                    PASS 3878847
+01 / 02            V1b     implementation   01_implementation_01.md
+                                            01_report_01.md                    PASS 61720aa
+02 / 01            V4probe preflight        02_probe_00.md
+                                            02_interruption_00.md              INTERRUPTED
+                   evidence completed by ORCHESTRATOR, non-independent:
+                                            90_hungarian-expansion-probe.md
+03 / 01            V2a     implementation   03_implementation_00.md
+                                            03_report_00.md                    PASS 5f63e0d
+--                 --      ORCHESTRATOR-AUTHORED, non-independent                   1f39ff4
+03 / 02            V2b     implementation   03_implementation_01.md
+                                            03_report_01.md                    PASS 21f0a14
+```
+
+New exact baseline for every subsequent slice: **`21f0a149bd5591bac492d6f024ddd6a46998c0cf`**.
+Next fresh Worker session ordinal: **04** (slice V3).
+
 
 
 
