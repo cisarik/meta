@@ -99,6 +99,27 @@ vacuous `aria-live` count assertion. `role="status"` and `aria-live` each went 8
                 nothing about aria-label. Same class as F20. Deleted; a11y.status.turn stays in use on
                 LiveAnnouncer, so no key went dead.
 
+⛔ **TWO HANDOUT CORRECTIONS MEASURED WHILE SCOPING R7, both worth carrying forward:**
+
+    R8 is NOT urgent   The handout says R7 "makes the coupling live" for the 429 wait-time parse and that
+                       Slovak is safe "by luck". Measured: the msgids 'Expected available in {wait}
+                       second(s).' (rest_framework/exceptions.py:229-230) are ABSENT from the sk, cs AND pl
+                       catalogs, and exceptions.py:238-243 calls ngettext on an ALREADY-FORMATTED string,
+                       so the lookup key carries the literal number and can never match a msgid. The
+                       suffix stays English structurally, in every locale. api.ts:129's
+                       /(\d+)\s+seconds/i matched 3300 in all four locales under USE_I18N=True.
+    uii-01-F25         NEW residual. Czech does not translate MinimumLengthValidator:
+                       django/contrib/auth/password_validation.py:118-119 uses msgid "... at least %d
+                       character.", but django-5.2.17's cs catalog still carries the OLD
+                       "%(min_length)d" form. sk and pl were updated, cs was not. The Czech string exists
+                       and is unreachable. Fixing it needs a project-level backend/locale/cs/ override
+                       plus compilemessages — out of scope, recorded so nobody reads it as our bug.
+
+⚠ Re-probing was CORRECT, not disobedient. The handout says "Do not re-run that probe; it is recorded as
+verified" — but that recording covered **Slovak only**, and cs/pl were added by decision 8 afterwards.
+Re-measuring what a recording never covered is not re-running it. Apply the same test to every other
+"already verified" claim inherited from a handout written before decision 8.
+
 ⚠ **The ONLY outstanding evidence for F24 is one Cooperator keyboard observation**: Tab onto a rack tile,
 press Enter, the tile is selected. `AC-RACK-KEYBOARD` asserts the handler and its declaration order from
 SOURCE, because React does not serialize event handlers into static markup. Unlike F21 and F22, this one is
@@ -996,8 +1017,11 @@ instead.
    ```text
    R14  DONE at 74b5339 — uii-01-F21, F22, F20 and the vacuous assertion
    R15  DONE at f40d8a0, ORCHESTRATOR-AUTHORED per decision 12 — uii-01-F24 and uii-01-F23
-   R7   Django localization: USE_I18N, LocaleMiddleware after SessionMiddleware, Accept-Language,
-        plus uii-01-F17 (game_end_reason enum reaching the player raw)
+   R7   ISSUED at f40d8a0, Worker session 14 — USE_I18N, LANGUAGES restricted to the four shipped
+        locales, LocaleMiddleware at index 3, api.ts sends Accept-Language from the locale COOKIE, plus
+        uii-01-F17 as a FRONTEND-ONLY mapping. It does NOT wrap the ~70 hardcoded backend strings; that is
+        routed as a residual because legality.py:31-46 already exposes REASON_* codes and the frontend
+        catalog is the right place to translate them.
    R8   uii-01-F01 — read the numeric Retry-After header instead of parsing an English 429 body
    R9   orch-02-D11 — SECURE_HSTS_INCLUDE_SUBDOMAINS, and NEVER SECURE_HSTS_PRELOAD
    R10  orch-01-F18 — the nonce CSP, the ONLY authorized proxy.ts touch in this whole, plus a loopback
