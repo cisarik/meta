@@ -27,6 +27,11 @@ and `1b7b05d0de854d7936c5fcd2b0d55a5cc5d14cfd` (the starting-draw screen, plus a
 fix). `uii-01-F04` is owned by slice **S3a**, not S2 — Cooperator decision 7 cancelled S2 altogether by
 removing URL locale prefixes. An earlier version of this paragraph said S2 and was stale.
 
+⛔ **LOGICAL WHOLE `10/00 ui-internationalization` IS CLOSED** by the ORCHESTRATOR at
+`47ed8bff5a6548d2d954c68d9ea13f05a2222e4a` on 2026-09-03. Closure record with all ten conditions and the full
+residual register: `10/00-ui-internationalization/99_closure.md`. Cooperator acceptance `B25. PASS`.
+A successor Orchestrator takes authority from its OWN prompt, not from this file and not from that record.
+
 `main` is now `47ed8bff5a6548d2d954c68d9ea13f05a2222e4a`. Porcelain is EMPTY — the ten
 deliberately untracked `frontend/public` flag files are gone. The **Cooperator himself** committed the
 five normalized 48x32 PNGs at `61c9f09` on 2026-09-02 (`feat(images): add new language icons for Czech,
@@ -629,8 +634,8 @@ tree, which is how `orch-03-G01` was missed the first time.
 |---|---|---|---|
 | `audit-01-F13` duplicate-username registration error stays explicit | accepted-residual | low | usability for a self-service game; login itself does not differentiate unknown user from wrong password |
 | `audit-01-F09` websocket ticket travels in the query string | accepted-residual | low | single-use plus a short TTL minimises the capture window; moving it would require changing the handshake and the frontend client |
-| `orch-01-F18` `script-src 'unsafe-inline'` in production | accepted-residual | medium | nonce CSP needs dynamic rendering on `/`, `/play`, `/settings` — the exact pages the UX whole rewrites. `connect-src` still blocks exfiltration of the localStorage tokens. **Upgrade to nonce CSP is routed to the UX/i18n Orchestrator.** |
-| `style-src 'unsafe-inline'` | accepted-residual | low | Framer Motion sets inline `style` attributes |
+| ~~`orch-01-F18` `script-src 'unsafe-inline'` in production~~ | **CORRECTED at `cb4efed`** | was medium | Per-request nonce plus `'strict-dynamic'`, `'self'` kept as the CSP2 fallback. The routing recorded in this row was DISCHARGED by slice R10. Proved on eleven routes at `47ed8bf`: 114 script tags each carrying its own response nonce, eleven distinct nonces across eleven requests. Cooperator browser acceptance `B25. PASS`. Do not carry this forward as open. |
+| `style-src 'unsafe-inline'` | accepted-residual, **CARRIED FORWARD UNCHANGED** | low | Framer Motion plus 33 `style=` props across 16 files and imperative `style.setProperty` writes. These are style ATTRIBUTES, and a CSP nonce covers `<style>` ELEMENTS only — so R10 could not have fixed it and deliberately did not touch `security-headers.ts:98`. Sign-off preserved from the era-09 record. |
 | ~~`frontend/src/middleware.ts` instead of `proxy.ts`~~ | **CLOSED at `b5774b2`** | — | migrated to `proxy.ts`; this residual no longer exists and must not be carried forward |
 
 ### Verified non-issues — do not re-litigate without contrary evidence
