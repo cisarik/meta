@@ -1585,6 +1585,120 @@ The prompt requires that a drop be accounted for test by test and that no surviv
 drop with an accounting is acceptable; a drop without one is not. This is the first slice in this whole
 where the suite may shrink, so the rule is stated rather than left to judgement.
 
+## Slice R11 landed at `47ed8bff5a6548d2d954c68d9ea13f05a2222e4a` — Worker session 17, exchange 01
+
+`fix(catalog): an unreachable catalog stops reporting itself as an empty one`. 11 files, +216 -20, one
+created, none deleted, parent `cb4efed`, one non-force push, public readback equal, `.ap` untouched. Build
+gate PRIMARY. **The last routed residual in this logical whole.**
+
+Orchestrator verdict: **implementation-PASS, ACCEPTED.** `audit-01-F06` CORRECTED; `uii-01-F13` resolved as
+keep-and-record.
+
+Archived as `17_implementation_00.md` + `17_report_00.md`.
+
+### Gates at `47ed8bf`, Orchestrator-measured
+
+```text
+mypy 83 clean · ruff clean · manage.py check clean · pytest 390 passed, 4 skipped in 220.32s
+typecheck exit 0 · vitest 450 passed | 3 skipped (31 files passed, 1 skipped) · lint exit 0
+build exit 0, ELEVEN ƒ routes, ZERO ○ — /api/models and /api/prompts both still published
+catalogs 300 keys x 4 = 1200 (280 text + 20 fn each), parity exact
+```
+
+### The failure contract, verified in the diff
+
+```text
+!res.ok      -> { error: "catalog_unavailable", upstream_status: res.status } at status res.status
+throw        -> { error: "catalog_unreachable" } at 502
+success      -> unchanged
+cache        -> models/route.ts `next: { revalidate: 60 }` REPLACED with `cache: "no-store"`; prompts
+                already had it. The stale-empty-catalog-outliving-recovery half of the filed defect is gone.
+```
+
+The leak proof is the part worth keeping: the Worker stubbed the upstream with body
+`DJANGO_SECRET_LEAK_TOKEN_f3c91a`, status text `Internal Server Error FROM_DJANGO_f3c91a` AND a header
+carrying the same token, then asserted none of it appears in either error response. That is a real
+containment test, not a shape assertion.
+
+### ⛔ AN EIGHTH WORKER-FOUND ORCHESTRATOR INVENTORY MISS — a THIRD collapse site
+
+`settings/page.tsx` has a **second** `play.error.catalogEmpty` render: the rival panel shows it when
+`selectedModel` is missing, independently of the notice this slice fixed. My section 4.2 enumerated three
+sites and missed it.
+
+```text
+fixed by R11    settings notice (the one keyed off catalogResult.ok) · play mount · play handleStartAI
+still wrong     the settings rival PANEL empty state
+why not fixed   it needs persisted reachability state, and the grant said "No new state, no new fetch"
+```
+
+The Worker reported it rather than exceeding its allowlist, which is correct. **New accepted residual
+`uii-01-F27`**, low severity: after an outage the notice now says "temporarily unavailable" while the panel
+below it still says "seed the catalog". Two messages disagreeing is better than one message lying, but it is
+not finished. Routed onward — it is one piece of state and it belongs with whoever next opens that file.
+
+Two smaller inventory corrections from the same report, both mine:
+
+```text
+"299 keys becomes 300" was the TOTAL (279 text + 20 fn). The Worker first asserted 300 TEXT keys, got 279,
+   and corrected to text+fn. My phrasing invited that; the number itself was right.
+draw/[id]/page.tsx also swallows a getModels failure into [], but shows no catalog sentence — it falls back
+   to humanizeModelId. Correctly out of scope, and now on the record.
+```
+
+### ⛔ CLOSURE CONDITION 5 IS MET — the full loopback re-proof, Orchestrator-run
+
+Condition 5 requires the security headers re-proved on **every document route and every /api/ route** after
+the nonce CSP. I had only done `GET /`. Run on port 3211 against the `47ed8bf` production build, eleven
+requests:
+
+```text
+path              code  CSP  nonce  no-unsafe-inline  style-src ok  5 headers  HSTS  html scripts nonced
+/                 200    Y     Y           Y                Y           Y        Y        15/15
+/play             200    Y     Y           Y                Y           Y        Y        17/17
+/settings         200    Y     Y           Y                Y           Y        Y        16/16
+/draw/abc123      200    Y     Y           Y                Y           Y        Y        18/18
+/game/abc123      200    Y     Y           Y                Y           Y        Y        20/20
+/waiting/abc123   200    Y     Y           Y                Y           Y        Y        16/16
+/nope-404         404    Y     Y           Y                Y           Y        Y        12/12
+/api/models       200    Y     Y           Y                Y           Y        Y        n/a
+/api/prompts      200    Y     Y           Y                Y           Y        Y        n/a
+/api/ai/move      405    Y     Y           Y                Y           Y        Y        n/a
+/api/ai/judge     405    Y     Y           Y                Y           Y        Y        n/a
+
+114 script tags across 7 document routes — EVERY ONE carried its own response's nonce.
+ELEVEN DISTINCT NONCES ACROSS ELEVEN REQUESTS. Per-request freshness proven at scale, not sampled twice.
+Port 3211 released after a PID-exact stop.
+```
+
+⚠ Bonus evidence: Django was up during the probe, so `/api/models` and `/api/prompts` returned live catalog
+JSON at 200 — which proves R11's **success** path is byte-unchanged on the same run that proves R10's headers.
+
+### ⛔ CLOSURE CONDITION 6 IS MET
+
+`AC-SEC-1` (`api.test.ts:178`) iterates all four locales, sends **two different** Django 401 bodies —
+`{"detail":"No active account found."}` and `{"detail":"Invalid password."}` — asserts the messages are
+IDENTICAL, asserts the exact per-locale string, and checks every enumeration fragment is absent. `AC-SEC-2`
+(`:213`) iterates all four locales and asserts the session-expired wording differs from the
+invalid-credentials wording. `npx vitest run src/lib/api.test.ts` -> `11 passed` at `47ed8bf`.
+
+That is the real non-enumeration property, not a proxy for it, and it holds in en, sk, cs and pl.
+
+### Closure condition status after R11
+
+```text
+1  four-locale interface accepted                    PARTIAL — B17..B24 accepted; closing batch B25 pending
+2  both Settings pickers accepted                    MET at B24, re-confirm under CSP in B25
+3  the player chooses no model and no prompt          MET at 383011b, Cooperator-verified B20-5
+4  routed residuals corrected or signed               ORCHESTRATOR WORK — records to write at closure
+5  headers re-proved on every route                   ✅ MET, table above
+6  AC-SEC-1 / AC-SEC-2 in all locales                 ✅ MET
+7  eight gates green at the closing commit            MET at 47ed8bf
+8  his acceptance batch run and recorded              PENDING — B25
+9  no active mutation, no active Worker               MET — porcelain empty, no Worker running
+10 Meta archive complete incl. a closure record       ORCHESTRATOR WORK — 99_closure.md to write
+```
+
 ## Slice R11 issued — Worker session 17, exchange 01, at `cb4efed` — THE LAST RESIDUAL
 
 `fix(catalog): an unreachable catalog stops reporting itself as an empty one`. Prompt staged at
