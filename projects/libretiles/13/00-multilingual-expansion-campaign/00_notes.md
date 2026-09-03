@@ -771,28 +771,170 @@ LEAD 3      the .gitignore rule for the Hungarian output is unverified and shoul
 
 ---
 
-## 12. Next step
+## 13. ⛔ COOPERATOR DECISION — routing policy changed 2026-09-03
+
+Verbatim:
+
+> *Na trivialne ulohy nepotrebujes Workerov, si Agent Orchestrator a mas write pristup mozes
+> taketo easy ulohy priamo urobit ty bez toho aby sa inicializoval fresh Worker, studoval si
+> cely AP protokol a na koniec testoval vsetko a pisal dalsie testy.. vela vela vela
+> zbytocnych tokenov. Chceme uderny vyvoj*
+
+**He is right, and the waste was mine.** Measured cost of the first two exchanges: each spawned
+a fresh Worker that read `AP.md` (145 KB), `AP_WORKER.md`, `AGENTS.md` and a 400-line prompt,
+ran the full four-minute suite, and then **I re-ran all eight gates again myself** — duplicate
+verification producing zero additional information on a five-line documentation edit.
+
+RF-01 assigns cost/irreversibility trade-offs and protocol design to the Cooperator, so this
+is his decision to make and it is now the standing policy:
 
 ```text
-NEXT   frontend/public/ orphan disposition, one bounded exchange:
-         delete file.svg globe.svg next.svg vercel.svg window.svg  (Next.js scaffolding, zero
-           references, measured by me)
-         KEEP hu.png and record it as claimed-by-the-Hungarian-slice rather than deleting it
-         install a ONE-DIRECTIONAL invariant analogous to P15, scoped so that a flag shipped
-           ahead of its language does not fail it — LEAD 1 is the reason, and getting the
-           direction right is the whole design, exactly as it was for P15
-       baseline 86ec39e08cfe28caa2919279a6123b0814e6032d, tier E2, reasoning Medium
-THEN   the SOURCING PROBE. Twenty ledger rows are blocked on a sourced tile distribution and a
-       licence-clean lexicon, not on code. This is the campaign's critical path and everything
-       after it depends on its output.
-THEN   B2 — af · ms first, the two cheapest languages, to prove "adding a language is boring"
-       on real data before the single E3 slice this campaign contains.
+D13-8  ORCHESTRATOR-DIRECT for trivial and low-risk work. E0-E2, small allowlist, no runtime
+       semantics change. I edit, run PROPORTIONATE gates, commit, push. No Worker, no prompt
+       file, no duplicate verification.
+D13-9  GATES PROPORTIONATE TO BLAST RADIUS. Deleting unreferenced frontend assets does not
+       need a four-minute Django suite. Touching backend runtime or an asset gets the full
+       eight. A batch boundary always gets the full eight.
+D13-10 WORKERS RESERVED for genuinely large slices and for the one thing that cannot be
+       delegated away.
 ```
 
-⚠ **What two exchanges have taught me about this campaign.** Both were nominally trivial —
-five documentation lines, then two tests — and in both the load-bearing decision was the
-DIRECTION of an invariant or the SCOPE of a claim, not the code. P15's direction protects a
-language slice that does not exist yet. The next exchange's direction protects twenty flags
-that do not exist yet. The engine is not the risk; the assertions written around it are.
+⚠ **The one thing this does NOT change, and protecting it is my job.** C1 — multi-code-point
+tiles end to end, wire schema 4, the seven F2b guards — is **E3**. It requires FRESH
+INDEPENDENT ACCEPTANCE from a session that did not implement it, and that session **cannot be
+my subagent** (`AP.md:1395-1405`). That is an independence requirement, not a cost question,
+and no autonomy or efficiency grant reaches it. It is exactly ONE slice in this whole campaign.
+Everything else is now mine to execute directly.
+
+⚠ Also unchanged: when I do the work, the evidence is NON-INDEPENDENT by construction. That
+costs one line to record and I will keep recording it.
+
+---
+
+## 14. Directly executed — `frontend/public/` orphans, `7a3899d`
+
+No Worker. R-E double grep across the whole tree for all six candidates, plus CSS `url()` and
+Next's icon/manifest conventions. Then `git rm` five files, four frontend gates, one commit.
+
+```text
+DELETED   file.svg  globe.svg  next.svg  vercel.svg  window.svg
+          create-next-app leftovers. -n=0 and -in=0 for every one of them, tree-wide.
+KEPT      hu.png, and the reason is a MEASUREMENT rather than a preference:
+          frontend/src/app/settings/page.tsx:375 builds `/${value}.png` over LOCALES, so the
+          locale flags are referenced BY TEMPLATE, not by literal. hu.png becomes referenced
+          the moment "hu" enters LOCALES. Deleting and re-adding an identical file is churn.
+          ⇒ AND IT KILLS THE PROPOSED INVARIANT: a literal-grep "present ⇒ referenced" rule
+            over frontend/public/ would flag every flag as an orphan. The Worker's LEAD 1 was
+            right for a better reason than it knew. NO invariant was written there, on purpose.
+GATES     typecheck 0 · vitest 450 passed | 3 skipped · lint 0 · build 0, 11 dynamic, 0 static
+          Backend suite NOT run: the diff is five frontend image files. Proportionate, per D13-9.
+```
+
+---
+
+## 15. ⭐ AFRIKAANS IS THE FIFTH PLAYABLE VARIANT — `153ead7`, directly executed
+
+The handout said: run B2 first, and *"if B2 is not boring, that is the most valuable finding
+available and it is far cheaper to learn there than inside C1."* **B2 was not boring, and the
+finding is worth more than the language.**
+
+### 15.1 The two source questions, answered by measurement
+
+```text
+DISTRIBUTION   ⛔ MY OWN LEDGER WAS WRONG. I recorded `UNSOURCED` for twenty rows. MEASURED:
+               slovak.json, czech.json AND polish.json all declare
+                   source_url = https://en.wikipedia.org/wiki/Scrabble_letter_distributions
+               The national authorities (JÚĽŠ SAV, ÚJČ, RJP, MTA) sourced `alphabet_order`,
+               NOT the distribution. The distribution source was already precedented, and its
+               "Official editions" section contains ALL TWENTY-FOUR target languages.
+LEXICON        MEASURED against LibreOffice/dictionaries at the SAME pinned commit the three
+               shipped scripts use: 62 language directories, and a .dic/.aff pair exists for
+               22 of the 24 targets.
+               ⛔ TWO DO NOT EXIST:
+                 FINNISH  no fi_FI. LibreOffice routes Finnish through Voikko, a separate
+                          morphological analyzer, not a plain affix pair.
+                 MALAY    no ms_MY. `id` (Indonesian) exists and MUST NOT be substituted.
+               ⚠ tr_TR's .dic is 36 MB — an order of magnitude above the rest, and Turkish is
+                 agglutinative. Expect Hungarian's problem; measure before scheduling.
+                 es ships 23 country variants and de ships 3 — C5 made concrete.
+```
+
+⇒ **The campaign is much more tractable than this ledger opened with.** The critical path is
+per-language table extraction and per-language LICENCE READING, not searching for sources.
+
+### 15.2 What Afrikaans actually needed, and it was not "nothing"
+
+```text
+MEASURED   148 601 unique expanded forms, of which 4 614 (3.10%) carry a non a-z letter:
+           ë 2753 · ê 910 · ï 533 · é 155 · ö 81 · ô 75 · á 56 · ó 56 · è 34 · and ten more.
+           The Afrikaans edition bears PLAIN LATIN TILES and ignores diacritics.
+           ⇒ Without a diacritic rule, `môre`, `aangelê` and `reël` are in the lexicon and
+             UNPLAYABLE, and MORE / AANGELE / REEL are rejected. That is not a cosmetic gap;
+             it fails the Cooperator's own bar of "correctly playable".
+DECISION   Fold at BUILD time, in the lexicon. 148 267 words, ZERO non a-z remaining.
+           Zero engine change, zero capability, zero manifest field.
+BOUNDARY   ⛔ Legitimate ONLY when the fold is TOTAL for the edition — every folded letter
+           absent from the tile set. WRONG for Slovak (A≠Á, both tiles), Czech, and German
+           (Ä≠A even though ß→SS). Those still need C3. The script says this at length so the
+           technique is not copied by resemblance.
+```
+
+⚠ **A falsified inference of my own, recorded rather than quietly fixed.** My ledger said
+Afrikaans needed `capability required: none INFERRED`. Measurement falsified the reasoning — it
+DOES need a diacritic rule — and the rule then turned out to be expressible in the asset rather
+than the engine. Right conclusion, wrong reasoning. That is why `INFERRED` cells are labelled.
+
+### 15.3 The honest measure of "how boring is a language"
+
+```text
+AUTOMATIC   ~25 parametrized cases enrolled with NO new test file. 542 -> 567 passed,
+            546 -> 571 collected. validate_lexicons 5 -> 6 assets, 0 failed.
+            The generic harness, P1-P15 and G1-G25 all picked the variant up from its manifest.
+DELIBERATE  FOUR hardcoded inventories, all in tests, ZERO in production code:
+              1  _LEXICON_PROBES  G14 probe row  (includes the FOLDED witness `more`)
+              2  P10b             build-script inventory
+              3  test_t7          exact public catalog order — english pins first, then
+                                  casefolded display_name, so "Afrikaans" INSERTS at index 1
+              4  P13              its hardcoded "three scripts" defeated the point of deriving
+                                  _SCRIPT_CLAIMS. Generalized: it owns DRIFT, P10b owns the
+                                  inventory. One claim, one owner.
+UI          degrades gracefully, measured: VARIANT_NAME_KEYS / VARIANT_FLAG_SRC have no
+            afrikaans entry, variantDisplayName() falls back to the server display_name, and
+            flagSrc is omitted when absent. The backend slice ships alone with no UI defect.
+```
+
+⇒ **Adding a language is data-only, and the friction is four test inventories.** That is the
+claim the Cooperator's objective asked for, now proved on real data rather than asserted.
+
+### 15.4 Evidence
+
+```text
+--check     CHECK afrikaans.txt      6454dc83f91c0afbb9d6ad32873800b8360233d93703324ece8a5b062bfe97ff  IDENTICAL
+            CHECK afrikaans.LICENSE  ecdb27ce1605edaccb178fde985958df018d42dd66f7e4ccb4e0d22febf067aa  IDENTICAL
+            CHECK all artifacts identical, exit 0
+gates       ruff · mypy 85 files · manage.py check · pytest 567 passed 4 skipped ·
+            collect-only 571 · validate_lexicons 6 assets 0 failed · typecheck 0 ·
+            vitest 450 passed 3 skipped · lint 0 · build 0 with ELEVEN dynamic ZERO static
+cond. 1     MOVE CORE hash c7acc270… and version pfr-s2-core-1 UNCHANGED — prompts.ts and
+            prompts.test.ts were never touched. en/sk/cs/pl all still playable, four keys.
+posture     ⛔ NON-INDEPENDENT. Orchestrator-direct execution under decision D13-8.
+```
+
+---
+
+## 16. Next step
+
+```text
+NEXT   B2 continues: Italian and Dutch. Both have an af pair at the pinned commit, both are
+       single-code-point with no folding expected. Read each licence FIRST — standing
+       condition 5 — then extract the distribution table and repeat the Afrikaans shape.
+THEN   the four remaining B2-class rows, then C3 (German · French · the Nordics) which is now
+       clearly the highest-leverage capability: it unlocks seven languages.
+WATCH  Turkish before scheduling: 36 MB upstream .dic, agglutinative, plus C2 and the
+       `.upper()` I≠İ question at variant_store.py:176-185.
+BLOCKED and recorded, not hidden:  Finnish (no plain affix pair) · Malay (no ms_MY source)
+E3     C1 remains the single slice that needs a Worker and fresh independent acceptance.
+```
+
 
 

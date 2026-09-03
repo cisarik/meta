@@ -34,49 +34,125 @@ recorded at `PROJECT_CONTEXT.md:1270-1273` is a named national authority per lan
 
 ---
 
+## THE TWO SOURCE QUESTIONS ARE LARGELY ANSWERED — measured 2026-09-03
+
+This section replaced twenty `UNSOURCED` guesses with two measurements. Read it before
+reading any row.
+
+### A. Tile distribution — the source was already precedented, and it covers all 24
+
+⛔ I had recorded `distribution source: UNSOURCED` for twenty rows. **That was too
+pessimistic and it was my error.** MEASURED from the shipped manifests:
+
+```text
+slovak.json  czech.json  polish.json   ALL THREE declare
+    source_url = https://en.wikipedia.org/wiki/Scrabble_letter_distributions
+```
+
+The national authorities recorded at `PROJECT_CONTEXT.md:1270-1273` — JÚĽŠ SAV, Ústav pro
+jazyk český, Rada Języka Polskiego, MTA — were the sources for **`alphabet_order`**, not for
+the tile distribution. So the project's established standard is two-sourced:
+
+```text
+tile counts + points   <- the Wikipedia "Scrabble letter distributions" compilation, declared
+                          verbatim as source_url by every shipped non-English manifest
+alphabet_order         <- a named national language authority, per language
+```
+
+MEASURED: that compilation has an **"Official editions"** section, and **all twenty-four
+target languages appear in it** — Afrikaans and Malay included. So no target row is blocked on
+finding a distribution. Each row still needs its table EXTRACTED and its `alphabet_order`
+authority named, which is per-language work but not a search.
+
+### B. Lexicon — 22 of 24 are reachable by the pipeline that already works
+
+MEASURED against `LibreOffice/dictionaries` at the **same pinned commit the three shipped
+build scripts already use**, `75f5dff8c972fff4a32e4ea8434722c277f02a3f`: 62 top-level
+language directories, and a `.dic`/`.aff` pair exists for
+
+```text
+af_ZA  bg_BG  cs_CZ  da_DK  de(×3: DE AT CH)  el_GR  en  es(×23 countries)  hr_HR  hu_HU
+is  it_IT  nl_NL  no(nb+nn)  pl_PL  pt_BR  pt_PT  ru_RU  sk_SK  sl_SI  sv_SE(+sv_FI)  tr_TR
+```
+
+⛔ **TWO TARGET LANGUAGES HAVE NO DIRECTORY, and both are recorded blockers:**
+
+```text
+FINNISH   no fi_FI at all. LibreOffice routes Finnish through Voikko, a separate
+          morphological analyzer, not a plain .aff/.dic pair. The proven pipeline does not
+          reach it. A different licence-clean source is required, or Finnish is a blocker.
+MALAY     no ms_MY. `id` (Indonesian) exists and is linguistically close.
+          ⛔ DO NOT USE IT. "Never copy from a neighbour because it looks similar" is the
+          standing rule, and Indonesian and Malay are different lexicons.
+```
+
+⚠ **Two size warnings, measured from the upstream `.dic` bytes:**
+
+```text
+tr_TR  36,136,702 B   the LARGEST by an order of magnitude, and Turkish is agglutinative.
+                      Expect Hungarian's problem. Measure its expansion BEFORE scheduling it.
+el_GR  10,128,595 B   second largest.
+de     16,355,261 B   across three country variants.
+es     16,184,921 B   across twenty-three country variants — and that is the C5 question
+                      made concrete rather than theoretical.
+compare af_ZA 1,214,886 B, which expanded to 148,267 words and committed in 1.7 MB.
+```
+
+⇒ **The campaign's critical path is now per-language extraction and per-language licence
+reading, not searching for sources.** That is a much cheaper campaign than the one this
+ledger opened with.
+
+---
+
 ## Scan table
 
 `GP` gameplay · `UI` locale · `DICT` lexicon · `DIST` distribution source ·
 `CAP` capability required · `T` tests
 
 ```text
-#   language      GP           UI          DICT              DIST        CAP        T
-01  English       playable     shipped     MEASURED ok       MEASURED    none       yes
-02  Slovak        playable     shipped     MEASURED ok       MEASURED    none       yes
-03  Czech         playable     shipped     MEASURED ok       MEASURED    none       yes
-04  Polish        playable     shipped     MEASURED ok       MEASURED    none       yes
-05  Hungarian     not-started  staged      MEASURED too-big  UNSOURCED   C1         no
-06  German        not-started  not-started UNSOURCED         UNSOURCED   C3         no
-07  French        not-started  not-started UNSOURCED         UNSOURCED   C3         no
-08  Italian       not-started  not-started UNSOURCED         UNSOURCED   none       no
-09  Spanish       not-started  not-started UNSOURCED         UNSOURCED   C1 C4 C5   no
-10  Portuguese    not-started  not-started UNSOURCED         UNSOURCED   none       no
-11  Dutch         not-started  not-started UNSOURCED         UNSOURCED   none (C5?) no
-12  Danish        not-started  not-started UNSOURCED         UNSOURCED   C3         no
-13  Swedish       not-started  not-started UNSOURCED         UNSOURCED   C3         no
-14  Norwegian     not-started  not-started UNSOURCED         UNSOURCED   C3         no
-15  Finnish       not-started  not-started UNSOURCED         UNSOURCED   C3         no
-16  Icelandic     not-started  not-started UNSOURCED         UNSOURCED   C3         no
-17  Croatian      not-started  not-started UNSOURCED         UNSOURCED   C1         no
-18  Slovenian     not-started  not-started UNSOURCED         UNSOURCED   C1         no
-19  Turkish       not-started  not-started UNSOURCED         UNSOURCED   C2 C3      no
-20  Greek         not-started  not-started UNSOURCED         UNSOURCED   C1         no
-21  Bulgarian     not-started  not-started UNSOURCED         UNSOURCED   C1         no
-22  Russian       not-started  not-started UNSOURCED         UNSOURCED   C1         no
-23  Afrikaans     not-started  not-started UNSOURCED         UNSOURCED   none       no
-24  Malay         not-started  not-started UNSOURCED         UNSOURCED   none       no
+#   language      GP           UI          DICT                DIST       CAP        T
+01  English       playable     shipped     MEASURED ok          sourced    none       yes
+02  Slovak        playable     shipped     MEASURED ok          sourced    none       yes
+03  Czech         playable     shipped     MEASURED ok          sourced    none       yes
+04  Polish        playable     shipped     MEASURED ok          sourced    none       yes
+23  Afrikaans     PLAYABLE     not-started MEASURED ok LGPL-2.1 sourced    none*      yes
+05  Hungarian     not-started  staged      MEASURED too-big     in-compil. C1         no
+06  German        not-started  not-started af pair, lic unread  in-compil. C3         no
+07  French        not-started  not-started af pair, lic unread  in-compil. C3         no
+08  Italian       not-started  not-started af pair, lic unread  in-compil. none?      no
+09  Spanish       not-started  not-started 23 pairs, lic LGPL+  in-compil. C1 C4 C5   no
+10  Portuguese    not-started  not-started 2 pairs, lic unread  in-compil. C5?        no
+11  Dutch         not-started  not-started af pair, lic unread  in-compil. none (C5?) no
+12  Danish        not-started  not-started af pair, lic unread  in-compil. C3?        no
+13  Swedish       not-started  not-started 2 pairs, lic unread  in-compil. C3?        no
+14  Norwegian     not-started  not-started nb+nn, lic COPYING   in-compil. C3? C5?    no
+15  Finnish       not-started  not-started ⛔ NO SOURCE          in-compil. C3?        no
+16  Icelandic     not-started  not-started af pair, lic present in-compil. C3?        no
+17  Croatian      not-started  not-started af pair, lic unread  in-compil. C1         no
+18  Slovenian     not-started  not-started af pair, lic unread  in-compil. C1?        no
+19  Turkish       not-started  not-started af pair 36 MB, LIC   in-compil. C2 C3      no
+20  Greek         not-started  not-started af pair 10 MB        in-compil. C1         no
+21  Bulgarian     not-started  not-started af pair, COPYING     in-compil. C1         no
+22  Russian       not-started  not-started af pair, lic unread  in-compil. C1         no
+24  Malay         not-started  not-started ⛔ NO SOURCE          in-compil. none       no
 ```
 
 ```text
-playable  4 / 24        UI locales  4 / 24        rows needing a sourcing probe  20 / 24
+playable  5 / 24        UI locales  4 / 24
+lexicon reachable by the proven pipeline   22 / 24
+lexicon with NO known licence-clean source  2 / 24   Finnish · Malay
+`in-compil.` = present in the Wikipedia Official-editions compilation, table not yet extracted
+`none*`      = Afrikaans needed a diacritic rule and it was solved in the LEXICON at build
+               time rather than by a capability. See row 23.
 ```
 
-⚠ **The critical path is the two UNSOURCED columns, not the CAP column.** Twenty rows need
-a licence-and-authority probe before any of them can be scheduled. Five capabilities is a
-handful of slices; twenty sourced distributions and twenty licence-clean lexicons is the
-campaign.
+⚠ **The two UNSOURCED columns are no longer the blocker. Licence READING is.** A `.dic` pair
+existing is not a licence. Every row above marked `lic unread` needs its upstream README or
+LICENSE read before that language may be scheduled, because standing condition 5 makes an
+unclear licence a DISQUALIFICATION rather than a footnote.
 
 ---
+
 
 ## 01 · English
 
@@ -544,39 +620,107 @@ blockers               distribution UNSOURCED · lexicon licence UNVERIFIED ·
                        expansion size UNMEASURED · glyph coverage unverified (G7).
 ```
 
-## 23 · Afrikaans
+## 23 · Afrikaans — ⭐ PLAYABLE, landed 2026-09-03 at `153ead7`
 
 ```text
-gameplay status        not-started.
-UI-localization        not-started.
-dictionary status      UNSOURCED. No probe run.
-distribution source    UNSOURCED.
-special-rule reqs      LEAD: none. Latin alphabet, single-code-point tiles, no multigraph
-                       tile, no folding expected.
-capability required    none INFERRED.
-                       ⇒ ONE OF THE TWO CHEAPEST ROWS ON THE LIST. Scheduled FIRST, with
-                       Malay, because proving "adding a language is boring" on real data is
-                       worth more before the one E3 slice than after it. If it is NOT boring,
-                       that is the most valuable finding available and it is far cheaper to
-                       learn here than inside C1.
-tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED.
+language / variant     Afrikaans. No variant_name; display_label == "Afrikaans".
+gameplay status        PLAYABLE. The fifth variant. readiness=playable, six lexicon assets
+                       audited 0 failed, and the public catalog now returns five rows in the
+                       derived order english · afrikaans · czech · polish · slovak.
+UI-localization        not-started, and it degrades gracefully rather than breaking. MEASURED:
+                       GameLanguagePanel.tsx VARIANT_NAME_KEYS and VARIANT_FLAG_SRC have no
+                       `afrikaans` entry, variantDisplayName() FALLS BACK to the server
+                       display_name, and flagSrc is omitted when absent. So the backend slice
+                       ships alone with no UI defect. An `af` message catalog and a flag are
+                       later, optional work.
+dictionary status      MEASURED ok. afrikaans.txt 148 267 words / 1 677 283 B, duplicates 0,
+                       non_nfc 0. LICENCE: LGPL-2.1-only, stated in README_af_ZA.txt §5 which
+                       embeds the full LGPL 2.1 text; the whole README ships as
+                       afrikaans.LICENSE (31 982 B).
+                       ⛔ SPDX is -only, not -or-later, deliberately: upstream carries no
+                       "or any later version" grant for this work and a tidier expression
+                       would be a licence claim nobody made.
+                       REPRODUCIBLE: build_afrikaans_lexicon.py, pinned commit
+                       75f5dff8c972fff4a32e4ea8434722c277f02a3f, four pinned SHA-256s,
+                       expander hunspell 1.7.3, --check IDENTICAL on both artifacts.
+distribution source    SOURCED. 102 tiles, 2 blanks, 22 tile kinds, from the same Wikipedia
+                       Official-editions compilation every shipped non-English manifest
+                       declares. Arithmetic verified: 100 letter tiles + 2 blanks = 102.
+                       alphabet_order = the 26-letter Latin alphabet; C Q X Z are Afrikaans
+                       letters with NO TILE, so four letters have no tile and the SUBSET
+                       invariant holds exactly as it does for Slovak's five.
+special-rule reqs      ⛔ DIACRITIC FOLDING, and this is the finding of the whole batch.
+                       MEASURED: 4 614 of 148 601 expanded forms (3.10%) carry a non a-z
+                       letter — ë 2753, ê 910, ï 533, é 155, ö 81, ô 75, and eleven more.
+                       The Afrikaans edition bears PLAIN LATIN TILES and its distribution note
+                       says diacritical marks are ignored. So without folding, `môre`,
+                       `aangelê` and `reël` sit in the lexicon UNPLAYABLE and a player
+                       spelling MORE, AANGELE or REEL is told the word is invalid.
+                       DECISION: fold at BUILD time, in the lexicon, not at runtime.
+                         + zero engine change, zero capability, zero manifest field
+                         + the asset then answers the only question a board can ask —
+                           "is this sequence of tile FACES a word"
+                         + folding is TOTAL here: every letter it touches is absent from the
+                           tile set, and 0 non-a-z letters remain afterwards
+                         − the asset no longer round-trips to Afrikaans orthography, which the
+                           lexicon header states in five lines so no reader is surprised
+                       ⛔ THE BOUNDARY, and it is the half that matters for the campaign:
+                       build-time folding is legitimate ONLY when the fold is total for the
+                       edition. It is WRONG for Slovak (A≠Á, both are tiles), wrong for Czech,
+                       and wrong for German (Ä is not A even though ß expands to SS). Those
+                       need C3. Copying this technique because "it worked for Afrikaans" would
+                       silently delete playable words.
+capability required    NONE. And that is a corrected inference: this ledger originally said
+                       "none INFERRED", the measurement above FALSIFIED it — Afrikaans does
+                       need a diacritic rule — and the rule was then expressible in the
+                       lexicon rather than in the engine. Right conclusion, wrong reasoning
+                       the first time. Recorded so the pattern is not mistaken for luck.
+tests                  auto-enrolled: the generic harness and P1-P15 added ~25 parametrized
+                       cases with no new test file. pytest 542 -> 567 passed.
+                       ⛔ FOUR hardcoded test inventories needed a deliberate update, and this
+                       is the honest measure of how "boring" a language is:
+                         1  _LEXICON_PROBES G14 probe row — includes the FOLDED witness `more`
+                            so a build that stopped folding fails the probe
+                         2  P10b's build-script inventory
+                         3  test_t7's exact public catalog order
+                         4  P13, whose hardcoded "three scripts" defeated the point of
+                            deriving _SCRIPT_CLAIMS; it now owns DRIFT only and leaves the
+                            inventory to P10b
+                       Build post-condition: six required words, THREE of them folded forms,
+                       plus one forbidden control word. A build that silently stops folding
+                       fails its own gate rather than shipping 4 614 dead words.
+blockers               none for gameplay. UI locale is optional later work.
 ```
 
-## 24 · Malay
+## 24 · Malay — ⛔ BLOCKED on the lexicon, distribution sourced
 
 ```text
-gameplay status        not-started.
+gameplay status        not-started. BLOCKED.
 UI-localization        not-started.
-dictionary status      UNSOURCED. No probe run.
-distribution source    UNSOURCED.
-special-rule reqs      LEAD: none. Latin alphabet, no diacritics in standard orthography,
-                       no multigraph tile expected.
-capability required    none INFERRED.
-                       ⇒ THE OTHER CHEAPEST ROW. Same reasoning as Afrikaans.
+dictionary status      ⛔ NO KNOWN LICENCE-CLEAN SOURCE. MEASURED: LibreOffice/dictionaries at
+                       the pinned commit has NO ms_MY directory. `id` (Indonesian) exists at
+                       557 772 B and is linguistically close.
+                       ⛔ IT MUST NOT BE USED. Standing rule: never substitute a neighbour
+                       language. Indonesian and Malay are different lexicons and shipping one
+                       as the other would be exactly the failure that looks like a success.
+                       ⇒ Malay needs a different licence-clean Malay word list, or it stays a
+                       recorded blocker. That is an honest 23-of-24, not a failure.
+distribution source    SOURCED. 100 tiles, 2 blanks, from the Official-editions compilation:
+                       1 pt A×19 N×8 E×7 I×7 K×6 U×6 M×5 R×5 T×5 · 2 pts L×4 S×4 ·
+                       3 pts G×4 B×3 D×3 · 4 pts H×2 O×2 P×2 · 5 pts J×1 Y×1 ·
+                       8 pts C×1 W×1 · 10 pts F×1 Z×1.   Arithmetic verified: 98 + 2 = 100.
+                       Q V X are absent from the tile set.
+special-rule reqs      none for the standard set. ⚠ A SECOND Malay game, `Sahibba`, uses
+                       MULTI-REALIZATION tiles — 3 A/E tiles, 5 A/O tiles, 1 K/Q tile and so
+                       on, one physical tile with two possible letters. That is exactly the
+                       layer this campaign is told to design-around and NOT build, and it is a
+                       DIFFERENT GAME rather than a Malay Scrabble edition. Out of scope.
+capability required    none for the standard set.
 tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED.
+blockers               ⛔ lexicon: no licence-clean Malay source found in the proven pipeline.
+                       Everything else about this row is ready.
 ```
+
 
 ---
 
