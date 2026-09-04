@@ -3666,3 +3666,149 @@ WIRING  now carries: LOCALES 4→12 · translate.ts TEXT and FN · settings/page
   §43.4's threshold is real. ⇒ DECIDE AT CATALOG 5 whether the invariant block becomes a referenced
   artifact. Two more catalogs of growth at this rate reaches it.
 ```
+
+## 45. ⭐ CATALOG 4 OF 8 LANDED — Italian, `6bf7c5e` — and M1 is about MY correction discipline
+
+```text
+prompt   ./13_implementation_00.md   629 lines · session 13 · exchange 01 · E2 · HIGH reasoning
+report   ./13_report_00.md           status PASS · +551/−0 · pushed · readback equal · porcelain clean
+commit   6bf7c5e  feat(i18n) the Italian interface catalog
+⇒ FOUR OF EIGHT SHIP. de · pt · is · it. Four remain: nl · da · sv · af.
+⭐ AND THE PROMPT GOT SHORTER: 434 → 564 → 635 → 629. The growth trend is broken; §43.4's
+  referenced-artifact threshold is not needed yet.
+```
+
+### 45.1 🐞 M1 — I FIXED ONE GREP LINE AND NOT ITS SIBLING WITH THE IDENTICAL DEFECT
+
+```text
+Catalog 3 found that `grep -n 'plural'` fires on §4's own mandated counted-noun comment block, and I
+fixed it with `^[^/]*plural`. ⛔ I DID NOT APPLY THE SAME SCOPE TO THE CAST-SHAPED LINE ONE LINE BELOW,
+which has exactly the same defect class.
+✔ VERIFIED MYSELF: `' as (const|…|[A-Z][A-Za-z0-9_]*)\b'` fires on
+     // the way Portuguese did, as Portuguese did
+     // as Icelandic uses it
+   and `^[^/]*` removes both while keeping the real `y as const`.
+⇒ AND §7.1's OWN GENERAL RULE ALREADY NAMED THE FIX: "an audit pattern aimed at code must not be
+  runnable against prose, NOR against the file's own mandated commentary." I wrote that sentence in the
+  same prompt and applied it to one line of two.
+⛔ THAT IS THE FINDING, and it is worse than the grep: I TREATED A GENERAL RULE AS A PER-LINE PATCH.
+  Three languages had each paid for a collision in that block, I had derived the general form, and I
+  still fixed instances instead of the class.
+⇒ RULING, applied to catalogs 5-8: THE COMMENT EXCLUSION GOES ON EVERY LINE OF THE AUDIT BLOCK,
+  mechanically, as a property of the block rather than a fix for a reported instance. Recorded as the
+  operational half of R-N: WHEN A RULE IS DERIVED FROM AN INSTANCE, APPLY IT TO EVERY SIBLING IN THE
+  SAME BREATH — otherwise the next sibling will report it again and you will have paid twice.
+⚠ The Worker also audited the four shipped catalogs against the line as written and found all four
+  clean — "but only because their authors happened to write 'the way X did'". ⇒ The defect was LATENT,
+  not realized. Recording that distinction matters: nothing in the repository is wrong.
+```
+
+### 45.2 🐞 M2 — AND THE ELISION CHECK I ADDED IN THIS VERY PROMPT WAS ITSELF DEFECTIVE
+
+```text
+I invented `grep -nE "[a-zA-Z]' [a-z]"` for Italian, to catch a spaced elision (`l' ora`).
+⛔ ITALIAN APOCOPE IS FOLLOWED BY A SPACE BY RULE — `un po'`, `da'`, `va'`, `fa'`, `di'`, `sta'`.
+✔ VERIFIED: my line fires on `Serve un po' di pazienza`, which is correct Italian, and on
+  `// players' rack`, an English possessive in a required comment. The eliding-set pattern
+     \b(l|un|dell|nell|all|dall|sull|coll|quest|quell|d|c|anch|sant|bell|grand|tutt|nessun|alcun|buon)'
+  fires ONLY on the real defect.
+⇒ FIFTH defect in that one audit family, AND THE FIRST I INTRODUCED MYSELF — in the same prompt that
+  carried three corrections to the same block. ⛔ I wrote a new prose-runnable pattern one section after
+  writing the rule that forbids them.
+⇒ Replaced with the eliding-set pattern for catalogs 5-8 where the language elides at all, and dropped
+  where it does not. ⭐ AND THE HONEST GENERALIZATION: I should not invent a per-language grep at all.
+  Four of five defects in this block are mine and all five are the same shape. For the remaining four
+  catalogs the audit stays at the FIVE language-independent lines that have survived contact, and a
+  language-specific property is checked by ASKING THE WORKER TO STATE IT rather than by grepping for it.
+```
+
+### 45.3 The other four MEASURED findings, verified and applied
+
+```text
+M3 ✔ `settings.board.active`'s trap DOES NOT BITE ITALIAN. Measured: the three surface labels are
+   `Legno`, `Nero`, `Verde` — ALL MASCULINE — so `Attivo` would be correct. The Worker chose the
+   invariable `In uso` anyway, for forward robustness, and said exactly that.
+   ⇒ MY FRAMING WAS THE DEFECT: "expect all of these" pushes a Worker toward claiming a forced hand it
+     does not have. ⇒ Reframed for catalogs 5-8 as "CHECK WHETHER EACH OF THESE BITES YOUR LANGUAGE AND
+     REPORT EITHER ANSWER". ⭐ That is the same principle as the absent-risk reporting that has already
+     paid off three times — a trap measured as ABSENT is evidence, not a non-finding.
+M4 ✔ `OUTCOME_META` spans `GameHistoryPanel.tsx:36-75`, not :36-74. The `};` is at 75. Corrected.
+M5 ✔ THE FOURTH ARGUMENT IS UNREACHABLE AT TWO OF THREE SITES. `many` needs an exact non-zero million;
+   `a11y.rackTile` is bounded by a tile face value of 10 and `controls.tilesSelected` by rack size 7.
+   ⇒ Only `error.throttled.minutes` can reach it. Saying so plainly stops a Worker inventing a third
+     form no product path can render. Applied.
+M6 ✔ EVERYTHING ELSE THE PROMPT ASSERTED HELD, and the Worker verified more of it than I asked —
+   including that `messages.pt.ts` really does put zero in its `one` slot, which makes the
+   "do not reason by analogy from Portuguese" warning well-aimed rather than theoretical.
+```
+
+### 45.4 The five LEADs, and my rulings
+
+```text
+⭐ L1 TAKEN. `board.pts` and `game.aiPlayedFor.points` are two keys for one concept at a 10px pill and
+   a 1.36rem sentence. The shipped four diverge: German and Icelandic used one form, Portuguese two,
+   Italian two. ⇒ RULING for catalogs 5-8: THEY MAY DIVERGE, and the reason is the surface, not the
+   language. State the choice. ⛔ No test assumes they match — I checked.
+⭐ L2 TAKEN, AND IT IS THE BEST STRUCTURAL INSIGHT OF THE FOUR REPORTS. My §5.3 assumes the control
+   style and the prose register CONTRAST — "never mixed inside one strip" presupposes two
+   distinguishable registers. FOR ITALIAN THEY COINCIDE: the UI imperative IS the `tu` prose
+   imperative, so the requirement is satisfied trivially rather than met. And its LEAD predicts the
+   same collapse for nl · da · sv · af, whose button convention is the bare stem.
+   ⇒ Reframed: "STATE WHETHER YOUR LANGUAGE'S CONTROL CONVENTION AND ITS PROSE REGISTER COINCIDE OR
+     CONTRAST, and if they coincide say so rather than manufacturing a distinction." ⛔ As written my
+     instruction could have pushed four Workers into inventing a contrast their language does not have.
+⚠ L3 CONSIDERED AND DECLINED, with the reasoning recorded because it is a genuine cost trade.
+   It proposes a small `messages.en.ts` slice before catalog 8 to split the dual-role
+   `history.unknownDate` and delete the dead `history.outcome.unknown`, so four Workers stop
+   re-solving them. ⭐ The arithmetic is even elegant: +1 key and −1 key leaves 296 unchanged, so
+   `AC-EXHAUST` would not move.
+   ⛔ DECLINED because the slice would touch SEVEN existing catalogs and require SIX NEW TRANSLATED
+     STRINGS in languages nobody can verify — buying a small convenience with the campaign's most
+     expensive currency. And the work it saves is small: each language HAS an answer and finding it took
+     minutes. Italian's is the most elegant yet (`disponibile` is an `-e` adjective, one form for both
+     genders); Icelandic used the neuter; Portuguese the unmarked masculine.
+   ⇒ BOTH STAY QUEUED FOR THE WIRING SLICE, which reopens all twelve catalogs anyway for the eight
+     endonym keys, where the marginal cost is near zero. ⭐ AND L3's REAL CONCERN IS SATISFIED BY ONE
+     SENTENCE, not a slice: catalogs 5-8 are TOLD both are known and queued, so no Worker thinks it has
+     discovered something and none proposes a fix.
+⭐ L4 TAKEN, and the measurement is the answer. `overlay.bestBadge` had no budget and the four shipped
+   catalogs guessed 3 / 5 / 8 / 8. ⇒ I will not invent a character budget from CSS — `text-[10px]
+   px-1.5` does not yield one honestly. RULING: the badge takes THE SHORTEST FORM THAT IS NOT
+   MISTAKABLE FOR UNTRANSLATED ENGLISH, its length is REPORTED, and consistency across the eight is
+   the Cooperator's call at rendered acceptance. ⛔ Recorded as B10-3 rather than guessed now.
+⚠ L5 ACCEPTED as one line in the measured set. `profile.memberSince` composes a label against a value
+   that can degrade to `history.unknownDate`, and every language with obligatory preposition-article
+   contraction meets it. Pre-existing in English, so not a defect — an agreement site worth naming.
+```
+
+### 45.5 What Italian added to the campaign's evidence
+
+```text
+· ⭐ FOUR OF FOUR CALL SITES HARMLESS — the first catalog to clear all four, and for structural reasons:
+  participle before the number, verb-object order, an indefinite article that works either way, and an
+  imperative that reads as both heading and button. ⇒ THREE OF FOUR LANGUAGES NOW REPORT ALL-HARMLESS
+  (pt, is, it) and German is the only one that needed a workaround. ⭐ That is now enough evidence for
+  the WIRING SLICE to conclude the call sites need no change — one language's workaround against three
+  languages' native fit.
+· ⭐ A TRAP THE MEASURED SET DID NOT CONTAIN, found by Italian: `game.gaveUp` needs a REFLEXIVE past
+  participle that agrees with the SUBJECT — the player, whose gender the catalog cannot know. Resolved
+  with `avere` + an invariable object. ⇒ Added to the measured agreement set; every remaining Romance
+  and Germanic language with participle agreement meets it.
+· `header.logout` is FOUR characters in Italian (`Esci`) — SHORTER than English. Second language to
+  report the campaign's "highest overflow risk" as absent, which is why the prompt asks for both answers.
+· `foldForSearch` is harmless for Italian: every Italian accent is a combining diacritic NFD folds.
+  ⇒ The queued `ð þ æ ß` slice remains correctly scoped to the Nordic and Germanic locales.
+```
+
+### 45.6 The queue
+
+```text
+next    catalog 5 of 8: DUTCH, session 14, baseline 6bf7c5e. Medium reasoning — its plural shape is
+        `i === 1` like German's. ⛔ BUT `as` IS A DUTCH WORD (axle, ash), so the cast-shaped line's
+        language collision is live again; the comment exclusion now applies to every audit line anyway.
+        ⚠ AND CATALOG 5 IS WHERE §43.4's PROMPT-LENGTH DECISION WAS DUE — the trend broke at 629, so
+        the invariant block stays inlined and the decision is deferred to catalog 7 if it resumes.
+then    da · sv · af. The Nordic pair stays adjacent so catalog 7 can guard against Danish bleed.
+before wiring  🐞 the `EXPLICIT_SEARCH_FOLDS` slice: `ð þ æ ß` plus the comment that claims completeness.
+with wiring    🐞 split `history.unknownDate`, delete `history.outcome.unknown` — net zero keys.
+```

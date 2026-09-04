@@ -422,3 +422,35 @@ B9-4  ⛔ TWO PRODUCT DEFECTS THIS CATALOG FOUND, both OUTSIDE its own file and 
         are wired. Being fixed before wiring.
       · `history.outcome.unknown` is a string twelve catalogs write and the product can never show —
         the saved-board table has no branch for it. Being removed with the wiring key change.
+
+## B10 · catalog 4 of 8 — the Italian interface catalog — `6bf7c5e`
+
+```text
+slice        MEC-UIL-C4-it
+commit       6bf7c5e  feat(i18n) the Italian interface catalog
+             pushed; public readback equals local HEAD at 6bf7c5e
+what changed ONE new file, messages.it.ts — 296 text keys and 20 function keys of Italian.
+             ⛔ DELIBERATELY ORPHANED. FOUR of eight catalogs now exist: German, European Portuguese,
+             Icelandic, Italian. Four remain: Dutch, Danish, Swedish, Afrikaans.
+```
+
+```text
+B10-1 Confirm the header is byte-identical to the other three:
+      `diff <(head -7 messages.it.ts) <(head -7 messages.de.ts)` prints nothing.
+B10-2 Read the terminology block. Two terms the writer named as its least certain, and it had no
+      authorized way to check either — no network, no dictionary, by design:
+      · `leggio` for the tile rack. If an Italian reads it as a MUSIC stand, `supporto` is the
+        alternative. Highest-uncertainty term in the catalog.
+      · `tabellone` for the playing surface — the traditional Italian Scrabble word; modern Italian
+        board-gaming often says `plancia`.
+B10-3 ⛔ A DECISION I AM DEFERRING TO YOU RATHER THAN GUESSING, and it is one word.
+      The AI overlay's "best move" BADGE is a 10-pixel pill beside a truncating word and a score. The
+      four shipped catalogs each chose a different length for it: German 3 characters, Icelandic 5,
+      Slovak 8, Italian 8 (`MIGLIORE`). ⇒ I refuse to invent a character budget from the CSS, because
+      `text-[10px] px-1.5` does not honestly yield one. When the locales are reachable, look at that
+      pill in Italian and in Slovak and tell me whether 8 characters fits. If it does not, every
+      catalog has a shorter fallback already named in its own file.
+B10-4 ⛔ KNOWN LIMITS: `MIGLIORE` (8 chars) is the single highest overflow risk in this catalog and was
+      kept CORRECT rather than shortened to something that reads like untranslated English. And
+      `header.logout` is `Esci` — FOUR characters, shorter than English, so the game header actually
+      gains room in Italian.
