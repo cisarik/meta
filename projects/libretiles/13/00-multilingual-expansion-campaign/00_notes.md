@@ -1680,6 +1680,156 @@ cheapest possible outcome.
 
 ---
 
+## 29. ⛔ Exchange 04/01 ALSO returned BLOCKED — a fifth defect, and it is arithmetic
+
+```text
+prompt   04_implementation_00.md    task MEC-C1a-reissue, tier E3, reasoning High
+report   04_report_00.md            status BLOCKED, Escalation disposition NEEDS_ORCHESTRATOR_DECISION
+tree     unchanged at 8a50ded. Porcelain empty. Zero mutation, again.
+```
+
+⚠ **Two BLOCKED exchanges in a row on the same task. That is not a stuck loop — each found a
+DIFFERENT class of defect, and both were mine.** The finite-convergence rule I must watch is "the
+same assumption surviving correction and recheck"; that has not happened. 03/01 found an
+incomplete absence claim; 04/01 found a forced logical contradiction. Different assumptions, both
+now retired by measurement.
+
+### 29.1 🐞 C-7 — an assertion that CANNOT coexist with the requirement, and I verified it myself
+
+```text
+backend/tests/test_slovak_engine.py:205
+    assert not PlacementSerializer(data={"row": 7, "col": 7, "letter": "CH"}).is_valid()
+```
+
+That file is **not on the allowlist**. And `"CH"` is structurally IDENTICAL to `"SZ"` — I measured
+every dimension:
+
+```text
+         NFC-stable  upper-stable  isalpha  len  has_letter
+  'CH'      True         True        True    2      True
+  'SZ'      True         True        True    2      True
+```
+
+⇒ **No predicate can accept `SZ` and reject `CH`.** F4 requires accepting `SZ`; therefore `:205`
+must fail. Not a design hazard, not an implementation choice — **arithmetic.** The Worker proved it
+with an in-process probe that monkeypatched the predicate and touched no file.
+
+⛔ Every escape was closed by my own prompt: re-pointing the file was outside the allowlist,
+keeping `CH` invalid was impossible, and skipping F4 was barred by my own stage gate. **A
+three-way closed contradiction is the correct thing to block on.**
+
+### 29.2 🐞 C-8 — my predicate vocabulary accepts a DIGIT as a tile letter
+
+`test_slovak_engine.py:207` asserts `not …(letter="1").is_valid()`. My D-7 vocabulary — non-empty,
+NFC-stable, upper-stable, no whitespace, no control characters — **accepts `"1"`.** Measured:
+`'1'` is NFC-stable, upper-stable, `isalpha=False`, `has_letter=False`.
+
+⚠ And `variant_store._parse_asset_token` accepts `"1"` too, so **mirroring its reasoning faithfully
+reproduced the defect.** That is the hazard in "mirror the reasoning of X": X may be right for its
+own threat model and wrong for yours.
+
+⇒ The Worker measured the one-clause fix and **deliberately did not adopt it**, because I had
+written "implement them; do not re-decide them". It handed me the measurement instead of the
+decision. That is exactly the restraint the instruction asked for, and it is why the decision below
+is mine to make rather than something I discovered after the fact.
+
+### 29.3 🐞 MEASURED-2 — an EIGHTH guard, spelled differently, one file to the left
+
+```text
+backend/game/serializers.py:246   ExchangeSerializer.letters = ListField(child=CharField(max_length=1), …)
+used by  views.py:304   /api/game/{id}/exchange/      (human)
+         views.py:475   /api/game/{id}/ai-exchange/   (AI)
+```
+
+⛔ **My command C searched for `len(nfc) == 1`. This guard is spelled `max_length=1`, so the search
+could not see it.** Relaxing `route.ts:1002` alone would forward `SZ` and the backend would answer
+HTTP 400 — **the exchange path stays closed to every digraph language after C1a ships.**
+
+⚠ **This is defect C-1 recurring, one level deeper.** I fixed "derive the count from a search
+instead of a list" and the *pattern* was still incomplete. R-J needs its second half:
+
+```text
+R-J (amended)  A per-site absence claim must be derived from a search, AND the pattern must be
+               justified against the SPELLINGS the guard could take, not only the one you
+               remember. For a length guard in Python + DRF + Zod + regex that is at least:
+                   len(x) == 1 · max_length=1 · .length(1) · .length === 1 · ^…$ around one \p{L}
+               Enumerate the SPELLING SPACE in the prompt, so a Worker can widen it.
+```
+
+### 29.4 MEASURED-1 — my section-6 grep was short by one, for the same reason
+
+`test_atomic_token_persistence.py:251` `assert state["blanks"] == [{"row": 7, "col": 7}]`. My
+pattern searched `state\["board"\]` and the two adapter names — **never `state\["blanks"\]`**,
+even though D-2 removes exactly that key. ELEVEN is TWELVE. Same class as 29.3.
+
+### 29.5 MEASURED-4 — C1b is worse than I recorded, and confirmed at a second locus
+
+```text
+gamecore/state.py:44     grid.append("".join(row_chars))          ← the site I already knew
+prompts.ts:190           GRID_ROW = /^[\p{L}.]{15}$/u
+prompts.ts:227-236       extractGridRows keeps only lines matching GRID_ROW, then slice(0,15)
+```
+
+⇒ A digraph row is sixteen code points, so it does not merely misalign — **it fails the regex and is
+SILENTLY DROPPED, and the model receives a SHORT BOARD.** I verified `GRID_ROW` at `prompts.ts:190`.
+
+⭐ And two mitigations the Worker measured, both good news: the P-A hash covers only
+`MOVE_SYSTEM_PROMPT`, **not the parser**, so C1b can repair `extractGridRows` without moving the
+CORE hash; and `gamecore/state.py:63,104-125` **already carries a structured
+`grid: list[list[str | None]]`** for the save file, so the token-preserving projection C1b needs
+already exists beside the lossy one.
+
+### 29.6 ⛔ THE FIVE DECISIONS — mine, taken now, with reasons
+
+```text
+D13-12  ALLOWLIST backend/tests/test_slovak_engine.py and authorize exactly TWO re-pointings.
+        :205 is WRONG IN PRINCIPLE, not merely inconvenient. PlacementSerializer has NO VARIANT IN
+        SCOPE — it cannot know whether `CH` is a tile in the game being played. Its job is SHAPE;
+        playability is the engine's, and the SAME FILE already asserts it at :237
+        (`"CH" not in variant.playable_letters`). So :205 becomes "shape-valid, engine-rejected",
+        and the comment must say that the playability half is asserted thirty lines below.
+        ⇒ The old assertion was passing for the wrong reason: it was testing the engine's rule
+          through the serializer's length limit. Removing the limit exposes that, which is the
+          change doing its job rather than breaking something.
+D13-13  ADOPT the "contains at least one Unicode letter" clause. It restores :207, keeps SZ, DZS,
+        L·L and Á, and rejects `1` and a bare `·`. ⛔ And RECORD WHY IT DEVIATES from
+        variant_store._parse_asset_token, which accepts `1`: the manifest loader validates tokens
+        DECLARED BY A MAINTAINER in a committed asset; the serializer validates UNTRUSTED PUBLIC
+        INPUT. Different threat models justify a stricter predicate, and a future reader must not
+        "harmonize" them.
+D13-14  ELEVEN becomes TWELVE, and the section-6 pattern gains `state\["blanks"\]`.
+D13-15  ⛔ ExchangeSerializer's max_length=1 goes INTO C1a, not into a successor. The lesson of
+        sites 9/10 is that a partial removal leaving a downstream guard is a SILENT NO-OP.
+        Deferring would repeat precisely the defect this reissue exists to correct. It is in an
+        already-allowlisted file, it needs the same 16-code-point bound, and it needs its own
+        fixture on both endpoints.
+D13-16  frontend/src/lib/rack.ts UNICODE_TILE is DEFERRED and NAMED, not silently left. It is
+        latent — reached only when gameState is null, because every call site passes
+        `gameState?.alphabet` and services.py:163-169 always ships it. ⚠ But it MUST be fixed
+        before Hungarian ships, so it goes to C1b, whose subject is exactly "the places a letter is
+        still assumed to be one code point after the wire is fixed".
+```
+
+### 29.7 What two blocks cost and bought
+
+```text
+COST    two full gate ladders, two subagent sessions, zero product change.
+BOUGHT  a no-op guard pair (03/01) · an unsatisfiable stage gate (03/01) · two nonexistent paths
+        (03/01) · three undercounted assertions (03/01) · a corrupted AI board view (03/01) ·
+        a FORCED CONTRADICTION that would have left the suite red with no lawful way out (04/01) ·
+        a predicate that accepted digits as tiles (04/01) · an eighth guard that would have made
+        the exchange path a no-op for every digraph language (04/01) · and a twelfth assertion
+        line that would have left a KeyError (04/01).
+```
+
+⚠ **On an E3 slice over live multiplayer, nine defects caught before the first byte changed is the
+cheapest possible outcome — and the pattern in them is now unmistakable.** Seven of the nine are
+the same root cause: **an enumeration I produced from memory or from too narrow a pattern, and then
+required a Worker to prove complete.** R-J amended in 29.3 is the rule that finally addresses it,
+because it makes the SPELLING SPACE the prompt's obligation rather than the Worker's discovery.
+
+---
+
 ## 26. Next step
 
 
