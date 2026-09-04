@@ -1196,32 +1196,39 @@ posture  ⛔ NON-INDEPENDENT. Orchestrator-direct under D13-8.
 
 ---
 
-## 22. Campaign state after nine languages
+## 22. Campaign state after ten languages
 
 ```text
-PLAYABLE 9 / 24   english · slovak · czech · polish · afrikaans · italian · dutch · german ·
-                  portuguese
-UI       4 / 24   en sk cs pl.  The other five degrade gracefully: no VARIANT_NAME_KEYS entry
+PLAYABLE 10 / 24  english · slovak · czech · polish · afrikaans · italian · dutch · german ·
+                  portuguese · danish
+UI       4 / 24   en sk cs pl.  The other six degrade gracefully: no VARIANT_NAME_KEYS entry
                   means variantDisplayName() falls back to the server display_name, and flagSrc
                   is omitted. MEASURED, not assumed.
-ASSETS   ten lexicon assets audited, 0 failed. 63 MB is the new largest.
-ENGINE   ⛔ STILL ZERO ENGINE CHANGES ACROSS FIVE NEW LANGUAGES. Every rule any of them needed
+ASSETS   ELEVEN lexicon assets audited, 0 failed. portuguese.txt at 63 MB is the largest.
+ENGINE   ⛔ STILL ZERO ENGINE CHANGES ACROSS SIX NEW LANGUAGES. Every rule any of them needed
          was expressible in the ASSET at build time. The friction is three test inventories per
          language plus one build script.
 ```
 
-### 22.1 The tile-face rule taxonomy, now complete enough to be useful
+### 22.1 The tile-face rule taxonomy
 
 ```text
 NO RULE            slovak · czech · polish   accented letters ARE tiles, nothing to do
 TOTAL FOLD         afrikaans · italian       no marked letter has a tile
 TOTAL + LIGATURE   dutch                     ĳ -> ij, because NFD walks past a ligature
-PARTIAL FOLD       german (ä ö ü kept) · portuguese (ç kept)
+PARTIAL FOLD       german (ä ö ü kept) · portuguese (ç kept) · danish (æ ø å kept)
+SHAPE FILTER       danish   þ and ð are distinct LETTERS, so no fold removes them and no tile
+                            bears them -> 106 forms DROPPED under an asserted bound
 FREE FROM CASEFOLD german ß -> ss · greek ς -> σ   Unicode full case folding already does it
+TOOL DEFECT        danish   unmunch truncates a long line mid-character; 11 undecodable lines
+                            are skipped, counted and bounded, never absorbed
 ```
 
-⇒ **Five distinct shapes, all in data.** A sixth language of any of these shapes is now a
-mechanical exercise. That is the "adding a variant is boring" claim, earned rather than asserted.
+⇒ **Seven distinct shapes, all in data or in the build.** A further language of any of these
+shapes is now a mechanical exercise. That is the "adding a variant is boring" claim, earned
+rather than asserted — and note that two of the seven were found by a GUARD firing, not by
+design: Dutch's ligature by a probe word that was measurably absent, and Danish's truncation by
+`errors="strict"` refusing to decode.
 
 ### 22.2 Remaining work, ordered by leverage
 
@@ -1245,8 +1252,128 @@ BLOCKED, recorded, not hidden:  finnish · malay (no source) · french (expander
 repository. Six are waiting on one E3 slice. Four are mechanical. One needs measuring. That is a
 campaign with a visible finish line, not an open-ended one.
 
+---
 
+## 23. Danish playable, Norwegian blocked on licence clarity — `51e08fe`
 
+### 23.1 Danish: strongest licence evidence yet, and three rules
 
+```text
+101 tiles · 28 kinds · A-Z without Q, plus Æ Ø Å at 4 points · Q played with a blank
+317 167 words / 4.2 MB · GPL-2.0-only OR LGPL-2.1-only OR MPL-1.1
+⭐ README_da_DK.txt grants BY FILENAME — "da_DK.dic, da_DK.aff, th_da_DK.dat, th_da_DK.idx …
+   These files are published under the following open source licenses: GNU GPL version 2.0 /
+   GNU LGPL version 2.1 / Mozilla MPL version 1.1". No directory convention needed.
+1  PARTIAL FOLD, Portuguese's shape. 76 196 words keep Æ/Ø/Å; é ü ö á ä ó í è ë fold.
+2  SHAPE FILTER, new: þ and ð are distinct LETTERS, so no fold removes them and no Danish tile
+   bears them. 106 Faroese/Icelandic proper names DROPPED under an asserted bound rather than
+   mangled into something that is not the word.
+3  see 23.2 — a tool defect, not a language rule.
+⚠ 101 not 100: "Prior to 2025, sets contained 100 tiles and did not include a W."
+⚠ Q-by-blank is another C2-EXTENSION case. Recorded, not blocking.
+```
 
+### 23.2 ⛔ THE EXPANDER TRUNCATES MID-CHARACTER — and `errors="strict"` is what caught it
 
+```text
+MEASURED: of 3 566 551 lines unmunch emits for da_DK, ELEVEN are not valid UTF-8. Every one is
+a long `al:` morphological-alias line severed at a buffer boundary, with the LEAD BYTE of `å`
+ending one line and its CONTINUATION BYTE opening the next.
+```
+
+⛔ **Neither obvious handling is acceptable, and that is the whole point:**
+
+```text
+whole-stream errors="strict"    kills the build over 11 lines out of 3.5 million
+whole-stream errors="replace"   would let a truncated tail like b"\xa5lsans\xc3\xa6t" become a
+                                plausible FAKE WORD, and would absorb real mojibake silently
+```
+
+⇒ Each line is decoded **strictly on its own**; an undecodable line is skipped, **counted** and
+reported; the count is asserted against a bound of 100. Eleven is tolerated and visible; a
+systematic encoding failure fails the build.
+
+⚠ **This retroactively justifies a choice made eight scripts ago.** The `errors="strict"` in
+every build script is what surfaced this at all — my own exploratory measurement had used
+`errors="replace"` and saw nothing. Danish is the only language where it fired, and it fired
+correctly. **A guard that never fires is indistinguishable from no guard until the day it does.**
+
+### 23.3 ⛔ Norwegian: BLOCKED, and it is a FOURTH blocker class
+
+The asset is good — both written standards ship at the pinned commit, nb_NO.dic is 5.3 MB /
+334 169 stems. **There is no explicit licence grant for the word list.** I read every file in
+`no/`:
+
+```text
+COPYING             the unmodified GPL v2 text, NO project statement appended. Its tail is the
+                    standard "Yoyodyne, Inc." boilerplate.
+README_hyph_NO.txt  says "License: GNU General Public license" — but it is titled "Myspell
+                    hyphenation" and names the spell-norwegian hyphenation source. It grants for
+                    hyph_nb_NO.dic, NOT for nb_NO.dic.
+description.xml     publisher no.speling.org. No licence.
+dictionaries.xcu    no licence, no copyright.
+nb_NO.aff header    no licence line.
+```
+
+⇒ **The one explicit licence statement in the directory is scoped to other files.** Standing
+condition 5 makes an unclear licence a disqualification and a recorded blocker, *never a
+judgement*. A directory convention is a strong convention, not a grant. Every other language
+shipped here has an explicit one: Danish names its files, Swedish says *"This dictionary is made
+available subject to"*, Icelandic says *"released into the public domain"*. **Norwegian says
+nothing.** So it is recorded, with the missing thing named exactly.
+
+⛔ **And this row establishes a design principle worth more than the language:** the licence
+evidence must come from the **same pinned commit as the asset**. Fetching a grant from a Debian
+`debian/copyright` or a project website would prove terms for a different artifact than the one
+`--check` reproduces. **A pin that covers the words but not the terms is not a pin.**
+
+### 23.4 Reconnaissance done for the two languages NOT shipped this slice
+
+```text
+SWEDISH   LGPL-3.0-only, explicit: "This dictionary is made available subject to the terms of
+          GNU Lesser General Public License Version 3." Clean, single licence, no "or later".
+          100 tiles, 27 kinds; Q and W absent (blank only). Å Ä Ö are tiles.
+          823 327 raw forms; 320 311 keep Å/Ä/Ö; only 33 dropped by shape (ł 14, æ 9, ø 9, μ 1
+          — Polish and Norwegian proper names).
+          ⛔ ONE RULE CORRECTION FOUND AND NOT YET APPLIED: the source says "other diacritics
+            like that on É are ignored (EXCEPT Ü)", and "Ü and Æ require a blank … as of 2010
+            only one and three playable words respectively". So Ü must NOT fold to U — folding
+            would make `müsli` playable as MUSLI, a rule the edition does not have. The correct
+            handling is to leave ü unfolded and let the shape filter drop those words, which is
+            faithful and costs 124 raw occurrences. My first measurement folded it; that was
+            wrong and is corrected here before any script was written.
+ICELANDIC 104 tiles (2016 Tinderbox edition under Mattel licence). Ð is a 2-point TILE, and
+          Á Í and other accented vowels have their own tiles — so Icelandic may need NO fold at
+          all, the first such language since Polish.
+          ⚠ MIXED LICENCE, and it needs care: license.txt says the WORDLIST was "released into
+            the public domain", but "words in the spell checker with additional morphological
+            information are from the Icelandic Wiktionary Project … under CC BY-SA 3.0". The two
+            are indistinguishable inside is.dic, so the derived asset must be treated as
+            CC-BY-SA-3.0 (share-alike propagates; public-domain material imposes nothing).
+            That is determinate, unlike Norwegian's silence — so Icelandic is shippable, with
+            license.txt embedded in full.
+          Distribution not yet fully extracted; the section is longer than one fetch showed.
+```
+
+---
+
+## 24. Next step
+
+```text
+NEXT   Swedish, with the Ü correction in 23.4 applied from the start.
+       Icelandic, once its distribution table is fully extracted; expect NO fold rule.
+THEN   Slovenian — measure whether it needs C1 at all.
+       C1 (E3) — still the highest-leverage item: hu · hr · es · el · bg · ru in one slice, and
+       the only slice needing a Worker plus fresh independent acceptance.
+LATER  C2 as an explicit declared blank-target set. The case list keeps growing:
+         afrikaans blank→X Z · italian blank→J K W X Y · danish blank→Q · swedish blank→Q W Ü Æ ·
+         turkish blank NOT→Q W X
+       C3 narrowed to Turkish. Spylls route for French and Hungarian.
+       _lexicon_build.py — NINE scripts now, well past the stated trigger.
+BLOCKED, recorded, not hidden:
+       finnish   no plain affix pair (Voikko)
+       malay     no ms_MY source
+       french    expander cannot render it (~77k of ~400k words)
+       norwegian no explicit licence grant for the word list
+       hungarian size (~301 M forms) — decision D taken
+```

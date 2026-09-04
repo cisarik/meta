@@ -123,9 +123,9 @@ ledger opened with.
 09  Spanish       not-started  not-started 23 pairs, lic LGPL+  in-compil. C1 C4 C5   no
 10  Portuguese    PLAYABLE     not-started MEASURED ok GPL|LGPL|MPL sourced none***   yes
 11  Dutch         PLAYABLE     not-started MEASURED ok BSD|CC   sourced    none**     yes
-12  Danish        not-started  not-started af pair, lic unread  in-compil. C3?        no
+12  Danish        PLAYABLE     not-started MEASURED ok GPL|LGPL|MPL sourced none***   yes
 13  Swedish       not-started  not-started 2 pairs, lic unread  in-compil. C3?        no
-14  Norwegian     not-started  not-started nb+nn, lic COPYING   in-compil. C3? C5?    no
+14  Norwegian     BLOCKED      not-started ⛔ NO EXPLICIT GRANT  sourced    (n/a)      no
 15  Finnish       not-started  not-started ⛔ NO SOURCE          in-compil. C3?        no
 16  Icelandic     not-started  not-started af pair, lic present in-compil. C3?        no
 17  Croatian      not-started  not-started af pair, lic unread  in-compil. C1         no
@@ -138,10 +138,11 @@ ledger opened with.
 ```
 
 ```text
-playable  9 / 24        UI locales  4 / 24
+playable  10 / 24       UI locales  4 / 24
 lexicon reachable by the proven pipeline   22 / 24
 lexicon with NO known licence-clean source  2 / 24   Finnish · Malay
 lexicon source exists but the EXPANDER cannot render it  1 / 24   French — see row 07
+lexicon exists but carries NO EXPLICIT LICENCE GRANT     1 / 24   Norwegian — see row 14
 `in-compil.` = present in the Wikipedia Official-editions compilation, table not yet extracted
 `none*`      = needed a DIACRITIC FOLD, solved in the LEXICON at build time rather than by a
                capability. Afrikaans and Italian. See rows 23 and 08.
@@ -635,19 +636,56 @@ blockers               none for gameplay. ⚠ 63 MB will draw a GitHub large-fil
 ## 11 · Dutch — see the PLAYABLE entry above, filed with Italian at `dab6d0d`
 
 
-## 12 · Danish
+## 12 · Danish — ⭐ PLAYABLE, landed 2026-09-03 at `51e08fe`
 
 ```text
-gameplay status        not-started.
-UI-localization        not-started.
-dictionary status      UNSOURCED. No probe run.
-distribution source    UNSOURCED.
-special-rule reqs      LEAD: Æ Ø Å are distinct LETTERS with their own tiles, not folded
-                       vowels. ⚠ That makes Danish a C3 row only if the sourced rules
-                       actually require folding — it may need NOTHING. Do not assume.
-capability required    C3 pending measurement; possibly none.
-tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED.
+gameplay status        PLAYABLE. The tenth variant.
+UI-localization        not-started; degrades gracefully.
+dictionary status      MEASURED ok. danish.txt 317 167 words / 4 195 410 B, duplicates 0,
+                       non_nfc 0. --check IDENTICAL on both artifacts.
+                       ⭐ THE STRONGEST LICENCE EVIDENCE IN THE REPOSITORY. README_da_DK.txt
+                       does not rely on a directory convention — it grants by FILENAME:
+                       "da_DK.dic, da_DK.aff, th_da_DK.dat, th_da_DK.idx: © 2020 Foreningen
+                       for frit tilgængelige sprogværktøjer … These files are published under
+                       the following open source licenses: GNU GPL version 2.0 / GNU LGPL
+                       version 2.1 / Mozilla MPL version 1.1"
+                       ⇒ GPL-2.0-only OR LGPL-2.1-only OR MPL-1.1, the same expression Slovak
+                         and Portuguese declare. Four separate strings asserted by the build.
+                       Data provenance: Det Danske Sprog- og Litteraturselskab, recorded in the
+                       manifest. Not a tournament list.
+distribution source    SOURCED. 101 tiles, 2 blanks, 28 tile kinds. alphabet_order 29 (A-Z plus
+                       Æ Ø Å); ⚠ Q has NO TILE and is played with a blank, so it is the one
+                       letter without a tile — Slovak's shape at a smaller scale.
+                       ⚠ 101, not 100: "Prior to 2025, sets contained 100 tiles and did not
+                       include a W." The shipped manifest is the CURRENT edition.
+                       ⚠ Q-by-blank is another C2-EXTENSION case: derived blank targets come
+                       from the tile set, so blank→Q is impossible today. Recorded, not blocking.
+special-rule reqs      THREE rules, and the third is a TOOL DEFECT rather than a language rule.
+                       1. PARTIAL FOLD, Portuguese's shape. Æ Ø Å are 4-point tiles and survive
+                          in 76 196 words; é 769 · ü 352 · ö 256 · á 128 · ä 106 · ó 96 · í 71 ·
+                          è 66 · ë 49 and a tail all fold. 2 013 forms rewritten.
+                       2. SHAPE FILTER, new to this family. `þ` (thorn) and `ð` (eth) are
+                          distinct LETTERS, not marked ones, so NFD leaves them and no Danish
+                          tile bears either. 106 forms — Faroese and Icelandic proper names like
+                          `þorhildur`, `eyjafjorður`, `viðareiði` — are DROPPED under an asserted
+                          bound rather than mangled into something that is not the word.
+                       3. ⛔ THE EXPANDER TRUNCATES MID-CHARACTER. MEASURED: of 3 566 551 lines
+                          unmunch emits, ELEVEN are not valid UTF-8, every one a long `al:`
+                          morphological-alias line severed at a buffer boundary with the lead
+                          byte of `å` ending one line and its continuation opening the next.
+                          ⇒ Neither obvious handling is acceptable: whole-stream strict kills
+                            the build over 11 lines in 3.5 million, and whole-stream `replace`
+                            would let a truncated tail like `\xa5lsans\xc3\xa6t` become a
+                            plausible FAKE WORD while also absorbing real mojibake.
+                          ⇒ So each line is decoded STRICTLY on its own, undecodable lines are
+                            skipped, counted and reported, and the count is asserted against a
+                            bound of 100. Eleven is tolerated; systematic failure fails the build.
+                          ⚠ This is why the other eight scripts' `errors="strict"` matters: it is
+                            what surfaced this at all. Danish is the only language where it fired.
+capability required    none. All three rules live in the build.
+tests                  auto-enrolled; probe (`hus`, `københavn`, `cafe`) — plain, preservation,
+                       fold.
+blockers               none for gameplay.
 ```
 
 ## 13 · Swedish
@@ -664,19 +702,55 @@ tests                  none.
 blockers               distribution UNSOURCED · lexicon licence UNVERIFIED.
 ```
 
-## 14 · Norwegian
+## 14 · Norwegian — ⛔ BLOCKED: no explicit licence grant for the word list
 
 ```text
-gameplay status        not-started.
+gameplay status        not-started. BLOCKED, and it is a FOURTH distinct blocker class.
 UI-localization        not-started.
-dictionary status      UNSOURCED. No probe run. ⚠ Bokmål and Nynorsk are two written
-                       standards; which one the lexicon covers is part of the probe.
-distribution source    UNSOURCED.
-special-rule reqs      LEAD: Æ Ø Å distinct, as in Danish.
-capability required    C3 pending measurement; possibly none · C5 if two standards ship.
+dictionary status      ⛔ THE ASSET EXISTS AND IS GOOD. `no/` ships BOTH written standards at the
+                       pinned commit: nb_NO.dic (5 274 030 B, 334 169 stems) + nb_NO.aff, and
+                       nn_NO.dic (3 278 557 B) + nn_NO.aff. nb_NO.aff declares SET ISO8859-1.
+                       ⛔ BUT THERE IS NO EXPLICIT GRANT FOR THE WORD LIST. I read every file in
+                       the directory at the pinned commit:
+                         no/COPYING              the unmodified GNU GPL v2 text, with NO project
+                                                 statement appended saying it applies to these
+                                                 files. Its tail is the standard "Yoyodyne, Inc."
+                                                 boilerplate.
+                         no/README_hyph_NO.txt   says "License: GNU General Public license" — but
+                                                 it is titled "Myspell hyphenation" and names
+                                                 "Origin: Generated from the spell-norwegian
+                                                 source v2.0.7". It grants for hyph_nb_NO.dic and
+                                                 hyph_nn_NO.dic, NOT for nb_NO.dic.
+                         no/description.xml      publisher no.speling.org. No licence.
+                         no/dictionaries.xcu     no licence, no copyright.
+                         nb_NO.aff header        no licence line.
+                       ⇒ The ONE explicit licence statement in the directory is scoped to OTHER
+                         files, and the word list has only a bare COPYING beside it.
+                       ⛔ STANDING CONDITION 5: "an unusable or UNCLEAR licence is a
+                         DISQUALIFICATION and a recorded BLOCKER, never a footnote and never a
+                         judgement." A directory convention is a strong convention, not a grant.
+                         Every other language shipped here has an explicit grant — Danish names
+                         its files, Swedish says "This dictionary is made available subject to",
+                         Icelandic says "released into the public domain". Norwegian says nothing.
+                       ⇒ SO NORWEGIAN IS NOT SHIPPED, and the missing thing is named exactly: an
+                         upstream statement, inside the pinned commit, granting a licence for
+                         nb_NO.dic / nb_NO.aff.
+                       ⛔ AND A DESIGN PRINCIPLE THIS ROW ESTABLISHES: the licence evidence must
+                         come from the SAME PINNED COMMIT as the asset. Fetching a grant from a
+                         Debian `debian/copyright` or a project website would prove terms for a
+                         different artifact than the one `--check` reproduces. A pin that covers
+                         the words but not the terms is not a pin.
+                       ROUTE OUT: upstream clarification, or a different Norwegian source whose
+                       own pinned files carry an explicit grant.
+distribution source    SOURCED. Not blocked.
+special-rule reqs      MEASURED-ADJACENT and ready for when the licence is: Æ Ø Å are distinct
+                       letters with tiles, as in Danish, so a PARTIAL fold of Danish's shape.
+                       nb_NO.aff is ISO8859-1, like German.
+                       ⚠ Bokmål vs Nynorsk is a C5 ruleset question — both packs exist upstream.
+capability required    none in the engine.
 tests                  none.
-blockers               distribution UNSOURCED · Bokmål vs Nynorsk undecided ·
-                       lexicon licence UNVERIFIED.
+blockers               ⛔ no explicit upstream licence grant for the word list. Everything else —
+                       distribution, encoding, transformation shape, both standards — is ready.
 ```
 
 ## 15 · Finnish
