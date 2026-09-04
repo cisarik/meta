@@ -124,3 +124,73 @@ B2-5  Confirm `manage.py validate_lexicons` still reports FIVE assets, 0 failed.
       file was never one of the five — that is precisely why it could rot unnoticed.
 ```
 
+
+---
+
+## B3 · eight new playable languages — `153ead7` · `dab6d0d` · `0deac4a` · `1eed5ed` · `51e08fe` · `8a50ded`
+
+```text
+slices       Afrikaans · Italian · Dutch · German · Portuguese · Danish · Swedish · Icelandic
+what changed twelve variants ship where four did. Every one has a committed build script pinned to
+             one upstream commit, a licence read before a byte was written, and a byte-exact --check
+             reproduction. ZERO engine changes across all eight.
+```
+
+⚠ **This is the batch with rendered output, and the rendered-output rule applies:** *for anything that
+renders, render it, or do not claim it.* B3-1 is therefore the load-bearing step.
+
+```text
+B3-1  ⭐ THE ONE THAT MATTERS. Start both servers (backend on 8000, frontend on 3000), open Settings,
+      and look at the game-language picker.
+      EXPECT: TWELVE entries — English, Afrikaans, Czech, Danish, Dutch, German, Icelandic, Italian,
+      Polish, Portuguese, Slovak, Swedish. English first, then the rest alphabetically by display name.
+      EXPECT: the four original languages show their flag; the eight new ones show NO flag and their
+      server-provided English name. That is BY DESIGN — variantDisplayName() falls back to the server
+      display_name and flagSrc is omitted when absent, so a backend variant never needs a UI edit to
+      appear. Confirm it looks acceptable rather than broken.
+B3-2  Pick Afrikaans, start a game, play one word. EXPECT: it is accepted. 148 267 words.
+B3-3  Pick German, and try to play a word containing Ä, Ö or Ü. EXPECT: accepted — those are 6-, 8-
+      and 6-point TILES and 155 641 words keep one. ⛔ If an umlaut is rejected, the partial fold
+      became total and roughly that many playable words were destroyed.
+B3-4  Pick Portuguese. EXPECT the bag to be 120 tiles with THREE blanks, and a Ç tile worth 3 points.
+      ⇒ This is the step that proves bag size and blank count are data-derived, not hardcoded.
+B3-5  Pick Icelandic and play a word containing Ð, Þ or Æ. EXPECT: accepted. All ten of Icelandic's
+      non-ASCII letters are tiles and NOTHING is folded.
+B3-6  Confirm the four original languages are unchanged: English, Slovak, Czech, Polish all still
+      playable, and a Slovak word with Á still accepted (Slovak does NOT fold diacritics).
+B3-7  ⛔ NEGATIVE STEP. Confirm Norwegian, Finnish, French, Malay and Hungarian are ABSENT from the
+      picker. Each is a recorded blocker with a named cause, not an oversight:
+        norwegian  no explicit upstream licence grant for the word list
+        finnish    no plain affix pair upstream (Voikko)
+        french     the expander yields ~77k of ~400k words
+        malay      no ms_MY source; Indonesian must not be substituted
+        hungarian  ~301 M forms; needs an opt-in local build
+B3-8  From backend/: `env -u APPIMAGE -u ARGV0 -u APPDIR .venv/bin/python manage.py validate_lexicons`
+      EXPECT: `13 asset(s) audited, 0 failed`.
+```
+
+## B4 · C1a, the wire format — `529e691`
+
+```text
+slice        MEC-C1a-third
+what changed a multi-code-point tile now crosses the game-state wire losslessly, on both the
+             placement and the exchange path. The temporary adapter is gone.
+```
+
+⛔ **This slice is NOT accepted yet.** It is E3 and its fresh independent acceptance
+(`06_acceptance_00.md`) had not returned when this entry was written. **If that acceptance has not
+happened, do B4-1 and stop — do not treat the rest as confirmation.**
+
+```text
+B4-1  ⛔ FIRST: confirm the independent acceptance of 529e691 exists and PASSED. If it does not
+      exist, this entry is not ready and nothing below it counts.
+B4-2  Open any game and confirm the board renders normally — tiles in the right squares, blanks
+      shown as blanks. ⚠ No test in the repository renders the board component, so YOUR EYES are the
+      only evidence for the visual path. The independent acceptance prompt asks about exactly this.
+B4-3  Place a word, submit it, reload the page. EXPECT: the board is unchanged after reload. That
+      exercises the new structured payload end to end.
+B4-4  ⛔ KNOWN LIMIT, so you are not surprised: no shipped language has a digraph tile yet, so
+      nothing you can play today needs the new wire format. Hungarian is its first real consumer.
+      B4-2 and B4-3 confirm the change did not BREAK anything; they cannot confirm it ENABLED
+      anything. That is honest, not a gap in your testing.
+```
