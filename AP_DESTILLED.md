@@ -10,6 +10,31 @@ Read this once. Then work from the line references, not from memory. The single
 most expensive failure recorded in this archive is an Orchestrator recalling a
 closed enum instead of reading it (`PROJECT_CONTEXT.md` lesson 17).
 
+⭐ **READ THIS FILE SECOND, NOT FIRST.** `/home/agile/meta/AP_DEFECTS.md` (1 157
+lines) was written after this one, by the Orchestrator of `13/00`, and it records
+**fifteen MEASURED defects of the protocol this file distils.** It does not
+contradict the pin — it says where the pin is expensive, where it is silent, and
+what to do instead. Its **section 3** is the working shape that produced twelve
+shipped languages in one whole, and its **section 4** is a priority order.
+
+```text
+WHAT THIS FILE IS      the protocol, faithfully, with line numbers you can check.
+WHAT AP_DEFECTS IS     where the protocol costs more than it returns, measured, with fixes.
+⛔ IF THEY DISAGREE    the governing AP wins over BOTH, and you stop and report the conflict
+                       rather than resolving it yourself (`AP.md:18-62`).
+⚠ THE FOUR THAT CHANGE YOUR FIRST HOUR
+   D-07  grant AP to a Worker BY CITATION — line ranges, not documents, plus a fail-closed
+         "AP wins, stop and report" clause. This file's §2 reading floor is for YOU, not for a Worker.
+   D-01  require the Worker to critique your PROMPT and your APPROACH, in two labelled lists,
+         MEASURED and LEAD. Twelve Orchestrator defects in one whole arrived this way and not one
+         through self-review.
+   D-09  select an OVERHEAD BUDGET the way you select an evidence tier — by consequence. AP prices
+         rigor and prices nothing else, so "more" is always the safe answer and that is the root
+         of D-02, D-03, D-07 and D-12.
+   D-14  a one-word Cooperator reply — `Pokracuj`, `ano`, `A` — CONTINUES a scope and never SELECTS
+         one. Measured: it was read as authority to implement and a session's work was reverted.
+```
+
 ---
 
 ## 0. Which AP this file indexes, and why that question is not pedantic
@@ -117,10 +142,22 @@ ALWAYS   PROMPT_CONTRACTS.md:14-83 (report contract) · :252-307 (task-field
          catalog) · :337-375 (session target) · :423-506 (coordinates) ·
          :673-767 (routing + Plan-to-Execution)
 ALWAYS   the consuming project's root AGENTS.md, plus the project's own
-         standing brief (for Libre Tiles: PROJECT_CONTEXT.md and DEFECT_LEDGER.md)
+         standing brief — for Libre Tiles `/home/agile/meta/projects/libretiles/PROJECT_CONTEXT.md`
+         (1 308 lines; `:303-356` is the Cooperator and `:1163-1216` is the
+         orchestrator-direct grant)
 ON DEMAND  PROMPT_ENGINEERING_PATTERNS.md (advisory) · INFOSEC.md (only when
          activated) · ARTIFACT_LIFECYCLE.md (artifact work) · GLOSSARY.md · FAQ.md
+⛔ NOT "ALWAYS", and this line is a correction of an earlier version of this file:
+         `/home/agile/meta/projects/libretiles/DEFECT_LEDGER.md` is **7 378 lines**. Telling a
+         fresh Orchestrator to read it before its first exchange is AP_DEFECTS D-07 reproduced
+         inside the file that documents D-07. ⇒ CITE IT, never read it. Look a defect up when a
+         specific one is named; the campaign handouts quote the ranges that matter.
 ```
+
+⚠ **This floor is for the ORCHESTRATOR. It is NOT a Worker's reading list.** A Worker gets line
+ranges for the rules its task touches, plus one sentence: *"you are NOT required to read the rest of
+AP; if this prompt and AP disagree, AP wins — stop and report the conflict rather than resolving
+it."* That escape clause is what makes a reading shortcut fail closed. `AP_DEFECTS.md` D-07.
 
 ---
 
@@ -749,11 +786,15 @@ any unclassified material remainder => unexplained-divergence, fail-closed,
 
 ---
 
-## 14. Twelve things a fresh Orchestrator gets wrong first
+## 14. Twenty-two things a fresh Orchestrator gets wrong first
 
-Distilled from this archive's own record (`PROJECT_CONTEXT.md` §9 and
-`10/00-ui-internationalization/99_closure.md` §8). Nine of era 10's
-twenty-seven findings were caused by **Orchestrator prompts**, not Worker error.
+Items 1-12 are distilled from era 10's record (`PROJECT_CONTEXT.md` §9 and
+`10/00-ui-internationalization/99_closure.md` §8), where **nine of twenty-seven
+findings were caused by Orchestrator prompts, not Worker error.** Items 13-22 in
+§14.1 were measured later, in `13/00`.
+
+⚠ **Read this section before section 8.** Every item is a prompt defect that
+already happened, and eleven of the twenty-two are cheaper to avoid than to find.
 
 ```text
 1  Quoting an AP field value from memory. Three invalid fields in one prompt,
@@ -796,12 +837,55 @@ twenty-seven findings were caused by **Orchestrator prompts**, not Worker error.
 Two mechanical habits that pay for themselves:
 
 ```text
-run /home/agile/meta/projects/libretiles/apfieldcheck.py on EVERY prompt before
-  issuing it; it diffs AP field values and coordinate consistency against the
-  pinned .ap and exits 1 on any defect
+python3 /home/agile/meta/projects/libretiles/apfieldcheck.py <prompt.md>   on EVERY prompt before
+  issuing it; it diffs AP field values and coordinate consistency against the pinned .ap and exits 1
+  on any defect.
+  ⚠ MEASURED: 8 861 B, mode -rw-r--r-- — NOT executable, so `python3 <path>` is required and `./` will
+    fail. Signature is `apfieldcheck.py [-h] [--ap AP] prompt`, and `--ap` already defaults to
+    /home/agile/Projects/libretiles/.ap, so pass the prompt and nothing else.
 keep one append-only per-whole notes file beside the handout for restoration
   verification, per-exchange claim review, verbatim Cooperator decisions,
   freezes, deviations, and artifact pointers; notes are evidence, never authority
+```
+
+### 14.1 ⭐ Items 13-22, measured in `13/00` — the era that shipped twelve languages
+
+These are additive, not a replacement. Full evidence in
+`/home/agile/meta/projects/libretiles/13/00-multilingual-expansion-campaign/00_notes.md` and in
+`AP_DEFECTS.md`. The first four are named rules R-G..R-J in that whole's handout section 7.
+
+```text
+13 ⛔ NEVER COPY A `file:line` FROM A HANDOUT, A NOTES FILE OR A PRIOR PROMPT. Re-measure it in the
+   session that writes the prompt. MEASURED: eight of nine line references in one handout were stale
+   at the very commit it was written against; a later handout revision then found FOUR MORE in itself,
+   one of them a wrong DIRECTORY. Sixty seconds of `sed -n` finds them.        (R-G · AP_DEFECTS D-13)
+14 WHEN A DOCUMENT STATES A COUNT, RECONCILE IT AGAINST THE ARTIFACT BY CONSTRUCTION before repeating
+   it. `wc -l collins2019.txt` is 279 497 and the word count is 279 496: a header line, a blank line,
+   CRLF endings and no final newline. Both numbers are right and they are not the same number. (R-H)
+15 A CLAIM ABOUT ENCODING OR BYTE CONTENT MUST COME FROM A BYTE-LEVEL COMMAND, never from having read
+   the file. `LC_ALL=C grep -n '[^ -~\t]' <file>` costs one second. MEASURED: an "ASCII-only" premise
+   stated as measured was wrong — three U+2014 em dashes.                                      (R-I)
+16 ⛔ AN ENUMERATION HANDED TO A WORKER IS A HYPOTHESIS, NOT A SPECIFICATION. Say so in the prompt,
+   give the command that produced it, and make "name any site my commands cannot reach" an OBLIGATION
+   with its own report field. MEASURED: FOUR consecutive attempts at one slice each found a spelling
+   the previous inventory could not reach — an anchored `\p{L}` regex, a DRF `max_length=1`, an
+   `"ABC…Z".split("")`, and a RANGE test `len(ch) == 1 and "A" <= ch <= "Z"`.      (R-J · D-04)
+17 PROHIBITIONS GET WRITTEN LAST, THEN READ AGAINST THE OBLIGATIONS IN ONE PASS — AND THE PASS MUST
+   COVER TEST HOSTS. MEASURED: a stage gate required a test to pass and the prompt allowlisted no file
+   the runner collects; and a prompt forbade touching the one file its own requirement had to edit.
+18 AN ABSENCE CLAIM IS NOT A FINDING UNTIL IT NAMES ITS PATTERN, AND THE PATTERN MUST BE RUN
+   CASE-INSENSITIVELY TOO. Run `git grep -in` AND `git grep -n`; report both counts.
+19 ⛔ NEVER AUTHORIZE A DELETION IN THE SAME EXCHANGE THAT ESTABLISHES THE ASSET IS UNREFERENCED.
+20 A GUARD THAT NEVER FIRES IS INDISTINGUISHABLE FROM NO GUARD UNTIL THE DAY IT DOES. MEASURED: two
+   of eight lexicon rule-shapes were discovered by a guard firing, not by design — a ligature that
+   NFD walks past, and eleven lines an expander had truncated mid-character which a `errors="replace"`
+   exploratory pass had seen as fine.
+21 A RANGE CHECK IS NOT A CORRECTNESS CHECK. A lexicon passed every mechanical bound and was caught by
+   a six-word membership probe a Worker added on its own initiative.
+22 ⛔ AN AUDIT THAT REPORTS "N ASSETS, 0 FAILED" IS ONLY AS STRONG AS ITS POSITIVE PROBES. MEASURED in
+   `13/00`: the lexicon audit's own docstring claims it mirrors a twelve-row probe table and its
+   inventory covers FOUR slugs, so eight shipped variants are audited with no positive probe. A green
+   number that does not mean what it claims is a first-class defect, not a cosmetic one.
 ```
 
 ---

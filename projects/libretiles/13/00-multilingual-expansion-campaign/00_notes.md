@@ -2319,3 +2319,87 @@ of evidence in the file and the first writing could not have contained it.
 ⚠ **The limit I added to section 5 and mean literally:** D-13, D-14 and D-15 are also mine, and they
 happened AFTER I wrote twelve defects about my own failure modes. **Writing a defect report about your
 own failure mode does not stop the failure mode. Only a mechanism does.**
+
+## 36. The final verification pass — nine defects in the handout, and two real product findings
+
+Revision 3 of the handout had declared `coordinate review: sections 5 and 6 re-measured; 4, 7 and 8
+NOT`. The Cooperator then asked for the file to be as professional as it can be, so I closed that gap
+and re-measured sections **2, 4 and 7** as well. **It was worth doing: two of the findings are product
+defects, not documentation defects.**
+
+### 36.1 🐞 The two that are real product findings
+
+```text
+1  ⛔ `validate_lexicons.py:32` `_PRESENT_PROBES` COVERS FOUR SLUGS while its own docstring at `:28`
+   claims it mirrors the twelve-row probe table. ⇒ EIGHT SHIPPED VARIANTS ARE AUDITED WITH NO POSITIVE
+   MEMBERSHIP PROBE. The number `validate_lexicons 13/0` appears as evidence in eight commits of this
+   whole and in the handout capsule; it proves presence and shape for thirteen assets and MEMBERSHIP
+   for four.
+   ⚠ In his own frame this is first-class: "a number that does not mean what it claims is a FIRST-CLASS
+     DEFECT." ⭐ And the fix is one dict — the twelve-row source already exists at
+     `test_variant_invariants.py:66-108`. Recorded as an optional cheap first commit in handout 0c
+     step 6, deliberately NOT folded into the UI objective.
+2  ⛔ CLOSURE CONDITION 11 IS NOT SATISFIED, and the extent is worse than "a stale number".
+   `AGENTS.md:192` states "live Slovak play is not enabled until those slices land" — FALSE at HEAD,
+   under the heading "Not done yet", in the file every agent reads first. And `README.md:11`, `:386`
+   and `libretiles_PRD.md:33` still describe an English-only product; neither README nor PRD names
+   Slovak or Czech anywhere, and neither states any count. ⇒ There is no wrong NUMBER to correct;
+   there is a missing product description. Handout §4.6 measures it and says to pay it AFTER the
+   wiring, when the true numbers are twelve and twelve.
+   ⚠ Also measured: `libretiles_PRD.md` is at the repository ROOT. Both earlier handouts cite it
+     without a path and `docs/` contains only `architecture.md`.
+```
+
+### 36.2 The handout defects this pass found in ITSELF
+
+```text
+· ⛔ A FALSIFIED ABSENCE CLAIM. §4.2 said "exactly THREE hardcoded inventories, all in tests, ZERO in
+  production code". There are THREE in production code: validate_lexicons.py:32, and
+  GameLanguagePanel.tsx:12 and :19. Plus a stale comment surviving in three build scripts claiming
+  "all three build scripts" when there are eleven and P13 no longer asserts a count.
+  ⇒ An absence claim carried through two revisions with no pattern ever named. That is R-E failing
+    inside the section that lists R-E, and D-04 in general form.
+· A LOOSE BYTE-LEVEL CLAIM. §4.1 said the Danish script uses `errors="strict"` and asserts eleven
+  lines. Measured: no `errors=` kwarg at all — a per-line `try/except UnicodeDecodeError` on the
+  strict default (`:397-403`), with the literal appearing only at `:92` as a REJECTED alternative, and
+  the assertion is a BOUND, `MAX_UNDECODABLE_LINES = 100` at `:100`. Eleven is the measured value in a
+  comment. ⇒ R-I broken by me, in AP_DEFECTS D-08 as well, which I corrected there too.
+· AN UNDERCOUNT. `GLOSSARY.md:51-53` records SIX Polish plural values (22, 23, 24, 122, 123, 124); the
+  handout said four. R-H.
+· THREE LOCALE-KEYED TEST MAPS, not one. `ownName:983`, `HEADER_EXPECTED:1118` (8 keys) and
+  `OVERLAY_EXPECTED:1187` (5 keys). ⇒ +232 hand-written cells at twelve locales, which is the real size
+  of the wiring slice and was invisible in every earlier estimate. Handout §5.5 now prices it and raises
+  the genuine design question: exact-string assertions for unreviewed copy are 232 cells of false
+  confidence.
+· AND WHAT HELD, so the successor knows what to lean on: mypy scope is EXACTLY 85 files ·
+  `addopts = "-q"` at pyproject.toml:73 · all eleven build scripts pin 75f5dff8, assert hunspell 1.7.3
+  and expose `--check-dir` · the three test inventories are exactly where claimed · and R-H's
+  collins2019 arithmetic is fully confirmed, including that the file does NOT end with a newline —
+  so appending a word without a leading newline would CORRUPT the last entry.
+```
+
+### 36.3 What went into `AP_DEFECTS.md` and `AP_DESTILLED.md` from this pass
+
+```text
+AP_DEFECTS   D-16  one tier is selected per EXCHANGE, so the cheap half of a mixed grant is paid at
+                   the E3 rate. Evidence: the acceptance bundled an E3 control battery with a
+                   read-only inventory search, reported HIGH context pressure, and produced the
+                   campaign's best artifact in its most fragile form. Fix: `Deliverable tier spread`
+                   with a split obligation at two tiers or more, and issue the cheap probe FIRST.
+             D-03b a project standing condition has no declared SCOPE, so it silently governs work it
+                   was never written for. Fix: an `Applies to:` clause, and read a condition without
+                   one at its NARROWEST defensible scope.
+             D-08  corrected in place — my own Danish evidence was written from memory of a design
+                   decision rather than from the code.
+AP_DESTILLED header now names the four defects that change a fresh Orchestrator's first hour ·
+             §2 no longer sends anyone into a 7 378-line ledger "ALWAYS" and states that the floor is
+             the Orchestrator's, not a Worker's, with the fail-closed citation clause ·
+             §14 is now TWENTY-TWO items, 13-22 measured in this whole, including the one this pass
+             produced: an audit that reports "N assets, 0 failed" is only as strong as its positive
+             probes.
+```
+
+⚠ **The limit I want on the record.** This pass found nine defects in a file that two previous passes
+had declared PASS, and it found them by running `sed -n` and `grep` for about twenty minutes. **The
+handout now tells its reader to treat it as a claim and says exactly which sections were re-measured.
+That is the most honest state it can be in, and it is not the same thing as being correct.**

@@ -6,13 +6,19 @@ authority.** It grants nothing. It exists to be consumed by a protocol-update ta
 
 ```text
 Written           2026-09-04 09:55, twelve defects (D-01..D-12)
-Revised           2026-09-04, same day, same session, after two things happened that the first
-                  writing could not have seen: the C1a fresh independent acceptance returned at 10:51,
-                  and revision 3 of this whole's continuation handout at 11:38 found NINE DEFECTS IN
-                  ITSELF. ⇒ THREE NEW DEFECTS, D-13 · D-14 · D-15, and a SECOND WITNESS for D-01 and
-                  D-04 from a Worker that was never told the rule it honoured.
-                  ⛔ Nothing in D-01..D-12 was rewritten. They were true when written and the archive
-                  keeps them as they were (AP.md:322-336).
+Revised           2026-09-04, same day, same session, twice, after things the first writing could
+                  not have seen. (a) The C1a fresh independent acceptance returned at 10:51.
+                  (b) Revision 3 of this whole's continuation handout found NINE DEFECTS IN ITSELF.
+                  (c) A final verification pass over that handout's sections 2, 4 and 7 found a FALSE
+                  ABSENCE CLAIM about production code and a stale product doc.
+                  ⇒ FOUR NEW DEFECTS — D-13 · D-14 · D-15 · D-16 — one sharpening, D-03b, and a
+                  SECOND WITNESS for D-01 and D-04 from a Worker that was never told the rule it
+                  honoured. One correction was made INSIDE the original twelve: D-08's Danish
+                  evidence described the code from memory and the code says something more precise.
+                  ⛔ Nothing else in D-01..D-12 was rewritten. They were true when written and the
+                  archive keeps them as they were (AP.md:322-336).
+Defect count      SIXTEEN, plus D-03b. ⚠ The count is not the point and I would trade twelve of them
+                  for D-01 and D-09 being fixed.
 Written by        the ORCHESTRATOR of Libre Tiles logical whole 13/00 multilingual-expansion-campaign
 Governing AP pin  9c5cc44f8b6c92dd56ad2427d13223d7d59c5656   (.ap gitlink of /home/agile/Projects/libretiles)
 Evidence scope    ⛔ ONE SESSION ONLY. Every defect below was observed, measured or caused by me
@@ -75,6 +81,11 @@ was wrong about cost.**
 ## 2. The defect index
 
 ```text
+⭐ IF YOU READ FOUR   D-01 (make the Worker critique your prompt) · D-09 (price cost, not only rigor)
+                     · D-13 (verify the handout you hand on) · D-14 (a one-word reply never selects
+                     a scope). Those four cost almost nothing and they caused, or would have
+                     prevented, everything expensive in this whole.
+
 D-01  the Worker never critiques the Orchestrator — AP's most productive mechanism is not in AP
 D-02  report volume is unbounded and unpriced
 D-03  a project rule can turn AP's own anti-pattern into a mandatory tax
@@ -90,6 +101,7 @@ D-12  the evidence tier drives validation but not report shape, so E1 work files
 D-13  a PROMPT gets a twenty-two-check readiness review; the HANDOUT it is derived from gets none
 D-14  a terse Cooperator affirmation has no authority contract, so `Pokracuj` can start a scope
 D-15  several handouts per whole are lawful, and there is no naming or precedence rule for them
+D-16  one tier is selected per EXCHANGE, so the cheap half of a mixed grant is paid at the E3 rate
 ```
 
 ⚠ **My intuition about which of these matter most**, stated plainly and separately from the
@@ -322,6 +334,32 @@ And a sentence for `AP.md` beside the E2 row:
 > A project rule that mandates a broad suite applies to exchanges that MUTATE. An exchange that
 > ends without mutation satisfies it by reporting the repository gate and the reason no mutation
 > occurred.
+
+### ⭐ D-03b, the sharper half, measured later: a project rule has no DECLARED SCOPE
+
+`RF-14` (`AP.md:196-202`) requires every artifact to declare relationship, authority, consumer,
+discoverability, retention trigger and cleanup owner. **A standing condition inside such an artifact
+declares none of those about ITSELF, and in particular it never declares WHICH CLASS OF WORK IT
+GOVERNS.** So it silently governs everything, forever, including work written after it.
+
+```text
+MEASURED, this whole. `00_handout.md` §8 condition 6: "all eight standing gates green, pytest summary
+quoted verbatim, ELEVEN dynamic routes and ZERO static." It was written for LANGUAGE BATCHES, which
+touch backend assets, manifests, the Django suite and the route table. The whole's next objective is
+eight `messages.XX.ts` files, which touch NO backend file and cannot move the Django suite.
+⇒ Two readings, both defensible, and the rule itself cannot arbitrate because it never said what it
+  was about. The successor learns of the conflict only by being accused of breaking a rule it was
+  never shown — which is also D-15.
+```
+
+⇒ **Fix: one required clause on every standing condition.**
+
+```text
+Applies to: <exact class of work>          e.g. "any exchange that mutates backend/ or an asset"
+⛔ A standing condition with no `Applies to:` clause is read at its NARROWEST defensible scope, not
+   its widest. That inverts the current default, and the current default is what makes an
+   over-broad rule free to write and expensive to obey.
+```
 
 ---
 
@@ -557,9 +595,14 @@ AP lines you need for THIS task:
 what it was not shown, so the prompt must make "AP wins, stop and report" explicit. That single
 sentence converts a reading shortcut into a fail-closed one.
 
-⚠ **And `AP_DESTILLED.md` is itself the proof the technique works.** It is 942 lines that replaced
-~6000 lines of protocol reading for a fresh Orchestrator, by citing rather than recopying. The same
-move has simply never been made for the Worker.
+⚠ **And `AP_DESTILLED.md` is itself the proof the technique works.** It was 942 lines when this was
+written — 1 026 after its own same-day revision — replacing ~6 000 lines of protocol reading for a
+fresh Orchestrator by citing rather than recopying. The same move has simply never been made for the
+Worker.
+⚠ **AND IT REPRODUCED THE DEFECT IT DOCUMENTS.** Its own reading floor said `ALWAYS … DEFECT_LEDGER.md`
+— a **7 378-line** file — for the Orchestrator's first exchange. Corrected in the revision to
+`CITE IT, never read it`, with the floor relabelled as the ORCHESTRATOR's and not a Worker's.
+⇒ **A distillation is not immune to the defect it distils.** That is the same finding as D-13.
 
 ---
 
@@ -595,8 +638,17 @@ AFTER the word     8 languages shipped playable, each with a pinned reproducible
 Swedish   I first folded Ü and it was WRONG — it would have made `müsli` playable as MUSLI, a rule
           that edition does not have. Caught by reading the source BEFORE writing the script, and
           then asserted in two places.                        00_notes.md "### 25.1"
-Danish    `errors="strict"` refused to decode eleven lines the expander had truncated mid-character.
-          My own exploratory pass had used `errors="replace"` and SAW NOTHING.  00_notes.md "### 23.2"
+Danish    a PER-LINE decode on Python's strict default refused eleven lines the expander had
+          truncated mid-character. My own exploratory pass had used `errors="replace"` and SAW
+          NOTHING.                                                             00_notes.md "### 23.2"
+          ⚠ PRECISION CORRECTION, measured 2026-09-04 while revising this file: the script passes no
+          `errors=` keyword at all — it relies on the strict default inside a per-line
+          `try/except UnicodeDecodeError` (`build_danish_lexicon.py:397-403`), and the literal
+          `errors="strict"` appears only at `:92` as a REJECTED whole-stream alternative. It also
+          bounds rather than pins: `MAX_UNDECODABLE_LINES = 100` at `:100`; eleven is the measured
+          value quoted in the comment at `:86`. ⇒ The finding stands; my description of it did not.
+          ⛔ THAT IS THE POINT OF R-I AND OF D-13. I wrote a byte-level claim from memory of a design
+          decision instead of from the code, inside the document that tells other people not to.
 French    BLOCKED and not shipped: the expander yields ~77 000 playable words against an official
           lexicon of order 400 000. A variant that rejects most valid French words is a defect that
           looks like a feature.                                00_notes.md "### 19.3"
@@ -1061,6 +1113,83 @@ measurements instead of remembering them.**
 
 ---
 
+## D-16 · One tier is selected per EXCHANGE, so the cheap half of a mixed grant is paid at the expensive rate
+
+### The defect
+
+`AP.md:1112-1123` says select the **highest triggered** tier by consequence, not by file count. That
+rule is right and I am not asking to weaken it. **But the tier is selected once, for the whole
+exchange**, and `AP.md:1112-1119` then binds validation to it — while `PROMPT_CONTRACTS.md:22-36`
+binds the report shape to nothing at all (D-12).
+
+⇒ **So a grant that contains an E3 deliverable and an E0 deliverable pays E3 for both.** The
+Orchestrator's only lawful alternatives are to split the exchange or to over-collect, and AP gives no
+rule that says which — so the default is the one that cannot be criticised, which is over-collection.
+
+### The evidence
+
+The E3 acceptance of this whole's wire-format slice, `06_report_00.md`. Its grant contained two
+things of very different consequence:
+
+```text
+E3, genuinely     six risk claims R1-R6, five positive controls P1-P5, six NEGATIVE controls N1-N6
+                  that must FAIL, over a wire format on live multiplayer. Separate preflight,
+                  negative paths, fresh independent audit. Every bit of that ceremony was earned.
+E0/E1, bundled    "name any place a letter is still assumed to be one code point, including files
+                  this prompt declares out of scope" — a multi-pattern repository SEARCH. Read-only.
+                  No mutation. No trust boundary. Its output is a list.
+```
+
+The Worker's own last line, `06_report_00.md:330-333`:
+
+> *"Context pressure: HIGH. Full backend suite, full frontend suite, production build, serializer
+> interpreter controls, and a multi-pattern remaining-guard search all sat in one exchange."*
+
+⇒ **The most valuable single artifact this campaign produced — a nineteen-item inventory that found
+seven sites I did not have — was generated under HIGH context pressure caused by being stapled to an
+E3 control battery.** `00_notes.md` §32.2 records my own conclusion: *"A cheaper acceptance would have
+split the controls from the inventory."*
+
+⚠ **And the cost was not only tokens.** A high-pressure exchange is where an inventory gets truncated,
+and D-13 measured what happens next: the list was then retyped into a handout and lost four of its
+nineteen items. **The expensive grant produced the fragile artifact that the cheap process then
+damaged.**
+
+### Why AP permits it
+
+Because "one bounded task" and "one tier" are the same sentence. `AP.md:994-1073` shapes ONE bounded
+task per exchange; the tier attaches to the exchange. There is no vocabulary for *"this grant has two
+deliverables and they are not equally consequential."* The nearest instrument, the Material Phase Gate
+(`PROMPT_CONTRACTS.md:1129-1147`), separates PHASES in time — it does not price two deliverables
+inside one phase.
+
+### ⭐ Proposed fix
+
+**Do not add per-deliverable tiers — that would let an Orchestrator launder E3 work as E1.** Add a
+split obligation instead, which is cheaper to police because it is a one-way test.
+
+```text
+Deliverable tier spread: none | <the lowest-tier deliverable and its tier>
+  Declared on every prompt whose grant contains more than one deliverable.
+⛔ IF THE SPREAD IS TWO TIERS OR MORE, THE EXCHANGE MUST BE SPLIT. The low-tier deliverable becomes
+   its own exchange at its own tier, and it may be issued FIRST — a read-only inventory is often the
+   thing that would have improved the expensive prompt.
+⚠ The Orchestrator may refuse to split ONLY by naming the coupling: an exact reason the low-tier
+   deliverable cannot be measured except from inside the high-tier work. "It was convenient" is not a
+   coupling.
+```
+
+⚠ **Why FIRST and not last.** In this whole the bundled inventory found seven sites the E3 prompt
+itself should have covered. Had it been a separate, cheap, read-only exchange run BEFORE the
+acceptance, its output would have improved the acceptance prompt instead of arriving stapled to its
+report. **A cheap probe that changes an expensive prompt is the highest-leverage exchange there is,
+and AP's tier rule currently discourages issuing it separately.**
+
+⇒ Composes with D-09: `Overhead budget` prices the exchange; `Deliverable tier spread` decides
+whether it should have been one exchange at all.
+
+---
+
 ## 3. The workflow this session converged on, as a candidate AP shape
 
 ⚠ This section is **not** a defect. It is the positive form of D-01, D-06, D-07 and D-09, written out
@@ -1130,7 +1259,16 @@ after D-13
 anywhere, it is independent of the rest
    D-14  the Selection Echo. ⇒ ONE LINE OF OUTPUT, and it is the only defect in this file whose
          measured cost is a session's work thrown away rather than tokens spent.
+with D-09, because they are the same table
+   D-16  `Deliverable tier spread`, with a split obligation at two tiers or more. ⇒ It is the reason
+         this whole's single best artifact — a nineteen-item inventory that found seven sites the
+         Orchestrator did not have — was produced under HIGH context pressure and then truncated.
 ```
+
+⛔ **AND ONE THING TO CHANGE FIRST THAT IS NOT A PROTOCOL EDIT.** D-03b: require every project
+standing condition to carry an `Applies to:` clause, and read a condition without one at its
+NARROWEST defensible scope. That is a consuming-project change, it needs no AP release, and it removes
+the class of conflict where a successor is accused of breaking a rule that was never about its work.
 
 ## 5. Honest limits of this document
 

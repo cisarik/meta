@@ -16,13 +16,21 @@ THIS IS REVISION 3 and it is the one that governs.**
 C1b is unblocked with a nineteen-item scope — sections 3, 3b, 6 and `00_notes.md` §32. (2) The
 UI-localization product decision was put to the Cooperator and ANSWERED — option A, no flags — and he
 assigned the translations to a fresh Orchestrator, which is section 5 and `00_notes.md` §33.
-(3) Revision 3 re-measured every `file:line` in sections 5 and 6 against `529e691` and **found four
-wrong** — corrected in place and listed in section 6.0 — and found that C1b's inventory had been
-paraphrased down from nineteen items to fifteen plus one phantom, which section 6.1 now quotes exactly.
-It added the five things this file was missing: the named disagreements with `00_handout.md`
-(section 0b), the two campaign artifacts your objective must update (5.6), the delivery wording that
-worked nine times (5.7), what "eight Workers in parallel" actually costs under the pin (5.8), and a
-mechanical checklist for your first prompt (5.9). Full defect list in `00_notes.md` §34.
+(3) Revision 3 re-measured every `file:line` in sections **2, 4, 5, 6 and 7** against `529e691` and
+found **nine defects in this file**, all corrected in place: four wrong coordinates including a wrong
+DIRECTORY (6.0) · a **falsified absence claim** — section 4.2's "zero hardcoded inventories in
+production code" is wrong, there are THREE, and one of them means eight shipped variants are audited
+with no positive probe · a loose byte-level claim about the Danish guard (4.1) · an undercount of the
+Polish plural values (5.1) · C1b's nineteen-item inventory paraphrased down to fifteen plus a phantom,
+now quoted exactly (6.1) · and a missing path (4.6). It also measured that **closure condition 11 is
+not satisfied** — the PRD, README and `AGENTS.md` still describe an English-only product, and
+`AGENTS.md:192` states that Slovak play is not enabled when it demonstrably is.
+It added eight things this file was missing: an ordered first hour (0c), the named disagreements with
+`00_handout.md` (0b), the closure-debt measurement (4.6), the two campaign artifacts your objective
+must update (5.6), the delivery wording that worked nine times (5.7), what "eight Workers in parallel"
+actually costs under the pin plus the exact line to send him (5.8 · 5.8b), a mechanical checklist for
+your first prompt (5.9), and what "done" means against the campaign's own closure conditions (5.10).
+Full defect list in `00_notes.md` §34 and §36.
 **The tree is still clean at `529e691`; nothing of that objective is implemented.**
 
 ⛔ **PRECEDENCE, and it is the discipline `BRAINSTORMING.md` §2.2 D2 asks for.** This whole has TWO
@@ -37,18 +45,26 @@ owners, which `AP.md:18-62` forbids.
 ## 0. Read exactly these six things, in this order, and nothing else first
 
 ```text
-1  /home/agile/meta/AP_DESTILLED.md          942 lines. The protocol, indexed by line number against
+1  /home/agile/meta/AP_DESTILLED.md          1 026 lines. The protocol, indexed by line number against
                                              the PINNED .ap. Read once, then work from the citations.
                                              ⛔ Its §0 staleness rule applies to THIS file too.
-2  /home/agile/meta/AP_DEFECTS.md            1 157 lines. ⭐ It is why this handout is short. FIFTEEN
-                                             MEASURED defects of AP itself, from this whole, each with
-                                             its fix. ITS SECTION 3 IS THE WORKFLOW that produced
-                                             everything good here. ⛔ READ IT BEFORE YOUR FIRST PROMPT.
-                                             ⚠ D-13, D-14 and D-15 were added AFTER this handout's
-                                             revision 2 and they are ABOUT THIS HANDOUT and about how
-                                             the Cooperator's one-word replies were misread. Read
-                                             those three even if you skim the rest.
-                                             ⇒ §4's revised ordering tells you which fix is one line.
+                                             ⭐ REVISED 2026-09-04: its header now names the four
+                                             defects that change your first hour, its §2 reading floor
+                                             no longer sends you into a 7 378-line ledger, and its §14
+                                             is now TWENTY-TWO things a fresh Orchestrator gets wrong
+                                             — items 13-22 were measured in THIS whole.
+2  /home/agile/meta/AP_DEFECTS.md            1 290 lines. ⭐ It is why this handout is short. SIXTEEN
+                                             MEASURED defects of AP itself plus D-03b, from this whole,
+                                             each with its fix. ITS SECTION 3 IS THE WORKFLOW that
+                                             produced everything good here.
+                                             ⛔ READ IT BEFORE YOUR FIRST PROMPT.
+                                             ⚠ D-13 · D-14 · D-15 · D-16 and D-03b were added AFTER
+                                             this handout's revision 2, and four of the five are about
+                                             THIS handout, about how a one-word reply from him was
+                                             misread, and about a standing condition that never said
+                                             what work it governs. Read those five even if you skim.
+                                             ⇒ Its §2 opens with "IF YOU READ FOUR" and its §4 tells
+                                             you which fix is one line.
 3  ./00_handout.md                           753 lines. ⭐ THE OPENING HANDOUT, AND IT IS STILL LIVE.
                                              Read exactly four of its sections and skip the rest:
                                                §2      the objective, VERBATIM AND GOVERNING — and
@@ -127,6 +143,37 @@ ledger's nine columns, and the C/B labelling this file's section 6 uses.
 
 ---
 
+## 0c. ⭐ YOUR FIRST HOUR, IN ORDER — and none of it needs a Worker
+
+```text
+1  READ, in the order of section 0. ⛔ If you read only two things before acting: `AP_DEFECTS.md`
+   section 4 (what to change first) and section 5.9 of THIS file (your first prompt, mechanically).
+2  STAGE 1, read-only. Run section 1's ten commands yourself. Classify any difference with all five
+   canonical recovery classes and stop rather than reconcile. ⛔ Do NOT run the eight-gate ladder to
+   greet an untouched tree — that is D-03, measured twice in this whole at two full ladders for zero
+   mutation.
+3  DECIDE 5.8 — and it is the only genuine decision in this handout. Three lawful shapes for eight
+   catalogs. If you pick option C you need the Cooperator, and the exact line to send him is in 5.8b.
+4  DECIDE THE KEY SET, ONCE, BEFORE CATALOG 1. Section 5.3's warning: every catalog must define every
+   `TextKey`, so adding a key later means editing all twelve files again. Settle the eight
+   `settings.gameVariant.*` keys and the `lexiconRejectionKey` arms (5.5) now or explicitly defer them
+   to their own slice.
+5  DECIDE THE GATE DEVIATION and WRITE IT DOWN. Section 0b disagreement 2. Either position is
+   defensible; silence is not.
+6  ⭐ THEN, IF YOU WANT A FREE WIN BEFORE THE BIG WORK: section 4.2 defect 1. `validate_lexicons.py:32`
+   `_PRESENT_PROBES` covers four slugs while its own docstring claims twelve, so eight shipped
+   variants are audited with no positive probe. ONE file, ONE dict, the twelve-row source already
+   exists at `test_variant_invariants.py:66-108`, no design choice. It qualifies for
+   orchestrator-direct under the project's five-item bar, and it repairs a number this whole has been
+   quoting as evidence in eight commits. And `AGENTS.md:192` (4.6) is a second one-line repair of a
+   false statement about what works today.
+   ⚠ BOTH ARE OPTIONAL AND NEITHER IS YOUR OBJECTIVE. They are here because they are cheap, they are
+     measured, and a fresh session's first commit is the best moment to land something small.
+7  WRITE PROMPT 07/01. Section 5.9 is the checklist. `apfieldcheck.py` exits 0 before you deliver.
+```
+
+---
+
 ## Handoff capsule
 
 ```text
@@ -150,7 +197,12 @@ UI locales today    4 of 24    en sk cs pl        ⇐ THIS IS YOUR NEXT OBJECTIV
                                ⭐ and it is not a new objective: `00_handout.md` §2 clause 6 says
                                "add the corresponding UI locales wherever practical", and closure
                                condition 3 requires it. You are inside 13/00, not starting a whole.
-lexicon assets     13 audited, 0 failed
+lexicon assets     13 audited, 0 failed   ⚠ 13 = 12 dictionaries + 1 two-tile list, which is the
+                   only `two_tile_words_file` in any manifest (slovak.json:9). ⛔ Do NOT expect
+                   `ls backend/assets/dicts/ | wc -l` to be 13 — it is 24, because 11 `.LICENSE`
+                   files ship beside the 13 assets. Two correct numbers, different things.
+                   ⛔ AND READ 4.2 BEFORE YOU QUOTE THE "0 failed": eight of the twelve variants are
+                   audited with NO positive membership probe.
 gates at 529e691   mypy 85 · ruff · manage.py check · pytest 745 passed 4 skipped · 749 collected ·
                    validate_lexicons 13/0 · typecheck 0 · vitest 454 passed 3 skipped · lint 0 ·
                    build 0 with ELEVEN dynamic routes and ZERO static
@@ -322,8 +374,17 @@ FOLD WITH CARVE-OUT swedish                                 Ü is neither folded
 SHAPE FILTER        danish (þ ð) · swedish (ü ł æ ø μ) ·     a letter no fold can remove and no tile
                     icelandic (c w z q)                     bears -> DROP the word, bounded
 FREE FROM CASEFOLD  german ß -> ss · greek ς -> σ            ⭐ Unicode full case folding already does it
-TOOL-DEFECT GUARD   danish: 11 lines unmunch truncated       decode per line, count, bound
+TOOL-DEFECT GUARD   danish: 11 lines unmunch truncated       decode per line, count, BOUND
                     mid-character; all others assert ZERO
+                    ⚠ RE-MEASURED for revision 3, because the earlier wording was loose in two ways.
+                      The script passes NO `errors=` keyword — it relies on Python's strict default
+                      inside a per-line `try/except UnicodeDecodeError`
+                      (`build_danish_lexicon.py:397-403`), and the literal `errors="strict"` appears
+                      only at `:92` as a REJECTED whole-stream alternative. And it BOUNDS rather than
+                      pins: `MAX_UNDECODABLE_LINES = 100` at `:100`; eleven is the measured value, in
+                      the comment at `:86` and the error text at `:426`.
+                    ⇒ The guard is real and the finding stands. The description did not. If you quote
+                      this row in a prompt, quote the corrected form.
 ```
 
 ⚠ **Two of those eight were found by a GUARD FIRING, not by design.** Dutch's ligature by a probe word
@@ -331,18 +392,48 @@ that was measurably absent; Danish's truncation by `errors="strict"` refusing to
 exploratory pass had used `errors="replace"` and seen nothing. **A guard that never fires is
 indistinguishable from no guard until the day it does.**
 
-### 4.2 The friction, measured: one build script plus three test inventories
+### 4.2 The friction, measured — and ⛔ REVISION 3 FALSIFIED HALF OF THIS SECTION
 
 ```text
 AUTOMATIC   ~25 parametrized cases enrol themselves per language, with NO new test file. The generic
-            harness, P1-P15 and G1-G25 all pick a variant up from its manifest.
-DELIBERATE  exactly THREE hardcoded inventories, all in tests, ZERO in production code:
-              backend/tests/test_variant_invariants.py     the G14 probe row
-              backend/tests/test_lexicon_provenance.py     P10b's build-script inventory
-              backend/tests/test_czech_polish_variants.py  test_t7's exact catalog order
-            ⚠ P13 used to be a fourth. It hardcoded "three scripts" and defeated the point of a
-              derived claim set; it now owns DRIFT and leaves the inventory to P10b.
+            harness, P1-P15 and G1-G25 all pick a variant up from its manifest.        ✔ HOLDS
+DELIBERATE  three hardcoded inventories in TESTS, each verified at 529e691:
+              test_variant_invariants.py:395   test_g14_inflected_form_membership_probe, whose
+                                              `_LEXICON_PROBES` table at :66-108 covers all 12 slugs
+              test_lexicon_provenance.py:364   P10b, hardcoded dict at :371-383, all 11 scripts
+              test_czech_polish_variants.py:119  test_t7_variant_list_exact_key_set, order at :131-144
+            ⚠ P13 (`test_lexicon_provenance.py:466`) used to be a fourth. It now asserts only the
+              expander set and its docstring at :469-471 explicitly disclaims the count. ✔ HOLDS
 ```
+
+⛔ **AND THE CLAIM "ZERO IN PRODUCTION CODE" IS FALSE. There are THREE, and two of them are already
+incomplete at twelve variants.** Measured for revision 3:
+
+```text
+1  ⛔ THE ONE THAT MATTERS, AND IT IS A PRODUCT DEFECT, NOT A TIDINESS ISSUE.
+   backend/game/management/commands/validate_lexicons.py:32   `_PRESENT_PROBES` covers FOUR slugs.
+   Its OWN DOCSTRING at :28 says it mirrors the twelve-row test probe table. It does not.
+   ⇒ EIGHT SHIPPED VARIANTS ARE AUDITED WITH NO POSITIVE PROBE. So `validate_lexicons 13/0` — the
+     number this handout's capsule prints, the number every one of the last eight commits quoted as
+     evidence — proves file presence and shape for all thirteen assets and MEMBERSHIP for four.
+   ⚠ In the Cooperator's own frame this is first-class: "a number that does not mean what it claims
+     is a FIRST-CLASS DEFECT." He is presenting this at an interview. ⭐ And the fix is cheap: the
+     twelve-row table already exists at `test_variant_invariants.py:66-108`. This is a candidate for
+     your first orchestrator-direct commit — one file, one dict, no design choice.
+2  frontend/src/components/settings/GameLanguagePanel.tsx:12 and :19   FOUR slugs each.
+   ⇒ Eight variants get an untranslated server `display_name` and no flag. This one is not a
+     surprise — it IS your objective's own work, section 5 — but note it was ALSO an undeclared
+     production inventory the whole time.
+3  A STALE COMMENT, three times: build_slovak_lexicon.py:33 · build_polish_lexicon.py:54 ·
+   build_czech_lexicon.py:46 all still say "Keep this value IDENTICAL in all three build scripts;
+   test P13 asserts exactly that." There are ELEVEN scripts and P13 no longer asserts a count.
+   ⇒ Harmless today, actively misleading to the twelfth script's author. R-C: enumerate from your own
+     grep before you tell a Worker to fix stale comments — that grep is above, and it is all three.
+```
+
+⚠ **Why this matters beyond the fix.** The falsified claim was an ABSENCE claim — "zero in production
+code" — carried through two handout revisions without a pattern ever being named. That is R-E in the
+very section that lists R-E. `AP_DEFECTS.md` D-04.
 
 ### 4.3 ⛔ The five rules that are not negotiable, and why
 
@@ -400,6 +491,38 @@ SIZE               hungarian — ~301 M forms at the tightest bound. Decision D 
 ⚠ **Twelve of twenty-four with four well-evidenced blockers is a SUCCESS.** Twenty-four claimed by
 shipping a lexicon nobody can license, or a distribution nobody sourced, is a failure that looks like
 a success — and the Cooperator is presenting this at a job interview.
+
+### 4.6 🐞 CLOSURE CONDITION 11 IS NOT SATISFIED, and revision 3 measured how far off it is
+
+`00_handout.md` §9 condition 11: *"libretiles_PRD.md, README.md and AGENTS.md describe what actually
+ships."* **All three still describe an English-only product.** Measured at `529e691`:
+
+```text
+PATH          ⚠ libretiles_PRD.md is at the REPOSITORY ROOT, not under docs/. `docs/` contains only
+              architecture.md. Both earlier handouts cite the PRD without a path.
+AGENTS.md:192 ⛔ "Slovak assets now ship; Settings/engine/prompt wiring is later slices of
+              `slovak-playable-variant`; live Slovak play is not enabled until those slices land."
+              ⇒ FALSE at HEAD. Slovak has a manifest, `playable` readiness asserted by
+                test_t7 (:147, :168-169), a picker entry and flag (GameLanguagePanel.tsx:14, :21), a
+                complete `sk` catalog, and it is one of the twelve in the capsule. This sentence
+                sits under the heading "Not done yet".
+README.md:11  "(English variant, Collins 2019 dictionary ~279k words…)"
+README.md:386 "`variant_store.py` — Variant loading (English by default)"
+PRD:33        "### FR-01: Game Core (English Variant)"
+              ⇒ Neither README.md nor libretiles_PRD.md names Slovak or Czech ANYWHERE, and neither
+                states a count of languages or UI locales. So there is no wrong NUMBER to fix — there
+                is a missing product description.
+```
+
+⚠ **This is not your objective and you must not let it become it.** It is a recorded closure debt with
+a measured extent, and it will be cheapest to pay at the END of the UI-localization work, when the true
+numbers are twelve variants and twelve locales rather than twelve and four. ⭐ But `AGENTS.md:192` is a
+different case: it is a **false statement about what works today**, sitting under "Not done yet", in
+the file every agent reads first. Fix that one on its own, early, orchestrator-direct — one line.
+
+⛔ **And do not "fix" it by writing a number you have not derived.** R-H. If you write "twelve
+playable variants" into README.md, derive twelve from `ls backend/assets/variants/` in the same
+session, because that directory is what a reader will count.
 
 ---
 
@@ -551,6 +674,38 @@ pt               THREE categories, AND ⛔ ZERO IS SINGULAR (CLDR `one: i = 0..1
      catalogs, diagnosed against four locales of known-good data first.
 ```
 
+⭐ **AND THE EXACT ARITHMETIC OF THE WIRING SLICE, measured for revision 3 — there are THREE
+locale-keyed maps in `i18n.test.ts`, not one, and no earlier handout named the other two:**
+
+```text
+:983   ownName          Record<INSTALLED_VARIANTS, Record<LOCALES, string>>
+                        today  4 variants × 4 locales =  16 cells
+                        after 12 variants × 12 locales = 144 cells      (+128)
+:1118  HEADER_EXPECTED  Record<HEADER_KEYS, Record<LOCALES, string>>, HEADER_KEYS at :1107 = 8 keys
+                        today 8 × 4 = 32   →   8 × 12 = 96 cells        (+64)
+:1187  OVERLAY_EXPECTED Record<OVERLAY_KEYS, Record<LOCALES, string>>, OVERLAY_KEYS at :1179 = 5 keys
+                        today 5 × 4 = 20   →   5 × 12 = 60 cells        (+40)
+⇒ TOTAL +232 HAND-WRITTEN TEST CELLS, and every one of them is an assertion about a translated string,
+  so each is a place a wrong translation gets pinned as correct rather than caught.
+⛔ THIS IS THE REAL SIZE OF THE WIRING SLICE. It is bigger than one catalog. Price it before you plan
+  it, and consider whether HEADER_EXPECTED and OVERLAY_EXPECTED should assert PROPERTIES — non-empty,
+  distinct from English, no ASCII-only fallback leaking through — instead of exact strings for eight
+  languages nobody has read. ⚠ That is a genuine design decision and it is YOURS: exact-string
+  assertions for unreviewed copy give you 232 cells of false confidence; property assertions give you
+  less precision and no false confidence. `i18n.test.ts` parity across the whole key set is untouched
+  either way, and it is the test that actually protects you.
+```
+
+⭐ **The translation glossary is NOT organized by language, which is good news:**
+`frontend/src/lib/i18n/GLOSSARY.md` (489 lines) has fourteen sections and twelve of them are UI AREAS
+(Landing and auth, API errors, Settings panels, Lobby, Saved-board history, Profile modal, Turn chrome,
+Game screen, Header cluster and AI overlay, Premium language pickers, Accessibility). The three that
+are language DECISIONS are `## D2 — Informal Slavic register` (:12), `## D6 — Fixed game terminology`
+(:23) and `## D7 — Counted nouns` (:48). ⇒ **D2 does not apply to eight Germanic and Romance
+languages. D6 and D7 do, and D7 is where 5.4's plural findings belong** — especially Portuguese zero
+and the Icelandic `i % 10` rule. You are adding rows to three decision sections, not eight new
+language chapters.
+
 ### 5.6 ⛔ TWO CAMPAIGN ARTIFACTS YOUR OBJECTIVE MUST UPDATE, and you own both
 
 Neither is optional and neither is a Worker's job — RF-03 (`AP.md:111-117`): a Worker's authority dies
@@ -658,6 +813,29 @@ GATES for a catalog slice: `npm run typecheck`, `npm run test`, `npm run lint`, 
       frontend four. ⛔ See section 0b disagreement 2 before you skip the Django suite: the conflict
       with standing condition 6 is REAL and your deviation must be explicit and recorded.
 
+### 5.8b ⛔ THE EXACT LINE TO SEND HIM IF YOU CHOOSE OPTION C — and nothing longer
+
+Promotion of a brainstorming entry is the Cooperator's (RF-01). He answers costed multiple choice in
+one turn and he asked not to be interrupted, so send exactly this and nothing else:
+
+> **Osem katalógov (~300 kľúčov každý) chcem dať JEDNÉMU `Delegating Implementation Worker`-ovi —
+> tvoj „Worker Orchestrator" z `BRAINSTORMING.md` §1, ktorého §1.8 navrhuje presne na takýto slice.
+> Je to Worker session PROFILE, nie štvrtá rola, nikdy nie nezávislý, a nesmie generovať vlastné
+> autoritatívne prompty (to je tá zátka proti loopu). Alternatívy: osem sekvenčných exchangeov
+> (bezpečné, drahé na môj kontext) alebo jedna deklarovaná paralelná grupa (7 polí, cesty sú
+> perfektne disjunktné). Odporúčam profil. Súhlas?**
+
+```text
+⛔ IF HE SAYS NO, or does not answer: take option B. It is lawful today, needs no promotion, and the
+   seven fields are genuinely easy here — one new file per Worker, nothing shared but a read-only type
+   source. Do NOT stall the objective on a protocol experiment.
+⛔ IF HE SAYS YES: `BRAINSTORMING.md` §1.8 asks for an honest comparison afterwards — total tokens,
+   defects found per exchange, and whether you could still evaluate the report. Write it into
+   `00_notes.md` when the eighth catalog lands, not from memory at the end.
+⚠ AND EITHER WAY, ONE LINE IS THE WHOLE MESSAGE. `AP_DEFECTS.md` D-14: he answers a costed choice in
+  one turn; he does not answer a paragraph asking him to think.
+```
+
 ### 5.9 ⭐ YOUR FIRST PROMPT, MECHANICALLY — the parts that are not judgement calls
 
 ⛔ **This is a CHECKLIST, not a prompt, and it grants nothing.** Every field value below must be read
@@ -724,6 +902,35 @@ catalog must carry, declaring it machine-authored and unreviewed. That header is
 option-A condition (5.2) and it is the only thing standing between this objective and eight languages
 of prose that a reader cannot tell from reviewed copy. **Specify its exact wording yourself, once, and
 require it byte-identical in all eight files** — otherwise you will get eight different disclaimers.
+
+### 5.10 ⭐ WHAT "DONE" MEANS FOR THIS OBJECTIVE — write this into your closure record, not from memory
+
+The campaign's own conditions decide it, not your judgement. `00_handout.md` §9:
+
+```text
+CONDITION 3   "every language that CAN be implemented under standing condition 5 IS playable, WITH
+              ITS UI LOCALE WHERE PRACTICAL"
+              ⇒ SATISFIED when: LOCALES has twelve entries · twelve catalogs exist and typecheck ·
+                `i18n.test.ts` key-set AND interpolation parity is green across all twelve ·
+                `90_language_ledger.md` shows `UI locales 12 / 24` at :141 and eight rows flipped
+                from `not-started` to `shipped. MEASURED: …` (5.6) ·
+                `91_deferred-acceptance-batch.md` carries a B5 entry per locale, written when it
+                landed (5.6) · the frontend four gates green.
+              ⛔ NOT satisfied by eight files existing. Parity green across twelve is the claim.
+CONDITION 2   "every one of the twenty-four target entries has a ledger row with all nine columns
+              filled" ⇒ the `UI-localization` column is one of the nine. Eight rows move.
+CONDITION 8   "the deferred acceptance batch delivered ONCE, at the end, per his autonomy grant"
+              ⇒ your B5 entries feed it. Appended as you go, delivered once.
+CONDITION 11  ⛔ NOT SATISFIED TODAY and section 4.6 measures the gap. Adding eight locales makes the
+              PRD/README/AGENTS drift WORSE, not better, because the true numbers change under
+              documents that still say "English variant". ⇒ Pay it after the wiring, with numbers you
+              derived in that session.
+```
+
+⚠ **And what is NOT part of done, so you do not gold-plate it:** flags (5.2, he declined), a Board
+render test (section 3 Q2 — its own slice, and nothing today provides pixel evidence), the `pluralSk`
+parameter rename (5.4, explicitly deferred), and C1b (section 6, a different selection that is HIS to
+make). ⛔ `AP.md:1366-1370`: "more analysis" is not a closure decision. Neither is "more scope".
 
 ---
 
@@ -886,8 +1093,15 @@ R-G  ⛔ NEVER copy a `file:line` from a handout, notes file, or prior prompt. R
      were stale at the very commit it was written against — and I then did it AGAIN twice, attributing
      a line to a file only 208 lines long. `00_notes.md` "### 3.2" and "### 30.3".
 R-H  When a document states a COUNT, reconcile it against the artifact by CONSTRUCTION before
-     repeating it. `wc -l collins2019.txt` is 279 497 and the word count is 279 496 — a header line, a
-     blank line, CRLF endings and no final newline.
+     repeating it. ⭐ FULLY RE-MEASURED for revision 3, and every part of it holds:
+       `wc -l` = 279 497 · `wc -c` = 3 103 812 · line 1 = "Collins Scrabble Words (2019). 279,496
+       words. Words only." · line 2 = empty · CRLF line endings = 279 497, bare LF = 0 · the file does
+       NOT end with a newline (tail is `ZZZ\r\nZZZS`) · physical lines = 279 498 · non-empty minus
+       header = 279 496 · pure-uppercase tokens = 279 496.
+     ⇒ TWO CORRECT NUMBERS, ONE ARTIFACT, AND THEY DIFFER BY ONE. The file's own header agrees with
+       the token count. ⚠ Note the missing final newline: any tool that counts by splitting on a
+       terminator will be short by one, and any tool that appends a word without adding a newline
+       first will CORRUPT the last entry.
 R-I  A claim about a file's ENCODING or BYTE CONTENT must come from a byte-level command, never from
      having read the file. `LC_ALL=C grep -n '[^ -~\t]' <file>` costs one second.
 R-J  ⛔ AN ENUMERATION HANDED TO A WORKER IS A HYPOTHESIS, NOT A SPECIFICATION. Say so in the prompt.
@@ -997,11 +1211,24 @@ omission review           PASS. NOTHING IS OWED. C1a's independent acceptance re
                           revision 2: the ledger and deferred-batch obligations (5.6), the delivery
                           wording (5.7), the parallel-topology cost (5.8), and FOUR MISSING ITEMS of
                           C1b's nineteen (6.1 items 5, 14, 15, 16).
-coordinate review         ⚠ PARTIAL, DELIBERATELY. Revision 3 re-measured every `file:line` in
-                          sections 5 and 6 and found FOUR WRONG — listed in 6.0, corrected in place.
-                          ⛔ It did NOT re-measure sections 4, 7 or 8. Assume those carry stale
-                          coordinates and re-measure before quoting. R-G exists because this file's
-                          predecessor was wrong eight times.
+coordinate review         ⚠ PARTIAL, DELIBERATELY, AND NOW MUCH NARROWER. Revision 3 re-measured
+                          every `file:line` in sections 2, 4, 5, 6 and 7 at `529e691`. Found and
+                          corrected: FOUR wrong coordinates (6.0), one FALSIFIED ABSENCE CLAIM
+                          (4.2 — "zero hardcoded inventories in production code": there are THREE),
+                          one LOOSE BYTE-LEVEL CLAIM (4.1 danish — no `errors=` kwarg, and the bound
+                          is 100 not 11), one UNDERCOUNT (5.1 — GLOSSARY records SIX Polish plural
+                          values, not four), one INVENTORY PARAPHRASED from nineteen down to fifteen
+                          plus a phantom (6.1), and one MISSING PATH (4.6 — libretiles_PRD.md is at
+                          the repository ROOT, not under docs/).
+                          ⭐ Confirmed EXACT and worth relying on: mypy scope = exactly 85 files ·
+                          `addopts = "-q"` at pyproject.toml:73 · all 11 build scripts pin
+                          75f5dff8 and hunspell 1.7.3 and expose `--check-dir` · the three test
+                          inventories · R-H's collins2019 arithmetic in full.
+                          ⛔ STILL NOT RE-MEASURED: section 8's PROJECT_CONTEXT compression, and the
+                          gate NUMBERS in the capsule (deliberately — a ladder over an untouched tree
+                          is D-03). Re-measure before quoting either.
+                          ⚠ R-G exists because this file's predecessor was wrong eight times, and
+                          revision 3 found nine more in itself. ASSUME A TENTH.
 stale-state review        PARTIAL BY DESIGN. Every repository number was measured 2026-09-04 at
                           `529e691`; the gate counts were NOT re-run for revision 3 because a ladder
                           over an untouched tree is D-03. The Cooperator commits to `main` himself.
@@ -1025,9 +1252,16 @@ strategic-direction
                           material product decision inside it is TAKEN — option A, no flags,
                           section 5.2 — and it is not to be re-opened.
 next-step executability
-  review                  PASS. Section 1 is executable immediately and read-only. Section 5.9 is a
-                          mechanical checklist for the first prompt. Section 5.8 is the one genuine
-                          decision waiting for you, and all three of its options are lawful.
+  review                  PASS. Section 0c is an ordered first hour, none of it needing a Worker.
+                          Section 1 is executable immediately and read-only. Section 5.9 is a
+                          mechanical checklist for the first prompt and 5.10 states what done means
+                          against the campaign's own closure conditions. Section 5.8 is the one
+                          genuine decision waiting for you, all three options are lawful, and 5.8b is
+                          the exact message if you need him for it.
+closure-debt review       ⚠ PARTIAL, NEWLY MEASURED, AND HONEST. Closure condition 11 is NOT
+                          satisfied — section 4.6 — and your objective makes the drift worse before
+                          it makes it better. Condition 3 is what you are here to satisfy and 5.10
+                          defines it. Nothing else in §9 of `00_handout.md` is newly at risk.
 
 RESTORATION CLASSIFICATION: PASS
 ```
@@ -1063,12 +1297,15 @@ Cooperator and assigned to you in as many words. Nothing of it is implemented, t
 already derived and verified against CLDR for all eight, each catalog typechecks against
 `messages.en.ts` alone — and section 5.8 is the one real decision left, because "eight Workers in
 parallel" costs seven declared fields under this pin or one profile the Cooperator has to promote.
-Before you write your first prompt, read `AP_DEFECTS.md`: fifteen measured defects of the protocol
+Before you write your first prompt, read `AP_DEFECTS.md`: sixteen measured defects of the protocol
 itself, including the one that matters most here — that a Worker's job includes critiquing your prompt
 and your approach, and that twelve of the previous Orchestrator's own defects were caught that way and
 not one by its own review. ⛔ And read D-14 before you act on any one-word reply from him: `Pokracuj`
 CONTINUES a scope and never SELECTS one, which is a rule that exists because this file's predecessor
-learned it the expensive way.
+learned it the expensive way. ⚠ Finally, trust this file the way it asks you to trust a Worker report:
+as a CLAIM. Its own revision 3 found nine defects in it after two passes had declared it PASS, section
+9's `coordinate review` row says exactly which parts were re-measured and which were not, and R-G is
+there because copying one line from here without re-measuring it is the cheapest mistake available.
 
 **This document grants no mutation authority. Verify repository and public truth independently before
 you act.**
