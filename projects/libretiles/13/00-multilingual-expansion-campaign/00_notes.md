@@ -3167,3 +3167,108 @@ and a rejected Danish word naming the Danish lexicon in both English and Slovak.
                observation is a Cooperator function; independence is a Worker function, and the two are
                different axes.
 ```
+
+## 41. ⭐ THE PLAN IS ACCEPTED — `PASS`, D1-D8 complete, four corrections and five confirmations
+
+```text
+prompt   ./09_planning_00.md   580 lines · session 09 · exchange 01 · targeted-revision · E0
+report   ./09_report_00.md     status PASS · not-applicable · D1-D8 all produced · zero mutation
+verdict  ACCEPTED AS ADVISORY. `Plan disposition: advisory` means it informs my prompts and grants
+         nothing; `AP.md:768-818` — acceptance of a plan is not implementation authority.
+⇒ Three exchanges, two blocked on my prompts, and the third produced the artifact. The targeted
+  revision was worth spending: it cost one prompt and bought eight deliverables.
+```
+
+### 41.1 🐞 FOUR CORRECTIONS TO ME, and I verified every one before accepting
+
+```text
+1  🐞 MY PLURAL ARITHMETIC WAS WRONG, TWICE, IN THE SAME SENTENCE.
+   I wrote "NINE WORDS for a two-slot language and TWELVE for it and pt".
+   MEASURED: three call sites × two slots = SIX. Three × three slots = NINE.
+   ⇒ Where it came from is the instructive part: NINE is correct for the SLAVIC helpers — three sites
+     × three slots (one/few/many) — and I computed it in §37.3 for Slovak, then carried the number to
+     a different ARITY without recomputing. Same failure shape as the stale line number in §40.1: a
+     value that was true in the context it was derived in, imported into a context where it is not.
+     ⛔ R-H says reconcile a count against the artifact BY CONSTRUCTION before repeating it. I
+       repeated an arithmetic result instead of redoing the arithmetic.
+2  🐞 `AGENTS.md` CARRIED A SENTENCE MY OWN COMMIT HAD INVALIDATED TWO COMMITS LATER.
+   `32312ba` wrote that the eight variants "take their picker label from the server display_name,
+   because GameLanguagePanel.tsx has no VARIANT_NAME_KEYS entry for them". `cfd1215` — mine, same
+   session — extended that map to twelve. ✔ VERIFIED: twelve entries at HEAD.
+   ⇒ REPAIRED in `ad49532`, pushed, readback equal. And the rule that would have caught it, recorded
+     in that commit: WHEN A COMMIT CHANGES A MECHANISM, GREP THE DOCS FOR THE MECHANISM'S NAME.
+     I grepped for the claim's topic ("Slovak") when I wrote 32312ba, and for nothing at all when I
+     wrote cfd1215.
+   ⛔ This is the same defect class 32312ba existed to REPAIR, reintroduced by the commit that
+     repaired it. That is worth stating without softening.
+3  🐞 D4 CANNOT BE BYTE-IDENTICAL AND I ASKED FOR SOMETHING IMPOSSIBLE. The repository-gate section
+   of each of the eight prompts embeds the exact baseline SHA, and each accepted commit becomes the
+   next baseline. ⇒ The PROCEDURE is invariant; the VALUES are substitutions. Correct, and it changes
+   how I write the eight: the invariant block is a TEMPLATE WITH NAMED SLOTS, not a copyable string.
+4  🐞 MY D8 HYPOTHESIS WAS SHORT, AND BY MORE THAN THE THREE MAPS I NAMED. ✔ ALL VERIFIED:
+     settings/page.tsx `flagSrc: \`/${value}.png\`` is UNCONDITIONAL over LOCALES ⇒ wiring eight
+       locales without touching that line requests EIGHT MISSING PNGs. ⭐ A real product defect
+       waiting in the wiring slice, and it was not in any handout or in my inventory.
+     PremiumPicker.test.ts "these four locales" · api.test.ts "in all four locales" ×2 ⇒ three more
+       four-locale fixtures outside i18n.test.ts entirely.
+   ⇒ FIVE consecutive exchanges have now widened an enumeration I called complete. AP_DEFECTS D-04.
+```
+
+### 41.2 ⭐ FIVE CONFIRMATIONS, each re-measured by me rather than taken on trust
+
+```text
+1  ✔ `AC-EXHAUST`'s literals are the ONLY 296/316 in `frontend/src`. `git grep` finds them at
+   i18n.test.ts:163-165 and nowhere else. ⇒ D7's disjointness claim survives the exact class of
+   hardcoded-cardinality defect that blocked exchange 07/01. That is the check I asked for and it
+   came back clean.
+2  ✔ `collectProductSource` at i18n.test.ts:481 recurses every non-test `.ts`/`.tsx` under
+   `frontend/src`, and `AC-ONE-LIVE-REGION` asserts the literals `aria-live` and `role="status"`
+   occur EXACTLY ONCE across all of it. ⇒ vitest is NOT blind to an orphan catalog, and my "every
+   gate fully checks it" was an overstatement. ⭐ AND IT YIELDS A CONCRETE NEGATIVE CONSTRAINT for
+   all eight prompts: a catalog must not contain the literal `aria-live` or `role="status"`.
+3  ✔ `node_modules/next/dist/docs/01-app/02-guides/internationalization.md` EXISTS at that exact
+   path. ⇒ The planner found a way to satisfy `frontend/AGENTS.md`'s "read the Next docs" rule with a
+   LOCAL file and no network. Genuinely better than my "the trigger is absent" reasoning, and it goes
+   into the invariant block.
+4  ✔ 296 text / 20 fn / 21 prefixes / 14 glossary sections / three `pluralSk(` sites — all reproduced.
+5  ✔ D3 maps all 21 prefixes to a glossary section with NONE left over. That was the deliverable I
+   most expected to come back with gaps, and it did not.
+```
+
+### 41.3 The decisions I take from the plan, and the two I do not
+
+```text
+TAKE  the ORDER, unchanged: de · pt · is · it · nl · da · sv · af. The reasoning is sound — the pilot
+      is English-adjacent in structure but visibly constrained in orthography and length, the two
+      four-argument helpers are separated, and the Nordic pair is adjacent so prompt 7 can guard
+      against Danish bleed explicitly.
+TAKE  the per-language register decisions. All eight informal, which matches the shipped Slavic
+      catalogs and the product voice. ⚠ It is a linguistic judgement I cannot verify and it is
+      recorded as the plan's, not mine.
+TAKE  D6's recommendation: ALL FOUR frontend gates on every catalog commit. ⚠ NOTE THAT THIS
+      OVERRIDES MY OWN §37.4 RULE, which would have skipped a gate that cannot observe the diff — and
+      the plan's reason is better than mine: vitest's source scan and the build's compile stage CAN
+      observe an orphan, so no gate here is unobserving, and inventing a cheaper class for catalogs
+      2-8 would be an eight-times-repeated judgement call for no saving. ⇒ RECORDED AS A DELIBERATE
+      OVERRIDE of §37.4 for this slice family, not an oversight.
+TAKE  D5's disposition: no numeric character budgets, concise idiomatic copy owned by the catalog
+      prompts, and the Cooperator's rendered acceptance after wiring as the named final owner at three
+      named screens. German and Icelandic get priority inspection.
+DO NOT TAKE — and both are mine to refuse:
+⛔ 1  The plan says "if the Cooperator cannot meaningfully sanity-check German, swap positions 1 and
+      8". ⇒ I am NOT asking him. `AP.md:433-444` — that is microapproval of a step inside an approved
+      envelope, and the autonomy grant says to use the answer I recommend. German stays position 1:
+      its defect modes are VISIBLE WITHOUT FLUENCY. Capitalized nouns, an overlong compound in a
+      nowrap button, a `Sie` where `du` belongs — a non-speaker can see all three. That is a better
+      pilot property than reviewer fluency and it does not depend on him.
+⛔ 2  D8's suggestion that the wiring slice change the frozen key total to 304/20/324. ⇒ CORRECT as
+      arithmetic and NOT MINE TO PRE-AUTHORIZE here. The key set is frozen for the eight catalogs;
+      the wiring slice will re-freeze it at its own number in its own prompt, and saying so now would
+      let a catalog Worker think 304 is its target.
+```
+
+⚠ **One thing the plan asked for that I am recording as OPEN rather than answered:** it notes that
+`EXPLICIT_SEARCH_FOLDS` in `locales.ts` may need `æ ð þ ß ĳ` once authored labels exist, and that this
+cannot be decided before the strings do. ⇒ True, and it is the one wiring input that DEPENDS on the
+eight catalogs rather than preceding them. Carried to the wiring slice as a derived-from-the-catalogs
+item, not a pre-decidable one.
