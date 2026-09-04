@@ -1961,6 +1961,29 @@ C1c  dictionary authority: WordAuthority at five call sites, delete _word_passes
 
 ---
 
+## 31. Session boundary — artifacts owed and delivered
+
+```text
+AP_DEFECTS.md            /home/agile/meta/AP_DEFECTS.md   847 lines. Twelve MEASURED defects of the AP
+                         protocol from this one whole, each with evidence cited by heading inside ONE
+                         directory, each with a proposed fix. Written at the Cooperator's request as
+                         input to a protocol-update task. D-01 is the largest: the Worker never
+                         critiques the Orchestrator, and twelve of my own defects were caught by a
+                         report field AP does not require.
+91_deferred-acceptance-batch.md   extended with B3 (the eight languages, RENDERED steps) and B4 (C1a,
+                         which states plainly that it is not accepted yet and that nothing below its
+                         first step counts until it is).
+93_orchestrator-handout.md        611 lines. The continuation handout for a fresh Orchestrator, with
+                         the UI-localization objective priced in three options and the ONE material
+                         product decision flagged as the Cooperator's.
+06_acceptance_00.md      the C1a independent-acceptance prompt. ⛔ DELIVERED TO THE COOPERATOR FOR
+                         COPY-PASTE. Session 06 is reserved; its report does not exist yet.
+```
+
+⛔ **The single outstanding obligation at this boundary is the C1a independent acceptance.** It is E3,
+it must come from a session that did not implement it, and it cannot be a subagent of the Orchestrator.
+Everything else in this whole is either landed and verified or recorded as a named blocker.
+
 ## 26. Next step
 
 
