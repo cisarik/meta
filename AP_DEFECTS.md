@@ -5,7 +5,14 @@ authority.** It grants nothing. It exists to be consumed by a protocol-update ta
 `AP.md` and its projections.
 
 ```text
-Written           2026-09-04
+Written           2026-09-04 09:55, twelve defects (D-01..D-12)
+Revised           2026-09-04, same day, same session, after two things happened that the first
+                  writing could not have seen: the C1a fresh independent acceptance returned at 10:51,
+                  and revision 3 of this whole's continuation handout at 11:38 found NINE DEFECTS IN
+                  ITSELF. ⇒ THREE NEW DEFECTS, D-13 · D-14 · D-15, and a SECOND WITNESS for D-01 and
+                  D-04 from a Worker that was never told the rule it honoured.
+                  ⛔ Nothing in D-01..D-12 was rewritten. They were true when written and the archive
+                  keeps them as they were (AP.md:322-336).
 Written by        the ORCHESTRATOR of Libre Tiles logical whole 13/00 multilingual-expansion-campaign
 Governing AP pin  9c5cc44f8b6c92dd56ad2427d13223d7d59c5656   (.ap gitlink of /home/agile/Projects/libretiles)
 Evidence scope    ⛔ ONE SESSION ONLY. Every defect below was observed, measured or caused by me
@@ -24,10 +31,20 @@ claim below cites its evidence by `file:line`, and the citations are all inside 
 /home/agile/meta/projects/libretiles/13/00-multilingual-expansion-campaign/
     00_notes.md                the Orchestrator decision record. Every prompt defect I caused is
                                written up there with its measurement. This is the primary evidence.
+                               ⭐ §32 · §32.1 · §32.2 are the acceptance; §33 is D-14's evidence;
+                               §34 · §34.1 are D-13's, and they are the most self-incriminating
+                               section in the archive.
     03_report_00.md            Worker BLOCKED report — four prompt defects, zero mutation
     04_report_00.md            Worker BLOCKED report — a forced logical contradiction
     05_report_00.md            Worker PASS report — two more guard spellings my inventory missed
+    06_report_00.md            ⭐ NEW. The FRESH INDEPENDENT acceptance of the E3 slice. Its
+                               :293-315 required field is D-01's and D-04's second witness, and its
+                               :330-333 context-pressure note is D-02 and D-09 charging me for my
+                               own prompt.
     92_c1_design.md            an Orchestrator-direct design record, written instead of a planner
+    93_orchestrator-handout.md ⭐ NEW as evidence rather than as output: its §0b, §6.0 and §9
+                               `coordinate review` row exist because of D-13, and are the shape of
+                               D-13's and D-15's proposed fix already in use.
 ```
 
 ⚠ **Staleness rule, inherited from `AP_DESTILLED.md:62-65` and it applies to this file too.** Before
@@ -70,6 +87,9 @@ D-09  rigor is selected by consequence; COST is never selected at all
 D-10  independence is binary, so the only way to get any is the most expensive one
 D-11  a prompt defect has no in-band repair — the only remedies are block or reissue
 D-12  the evidence tier drives validation but not report shape, so E1 work files E3-shaped reports
+D-13  a PROMPT gets a twenty-two-check readiness review; the HANDOUT it is derived from gets none
+D-14  a terse Cooperator affirmation has no authority contract, so `Pokracuj` can start a scope
+D-15  several handouts per whole are lawful, and there is no naming or precedence rule for them
 ```
 
 ⚠ **My intuition about which of these matter most**, stated plainly and separately from the
@@ -86,6 +106,11 @@ THIRD        D-04 with D-11. Three consecutive exchanges failed on MY enumeratio
 UNDERRATED   D-05. The naming problem looks cosmetic and is not: because AP has no word for an
              executing Orchestrator, the project had to invent a local grant with a permanent
              evidence penalty, and two different informal names now compete for it.
+ADDED LATER  D-13, and I would now put it THIRD, above D-04/D-11. Everything AP verifies, it verifies
+             on the way DOWN — prompt, work, report. Nothing verifies the artifact a successor
+             inherits, and that artifact is where a whole session's measurements are compressed by
+             the one participant who can no longer be cross-examined. I found nine defects in my own
+             handout on a third reading. ⛔ The first two readings had already declared it PASS.
 ```
 
 ---
@@ -143,6 +168,26 @@ What it returned, in one whole:
 ⇒ **Twelve defects. Every one mine. Every one surfaced by a field the protocol does not require.**
 Two Workers returned `BLOCKED` with **zero mutation** rather than execute a defective grant —
 `03_report_00.md` and `04_report_00.md` — and both were right.
+
+### ⭐ SECOND WITNESS, added after the first writing, and it is the strongest evidence in this file
+
+The E3 slice's **fresh independent acceptance** returned at 10:51 — a session that did not design,
+implement or author the candidate, and was not my subagent. `06_report_00.md:293-315`. I had put one
+extra obligation in its prompt as a REQUIRED FIELD: *name any place a letter is still assumed to be one
+code point, including files this prompt declares out of scope.* It returned **nineteen items, seven of
+which I did not have**, and then it wrote this about its own answer, unprompted:
+
+> *"it is a search, not a proof of absence."*
+
+⇒ **That is my own rule R-J, honoured verbatim by a Worker that was never told the rule exists.** An
+enumeration is a hypothesis. It reached that conclusion from the shape of the task, not from my prompt.
+`00_notes.md` §32.2.
+
+⚠ **And the same report contains the counter-evidence about MY orchestration, in its own last line:**
+*"Context pressure: HIGH. Full backend suite, full frontend suite, production build, serializer
+interpreter controls, and a multi-pattern remaining-guard search all sat in one exchange."*
+`06_report_00.md:330-333`. I asked for the controls and the inventory in one grant. **That is D-02 and
+D-09 charging me for my own prompt, reported by the Worker, in the field D-01 says AP should require.**
 
 ### Why AP permits this
 
@@ -311,6 +356,14 @@ through three versions (`00_notes.md` R-J at ~1752 and ~1911) before arriving at
 that survives contact:
 
 > **An enumeration handed to a Worker is a HYPOTHESIS, not a specification.**
+
+⭐ **And attempt 4 confirmed it twice more, after this file was first written.** The independent
+acceptance found **seven more sites** — including `legality.py:143`, where the CHECK is correct set
+membership and the ERROR COPY still says "A-Z", a class no code search for a guard would ever surface.
+Then revision 3 of the continuation handout found that my own retyping of that nineteen-item list had
+**silently dropped four items**, one of them `diagnostics.py:782` — `len(ch) == 1 and "A" <= ch <= "Z"`,
+a RANGE test invisible to every one of the six spellings I had enumerated. `00_notes.md` §34.1.
+⇒ **Four consecutive attempts. Four new spellings. The fifth will find a fifth.**
 
 ### ⭐ Proposed fix
 
@@ -774,6 +827,240 @@ is the actual fix: **one tier selection, two consequences.**
 
 ---
 
+## D-13 · A prompt gets a twenty-two-check readiness review. The handout it is derived from gets none.
+
+### The defect
+
+`AP.md:1328-1347` gives **prompt synthesis** a readiness review with twenty-two checks, ending in
+*"contradiction and omission review"*. `AP.md:2229-2328` governs session rotation and
+`AP_ORCHESTRATOR.md:436-444` says *"rotation transfers information, never authority"*. And
+`PROMPT_CONTRACTS.md:2129-2159` supplies a **Fresh Orchestrator restoration** contract — but that is a
+contract for the SUCCESSOR'S PROMPT, not a verification of the handout the successor reads.
+
+⇒ **So the artifact that a fresh Orchestrator's entire understanding is derived from is the one
+artifact in AP with no verification contract at all.** Everything AP checks, it checks on the way
+down: prompt → work → report. Nothing checks what is handed sideways.
+
+### The evidence — nine defects in a handout that had already been declared PASS twice
+
+`00_notes.md` "### 34.1 ⭐ Nine defects in revision 2, all measured, all mine". Revision 1 and revision
+2 of `93_orchestrator-handout.md` each carried a **`RESTORATION CLASSIFICATION: PASS`** with a
+contradiction review and an omission review. Revision 3 re-measured and found:
+
+```text
+FOUR WRONG COORDINATES, one of them a wrong DIRECTORY
+    state.py:48 is `blanks=blanks,` — the join is at :49
+    services.py:862 and :1649 are both off by four (866, 1653)
+    backend/game/variant_store.py DOES NOT EXIST; the module is backend/gamecore/variant_store.py
+    ⇒ cost to find all four: about sixty seconds of `sed -n`. The handout's OWN rule R-G says never
+      copy a file:line from a handout. The handout broke it four times.
+AN ENUMERATION PARAPHRASED FROM NINETEEN DOWN TO FIFTEEN PLUS ONE PHANTOM
+    The authoritative list is `06_report_00.md:296-315`. Revision 2 retyped it instead of quoting it
+    and silently dropped four items — including `diagnostics.py:782`, whose spelling is
+    `len(ch) == 1 and "A" <= ch <= "Z"`, a RANGE test that no `\p{L}`, `len ==`, `max_length` or
+    `.split("")` search reaches. It also carried a phantom site that measurement shows is a row-COUNT
+    guard, not a code-point assumption.
+    ⛔ THIS IS D-04 REPRODUCING ITSELF INSIDE THE DOCUMENT THAT DOCUMENTS D-04.
+NO PRECEDENCE STATEMENT AT ALL — see D-15
+```
+
+⚠ **And the omission that mattered most was not a coordinate.** The handout never mentioned its own
+predecessor, so that predecessor's **nine standing conditions, eleven closure conditions and governing
+objective were invisible to the successor** — including a standing condition that contradicts the
+handout's own validation advice. A successor would have discovered the conflict by being accused of
+violating a rule it was never shown.
+
+### Why AP permits it
+
+Three reasons, and the third is the interesting one.
+
+```text
+1  The readiness review is scoped to PROMPT SYNTHESIS by its own heading. A handout is not a prompt.
+2  `AP.md:322-336` protects archived prompt/report pairs from retroactive rewriting — correctly — but
+   a handout is a LIVING artifact, and AP gives living Orchestrator artifacts no integrity contract.
+   `RF-14` (`AP.md:196-202`) requires every artifact to declare relationship, authority, consumer,
+   discoverability, retention trigger and cleanup owner — SIX METADATA FIELDS AND NOT ONE ACCURACY
+   FIELD.
+3  ⛔ The author of a handout is the only participant who cannot be cross-examined about it. A Worker's
+   claim gets re-measured by the Orchestrator (`AP.md:1273-1327`). An Orchestrator's claim to its
+   SUCCESSOR gets re-measured by nobody, because the successor has no independent access to what the
+   predecessor measured — that is the whole reason the handout exists.
+```
+
+### ⭐ Proposed fix
+
+**A Handout Integrity Record, in the same spirit as the compact records at
+`PROMPT_CONTRACTS.md:563-657`, required in every handout and restoration synthesis.** Six rows, and
+five of them are cheap:
+
+```text
+Handout Integrity Record
+  Supersedes: <earlier handout paths> | none
+  Sections of the superseded handout that remain LIVE: <exact list> | none
+    ⛔ "later wins" is useless if the reader cannot tell what the earlier file still owns. See D-15.
+  Coordinate review: <sections re-measured, and against which commit> | none
+    ⛔ `none` is a permitted and honest value. A handout that says "I did not re-measure sections 4,
+       7 and 8" is SAFER than one that implies whole-file freshness, because the reader then knows to
+       re-measure. Silence is the defect, not staleness.
+  Enumeration fidelity: quoted-exactly-from <artifact:lines> | paraphrased
+    ⛔ `paraphrased` is a DEFECT DECLARATION, not a style choice. An inventory a successor will act on
+       must be QUOTED from its source with the citation, never retyped. Retyping lost four of
+       nineteen items here and the loss was invisible.
+  Numbers not re-measured: <exact list> | none
+  Known-stale-by-design: <what the successor MUST re-measure before quoting> | none
+```
+
+And one sentence for `AP.md` beside the rotation rules at `:2229-2328`:
+
+> A handout is evidence a successor cannot re-derive, so it carries the same contradiction and
+> omission review as a prompt, plus an explicit statement of what was **not** re-measured. A handout
+> that implies uniform freshness it does not have is a defect even when every claim in it is true.
+
+⚠ **Measured proof the fix works, from this session:** revision 3's readiness review added exactly one
+row — `coordinate review: PARTIAL, DELIBERATELY. sections 5 and 6 re-measured, 4, 7 and 8 NOT` — and
+that single row converts an unknowable staleness into a bounded one. It cost one line.
+
+---
+
+## D-14 · A terse Cooperator affirmation has no authority contract, so one word can start a scope
+
+### The defect
+
+`AP.md:917-925` fixes **Worker** authority to the prompt, and `AP.md:932` adds *"omitted permission is
+not implied permission."* Both are right and neither is about the Orchestrator. For the Orchestrator's
+own authority to begin work, AP relies on `AP.md:2329-2365` and `AP_ORCHESTRATOR.md:15-60`: Stage 2 is
+*"the Cooperator explicitly selects exactly one bounded next logical whole."*
+
+⛔ **Nothing anywhere defines what counts as EXPLICIT.** And AP simultaneously discourages checking:
+`AP.md:433-444` and `AP_ORCHESTRATOR.md:71-76` name *microapproval of deterministic steps inside an
+approved envelope* as an anti-pattern. **So the Orchestrator is told not to ask, and given no rule for
+deciding whether a one-word reply selected a scope.**
+
+### The evidence — one word, one session's work, reverted
+
+`00_notes.md` §33. The Cooperator's continuation handout had priced a product decision in three
+options and explicitly reserved it for him. He answered `A`. Then, one turn later, he wrote:
+
+```text
+Pokracuj
+```
+
+⇒ I read that as authority to implement, and began slice 1 — a plural-rules module with eight new
+CLDR functions. He corrected it in seven words: **`PREKLADY MA ROBIT FRESH ORCHESTRATOR`** — the
+translations are a fresh Orchestrator's work. The tree was reverted to `529e691`, porcelain verified
+empty, and the session's implementation output was zero.
+
+⚠ **And it had happened before in the same whole, cheaper only by luck.** `00_notes.md` §10: he wrote
+`sowpods.txt vymazane`, which is ambiguous in Slovak between *"it is deleted"* and *"delete it"*. **One
+`git log` answered it.** Two instances, one root cause: a terse affirmation was treated as a scope
+selection.
+
+```text
+⭐ AND THE POSITIVE MEASUREMENT, because the fix is not "ask more":
+   A COSTED MULTIPLE-CHOICE question got a one-token answer in ONE TURN. Three options with the
+   trade-off stated per option → "A". No paragraph, no delay, no ambiguity.
+   ⇒ The problem is not that he is terse. It is that AP has no rule for reading terseness.
+```
+
+### ⭐ Proposed fix
+
+**A Selection Echo, and it is one line of output, not a ceremony.**
+
+```text
+A terse Cooperator affirmation — `ano`, `suhlas`, `Pokracuj`, `A`, `ok` — CONTINUES the scope already
+selected. ⛔ It NEVER SELECTS a new one.
+
+If the next action would BEGIN a scope that has not been named and bounded, the ORCHESTRATOR emits
+exactly one line naming what it is about to start, and acts on the NEXT reply:
+
+    SELECTION ECHO: I am about to <one bounded outcome>, touching <paths>, as <execution mode>. Confirm?
+
+⛔ At most ONE echo per selection. A second means the objective is unclear in kind and belongs back
+   with the Cooperator as a costed choice, not as a question.
+⭐ PREFER THE COSTED CHOICE OVER THE QUESTION. Where a material decision is his, present two to four
+   options, each with its cost stated BEFORE its benefit, and take the answer. Measured: one turn.
+```
+
+⚠ **The tension with `AP.md:433-444` is real and this is how it resolves.** That anti-pattern forbids
+microapproval of **deterministic steps INSIDE an approved envelope**. Establishing where the envelope
+ENDS is not a deterministic step inside it — it is the boundary itself. One line that names a boundary
+is not microapproval; eight hundred lines of reverted work is not autonomy.
+
+⚠ **And it composes with the autonomy grant rather than weakening it.** His grant says *"AK MI BUDES
+CHCIET DAT OTAZKY PROSTE POUZI ODPOVEDE KTORE DOPORUCUJES"* — if you want to ask, use the answers you
+recommend. A Selection Echo satisfies that literally: it states the recommended action and needs only
+a yes.
+
+---
+
+## D-15 · Several handouts per whole are lawful, and there is no naming or precedence rule for them
+
+### The defect
+
+The pin does **not** say one handout per logical whole. `AP.md:2229-2328` governs rotation and
+`AP_ORCHESTRATOR.md:436-444` says to rotate at a coherent boundary *"when context integrity,
+qualitative pressure, capability fit, policy, cost, or independence requires it"* with **no numeric
+threshold**. Meta's storage contract reserves `00_handout.md` and is printed in the pin at
+`PROMPT_CONTRACTS.md:658-671`.
+
+⇒ **So a whole may lawfully accumulate several handouts, and AP supplies no grammar, no precedence
+rule and no reconciliation requirement for them — while `AP.md:18-62` forbids two semantic owners.**
+Two unreconciled handouts for one whole are exactly two semantic owners.
+
+### The evidence
+
+```text
+MEASURED, this whole:  `00_handout.md` (753 lines, the opening handout, written by the PREVIOUS
+                       whole's Orchestrator as its closing act) AND `93_orchestrator-handout.md`
+                       (1 067 lines at revision 3). ⛔ BOTH LIVE. The opening one owns the governing
+                       objective, NINE standing conditions and ELEVEN closure conditions. The
+                       continuation one owns the current state.
+MEASURED, era 10:      `10/00-ui-internationalization/00_handout.md` 34 365 B AND
+                       `.../93_orchestrator-handout.md` 41 783 B — a second handout for the SAME
+                       whole, mid-whole, at the Cooperator's explicit request.
+                       (`BRAINSTORMING.md` §2.1 measures both.)
+THE DEFECT FIRING:     revisions 1 and 2 of this whole's continuation handout NEVER MENTIONED
+                       `00_handout.md`. ⇒ A successor would not have known that standing condition 6
+                       requires all eight gates on every batch while the handout it was reading
+                       advised the frontend four — and would have discovered the conflict by being
+                       accused of breaking a rule it was never shown. `00_notes.md` §34.1 defect 4.
+```
+
+⚠ **Era 10 already invented the fix locally and it was never promoted.** `PROJECT_CONTEXT.md:799-829`
+records the rule that whole used: *"where it and `00_handout.md` disagree, `93_` is later and wins, and
+every disagreement is named in its section 4."* **That rule worked, it is eleven months of practice
+old, and it is still project folklore rather than protocol** — the same failure shape as D-01.
+
+### ⭐ Proposed fix
+
+**Promote `BRAINSTORMING.md` §2.2 D1-D5 into the protocol as written — they are already measured — and
+add one row I found missing while applying them.**
+
+```text
+D1  FILENAME. `00_handout.md` stays reserved for the whole's OPENING handout. Every later one is an
+    Orchestrator artifact in the `9N_` band: `9N_orchestrator-handout-<ordinal>.md`. It is NOT an
+    exchange and never consumes a Worker exchange ordinal.
+D2  PRECEDENCE, STATED IN THE FILE ITSELF. Later wins, and EVERY disagreement with an earlier handout
+    is named explicitly, in one place, as a list.
+D3  IT IS A CONTINUATION, NOT A RESTART. It does not re-derive the objective; re-deriving it is
+    RF-19's changed-objective case (`AP.md:255-262`) and starts a NEW logical whole instead.
+D4  IT GRANTS NOTHING, said as plainly as the opening handout says it.
+D5  WRITTEN AT A COHERENT BOUNDARY — after a report is archived, before the next prompt is issued,
+    never with a Worker in flight, because then `Active mutation` is not `none` and the successor
+    cannot verify state.
+⭐ D6, MINE, and it is the row that makes D2 usable: SECTIONS OF THE EARLIER HANDOUT THAT REMAIN LIVE.
+    "Later wins" tells a reader which of two contradictions to believe. It does NOT tell them that the
+    earlier file still solely owns nine standing conditions and eleven closure conditions. Without D6
+    a successor rationally stops reading the earlier file — which is precisely what happened here.
+```
+
+⚠ **The honest cost, and `BRAINSTORMING.md` §2.3 states it first:** each continuation handout is
+25-45 KB of writing, so rotating too early spends more than it saves. The trigger is qualitative by
+design and the practical form is good: **rotate when you notice you are re-reading your own earlier
+measurements instead of remembering them.**
+
+---
+
 ## 3. The workflow this session converged on, as a candidate AP shape
 
 ⚠ This section is **not** a defect. It is the positive form of D-01, D-06, D-07 and D-09, written out
@@ -829,11 +1116,34 @@ production defect. **The labels are the entire mechanism.**
 10 D-08  promote AP.md:1366-1370 to a premise; add punchiness to the readiness review. Keep the name.
 ```
 
+⭐ **REVISED ORDERING after D-13, D-14 and D-15 were measured.** Insert them like this, and the reason
+is that two of the three are nearly free:
+
+```text
+after D-01, before D-09
+   D-13  the Handout Integrity Record. ⇒ SIX ROWS, and the one that matters — `Coordinate review` —
+         is one line. It converts unknowable staleness into bounded staleness, and this whole proved
+         the need by shipping a handout that passed its own review twice and was wrong nine times.
+after D-13
+   D-15  promote era 10's own precedence rule plus the `sections that remain LIVE` row. ⇒ ZERO design
+         work: `BRAINSTORMING.md` §2.2 already contains D1-D5 and eleven months of practice back it.
+anywhere, it is independent of the rest
+   D-14  the Selection Echo. ⇒ ONE LINE OF OUTPUT, and it is the only defect in this file whose
+         measured cost is a session's work thrown away rather than tokens spent.
+```
+
 ## 5. Honest limits of this document
 
 ```text
 · ONE SESSION of evidence, one project, one Cooperator, one pin. Every defect is real here; none is
   proven general. A protocol-update task should look for a second witness before rewriting AP.
+  ⭐ EXCEPTION, and it is the reason the revision was worth making: D-01 and D-04 NOW HAVE a second
+  witness that is structurally independent of me — a fresh acceptance session, not my subagent, which
+  honoured R-J without being told it and reported my own over-collection back to me. D-13 has three
+  independent instances inside one artifact. D-15 has two eras.
+· D-13, D-14 and D-15 were caused by ME as well, and later than the first twelve, which means the
+  first twelve did not inoculate me against them. ⛔ That is worth stating plainly: writing a defect
+  report about your own failure mode does not stop the failure mode. Only a mechanism does.
 · I am not a neutral party. Twelve of the defects catalogued in D-01 are MINE, so a reader may
   reasonably suspect I am designing a protocol that forgives my own failure mode. The counter-evidence
   is that D-01's fix makes those failures MORE visible, not less.

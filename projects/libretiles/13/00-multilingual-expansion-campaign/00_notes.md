@@ -2024,7 +2024,8 @@ controls from the inventory.**
 ## 31. Session boundary — artifacts owed and delivered
 
 ```text
-AP_DEFECTS.md            /home/agile/meta/AP_DEFECTS.md   847 lines. Twelve MEASURED defects of the AP
+AP_DEFECTS.md            /home/agile/meta/AP_DEFECTS.md   847 lines at this boundary, 1 157 after the
+                         same-day revision recorded in §35. Twelve MEASURED defects of the AP
                          protocol from this one whole, each with evidence cited by heading inside ONE
                          directory, each with a proposed fix. Written at the Cooperator's request as
                          input to a protocol-update task. D-01 is the largest: the Worker never
@@ -2261,3 +2262,60 @@ mistake itself for the successor. **Revision 3 is handout work, not campaign wor
 ⚠ **The honest limit of revision 3.** Nine defects in a file that had already been proof-read twice
 means the next reader should assume there are more. The handout now says that in its own readiness
 review instead of claiming freshness it does not have.
+
+## 35. `AP_DEFECTS.md` revised — three defects the first writing could not have seen
+
+The Cooperator re-stated the AP_DEFECTS commission in full. **The file already existed and already
+carried his whole brainstorming**, so I did not regenerate it — regenerating an evidence file written
+when the evidence was fresh destroys the thing that makes it worth reading. I checked every point of his
+message against the file instead, and every one was already there:
+
+```text
+"uderne" as a first-class prompt property           D-08 fix 2
+"Analytic" biases toward analysis as deliverable    D-08, with a recommendation AGAINST renaming
+subagents punchier, many, no longer a courier       D-06, quoting "moze ich by vela kedze uz nesluzim
+                                                    ako poslicek" verbatim
+Worker critiques the Orchestrator's orchestration   D-01 — named BIGGEST, with twelve instances
+Worker must not write too much / not always test    D-02 · D-03 · D-12, and section 3 step 4 verbatim:
+                                                    "It does not write long prose. It does not run
+                                                    every suite. It verifies what could be wrong."
+tests as their own punchy exchange afterwards       section 3 step 6
+no Worker reads all of AP; give it line numbers     D-07, with the fail-closed "AP wins, stop and
+                                                    report" clause that makes citation safe
+simplest tasks need no Worker at all                D-05 `orchestrator-direct`, priced by D-09
+"Agent Orchestrator" / "Worker Orchestrator" naming D-05 — and it says plainly: it is not his defect,
+                                                    it is AP's, because AP has no word for the thing
+```
+
+⇒ **So the honest answer to his request was not to rewrite, but to say where each point landed and then
+add what is genuinely new.** Three things were, because the file was written at 09:55 and both of them
+happened after:
+
+```text
+D-13  A PROMPT GETS A TWENTY-TWO-CHECK READINESS REVIEW; THE HANDOUT IT IS DERIVED FROM GETS NONE.
+      Evidence: §34.1 — nine defects in a handout that had already printed
+      `RESTORATION CLASSIFICATION: PASS` twice. Fix: a six-row Handout Integrity Record whose
+      load-bearing row, `Coordinate review`, is ONE LINE and converts unknowable staleness into
+      bounded staleness. ⇒ I would now rank this THIRD in the whole file.
+D-14  A TERSE COOPERATOR AFFIRMATION HAS NO AUTHORITY CONTRACT. Evidence: §33 — `Pokracuj` read as
+      authority to implement, a session's work reverted; and §10's `sowpods.txt vymazane`, saved only
+      by one `git log`. Fix: a Selection Echo, one line, plus the default reading that a one-word
+      affirmation CONTINUES a scope and never SELECTS one. ⚠ Its cost is a session of work, not
+      tokens — the only defect in the file with that shape.
+D-15  SEVERAL HANDOUTS PER WHOLE ARE LAWFUL AND HAVE NO NAMING OR PRECEDENCE RULE. Evidence: this
+      whole has TWO live handouts and revisions 1-2 never mentioned the other one, hiding nine
+      standing conditions and eleven closure conditions from the successor. Fix: promote
+      `BRAINSTORMING.md` §2.2 D1-D5, which era 10 already invented and `PROJECT_CONTEXT.md:799-829`
+      already records, plus a D6 row of mine — "sections of the earlier handout that remain LIVE" —
+      because "later wins" does not tell a reader what the earlier file still solely owns.
+```
+
+⭐ **And D-01 and D-04 got a SECOND WITNESS that is structurally independent of me.** The fresh
+acceptance session — not my subagent — labelled its own nineteen-item inventory *"it is a search, not a
+proof of absence"* without ever being told R-J exists, and reported my own over-collection back to me in
+its context-pressure line. `06_report_00.md:293-315` and `:330-333`. That is the strongest single piece
+of evidence in the file and the first writing could not have contained it.
+
+⚠ **The limit I added to section 5 and mean literally:** D-13, D-14 and D-15 are also mine, and they
+happened AFTER I wrote twelve defects about my own failure modes. **Writing a defect report about your
+own failure mode does not stop the failure mode. Only a mechanism does.**

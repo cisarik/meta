@@ -40,10 +40,15 @@ owners, which `AP.md:18-62` forbids.
 1  /home/agile/meta/AP_DESTILLED.md          942 lines. The protocol, indexed by line number against
                                              the PINNED .ap. Read once, then work from the citations.
                                              ⛔ Its §0 staleness rule applies to THIS file too.
-2  /home/agile/meta/AP_DEFECTS.md            847 lines. ⭐ It is why this handout is short. Twelve
+2  /home/agile/meta/AP_DEFECTS.md            1 157 lines. ⭐ It is why this handout is short. FIFTEEN
                                              MEASURED defects of AP itself, from this whole, each with
                                              its fix. ITS SECTION 3 IS THE WORKFLOW that produced
                                              everything good here. ⛔ READ IT BEFORE YOUR FIRST PROMPT.
+                                             ⚠ D-13, D-14 and D-15 were added AFTER this handout's
+                                             revision 2 and they are ABOUT THIS HANDOUT and about how
+                                             the Cooperator's one-word replies were misread. Read
+                                             those three even if you skim the rest.
+                                             ⇒ §4's revised ordering tells you which fix is one line.
 3  ./00_handout.md                           753 lines. ⭐ THE OPENING HANDOUT, AND IT IS STILL LIVE.
                                              Read exactly four of its sections and skip the rest:
                                                §2      the objective, VERBATIM AND GOVERNING — and
@@ -1058,10 +1063,12 @@ Cooperator and assigned to you in as many words. Nothing of it is implemented, t
 already derived and verified against CLDR for all eight, each catalog typechecks against
 `messages.en.ts` alone — and section 5.8 is the one real decision left, because "eight Workers in
 parallel" costs seven declared fields under this pin or one profile the Cooperator has to promote.
-Before you write your first prompt, read `AP_DEFECTS.md`: twelve measured defects of the protocol
+Before you write your first prompt, read `AP_DEFECTS.md`: fifteen measured defects of the protocol
 itself, including the one that matters most here — that a Worker's job includes critiquing your prompt
 and your approach, and that twelve of the previous Orchestrator's own defects were caught that way and
-not one by its own review.
+not one by its own review. ⛔ And read D-14 before you act on any one-word reply from him: `Pokracuj`
+CONTINUES a scope and never SELECTS one, which is a rule that exists because this file's predecessor
+learned it the expensive way.
 
 **This document grants no mutation authority. Verify repository and public truth independently before
 you act.**
