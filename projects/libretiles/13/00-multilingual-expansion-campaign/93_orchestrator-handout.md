@@ -52,8 +52,8 @@ AP pin             .ap gitlink 9c5cc44f8b6c92dd56ad2427d13223d7d59c5656, submodu
 Meta repo          /home/agile/meta at c091d63, pushed
 active Worker      none
 active mutation    none
-your next Worker session ordinal   07     (sessions 01-06 are consumed; 06 is the outstanding
-                                           independent acceptance, see section 3)
+your next Worker session ordinal   07     (sessions 01-06 all consumed and archived; 06 is the
+                                           C1a independent acceptance, PASSED — see section 3)
 
 playable today     12 of 24    english slovak czech polish afrikaans italian dutch german
                                portuguese danish swedish icelandic
@@ -78,12 +78,12 @@ dab6d0d  feat(variants) Italian and Dutch are the sixth and seventh
 1eed5ed  feat(variants) Portuguese is the ninth — 120 tiles and THREE blanks
 51e08fe  feat(variants) Danish is the tenth, and it caught an expander defect
 8a50ded  feat(variants) Swedish and Icelandic are the eleventh and twelfth
-529e691  feat(wire)     a multi-code-point tile crosses the wire losslessly    ⚠ E3, NOT YET ACCEPTED
+529e691  feat(wire)     a multi-code-point tile crosses the wire losslessly    ⭐ E3, ACCEPTED
 ```
 
 ⛔ **Eleven of those twelve are ORCHESTRATOR-DIRECT and their evidence is permanently
-NON-INDEPENDENT.** Only `529e691` went through a Worker, and its independent acceptance is still
-outstanding. Do not present any of the eleven as independently verified.
+NON-INDEPENDENT.** Only `529e691` went through a Worker, and only it carries an independent
+acceptance. **Do not present any of the eleven as independently verified.**
 
 ---
 
@@ -142,9 +142,39 @@ cd ../frontend && npm run typecheck ; npx vitest run ; npm run lint ; npm run bu
 ⛔ "the build passed" and "the code type-checks" are TWO SEPARATE CLAIMS. State both.
 ```
 
-## 3. ⛔ THE ONE OUTSTANDING OBLIGATION — read this before anything else
+## 3. ⭐ RESOLVED — C1a is independently ACCEPTED. C1b is unblocked.
 
-**`529e691` is E3 and its fresh independent acceptance has NOT returned.**
+```text
+report    ./06_report_00.md      status PASS · acceptance-PASS · 0 corrections
+verdict   R1-R6 HOLD · P1-P5 held · N1-N6 FAILED as required
+owner     a session that did not design, implement or author the candidate and is not a subagent of
+          the previous Orchestrator. Acceptance independence: required-fresh-independent — SATISFIED.
+```
+
+⛔ **TWO DISCLOSURES THE AUDIT MADE THAT YOU MUST CARRY FORWARD.** Both are in `00_notes.md` §32.1:
+
+```text
+Q2  R1 IS NOT CERTIFIED FOR PIXELS. There is NO Board render test in the repository — measured, and
+    the audit independently confirmed it. Board.tsx consumes the new shape correctly, but that is a
+    COMPILE-TIME contract, not a render test. The only pixel evidence that will ever exist for this
+    slice is B4-2 of ./91_deferred-acceptance-batch.md — the Cooperator's own eyes.
+    ⇒ If you want pixel certification, a Board render test is its own slice and nothing today provides it.
+Q3  VERSION SKEW IS USER-SILENT, and FRONTEND AND BACKEND OF 529e691 MUST DEPLOY TOGETHER.
+    A refused payload gives console.error plus EMPTY_BOARD — no toast, no banner. And old client +
+    new backend has NO refusal at all, because the guard is introduced in that very commit.
+    ⇒ Carry this into the deployment whole. It is not a defect of the slice; it is a deploy constraint.
+```
+
+⭐ **And it returned a NINETEEN-ITEM one-code-point inventory that is now C1b's complete scope** —
+`00_notes.md` §32.2 and `06_report_00.md`'s required field. Seven items were new to the previous
+Orchestrator, including `legality.py:28`, `move_search.py:33`, `prompts.ts:267` and — ⚠ importantly —
+`test_atomic_tile_tokens.py:532`, which asserts `len(row) == 15` on the AI grid. **That file is the
+L·L canary's host, the one file three consecutive prompts forbade touching, and C1b must now edit it.**
+
+## 3b. Historical — what the obligation was, for anyone reading the archive
+
+**`529e691` was E3 and its fresh independent acceptance was outstanding when this handout was first
+written.**
 
 ```text
 prompt        ./06_acceptance_00.md          written, committed, delivered to the Cooperator
@@ -383,7 +413,9 @@ GATES the frontend four only. ⛔ This touches NO backend file, so a Django suit
 ## 6. The rest of the campaign, ordered by leverage
 
 ```text
-C1b  ⛔ NEEDS C1a ACCEPTED FIRST. The AI's own board view, plus two UI spellings. Measured sites:
+C1b  ⭐ UNBLOCKED — C1a is accepted. Its scope is now the NINETEEN-ITEM inventory the independent
+     audit returned; see `06_report_00.md`'s required field and `00_notes.md` §32.2. The sites the
+     previous Orchestrator had already measured:
        backend/gamecore/state.py:44   grid.append("".join(row_chars))
                                       a 16-char row SHIFTS EVERY COLUMN to its right
        backend/gamecore/state.py:48   ai_rack="".join(ai_rack) collapses a digraph rack
@@ -398,6 +430,19 @@ C1b  ⛔ NEEDS C1a ACCEPTED FIRST. The AI's own board view, plus two UI spelling
                                       `GameState.alphabet` already ships on the wire — the fix has a
                                       source of truth waiting.
        frontend/src/components/game/AIThinkingOverlay.tsx:72   word.toUpperCase().split("")
+     ⭐ AND SEVEN THE AUDIT ADDED, each verified by the previous Orchestrator at 529e691:
+       backend/gamecore/legality.py:28    LETTERS = frozenset("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+       backend/gamecore/legality.py:143   error copy says "A-Z" while the CHECK is set membership
+       backend/gamecore/move_search.py:33 _BLANK_LETTERS = string.ascii_uppercase
+       frontend/src/lib/prompts.ts:267    rows[row][col] — one column per UTF-16 unit
+       frontend/src/lib/constants.ts      TILE_POINTS is A-Z plus "?" only
+       frontend/src/lib/ai-turn-simulation.test.ts:119 · rack.test.ts:4
+       ⚠ backend/tests/test_atomic_tile_tokens.py:532   asserts len(row) == 15 on the AI grid.
+         ⛔ THAT FILE IS THE L·L CANARY'S HOST — the one file three consecutive prompts forbade
+         touching. C1b MUST edit it, so its prompt must say so explicitly and must not simply
+         inherit the old prohibition.
+     ⚠ THE AUDIT LABELLED ITS OWN INVENTORY: "it is a search, not a proof of absence." Treat it as
+       R-J tells you to — a HYPOTHESIS — and make widening it a required field again.
      ⭐ AND THE GOOD NEWS, measured: the MOVE CORE hash covers only `MOVE_SYSTEM_PROMPT`
        (`prompts.test.ts:79-84`), NOT the three grid functions — so C1b can repair them WITHOUT
        moving the pinned hash. And `gamecore/state.py:63,104-125` already carries a structured
@@ -561,9 +606,9 @@ twice.
 contradiction review      PASS. Nine stale claims in the two previous handouts are named explicitly:
                           section 5 of `92_c1_design.md` lists five for C1, and `00_notes.md` "### 3.2"
                           lists eight stale line references in the era-12 handout. Nothing is hidden.
-omission review           PASS with ONE named outstanding item: the C1a independent acceptance,
-                          section 3. `06_acceptance_00.md` is written, committed and delivered; the
-                          report does not exist yet. That is the only owed artifact.
+omission review           PASS. NOTHING IS OWED. The C1a independent acceptance returned
+                          `acceptance-PASS` and is archived as `06_report_00.md`. Every prompt/report
+                          pair of this whole is archived.
 stale-state review        PARTIAL BY DESIGN. Every number was measured 2026-09-04 at 529e691, and the
                           Cooperator commits to `main` himself. Section 1 exists so you re-measure.
                           ⚠ R-G says re-measure every `file:line` in this handout before quoting it.
@@ -571,8 +616,8 @@ stale-state review        PARTIAL BY DESIGN. Every number was measured 2026-09-0
                           eight times. Assume this file has stale coordinates too.
 authority review          PASS. This document grants nothing. Stated at the top.
 active-mutation review    PASS. Porcelain empty, public readback equal, no Worker in flight.
-active-Worker review      PASS. Sessions 01-05 terminated. 06 is RESERVED and outstanding. Your first
-                          fresh session is 07.
+active-Worker review      PASS. Sessions 01-06 all terminated and archived. Your first fresh session
+                          is 07.
 security-boundary review  PASS. Secret, host, network, browser, filesystem, account and Git boundaries
                           are stated in section 8.
 strategic-direction

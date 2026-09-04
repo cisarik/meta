@@ -1961,6 +1961,66 @@ C1c  dictionary authority: WordAuthority at five call sites, delete _word_passes
 
 ---
 
+## 32. ⭐ C1a INDEPENDENTLY ACCEPTED — `acceptance-PASS` at `529e691`
+
+```text
+prompt   06_acceptance_00.md   Fresh Independent Audit, read-only, no mutation authority
+report   06_report_00.md       status PASS · Phase-qualified result acceptance-PASS
+owner    a session that did NOT design, implement or author the candidate, is NOT the session-05
+         subagent, and is NOT me. ⭐ Acceptance independence: required-fresh-independent — SATISFIED.
+verdict  R1-R6 all HOLD · P1-P5 all held · N1-N6 all FAILED as required · 0 corrections
+```
+
+⛔ **The outstanding obligation of this whole is now discharged.** C1a is accepted. C1b is unblocked.
+
+### 32.1 Two disclosures the audit made that I must not bury
+
+```text
+Q2  ⛔ R1 IS NOT CERTIFIED FOR THE HUMAN-VISIBLE BOARD.
+    MEASURED BY ME, confirming it: `ls frontend/src/components/board/*.test.*` -> NONE.
+    Board.tsx consumes the new shape correctly, but that is a COMPILE-TIME contract — typecheck,
+    lint and build — not a render test.
+    ⇒ The acceptance certifies THE WIRE PAYLOAD AND THE INGEST PREDICATES. It does not certify pixels.
+    ⇒ The only pixel evidence that will ever exist for this slice is B4-2 of
+      91_deferred-acceptance-batch.md — the Cooperator's own eyes. That entry was written that way
+      before the audit said so, and the audit independently agreed it is the only route.
+Q3  ⛔ VERSION SKEW IS USER-SILENT. isSupportedStateSchemaVersion is exact equality, the backend
+    always emits 4, there is no dual-accept window, and a refused payload produces console.error plus
+    EMPTY_BOARD — no toast, no banner, no copy. A user can sit on an empty board with only a console
+    line. The decided posture "refuse rather than mis-render" HOLDS; it is not a user-facing screen.
+    ⇒ FRONTEND AND BACKEND OF 529e691 MUST DEPLOY TOGETHER. Recorded for the deployment whole.
+    ⇒ And old client + new backend has NO refusal at all, because the guard is introduced in this
+      very commit. That asymmetry is why "together" is mandatory rather than advisable.
+```
+
+### 32.2 ⭐ It handed over a NINETEEN-ITEM inventory, and that is C1b's scope, complete
+
+The audit answered the one obligation I put in the prompt as a required field rather than an
+observation — *name any place a letter is still assumed to be one code point, including files this
+prompt declares out of scope* — and returned nineteen items. **Seven of them I did not have.**
+
+```text
+NEW TO ME, and I verified each myself at 529e691:
+  legality.py:28    LETTERS = frozenset("ABCDEFGHIJKLMNOPQRSTUVWXYZ")     ✔ confirmed
+  legality.py:143   error copy "Letter must be A-Z or '?'" while the CHECK is set membership ✔
+  move_search.py:33 _BLANK_LETTERS = string.ascii_uppercase                ✔ confirmed
+  prompts.ts:267    rows[row][col] — indexes a string one column per UTF-16 unit ✔ confirmed
+  test_atomic_tile_tokens.py:532  asserts len(row) == 15 on the AI grid    ✔ confirmed
+                    ⚠ AND THAT FILE IS THE L·L CANARY'S HOST, which C1b must therefore edit — the
+                      one file three prompts in a row forbade touching.
+  constants.ts      TILE_POINTS is A-Z plus "?" only
+  ai-turn-simulation.test.ts:119 · rack.test.ts:4 · three Slovak/Czech test files
+```
+
+⚠ **And it labelled its own inventory honestly:** *"it is a search, not a proof of absence."* That is
+R-J being honoured by a Worker without being told the rule — which is the strongest evidence yet for
+`AP_DEFECTS.md` D-01 and D-04.
+
+⚠ **Its context pressure was HIGH** — full backend suite, full frontend suite, production build,
+interpreter controls and a multi-pattern search in one exchange. `AP_DEFECTS.md` D-02 and D-09 name
+exactly that: I asked for all of it in one grant. **A cheaper acceptance would have split the
+controls from the inventory.**
+
 ## 31. Session boundary — artifacts owed and delivered
 
 ```text
