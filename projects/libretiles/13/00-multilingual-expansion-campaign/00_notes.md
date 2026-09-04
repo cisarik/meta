@@ -3812,3 +3812,22 @@ then    da · sv · af. The Nordic pair stays adjacent so catalog 7 can guard ag
 before wiring  🐞 the `EXPLICIT_SEARCH_FOLDS` slice: `ð þ æ ß` plus the comment that claims completeness.
 with wiring    🐞 split `history.unknownDate`, delete `history.outcome.unknown` — net zero keys.
 ```
+
+### 45.7 ⚠ CONCURRENT WORK IN THE META REPO — classified `unrelated-owner-work`, untouched
+
+```text
+MEASURED after committing 544923f: `git status --porcelain` in /home/agile/meta shows
+    M projects/framenest/11/00-framenest-companion-unread-inbox-and-editor-suggestion-ux/00_notes.md
+    +35 lines, mtime 16:22, a DIFFERENT PROJECT.
+⇒ CLASSIFICATION: `unrelated-owner-work`. Another session is working on FrameNest in the same Meta
+  repository. ⛔ NOT TOUCHED, not staged, not reverted, not mentioned in my commit. `git show --stat`
+  confirms 544923f contains exactly my four libretiles files and nothing else, and
+  `git status --porcelain -- projects/libretiles/` is empty.
+⭐ AND THE REASON IT STAYED OUT OF MY COMMIT IS A CORRECTION I MADE EARLIER TODAY. Commit 66c5784
+  untracked `09_planning_00.md` after I swept it in by staging a DIRECTORY, and its own message says
+  "staging specific paths is the rule for me too, not only for a Worker". ⇒ Every commit since has
+  named its paths individually, and that is exactly what kept a concurrent session's in-flight notes
+  out of a Libre Tiles archival commit.
+⚠ FOR A SUCCESSOR'S STAGE 1: expect the Meta repo to show unrelated dirty paths under other projects.
+  Classify and leave. Only `projects/libretiles/` porcelain is evidence about this campaign.
+```
