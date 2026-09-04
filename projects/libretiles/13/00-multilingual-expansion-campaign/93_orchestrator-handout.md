@@ -9,6 +9,13 @@ Written 2026-09-04 by the Orchestrator that executed this whole from `ad4ce03` t
 coherent boundary: porcelain empty, public readback equal, no Worker in flight, one E3 acceptance
 handed to the Cooperator and outstanding.
 
+⭐ **Revised the same day, twice, by the session that held that boundary.** (1) The E3 acceptance ran
+and returned `acceptance-PASS` with zero corrections, so C1a is ACCEPTED and C1b is unblocked with a
+nineteen-item scope — sections 3, 3b, 6 and `00_notes.md` §32. (2) The UI-localization product decision
+was put to the Cooperator and ANSWERED — option A, no flags — and he assigned the translations to a
+fresh Orchestrator, which is section 5 and `00_notes.md` §33. **The tree is still clean at `529e691`;
+nothing of that objective is implemented.**
+
 ---
 
 ## 0. Read exactly these four things, in this order, and nothing else first
@@ -185,23 +192,25 @@ why           AP.md:1395-1405. The implementing Worker was a subagent of the pre
 session       06 is RESERVED for it. Your first fresh session is 07.
 ```
 
-**What you must do about it, in order:**
+**What the previous Orchestrator had to do about it, in order — ALL FOUR NOW DISCHARGED:**
 
 ```text
 1  ASK the Cooperator whether the acceptance ran and what it returned. Do not assume, and do not
-   proceed as though it passed.
+   proceed as though it passed.                                          ⇒ DONE. It ran.
 2  If it PASSED: archive its report as ./06_report_00.md, record the verdict in ./00_notes.md, and
-   only then treat C1a as accepted.
+   only then treat C1a as accepted.                                      ⇒ DONE. §32, §32.1, §32.2.
 3  If it FAILED or found something: ONE smallest coherent correction, and ⛔ the corrector may not
    self-certify it (AP.md:393-420). Scoped re-acceptance is valid only if the correction changes none
    of a semantic owner, authority/routing/convergence, an exact structural field, validator
    semantics, runtime behaviour, an independence assumption, or a security boundary.
+                                                                         ⇒ NOT NEEDED. Zero corrections.
 4  If it never ran: ⛔ do NOT substitute your own subagent for it and do NOT proceed to C1b as though
-   the foundation were accepted. Say so plainly and ask him to route it.
+   the foundation were accepted.                                         ⇒ NOT NEEDED.
 ```
 
-⚠ **You may work on unrelated things while it is outstanding** — the UI localization objective in
-section 5 does not depend on it. **You may not build C1b on top of an unaccepted C1a.**
+⭐ **C1a IS ACCEPTED. C1b is unblocked (section 6). Its two disclosures survive acceptance and are
+live constraints, not history: R1 is NOT certified for pixels, and version skew is USER-SILENT so the
+frontend and backend of `529e691` must deploy together.** `00_notes.md` §32.1.
 
 ---
 
@@ -312,6 +321,10 @@ a success — and the Cooperator is presenting this at a job interview.
 ⇒ **Twelve languages are PLAYABLE. Four have a UI.** Close that gap, punchily, for the eight that
 ship without one — and then for every language a later batch adds.
 
+⭐ **The material product decision is ALREADY TAKEN (§5.2: option A, no flags) and the Cooperator
+assigned the translations to a FRESH Orchestrator — you. Nothing is implemented; the tree is clean at
+`529e691`.**
+
 ### 5.1 What exists, measured at `529e691`
 
 ```text
@@ -335,78 +348,94 @@ frontend/src/components/settings/GameLanguagePanel.tsx:12-24
                                        backend variants appear in the picker with no UI edit at all.
 ```
 
-### 5.2 ⛔ THE HARD CONSTRAINT, and it is the one that decides the whole objective
+### 5.2 ⭐ THE DECISION IS TAKEN — OPTION A, NO FLAGS. Do not re-ask it.
 
-**Standing condition 5 forbids model-authored word lists. It does NOT forbid model-authored UI
-strings — but you must not pretend the distinction is comfortable.**
-
-```text
-A LEXICON is game DATA. A wrong word is a wrong RULE, silently, forever. Hence: not one word from a
-    language model, ever.
-A UI STRING is presentation. A wrong string is visible, reportable, and fixable by anyone who reads
-    that language. It is not a rule.
-```
-
-⛔ **But the Cooperator is presenting this at a job interview, and 300 keys × 8 languages = 2 400
-strings that no native speaker has read is a real quality risk, not a theoretical one.** So this is a
-MATERIAL PRODUCT DECISION and it is HIS, not yours. **Ask him before you generate a single catalog.**
-
-Put these three options to him, with the trade-off stated, and take the answer:
+The previous handout priced this in three options and named the choice as the Cooperator's. **It was
+put to him and he answered.** Full record in `00_notes.md` §33.
 
 ```text
-A  MODEL-AUTHORED, MARKED. Generate all eight catalogs. Every catalog carries a header declaring it
-   machine-authored and unreviewed, and the README says so. Fast, complete, honest about its quality.
-   ⚠ Risk: eight languages of unreviewed copy in a portfolio piece.
-B  SPINE ONLY. Localize the ~40 keys a player actually sees in a game — board, rack, controls, score,
-   turn, errors — and let everything else fall back to English per key.
-   ⚠ Needs a per-key fallback that does not exist yet: today parity is TEST-ENFORCED across the whole
-     key set (`i18n.test.ts`), so a partial catalog FAILS the suite. That test is the real obstacle.
-   ⚠ And it is a product change: mixed-language UI.
-C  VARIANT NAMES AND FLAGS ONLY. Do not add a locale. Add the eight `settings.gameVariant.*` keys to
-   the four EXISTING catalogs, plus eight flags, so a Slovak player sees "Afrikánčina" instead of
-   "Afrikaans". ⭐ SMALLEST, ships today, zero new unreviewed prose, and it is the change a user
-   actually notices in the picker.
+SCOPE   A — eight FULL catalogs, ~300 keys each, every one carrying a header declaring it
+        machine-authored and unreviewed. Not C, not B. He accepted the stated risk with the interview
+        named: eight languages of unreviewed copy in the piece he is presenting.
+FLAGS   NONE — names only. `GameLanguagePanel.tsx:51` already OMITS `flagSrc` for a slug with no
+        entry, so the picker is correct without them and takes real PNGs later with no code change.
+        ⛔ He declined hand-drawn national flags. Do not generate any.
 ```
 
-⚠ **My recommendation, and it is a recommendation only: C first, then ask again about A.** C is
-punchy, it is complete in itself, it needs eight short nouns per existing locale rather than 2 400
-strings, and it makes the twelve-language achievement VISIBLE in the UI — which is what an interview
-audience will look at. A is a much bigger commitment to unreviewed text and should be a separate,
-deliberate decision.
+⚠ **Standing condition 5 still stands and still means what it said.** A UI string is presentation and
+may be model-authored; **a lexicon is game DATA and may not be, ever.** Option A does not soften that
+by one word. The header on every catalog is what keeps the distinction visible to a reader.
 
-### 5.3 What C costs, measured so you can price it before you ask
+⛔ **And the Cooperator ruled on WHO does it: `PREKLADY MA ROBIT FRESH ORCHESTRATOR`.** The previous
+session began slice 1 after reading `Pokracuj` as authority to implement, and was corrected. It
+reverted to `529e691` — porcelain empty, verified — and wrote §33 instead. **That is why you are
+reading this: the objective is YOURS, unimplemented, with the reconnaissance already paid for.**
+
+### 5.3 ⭐ The free win that decides your slicing, measured
 
 ```text
-ADD  frontend/src/lib/i18n/messages.{en,sk,cs,pl}.ts
-       8 keys each: settings.gameVariant.{afrikaans,italian,dutch,german,portuguese,danish,swedish,icelandic}
-       ⇒ 32 short nouns total. Each is a language NAME in four languages — the kind of string a
-         glossary can pin and a reader can check at a glance.
-ADD  frontend/src/components/settings/GameLanguagePanel.tsx:12-24
-       8 entries in VARIANT_NAME_KEYS, and 8 in VARIANT_FLAG_SRC if flags are added
-ADD  frontend/public/  af.png it.png nl.png de.png pt.png da.png sv.png is.png     (optional)
-EDIT frontend/src/lib/i18n/i18n.test.ts:956-961  INSTALLED_VARIANTS -> twelve slugs
-     frontend/src/lib/i18n/i18n.test.ts:983      ownName -> twelve variants x four locales
-     ⚠ THAT ownName MAP IS THE REAL WORK: 48 cells, and it is the test that will tell you whether
-       your Slovak, Czech and Polish language names are right.
-ADD  frontend/src/lib/i18n/GLOSSARY.md — a section pinning the twelve language names per locale
-GATES the frontend four only. ⛔ This touches NO backend file, so a Django suite run over it is the
-      D-03 defect in AP_DEFECTS.md. Run typecheck, vitest, lint, build. Say so in the prompt.
+messages.{sk,cs,pl}.ts are `Record<TextKey, string>` plus `{ [K in FnKey]: (typeof enFn)[K] }`.
+⇒ A NEW CATALOG FILE TYPECHECKS AGAINST `messages.en.ts` ALONE. `tsc --noEmit` catches a missing key,
+  an extra key, and a wrong interpolation parameter — with the locale NOT yet in LOCALES, and without
+  `i18n.test.ts` running at all.
+⇒ Eight catalogs are eight INDEPENDENT Workers, each gated on typecheck, before one wiring file is
+  touched. The parity test the previous handout called the obstacle is not the gate on the catalogs;
+  it is the gate on the WIRING, which is one small slice after them.
 ```
 
-### 5.4 If he chooses A, the two things that will bite
+Wiring, when the catalogs are green — each of these is a type error if half-done, so it cannot
+half-land: `locales.ts:1` LOCALES 4→12 · `translate.ts:7-18` TEXT and FN, 8 entries each ·
+`index.ts:24` 8 plural re-exports. ⛔ `translate.ts:20-40`'s single cast stays untouched; its comment
+explains why it is safe, and the mapped type above is the reason.
+
+### 5.4 ⭐ The plural rules are DERIVED AND VERIFIED. Take them; do not re-guess them.
+
+`Intl.PluralRules` IS CLDR, and it is already in the test runtime — so the rule can be pinned
+EXECUTABLY instead of by citation, and a CLDR change becomes a red test instead of a wrong string.
+Measured on `node v26.4.0 / ICU 78.3`; full table and method in `00_notes.md` §33.2.
 
 ```text
-1  `i18n.test.ts` enforces EXACT key-set and interpolation parity across LOCALES. Adding a locale
-   means 300 keys with matching placeholders or the suite goes red — which is the machinery working.
-   ⇒ Do NOT weaken that test to land a catalog. It is the only thing standing between you and eight
-     silently incomplete languages.
-2  EVERY new locale needs a SOURCED plural function. `GLOSSARY.md:51-53` records that pluralSk is
-   wrong for Polish at 22, 23, 24 and 122 — which is exactly why pluralPl exists as a separate
-   helper. ⛔ Do not fold two plural rules together because they look similar; that is the same
-   mistake as copying a tile distribution from a neighbour language.
-   ⇒ Afrikaans, Dutch, German, Italian, Portuguese, Danish, Swedish: one/other. Icelandic: needs
-     checking, it is not a simple one/other language.
+af nl de da sv   one/other, and over integers 0..3000 each is IDENTICAL to `en` — measured, zero
+                 divergences. ⛔ Identical is NOT the same rule: Danish CLDR accepts a fraction as
+                 `one` (da 0.5 → one, en 0.5 → other). The helpers TRUNCATE, which is what makes the
+                 identity real. ⇒ FIVE FUNCTIONS, NOT FIVE ALIASES. `pluralCs = pluralSk` is an alias
+                 only because those two agree over the WHOLE domain, fractions included — which is
+                 the distinction the old §5.4 was reaching for.
+is               ⛔ `i % 10 == 1 && i % 100 != 11`. 21, 31, 101, 121 are `one`; 11 and 111 are
+                 `other`. Diverges from `en` at 269 integers in 0..3000.
+it               THREE categories one/many/other. `many` is integer-reachable at 1 000 000.
+pt               THREE categories, AND ⛔ ZERO IS SINGULAR (CLDR `one: i = 0..1`). "0 ponto".
+                 ⭐ A passed turn and an empty score both display zero, so a copied English rule is
+                 visibly wrong on a real board — not in a corner case.
+⚠ pluralSk's third parameter is NAMED `many` but is CLDR `other` over integers. Every shipped Slovak
+  and Czech string is CORRECT (the slot holds the genitive plural, right for 0 and 5+). Polish is
+  different: pluralPl's third slot really is CLDR `many`. ⇒ A comparison test must declare the
+  slot→category mapping per language. ⛔ Do not fix that parameter NAME in the same slice as eight
+  new languages.
 ```
+
+### 5.5 🐞 Two gaps this objective walks into. Both measured, neither in the old handout.
+
+```text
+1  `lexiconRejectionKey()` switches on collins2019 · slovak · czech · polish only. EIGHT playable
+   variants' lexicons fall through to `game.lexicon.unknown`, so a rejected Danish word cannot name
+   what rejected it. ⇒ A REAL gap that exists TODAY at four locales, independent of adding eight.
+2  `i18n.test.ts:983` `ownName` becomes 144 CELLS if both axes go to twelve, and it asserts each
+   label contains its own variant's name and NO other variant's name in that locale.
+   ⛔ ICELANDIC IS THE TRAP: "Enska" is a substring of "Hollenska" AND of "Svenska". It survives today
+   only because `toContain` is case-sensitive and the cells are capitalised. Luck, not design.
+   ⇒ Do NOT weaken that test to land the matrix. Both naming axes are their own slice, AFTER the
+     catalogs, diagnosed against four locales of known-good data first.
+```
+
+⚠ **Slicing, prompts and Worker count are YOURS.** My recommendation is catalogs first (they
+parallelise and self-verify), wiring second, the two naming axes third — a recommendation only, and
+the 144-cell matrix is exactly what a fresh session should price against `AP_DEFECTS` D-02 rather
+than inherit as a plan.
+
+GATES the frontend only: `npm run typecheck`, `npm run test`, `npm run lint`, `npm run build`.
+      ⛔ This objective touches NO backend file, so running the Django suite over it is D-03. Say so
+      in the prompt.
 
 ---
 
@@ -631,10 +660,12 @@ next-step executability
 RESTORATION CLASSIFICATION: PASS
 ```
 
-Reasoning recommendation for your first substantial prompt: **Medium** for anything in section 5.3 —
-thirty-two nouns and one test map with a named target does not earn High, and `AP.md:740-746` names
-over-routing as an anti-pattern. **High** for C1b, with the named risk already stated: it changes what
-the MODEL sees, and it fails SILENTLY. **Extra High is not warranted anywhere.**
+Reasoning recommendation for your first substantial prompt: **Medium** for one catalog under section
+5.3 — 300 keys against a type that checks them for you, with the plural rule already derived in 5.4,
+does not earn High, and `AP.md:740-746` names over-routing as an anti-pattern. **Medium** for the
+wiring. **High** for the 144-cell `ownName` matrix in 5.5, where the failure is a substring collision
+across twelve languages, and **High** for C1b, with its named risk already stated: it changes what the
+MODEL sees, and it fails SILENTLY. **Extra High is not warranted anywhere.**
 
 ## 10. The one-paragraph version
 
@@ -644,10 +675,14 @@ taxonomy of eight shapes is in section 4.1, and two of the eight were found by a
 than by design. Four languages are blocked and each names its exact missing thing, which is the honest
 form of this campaign rather than a shortfall. The one E3 slice, the wire format, landed at `529e691`
 on its third attempt after two Workers correctly refused a defective grant, and its independent
-acceptance is the single outstanding obligation and the one thing you can neither execute nor delegate
-— section 3. Your next objective is the Cooperator's own: twelve languages play and four have a UI, so
-close that gap punchily, starting with the material product decision in section 5.2 that is his to make
-and not yours. Before you write your first prompt, read `AP_DEFECTS.md`: twelve measured defects of the
+acceptance has now returned `acceptance-PASS` with zero corrections — so C1a is accepted, C1b is
+unblocked with a nineteen-item scope, and two disclosures ride along that are constraints rather than
+history: no pixel certification, and a user-silent version skew that forces a joint deploy (section 3).
+Your next objective is the Cooperator's own: twelve languages play and four have a UI, so close that
+gap punchily — and the material product decision that section 5.2 used to reserve for him is TAKEN
+(option A, eight full machine-authored catalogs, no flags), with the translations assigned to you
+because he said so in as many words. Nothing of it is implemented, the plural rules are already derived
+and verified for all eight, and each catalog typechecks alone — so eight Workers can run in parallel. Before you write your first prompt, read `AP_DEFECTS.md`: twelve measured defects of the
 protocol itself, including the one that matters most here — that a Worker's job includes critiquing
 your prompt and your approach, and that twelve of the previous Orchestrator's own defects were caught
 that way and not one by its own review.

@@ -2075,3 +2075,117 @@ BLOCKED, recorded, not hidden:
        norwegian no explicit licence grant for the word list
        hungarian size (~301 M forms) — decision D taken
 ```
+
+## 33. ⭐ The UI-localization decision is TAKEN, and it is OPTION A
+
+The previous handout priced the objective in three options and named the choice as the Cooperator's,
+not the Orchestrator's. I put all three to him with the measured cost of each. He answered:
+
+```text
+SCOPE   A — eight FULL catalogs, ~300 keys each, every one carrying a header declaring it
+        machine-authored and unreviewed. Not C, not B. He accepted the stated risk: eight
+        languages of unreviewed copy in a piece he is presenting at a job interview.
+FLAGS   NONE for now — names only. `GameLanguagePanel.tsx:51` already OMITS `flagSrc` when the slug
+        has no entry, so the picker is correct without them and accepts real PNGs later with no code
+        change. I offered to draw the geometric ones (it nl de da sv is are exact geometry at 48×32;
+        ZA is a Y-shape in six colours) and disclosed that PT's armillary sphere would be an
+        approximation. He declined: no hand-drawn national flags in this product.
+```
+
+⛔ **And then he corrected my execution, not my analysis: `PREKLADY MA ROBIT FRESH ORCHESTRATOR`.**
+I had taken `Pokracuj` as authority to implement, and had begun slice 1 in this session. That was
+wrong on the protocol and wrong on the economics — this session's context already carries the whole
+C1a arc, and 2 400 strings on top of it is AP_DEFECTS D-02 and D-09 self-inflicted. I reverted the
+working tree to `529e691` (porcelain empty, verified) and wrote this section instead. **Nothing of the
+objective is implemented. All of the reconnaissance below is real and saves the fresh Orchestrator a
+full measurement pass.**
+
+### 33.1 The catalog architecture, measured at `529e691`
+
+```text
+messages.en.ts       280 text keys + 20 fn keys = 300. The 280 are `enText`; the 20 are `enFn`.
+messages.{sk,cs,pl}  `Record<TextKey, string>` and `{ [K in FnKey]: (typeof enFn)[K] }`
+                     ⭐ THAT MAPPED TYPE IS THE FREE WIN, and it changes how to slice this: a new
+                     catalog file typechecks its OWN key set and its OWN per-key parameter shapes
+                     against `messages.en.ts` ALONE. `tsc --noEmit` on the file catches a missing
+                     key, an extra key, and a wrong interpolation parameter — WITHOUT the locale
+                     being added to LOCALES, and without `i18n.test.ts` running.
+                     ⇒ Eight catalogs can be written and verified in PARALLEL by eight Workers, each
+                       one gated on typecheck, before a single wiring file is touched.
+translate.ts:7-18    TEXT and FN, both `Record<Locale, …>` — 8 entries each to add. Adding a locale
+                     to LOCALES without both entries is a type error, so the wiring cannot half-land.
+translate.ts:20-40   `tf`'s one confined cast, with a comment explaining why the variance is safe.
+                     ⛔ Do not touch it; the reason it is safe is the mapped type above.
+index.ts:24          re-exports pluralCs pluralEn pluralPl pluralSk — 8 more to add.
+locales.ts:1         LOCALES, and `detectBrowserLocale`/`isLocale` follow it with no edit needed.
+```
+
+### 33.2 ⭐ The plural rules, DERIVED AND VERIFIED, not guessed
+
+The handout said each new locale needs a sourced plural function and warned that Icelandic is not a
+simple one/other language. Both are right, and there is a better source than a citation: **ICU's CLDR
+data is already in the test runtime.** `Intl.PluralRules` is CLDR, so the rule can be pinned
+EXECUTABLY — compare each helper against `new Intl.PluralRules(lang).select(n)` across the whole
+integer domain the helper can observe. A CLDR change then shows up as a red test instead of as a
+silently wrong string. Measured on `node v26.4.0 / ICU 78.3`:
+
+```text
+af nl de da sv   one/other, and over integers 0..3000 each is IDENTICAL to `en` — measured, all
+                 four, zero divergences. ⛔ IDENTICAL IS NOT THE SAME AS THE SAME RULE: Danish CLDR
+                 is `n = 1 or t != 0 and i = 0,1`, so da 0.5 → one while en/nl/de/sv/af 0.5 → other.
+                 The existing helpers TRUNCATE, which is what makes the fraction unreachable and the
+                 identity real. ⇒ Five separate functions, not five aliases. `pluralCs = pluralSk` is
+                 an alias only because those two agree over the WHOLE domain, fractions included.
+is               ⛔ NOT the Nordic one/other shape. `i % 10 == 1 && i % 100 != 11`. 21, 31, 101, 121
+                 are `one`; 11 and 111 are `other`. Diverges from `en` at 269 of the integers in
+                 0..3000. The handout's suspicion was correct.
+it               THREE categories: one / many / other. `many` is reachable by an integer —
+                 1 000 000 and 2 000 000 select it (`i % 1000000 == 0 && i != 0`).
+pt               THREE categories, AND ⛔ ZERO IS SINGULAR: CLDR `one: i = 0..1`, so 0 → one.
+                 "0 ponto", not "0 pontos". ⭐ THIS IS THE ONE THAT WOULD HAVE SHIPPED WRONG: a rack
+                 that scores nothing and a passed turn both display zero, so a copied English rule
+                 is visibly wrong on a real board, not in a corner case.
+```
+
+⚠ **A finding about the THREE HELPERS THAT ALREADY SHIP, and it is a naming defect, not a behaviour
+defect.** `pluralSk`'s third parameter is called `many`, but over the integer domain CLDR Slovak has
+no `many` at all — 0 and 5+ are `other` (`many` is Slovak's fraction category). The Slovak and Czech
+catalogs fill that slot with the genitive plural, which is the linguistically correct form for 0 and
+5+, so **every shipped string is right and nothing needs re-translating.** Polish is different again:
+`pluralPl`'s third slot really is CLDR `many` (pl 0 → many, verified). ⇒ A CLDR-comparison test must
+declare the slot→category mapping per language rather than assume the parameter names are CLDR
+category names. Do not "fix" the Slovak parameter name and the catalogs in the same slice as eight new
+languages.
+
+### 33.3 🐞 Two gaps the objective walks into, both measured, neither in the handout
+
+```text
+1  messages.en.ts `lexiconRejectionKey()` switches on collins2019 · slovak · czech · polish and
+   returns `game.lexicon.unknown` for anything else. EIGHT playable variants ship lexicons that all
+   fall through to "unknown", so a rejected Danish word cannot name the lexicon that rejected it.
+   ⇒ This is a REAL product gap that exists TODAY at four locales, independent of adding eight more.
+     Price it as its own slice; it is 8 keys × 12 locales plus 8 switch arms, and it is the kind of
+     string a reader can check at a glance.
+2  i18n.test.ts:983 `ownName` is Record<INSTALLED_VARIANTS, Record<LOCALES, string>>. Option A takes
+   LOCALES to twelve; naming the eight new variants takes INSTALLED_VARIANTS to twelve.
+   ⇒ 144 CELLS, and the test asserts each label CONTAINS its variant's own name and does NOT contain
+     any OTHER variant's name in that locale — 12 × 12 × 11 substring assertions.
+   ⛔ THE SUBSTRING CONSTRAINT IS A REAL TRAP AND ICELANDIC IS WHERE IT BITES: "Enska" (English) is a
+     substring of "Hollenska" (Dutch) and of "Svenska" (Swedish). It survives today ONLY because
+     `toContain` is case-sensitive and the cells are capitalised. That is luck, not design.
+   ⇒ Do NOT weaken that test to land the matrix. Split the naming axis into its own slice AFTER the
+     eight catalogs, so a collision is diagnosed against four locales of known-good data first.
+```
+
+### 33.4 What the fresh Orchestrator is handed, and what it must decide for itself
+
+```text
+GIVEN   the two decisions above (A, no flags), 33.1's architecture, 33.2's verified plural data,
+        33.3's two gaps. All measured at `529e691` with the tree clean.
+ITS OWN slicing, prompts, Worker count, and whether the eight `settings.gameVariant.*` keys and the
+        `lexiconRejectionKey` arms belong in this objective at all. I recommend the catalogs first
+        (they typecheck in isolation and parallelise), the wiring second, and both naming axes third
+        — but that is a recommendation, and the ownName matrix is exactly the kind of thing a fresh
+        session should price against AP_DEFECTS D-02 rather than inherit as a plan.
+⛔ NOT   one translated string from this session. I wrote none, and the revert is verified.
+```
