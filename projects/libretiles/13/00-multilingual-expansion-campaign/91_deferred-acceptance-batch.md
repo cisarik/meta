@@ -454,3 +454,34 @@ B10-4 ⛔ KNOWN LIMITS: `MIGLIORE` (8 chars) is the single highest overflow risk
       kept CORRECT rather than shortened to something that reads like untranslated English. And
       `header.logout` is `Esci` — FOUR characters, shorter than English, so the game header actually
       gains room in Italian.
+
+## B11 · catalog 5 of 8 — the Dutch interface catalog — `57596e8`
+
+```text
+slice        MEC-UIL-C5-nl
+commit       57596e8  feat(i18n) the Dutch interface catalog
+             pushed; public readback equals local HEAD at 57596e8
+what changed ONE new file, messages.nl.ts — 296 text keys and 20 function keys of Dutch.
+             ⛔ DELIBERATELY ORPHANED. FIVE of eight catalogs exist: German, European Portuguese,
+             Icelandic, Italian, Dutch. Three remain: Danish, Swedish, Afrikaans.
+```
+
+```text
+B11-1 Confirm the header is byte-identical across all five:
+      `diff <(head -7 messages.nl.ts) <(head -7 messages.de.ts)` prints nothing.
+B11-2 ⭐ THE ONE THING WORTH KNOWING ABOUT THIS CATALOG, and it changed a decision of mine.
+      Two of the four places where the code fixes word order BIT Dutch — the same two that bit German,
+      because both languages put the verb last. I had already written down that three languages
+      reporting "no problem" was enough to conclude the code needs no change. IT WAS NOT: those three
+      were Portuguese, Icelandic and Italian, none of which is verb-final. The sample agreed because it
+      shared the property the question was about.
+      ⇒ Nothing to test. Recorded because it is the kind of wrong inference that is invisible when it
+        succeeds.
+B11-3 ⚠ Terms the writer named as its least certain: `letterbak` for the rack (a native may prefer
+      `letterbakje`), `tegel` for the tile (Dutch players often say `steen`, which was rejected
+      deliberately because it is the exact cognate of German's frozen `Stein`), and `joker` for the
+      blank (`blanco` may be the more official Dutch Scrabble term).
+B11-4 ⛔ KNOWN LIMITS: `board.reset` is `Herstel`, an imperative inside an otherwise fully infinitive
+      control set — forced by the code, which composes `[action][noun]` in a fixed order that Dutch
+      infinitives cannot satisfy. Commented in the file. And Dutch compounds make the board's zoom-hint
+      pill the tightest surface again: 18 + 20 + 9 characters against English's 13 + 11 + 4.

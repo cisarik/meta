@@ -3831,3 +3831,146 @@ MEASURED after committing 544923f: `git status --porcelain` in /home/agile/meta 
 ⚠ FOR A SUCCESSOR'S STAGE 1: expect the Meta repo to show unrelated dirty paths under other projects.
   Classify and leave. Only `projects/libretiles/` porcelain is evidence about this campaign.
 ```
+
+## 46. ⭐ CATALOG 5 OF 8 LANDED — Dutch, `57596e8` — and it INVERTED a conclusion I was about to draw
+
+```text
+prompt   ./14_implementation_00.md   662 lines · session 14 · exchange 01 · E2 · Medium reasoning
+report   ./14_report_00.md           status PASS · +562/−0 · pushed · readback equal · porcelain clean
+commit   57596e8  feat(i18n) the Dutch interface catalog
+⇒ FIVE OF EIGHT SHIP. de · pt · is · it · nl. Three remain: da · sv · af.
+```
+
+⭐ **Seven MEASURED and seven LEADs — the strongest of the five. And FIVE of the seven MEASURED are
+counting errors in claims I made WITHOUT COUNTING.** That is R-H failing five times in one prompt,
+after I have cited R-H repeatedly.
+
+### 46.1 ⭐ THE FINDING THAT MATTERS MOST — it inverts the call-site conclusion
+
+```text
+⛔ TWO OF THE FOUR FIXED CALL SITES BIT DUTCH, and they are THE SAME TWO THAT BIT GERMAN, for the
+   SAME reason: both languages put the verb or participle LAST, and both sites fix a span in the middle
+   or fix an `[action][noun]` order.
+     `game.aiPlayedFor.before` + `.points`   Dutch perfect ends with the participle ⇒ cannot be
+        expressed. Answer: the simple past, German's answer, reached independently. ⭐ And it costs Dutch
+        LESS — `scoorde` is idiomatic written Dutch, whereas German's `spielte` is a register downgrade.
+     `board.reset` + `board.zoomNoun`   Dutch puts the object BEFORE an infinitive ⇒ cannot be
+        expressed. ⭐ Dutch found a BETTER answer than German's loanword: the IMPERATIVE takes its
+        object after it, so "Herstel zoom" is correct Dutch in exactly the order the spans impose.
+⇒ ⛔ AND HERE IS WHAT I WAS ABOUT TO GET WRONG. §45.5 recorded "three of four languages now report
+  all-harmless … that is now enough evidence for the WIRING SLICE to conclude the call sites need no
+  change." THAT INFERENCE WAS INVALID. Three Romance/Insular languages reporting harmless is not
+  evidence the sites are safe — it is evidence they are safe FOR LANGUAGES THAT DO NOT PUT THE VERB
+  LAST. The sample was structurally biased and I did not notice.
+⇒ REVISED CONCLUSION, and it now has a mechanism rather than a vote count: the two composition sites
+  constrain VERB-FINAL languages specifically. de and nl both hit them; pt, is and it do not. ⛔ Danish
+  and Swedish are V2 with a verb-final subordinate order, so they may hit them too — the da and sv
+  prompts must ask, and af almost certainly hits them (Afrikaans is strongly verb-final).
+⭐ THE LESSON IS NOT ABOUT SCRABBLE. A count of independent reports is not evidence when the reporters
+  share a structural property the question is about. I was aggregating four data points without asking
+  what they had in common. Recorded as R-O: BEFORE TREATING N AGREEING REPORTS AS EVIDENCE, NAME THE
+  PROPERTY THEY SHARE AND ASK WHETHER THE QUESTION IS ABOUT IT.
+```
+
+### 46.2 🐞 FIVE COUNTING ERRORS OF MINE, all verified, all in claims I asserted without counting
+
+```text
+M1 🐞 `overlay.bestBadge` LENGTHS. I wrote "3, 5, 8 and 8". ✔ MEASURED from the committed files:
+   de `TOP` 3 · is `BESTI` 5 · pt `MELHOR` 6 · it `MIGLIORE` 8. ⇒ `{3,5,6,8}`. I INVENTED a duplicate
+   8 and OMITTED 6. And the ruling that follows it is calibrated against a distribution with a mode at
+   8 that does not exist. (en is 4; nl shipped 5.)
+M2 🐞 ZERO COLLISIONS IS THE RULE, NOT THE EXCEPTION, and GERMAN was first — not Italian.
+   ✔ MEASURED across all NINE shipped catalogs: de 0 · pt 0 · is 2 · it 0 · nl 0 · sk 0 · cs 0 · pl 0 ·
+   en 0. ⇒ ICELANDIC IS THE SINGLE OUTLIER IN THE WHOLE CAMPAIGN. My "Italian was the first" and
+   "Dutch is the second" were both wrong, and my framing sold a zero result as remarkable when it is
+   ordinary.
+M3 🐞 THE `board.pts` DIVERGENCE PRECEDENT IS ONE, NOT TWO. ✔ MEASURED: de `Pkt.`/`Pkt.` same ·
+   is `stig`/`stig` same · pt `PTS`/`pts` — THE SAME ABBREVIATION IN DIFFERENT CASE, and `board.pts`
+   renders under a CSS `uppercase` class while the overlay does not, so pt's two values render
+   IDENTICALLY · it `pt.`/`punti` genuinely two words. ⇒ Italian was the only real precedent; Dutch
+   (`ptn`/`punten`) is the second. My ruling stands; the evidence I cited for it was half as strong.
+M4 🐞 ALL FOUR PREDECESSORS KEPT `chat`, not three. ✔ MEASURED: German has `Chat-Nachricht`,
+   `Partie-Chat`, `Chat nicht verfügbar`. My sentence put "all four" beside "three" and implied German
+   diverged. It did not.
+M5 🐞 I OMITTED THE ONLY GERMANIC COMPARATOR from the `header.logout` list. ✔ MEASURED: German
+   `Abmelden` = 8, and it is the closest data point for nl (9), da and sv. I listed en 6, pt-PT 15,
+   is 7, it 4 — and folded ENGLISH, the source, into a list described as per-catalog risk.
+⇒ ALL FIVE ARE THE SAME FAILURE: I aggregated from memory of previous reports instead of grepping the
+  committed files, which take one command each. ⛔ R-H says reconcile a count against the artifact BY
+  CONSTRUCTION before repeating it, and the artifacts were sitting in the repository the whole time.
+⇒ CORRECTED for da · sv · af, and the mechanism changes too: EVERY cross-catalog claim in the remaining
+  prompts is now generated by a command I run in the session that writes the prompt, not recalled.
+```
+
+### 46.3 ⛔ AND ONE OF ITS OWN MEASURED CLAIMS IS WRONG — the first Worker claim I have corrected
+
+```text
+M6 says the ligature-grep problem could not be solved by the comment exclusion: "note that the
+`^[^/]*` exclusion would NOT have saved it, because the ligature is inside prose rather than at a line
+start."
+✔ MEASURED BY ME:  grep -c 'ĳ\|Ĳ' messages.nl.ts            = 1
+                   grep -cE '^[^/]*(ĳ|Ĳ)' messages.nl.ts     = 0
+⇒ THE EXCLUSION WORKS. It keys on whether the LINE starts with `/`, not on where in the line the token
+  sits — and that line is `// ligature ĳ / Ĳ never appears: …`, which starts with `//`.
+⇒ The Worker conflated "inside prose" with "not at line start". ⛔ Its CONCLUSION survives on its other
+  ground — the statement form is cheaper and demonstrably worked — but the REASON is wrong, and the
+  difference is operational: a ligature grep WITH the exclusion would be safe, so the af prompt may use
+  one if it wants.
+⭐ RECORDED AS SUCH BECAUSE THE DISCIPLINE RUNS BOTH WAYS. Thirty-seven findings have come at me from
+  five Workers and I have verified every one; this is the first that did not hold. A campaign where the
+  Orchestrator never corrects a Worker is not a campaign with infallible Workers — it is one with an
+  Orchestrator that has stopped checking.
+```
+
+### 46.4 The LEADs, and two change the remaining three prompts materially
+
+```text
+⭐ L1 TAKEN AND IT RE-RANKS THE RISK. Afrikaans and Dutch are the CLOSEST PAIR IN THE SET — closer than
+   de/nl, which this prompt treated as the campaign's named risk. And `messages.nl.ts` is now required
+   reading for the af author. It names six concrete divergences a non-speaker cannot see:
+     je/jou/jouw vs jy/jou/jou · single negation vs the obligatory `nie … nie` bracket · finite verb
+     endings vs the invariant Afrikaans verb · `ij` vs `y` · `-lijk` vs `-lik` · `z-` vs `s-`
+   ⇒ The af prompt gets a mitigation section at least as strong as this one's 5.3, naming Dutch as the
+     trap. ⭐ AND THE ORDER ALREADY HELPS: af is last, five catalogs away from nl, which is the
+     furthest the plan could have put it. The plan's sequencing was right for a reason it did not state.
+⭐ L2 TAKEN. The two-slot `i === 1` shape with zero integer divergence from English is shared by
+   nl · af · da · sv — four of eight. ⇒ Moved to [INVARIANT], with only the per-language reason the
+   helper exists separately left variant. AND the da prompt carries `plural.ts`'s own Danish note
+   explicitly: CLDR da selects `one` for 0.5, which is the single place the four genuinely differ and
+   the reason `pluralDa` is not an alias.
+⭐ L3 TAKEN. Translate-vs-keep is often UNOBSERVABLE for Germanic: Dutch `model` → `model`, `chat` →
+   `chat`, so the decision at all six sites produces the identical string either way. ⇒ The instruction
+   now asks for the DECISION plus WHETHER IT IS OBSERVABLE IN THE STRING. Otherwise a Worker either
+   invents a distinction or looks as if it skipped the step. Live for da and sv.
+⭐ L4 TAKEN. The progress-state pattern is language-independent and I had left it to be rediscovered:
+   nine or ten `-ing…` keys, one of which (`header.loggingOut`) sits in the nowrap header cluster. The
+   five predecessors solved it five different ways, silently. ⇒ The constraint — A NOWRAP CONTROL'S SWAP
+   PARTNER MUST NOT BE MUCH LONGER THAN THE CONTROL — moves into the shared surfaces section.
+⭐ L5 TAKEN. `overlay.best` / `overlay.bestBadge` gets the same MAY-DIVERGE ruling `board.pts` got.
+⚠ L6 DECLINED, with reasons. It proposes trimming the commit body because it duplicates the report.
+   ⛔ The duplication is deliberate: `git log` is the only record a reader without Meta access ever
+   sees, and this campaign's evidence is permanently non-independent, so a self-describing commit is the
+   only durable artifact. I will trim the two items that are pure analysis and keep the decisions.
+⭐ L7 TAKEN, and it is a genuinely good catch. The Next.js doc I MANDATE reading contains
+   `"cart": "Toevoegen aan Winkelwagen"` — a title-cased Dutch common noun, exactly the defect this
+   prompt's 5.3 exists to prevent, inside a file I require the Worker to read BEFORE writing code.
+   ⇒ The af prompt (Afrikaans has the same rule) gets one sentence defusing it. ⛔ Third-party doc, out
+     of scope to change, and treating it as DATA rather than instruction is exactly right.
+```
+
+### 46.5 The queue
+
+```text
+next    catalog 6 of 8: DANISH, session 15, baseline 57596e8. Medium reasoning.
+        ⭐ CARRIES: L2's invariant plural framing plus `plural.ts`'s Danish 0.5 note · the corrected
+        badge distribution {3,5,6,8} · the corrected collision framing (Icelandic is the sole outlier) ·
+        German's `Abmelden` 8 in the logout list · the one-real-precedent `board.pts` note · "all four
+        kept chat" · L3's observability question · L4's swap-partner constraint · L5's badge/label
+        ruling · ⛔ AND R-O: the two composition sites constrain VERB-FINAL languages, so Danish must
+        answer for itself rather than inherit "three of four said harmless".
+then    sv (guard against Danish bleed) · af (⛔ the strongest mitigation of the campaign, per L1).
+before wiring  🐞 the `EXPLICIT_SEARCH_FOLDS` slice: `ð þ æ ß` plus the comment claiming completeness.
+with wiring    🐞 split `history.unknownDate`, delete `history.outcome.unknown` — net zero keys.
+⚠ PROMPT LENGTH 434 → 564 → 635 → 629 → 662. Creeping again. The three remaining prompts absorb ten
+  more corrections, so §43.4's threshold is live at catalog 7 and I will re-check it there.
+```
