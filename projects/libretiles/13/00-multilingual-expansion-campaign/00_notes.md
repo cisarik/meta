@@ -3272,3 +3272,143 @@ DO NOT TAKE — and both are mine to refuse:
 cannot be decided before the strings do. ⇒ True, and it is the one wiring input that DEPENDS on the
 eight catalogs rather than preceding them. Carried to the wiring slice as a derived-from-the-catalogs
 item, not a pre-decidable one.
+
+## 42. ⭐ CATALOG 1 OF 8 LANDED — German, `74e9d36`, and the pilot did its job
+
+```text
+prompt   ./10_implementation_00.md   434 lines · session 10 · exchange 01 · E2 · one new file
+report   ./10_report_00.md           status PASS · +404/−0 · pushed · readback equal · porcelain clean
+commit   74e9d36  feat(i18n) the German interface catalog
+⇒ FIRST CATALOG. 296 text + 20 fn keys, `deText` / `deFn`, `pluralDe`, deliberately ORPHANED.
+⛔ NON-INDEPENDENT: a subagent authored it and no independent session has seen it.
+```
+
+⭐ **The pilot earned its position: it returned SEVEN measured defects in the prompt SKELETON, one of
+them a self-contradiction that would have fired in all eight prompts.** That is what a pilot is for,
+and it is the third consecutive exchange in which a Worker found a defect in my prompt that my own
+readiness review did not.
+
+### 42.1 🐞 THE SKELETON DEFECT THAT WOULD HAVE FIRED EIGHT TIMES
+
+```text
+🐞 SECTION 7.1's FORBIDDEN-WEAKENING GREP CAN NEVER RETURN ZERO, BY CONSTRUCTION.
+   My section 7.1 required `grep -nE ' as |...' <file>` to have ZERO hits.
+   My section 3 mandated a byte-exact header whose line 7 reads
+     "// Replace with reviewed copy before presenting this locale as production quality."
+   ✔ VERIFIED MYSELF: that line matches ` as `; lines 8+ have ZERO forbidden constructs.
+⇒ TWO [INVARIANT] SECTIONS CONTRADICTED EACH OTHER, and a literal-minded Worker had exactly two bad
+  options: report a failed audit, or EDIT THE HEADER — which is the one thing section 3 forbids and
+  the Cooperator's own acceptance condition. ⛔ The second option is the dangerous one: it would have
+  silently removed the machine-authored disclosure from a file in a product he is presenting.
+⇒ FIX, applied to prompts 2-8: the audit becomes `tail -n +8 <file> | grep -nE ...` with the reason
+  stated, plus a per-construct `grep -F` list. R-B for the SIXTH time in this campaign, and the first
+  time where the contradiction was between two blocks I had labelled INVARIANT — which is worse,
+  because a labelled-invariant defect is designed to propagate.
+```
+
+### 42.2 My rulings on the other six MEASURED items — all verified, all applied to prompts 2-8
+
+```text
+2  ⭐ SECTION 6 ITEM 4's SCOPE. It required the token `model` verbatim; German `Model` is a fashion
+   model and `Modell` is the correct word, so the Worker wrote `Modellauswahl` and REPORTED the
+   deviation rather than shipping a visible error. ⇒ MY RULING, and it is derived from the rule's
+   PURPOSE rather than its letter: `provider · model · prompt · fallback · token · chat · API` are
+   PRODUCT IDENTIFIERS. They stay English wherever they name a product concept the user will match
+   against a control or a log — and they are TRANSLATED where they occur as ordinary common nouns in
+   prose. The one enText value where this bites is `landing.card.ai.body`; every other occurrence is
+   an identifier. ⇒ The Worker's judgement was right and the rule was too blunt. Prompts 2-8 carry
+   the scoped version.
+3  ✔ TWO SMALL COORDINATE ERRORS IN MY 5.3, both accepted: `PremiumPicker` is under
+   `components/settings/`, and the `max-w-md` I attributed to toasts is the give-up dialog (every
+   toast is `max-w-sm`). Everything else in that section verified as stated.
+4  ⭐ A TIGHTER SURFACE THAN ANY I NAMED. ✔ VERIFIED at `Board.tsx:665-680`: `board.pinchToZoom` +
+   `board.dragToPan` + `board.hide` share ONE `inline-flex max-w-full` pill at `text-[0.72rem]
+   uppercase tracking-[0.18em]`, and English already fills it. ⇒ `board.*` joins `controls.*
+   header.* overlay.* picker.*` in the shortest-idiomatic-term list for all seven remaining prompts.
+   Dutch, Danish, Swedish and Icelandic compounds will hit it as hard as German did.
+5  ⭐ TWO COMPOSITION TRAPS OF A CLASS MY PROMPT DID NOT MODEL. ✔ BOTH VERIFIED:
+     `page.tsx:338`   `{t("game.aiPlayedFor.before")} <span>{score}</span> {t(".points")}`
+                      ⇒ a fixed `[before]{score}[points]` order that German PERFECT TENSE cannot
+                        satisfy, because the participle would have to follow the score span. The
+                        Worker used the simple past instead and said so.
+     `Board.tsx:692-693`  `board.reset` and `board.zoomNoun` as a fixed `[action][noun]` span pair
+                      ⇒ German, Dutch and the Nordic languages all want the object first.
+   ⇒ NEITHER IS A PLURAL PROBLEM, so my "count surface" framing could not catch them. ⭐ Prompts 2-8
+     get a NEW named category: **keys whose CALL SITE constrains word order**, with both sites listed
+     and the instruction to report the construction the language was forced into. This is the most
+     valuable single finding of the pilot: it is a class, not an instance.
+6  ✔ EVERY NUMBER IN MY PROMPT THAT IT COULD CHECK HELD — 296/20, 467/3, eleven-and-zero routes,
+   `tsconfig` include, and the source scan. One refinement accepted: `AC-ONE-LIVE-REGION`'s regex is
+   bare `/aria-live/g`, so it is STRICTER than my wording implied. Prompts 2-8 quote the regex.
+7  ✔ MY SECTION 4 HAD NO SLOT FOR COMMENTS while the worked example is full of them. The Worker added
+   four and could reasonably have read my "key order copied … so a reviewer can diff" as forbidding
+   them. ⇒ Prompts 2-8 say terse in-object comments are EXPECTED, and name where they belong.
+```
+
+### 42.3 ⭐ THE SEVEN LEADS, and LEAD 1 is a campaign-level decision I am taking now
+
+```text
+⭐ LEAD 1, TAKEN AND IT CHANGES THE REMAINING SEVEN PROMPTS. "The eight-term freeze should be
+   campaign-level, not per-Worker." Correct, and the reasoning is exactly right: GLOSSARY D6's
+   "do not harmonize" licences ONE ATTESTED cs/sk divergence — it is not a licence for eight
+   unrelated registers. Nothing in my skeleton stopped catalog 5 from picking a different METAPHOR
+   for `rack` than catalog 1 while both were individually defensible.
+   ⇒ RULING: the eight concepts, their SPLITS and their CONSTRAINTS are campaign-level and every
+     prompt carries them identically. THE WORDS stay per-language. German's table is the worked
+     example each prompt shows, explicitly labelled as an example of the SHAPE and not a source to
+     translate from.
+⭐ LEAD 2, TAKEN. `board` IS TWO CONCEPTS in English — the physical surface and the metonym for a
+   saved game — and Slovak already split it (`hracia plocha` vs `partia`). German split it too
+   (`Spielbrett` vs `Partie`). ⇒ The SPLIT becomes part of the invariant terminology instruction
+   instead of something each Worker rediscovers. Same treatment for `pass` vs `exchange`, which my
+   prompt already flagged, and for `blank` vs `letter`.
+⭐ LEAD 3, TAKEN. The label-style decision ("pick infinitive or imperative and use it for every
+   control") sat in the VARIANT section but is INVARIANT IN INTENT — only the examples are German.
+   As written, prompt 5 could omit it and get a catalog that mixes styles inside one control strip.
+⭐ LEAD 4, TAKEN. `rival` and `opponent` collapse to one word in most target languages — German
+   `Gegner`, Slovak `súper` — and no section named it. ⇒ It becomes the NINTH campaign-level term.
+⭐ LEAD 5, TAKEN as a one-line campaign ruling so it is not decided eight times: `overlay.bestBadge`
+   MAY carry a shorter word than `overlay.best`, because the badge is a `text-[10px] px-1.5` pill
+   beside a truncating word and a score. State the choice in the report.
+⭐ LEAD 6, TAKEN. The terminology table was required in THREE places — report, commit body, file
+   comment — and three copies drift. ⇒ CANONICAL HOME IS THE FILE, because that is what a reviewer
+   opens. The report states it once for me; the commit body no longer has to repeat it.
+⚠ LEAD 7, ACCEPTED WITH A CORRECTION TO MY OWN REASONING RECOMMENDATION. It says Medium understated
+   the decision load — terminology selection and layout triage were the bulk of the work, not
+   "volume and care". Fair, and measurable in the outcome: twelve flagged terminology risks and
+   eight flagged overflow candidates is not mechanical work. ⇒ Medium STAYS for nl · da · sv · af,
+   whose plural shape is identical to German's. HIGH for `is` (a plural rule unlike any shipped
+   helper) and for `it` and `pt` (a third `many` slot that may legitimately duplicate `other`, plus
+   pt's zero-is-singular). `AP.md:1074-1080` wants a NAMED risk for High and those are named.
+```
+
+### 42.4 ⛔ The two questions the Worker escalated, and I am answering BOTH myself
+
+```text
+Q  `Bank` for rack, and `Blanko`/`Blankostein` versus `Joker`.
+⇒ BOTH STAND, and the reason is the project's own recorded principle rather than my taste.
+   `GLOSSARY.md` D6 sources its Slavic terminology from the NATIONAL ASSOCIATIONS — it cites the
+   Polska Federacja Scrabble and Česká asociace Scrabble regulations by URL. The German equivalent is
+   Mattel's German rules, which use `Blankostein`. ⇒ Choosing the national-register term over the
+   casual one FOLLOWS D6; choosing `Joker` because Slovak did would be copying a NEIGHBOUR LANGUAGE's
+   choice, which is the thing D6's "do not harmonize Czech to Slovak" exists to forbid.
+⚠ AND I AM NOT ASKING HIM, deliberately. `AP.md:433-444` names microapproval of a step inside an
+  approved envelope as an anti-pattern, and the autonomy grant says to use the answer I recommend. He
+  does not read German, so the question would cost him a turn and return my own reasoning. ⇒ Recorded
+  as B7-3 for his rendered acceptance AFTER wiring, where he can see the words in place and change
+  eight of them in one file if he wants. That is the cheapest possible reversal and it needs no
+  decision now.
+⛔ WHAT I WOULD ASK HIM ABOUT, if either were true, and neither is: a term that changes GAMEPLAY
+  meaning, or a term that cannot be reversed later in one place. Eight nouns in one file is the
+  definition of reversible.
+```
+
+### 42.5 The remaining seven, with the skeleton corrections applied
+
+```text
+next   catalog 2 of 8: EUROPEAN PORTUGUESE (`pt`), session 11 exchange 01, baseline 74e9d36.
+       Reasoning recommendation HIGH per §42.3 LEAD 7 — zero-is-singular plus a third `many` slot.
+then   is · it · nl · da · sv · af, in that order, one fresh session each.
+⇒ EVERY remaining prompt carries the seven corrections of §42.1-42.2 and the six rulings of §42.3.
+  The skeleton is now measured rather than assumed, which is what the pilot bought.
+```

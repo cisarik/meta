@@ -314,3 +314,48 @@ B6-5  ⛔ KNOWN LIMITS, so you are not surprised:
 > the slice independently accepted — the implementation was a subagent's and the correction was the
 > ORCHESTRATOR's, so the evidence stays non-independent — but the rendered-output rule is satisfied for
 > this slice and that is worth stating plainly.
+
+## B7 · catalog 1 of 8 — the German interface catalog — `74e9d36`
+
+```text
+slice        MEC-UIL-C1-de. The first of eight, and the pilot for the prompt skeleton.
+commit       74e9d36  feat(i18n) the German interface catalog
+             pushed; public readback equals local HEAD at 74e9d36
+what changed ONE new file, frontend/src/lib/i18n/messages.de.ts — 296 text keys and 20 function keys
+             of German. ⛔ DELIBERATELY ORPHANED: `de` is NOT in LOCALES and nothing imports it.
+⛔ THERE IS NOTHING TO SEE ON SCREEN YET, and that is by design. The German UI becomes reachable only
+   in the WIRING slice, after all eight catalogs exist. If you look for a German menu today you will
+   correctly find none.
+⛔ NON-INDEPENDENT: a subagent Worker authored 316 strings of German that no native speaker and no
+   gate has judged. The file says so in its own first seven lines.
+```
+
+```text
+B7-1  Open frontend/src/lib/i18n/messages.de.ts and read the FIRST SEVEN LINES.
+      EXPECT: a warning that the file is machine-authored and unreviewed, that it is presentation copy
+      only, and that no lexicon entry or game rule is authored there.
+      ⇒ Those seven lines are your condition for accepting eight languages of unreviewed copy, and
+        they will be byte-identical in all eight files.
+B7-2  Read the terminology comment block just below it. EXPECT eight German game terms — tile, letter,
+      rack, blank, bag, board, pass, points — chosen once and used for all 316 strings.
+B7-3  ⛔ THE STEP WORTH YOUR ATTENTION, AND IT IS DEFERRED UNTIL AFTER WIRING, NOT NOW.
+      Two of those eight are judgement calls I decided rather than asking you, because they are
+      reversible in one file:
+        `Bank` for the rack   — attested in German Scrabble for a player's seven tiles, but
+                                polysemous for a casual reader. Alternatives: Steinhalter, Ablage.
+        `Blanko` / `Blankostein` for the blank — Mattel's German rules use it; casual German says
+                                `Joker`, and Slovak and Czech both chose the joker word (`žolík`).
+      ⇒ I kept the NATIONAL-ASSOCIATION term in both cases, because that is exactly what GLOSSARY D6
+        does for Polish and Czech, and because copying Slovak's choice is what D6's "do not harmonize"
+        forbids. ⚠ If you disagree, it is EIGHT WORDS IN ONE FILE. Say so when the German UI is
+        reachable and you can see them in place.
+B7-4  ⛔ KNOWN LIMITS, so you are not surprised:
+      · Eight labels may overflow non-wrapping controls in German. They were kept CORRECT and flagged
+        rather than shortened. The worst candidate is the board-variant description in Settings on a
+        narrow phone. German is your FIRST priority when the locales are reachable.
+      · "Reset Zoom" on the board reads backwards for German. The call site composes
+        [action][noun] as two fixed spans, so the idiomatic order needs a component change, which was
+        outside this slice's one-file allowlist. Recorded, not hidden.
+      · `Die AI` rather than `die KI`, because `AI` is a protected product token. A German speaker
+        would write KI. Changeable later as a product-vocabulary decision.
+```
