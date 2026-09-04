@@ -203,3 +203,47 @@ B4-4  ⛔ KNOWN LIMIT, so you are not surprised: no shipped language has a digra
       B4-2 and B4-3 confirm the change did not BREAK anything; they cannot confirm it ENABLED
       anything. That is honest, not a gap in your testing.
 ```
+
+## B5 · two Orchestrator-direct repairs, session 07 — `fffc613` · `32312ba`
+
+```text
+slice        two independent one-file repairs. ⛔ NEITHER is part of the UI-localization
+             objective; both are measured defects the continuation handout named as cheap.
+commits      fffc613  fix(lexicons) the audit's positive probes cover all twelve variants, not four
+             32312ba  docs(agents) "Not done yet" said live Slovak play is not enabled, and it plays today
+             pushed; public readback equals local HEAD at 32312ba
+what changed `validate_lexicons` now probes real word membership for all twelve dictionaries
+             instead of four, so "13 asset(s) audited, 0 failed" finally means presence, shape
+             AND membership; and AGENTS.md no longer states that Slovak play is disabled.
+⛔ ORCHESTRATOR-DIRECT, so this evidence is PERMANENTLY NON-INDEPENDENT: no Worker saw either
+   change and no independent session verified it. Mechanical gates are the only corroboration.
+```
+
+```text
+B5-1  From backend/: `env -u APPIMAGE -u ARGV0 -u APPDIR .venv/bin/python manage.py validate_lexicons`
+      EXPECT: `13 asset(s) audited, 0 failed` — exactly what B3-8 already expects.
+      ⚠ THE OUTPUT IS DELIBERATELY UNCHANGED, and that is the whole point: the number was
+      already green while eight of the twelve dictionaries had no membership probe at all. A
+      passing audit cannot show you the difference, so B5-2 is the step that does.
+B5-2  ⛔ THE STEP THAT ACTUALLY TESTS IT. Open
+      backend/game/management/commands/validate_lexicons.py and read `_PRESENT_PROBES`.
+      EXPECT: TWELVE rows, one per shipped variant — not four.
+      Then, if you want to watch the guard fire, temporarily add `"madur"` to the `icelandic`
+      row and re-run the command. EXPECT it to FAIL with
+      `icelandic dictionary FAILED reason=probe_absent ... missing_probes=madur`. Remove it
+      again. (`madur` is `maður` with a fold applied, and the Icelandic edition folds nothing,
+      so its ABSENCE is the assertion. The same trick with `"musli"` on the `swedish` row also
+      fails — Swedish ignores diacritics EXCEPT Ü.)
+B5-3  Open AGENTS.md, section "Not done yet". EXPECT: no sentence claiming live Slovak play is
+      not enabled. EXPECT instead one line stating that twelve variants ship playable and four
+      have an interface locale. Cross-check the twelve against the Settings variant picker.
+B5-4  ⛔ KNOWN LIMIT, stated so you are not surprised: README.md and libretiles_PRD.md STILL
+      describe an English-only product and name no language other than English anywhere. That
+      is campaign closure condition 11, deliberately deferred until the UI-localization work
+      fixes the final numbers at twelve variants and twelve locales. Recorded debt, not an
+      oversight.
+```
+
+⚠ **Numbering note for whoever appends next:** the eight interface catalogs get their own
+entries from **B6 onward**, one per locale as it lands, per the standing obligation that an
+acceptance step is written when it is generated and never reconstructed at the end.

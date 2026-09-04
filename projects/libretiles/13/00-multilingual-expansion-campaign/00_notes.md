@@ -2403,3 +2403,359 @@ AP_DESTILLED header now names the four defects that change a fresh Orchestrator'
 had declared PASS, and it found them by running `sed -n` and `grep` for about twenty minutes. **The
 handout now tells its reader to treat it as a claim and says exactly which sections were re-measured.
 That is the most honest state it can be in, and it is not the same thing as being correct.**
+
+## 37. ⭐ SESSION 07 — a fresh Orchestrator, Stage 1 clean, four decisions taken
+
+I am the fresh Orchestrator `93_orchestrator-handout.md` was written for, and §33's
+`PREKLADY MA ROBIT FRESH ORCHESTRATOR` assigned the UI-localization objective to. This section is
+my decision record. **Nothing in it is authority; the decisions inside it are mine to make under
+RF-02, and the one that is not is named in §37.6.**
+
+### 37.1 Stage 1 — read-only, and every value equalled its expectation
+
+```text
+HEAD                    529e6910ddf57dfbb4a9671bbab668b975067cf8   as expected
+HEAD:.ap                9c5cc44f8b6c92dd56ad2427d13223d7d59c5656   as expected
+.ap HEAD (detached)     9c5cc44f8b6c92dd56ad2427d13223d7d59c5656   EQUAL — correct
+git status -sb          ## main...origin/main
+porcelain               EMPTY
+public readback         529e6910...  equal to local HEAD
+variants/               12
+lexicon build scripts   11
+dicts/                  24   (13 assets + 11 .LICENSE files — the two numbers the capsule warns about)
+ports 3000 / 8000       NO LISTENER — safe to build
+/home/agile/meta        porcelain EMPTY, HEAD b18b61f "final pass -- handout, AP_DEFECTS and
+                        AP_DESTILLED made expert-grade"
+```
+
+⛔ **No recovery class was needed: there was no difference to classify.** I did NOT run the
+eight-gate ladder to greet the tree — `AP_DEFECTS.md` D-03, measured twice in this whole at two full
+ladders for zero mutation. I ran the ladder only after I changed something (§37.5).
+
+⚠ **One thing the handout could not tell me, and a successor should know: the handout I was handed
+in-session was a LOSSY COPY of `93_orchestrator-handout.md`.** Four passages were spliced or
+truncated mid-sentence, including the whole of 0c items 3-4, 5.3's wiring paragraph, and 5.8b's
+fallback block. I read the on-disk file instead and worked from that. ⇒ **The lesson is not about
+this handout: it is that a handout delivered as pasted text has no integrity check, while a handout
+delivered as a PATH does.** `AP_DEFECTS.md` D-13's Handout Integrity Record should carry a
+`Delivery: path | pasted` row, because only one of those two can be verified by the reader.
+
+### 37.2 🐞 THREE DEFECTS I MEASURED IN THE HANDOUT, and one of them changes the slice order
+
+R-G told me not to copy a `file:line` from a handout. I re-measured every coordinate in sections 5
+and 6 that my objective touches. **All the coordinates held** — `locales.ts:1 :3 :4 :13`,
+`messages.en.ts:319 :354 :359`, 280 + 20 = 300 keys exactly, `translate.ts:7 :13 :38`, `index.ts:24`,
+`plural.ts` 23 lines, `i18n.test.ts:956 :983 :1107 :1118 :1179 :1187`,
+`GameLanguagePanel.tsx:12 :19 :26-34 :51`, `GLOSSARY.md` D2 :12 · D6 :23 · D7 :48 with six Polish
+values, three plural call sites at `messages.sk.ts:320 :326 :330`, `pyproject.toml:73 addopts = "-q"`,
+mypy exactly 85 files. **Revision 3 earned its trust on coordinates.** What did not hold:
+
+```text
+1  ⛔ SEQUENCING, AND IT IS THE ONE THAT MATTERS. 5.3 says "A NEW CATALOG FILE TYPECHECKS AGAINST
+   `messages.en.ts` ALONE". MEASURED FALSE, at `messages.sk.ts:3`:
+       import { pluralSk } from "./plural";
+   A catalog imports its own plural helper. `messages.da.ts` cannot typecheck until `plural.ts`
+   EXPORTS `pluralDa`. ⇒ `plural.ts` is a PREREQUISITE of the catalogs, not part of the wiring
+   slice the handout puts it in. The eight catalogs cannot be written first.
+   ⇒ This is why §37.3 exists: there is a slice BEFORE the catalogs, and the handout has no slot
+     for it.
+2  ARITHMETIC. 5.5's "+232 hand-written test cells" is correct as a TOTAL and conflates two
+   independent axes, so it over-prices the wiring slice by 70%:
+       LOCALE axis  (LOCALES 4→12, INSTALLED_VARIANTS unchanged)
+                    ownName 16→48 (+32) · HEADER_EXPECTED 32→96 (+64) · OVERLAY 20→60 (+40)
+                    ⇒ +136, and this is the WIRING slice
+       NAMING axis  (INSTALLED_VARIANTS 4→12)  ownName 48→144  ⇒ +96, its own slice, 5.5's trap
+   Sum 232 ✓. But the wiring slice is +136 and the Icelandic substring collision lives entirely in
+   the +96. Two slices, two risks, and they were priced as one.
+3  OVERSTATEMENT, minor but it is an evidence claim. 4.2 defect 1 says validate_lexicons' "OWN
+   DOCSTRING at :28 says it mirrors the twelve-row test probe table. It does not." The code at
+   :28-31 says it mirrors `_LEXICON_PROBES` AND ends with "A variant with no entry here is still
+   audited structurally; it simply has no positive probe." ⇒ The DEFECT IS ENTIRELY REAL — eight
+   shipped variants had no membership probe — but the docstring disclosed the gap rather than
+   denying it. ⚠ I am recording this because a prompt that quotes the handout's framing would have
+   accused the code of a lie it did not tell, and R-D says `exactly`/`mirror` are grep targets in
+   your own draft.
+```
+
+⭐ **And one measurement no earlier handout states, which the gate decision rests on:**
+
+```text
+git grep -in -e libretiles_locale -e ui_locale -e uiLocale -- backend/     0 lines
+git grep -n  -e libretiles_locale -e ui_locale -e uiLocale -- backend/     0 lines
+⇒ THE UI LOCALE NEVER REACHES DJANGO. It is a Next.js cookie, read once at
+  frontend/src/app/layout.tsx:14 and never sent to the backend. `LANGUAGE_CODE = "en-us"` at
+  backend/config/settings.py:217 is Django's own and is unrelated.
+⇒ So "this objective is frontend-only" is MEASURED, both case-sensitively and case-insensitively
+  per R-E, rather than assumed from where the files happen to live.
+```
+
+### 37.3 ⭐ DECISION 1 — the key set is FROZEN at +16, and `plural.ts` comes BEFORE the catalogs
+
+0c item 4 told me to settle the key set or explicitly defer it. **I settled it, and the arithmetic
+made the answer the opposite of my first instinct.**
+
+```text
+INCLUDE, both families, in ONE slice before catalog 1:
+  8 × settings.gameVariant.<slug>   afrikaans italian dutch german portuguese danish swedish icelandic
+      WHY: without them the eight new variants show the SERVER `display_name` in the Settings picker
+      in every locale — English chrome inside a Danish UI, which is the exact defect this objective
+      exists to remove. GameLanguagePanel.tsx:12 VARIANT_NAME_KEYS has four entries; :26-34 falls
+      back to display_name; :51 omits the flag. Measured.
+  8 × game.lexicon.<lexicon_id>     the SAME eight words, and this is measured, not assumed:
+      services.py:159  _lexicon_id(variant) = Path(variant.dictionary_file).stem
+      derived per shipped variant: afrikaans italian dutch german portuguese danish swedish icelandic
+      — identical to the slugs — and english → `collins2019`, NOT `english`.
+  + 8 switch arms in messages.en.ts:359 lexiconRejectionKey()
+⇒ enText 280 → 296. enFn unchanged at 20. TextKey+FnKey 300 → 316, FROZEN.
+
+⭐ THE ARITHMETIC THAT DECIDED IT, and it inverts the handout's "or defer it" option:
+   include now   ~32 strings (en + sk + cs + pl × 16, minus what en already has) and 8 switch lines.
+                 The eight new catalogs then define all 316 keys as part of their normal work —
+                 MARGINAL COST ZERO.
+   defer         8 keys × TWELVE files later = 96 strings edited across twelve catalogs, plus a
+                 second review pass over eight languages nobody reads.
+⇒ Deferring is roughly three times the work AND leaves a real product gap open (§33.3 defect 1: a
+  rejected Danish word today cannot name what rejected it, at all four shipped locales). Including it
+  closes that gap as a side effect of freezing the contract.
+```
+
+⛔ **AND THE SEQUENCING DEFECT FROM §37.2 defect 1 forces one more thing into the same slice:**
+
+```text
+`plural.ts` MUST gain its eight functions BEFORE any catalog is written, because a catalog imports
+its helper (`messages.sk.ts:3`). The handout puts plural.ts in the wiring slice. That is impossible.
+⇒ The eight functions are pluralAf pluralNl pluralDe pluralDa pluralSv pluralIs pluralIt pluralPt.
+⇒ I DERIVED all eight myself with Intl.PluralRules on node v26.4.0 / ICU 78.3 rather than copying
+  5.4, and every one of 5.4's claims held:
+     af nl de da sv   one/other; ZERO divergences from `en` over integers 0..3000
+     is               one/other but 270 `one` values in 0..3000 ⇒ 269 divergences from en.
+                      Rule: i % 10 === 1 && i % 100 !== 11. Spot-checked: 21 31 101 121 1001 are
+                      `one`; 11 111 1011 are `other`.
+     it               THREE categories. one ⟺ i === 1. many ⟺ i % 1000000 === 0 && i !== 0
+                      (1e6 and 2e6 select many; 1000001 does not). 0 divergences from en below 1e6.
+     pt               THREE categories. ⛔ one ⟺ i === 0 || i === 1 — ZERO IS SINGULAR. Exactly ONE
+                      divergence from en over 0..3000 and it is at n = 0. many as for it.
+                      ⇒ pt is the one that would have shipped visibly wrong: a passed turn and an
+                        empty score both display 0.
+⛔ FIVE SEPARATE FUNCTIONS FOR af nl de da sv, NOT FIVE ALIASES OF pluralEn, and the reason is
+   already the project's own recorded rule at GLOSSARY.md D7 (:48): "Do not fold them into one
+   table-driven function." The CLDR rules genuinely differ on FRACTIONS (da 0.5 → one, en 0.5 →
+   other); the helpers truncate, which is what makes the integer identity real. Aliasing would make
+   a future CLDR divergence in Afrikaans silently change ENGLISH.
+```
+
+### 37.4 ⭐ DECISION 2 — the gate deviation, and it is a RULE, not a discount
+
+0b disagreement 2 is real: `00_handout.md` §8 condition 6 wants all eight gates on every batch;
+a `messages.XX.ts` catalog cannot move a Django gate. `AP_DEFECTS.md` D-03b says a standing condition
+with no `Applies to:` clause is read at its NARROWEST defensible scope. **My decision, recorded per
+`AP.md:1328-1347`'s "explicit project deviations":**
+
+```text
+RULE, and it is symmetric — it is not "frontend slices are cheap":
+    Run every gate that CAN OBSERVE THE DIFF, plus the cheapest repository gate. Name the skipped
+    gates and why, in the commit message, every time.
+APPLIED:
+    diff touches backend/ or an asset   -> the backend five in full (mypy · ruff · manage.py check ·
+                                          pytest with the summary quoted · validate_lexicons).
+                                          The frontend four cannot observe it.
+    diff touches frontend/ only         -> the frontend four in full (typecheck · vitest · lint ·
+                                          build, and the build must still report ELEVEN dynamic and
+                                          ZERO static routes). The backend five cannot observe it:
+                                          pytest collects only backend/, mypy's scope is
+                                          `config game gamecore accounts catalog`, ruff runs from
+                                          backend/, and §37.2's grep proves no locale value crosses
+                                          into Django at all.
+    Markdown prose only                 -> no gate reads it. The evidence is that the claims were
+                                          DERIVED, and the derivation goes in the commit message.
+⭐ ONE EXCEPTION I AM BINDING MYSELF TO NOW so it is not a convenient later choice: the FINAL commit
+   of this objective — the wiring slice, which is the one that makes eight locales reachable by a
+   user — runs ALL EIGHT gates. At that point the product state changes and condition 6's spirit
+   applies at its widest, not its narrowest.
+⛔ WHAT THIS DEVIATION DOES NOT TOUCH: standing condition 1's MOVE CORE SHA-256 is pinned in
+   frontend/src/lib/prompts.test.ts, so `npm run test` proves it on every frontend slice anyway.
+   Nothing about this decision weakens condition 1.
+```
+
+### 37.5 Two Orchestrator-direct commits — `fffc613` and `32312ba`, pushed, readback equal
+
+0c item 6's two optional free wins. Both landed before I wrote a single prompt, because a fresh
+session's first commit is the cheapest moment to land something small and both were measured.
+
+```text
+fffc613  fix(lexicons) the audit's positive probes cover all twelve variants, not four
+    `_PRESENT_PROBES` 4 slugs → 12, copied verbatim from the PRESENT half of
+    test_variant_invariants.py:66-108, which asserts the same words against the same shipped assets
+    and is enforced complete over installed variants (`:396`). Both tables NFC-casefold
+    (lexicon_health.py:199-200 and :92), so the words transfer unchanged.
+    ⭐ NEGATIVE CONTROL RUN BEFORE COMMITTING, because §14 item 20 says a guard that never fires is
+      indistinguishable from no guard: `audit_lexicon` on the shipped Icelandic asset with `madur`
+      added returns ok=False reason=probe_absent missing_probes=('madur',), and Swedish with `musli`
+      likewise. The probe machinery genuinely checks membership.
+    ⛔ DELIBERATELY NOT DONE, and this is why it stayed inside the five-item bar: the ABSENT half of
+      the test table is PER-VARIANT (Swedish forbids `musli`; Icelandic forbids `madur` and
+      `fjordur`) while `_ABSENT_PROBES` is one global set. Making it per-variant changes `_targets`'
+      signature — a design choice, therefore a Worker's.
+    gates: validate_lexicons 13 assets / 0 failed with all twelve dictionaries probed · mypy
+      "Success: no issues found in 85 source files" · ruff "All checks passed!" · manage.py check
+      "System check identified no issues (0 silenced)." · pytest "745 passed, 4 skipped in 272.37s".
+      Frontend four skipped, named in the commit message per §37.4.
+
+32312ba  docs(agents) "Not done yet" said live Slovak play is not enabled, and it plays today
+    AGENTS.md:192 claimed Slovak play is not enabled, under the heading "Not done yet", while :79 of
+    the same file already calls the Slovak lexicon playable. Replaced with the true open item — the
+    UI-locale gap — with both numbers DERIVED TWICE in this session per R-H: twelve from
+    `ls backend/assets/variants/` AND from `game.views.list_variant_summaries()` returning 12 rows
+    all `playable`; four from locales.ts:1.
+    ⚠ DISCLOSURE, because a successor comparing sources would otherwise be confused: the wording I
+      committed is byte-similar to an AGENTS.md rendering that was present in my session context and
+      that `git log --all -S` proves was NEVER committed to this repository. I derived every number
+      in it independently; I did not derive the prose independently. Recording it rather than
+      leaving it to be noticed.
+    ⛔ CLOSURE CONDITION 11 IS STILL NOT SATISFIED. README.md:11 and :386 and libretiles_PRD.md:33
+      still describe an English-only product and name no other language anywhere. Deferred on
+      purpose to after the wiring, when the numbers become twelve and twelve. Recorded as B5-4.
+
+both     pushed together; `git ls-remote origin refs/heads/main` = 32312ba = local HEAD; porcelain
+         empty. ⛔ ORCHESTRATOR-DIRECT: this evidence is PERMANENTLY NON-INDEPENDENT and both
+         commits say so in their own message.
+```
+
+### 37.6 ⭐ DECISION 3 — topology: I recommend option C, and it is the ONE decision that is HIS
+
+5.8's three shapes, and I add one argument the handout does not make.
+
+```text
+A  eight sequential exchanges  — lawful, uncriticisable, and it is how a fresh Orchestrator runs out
+   of context before the wiring slice (D-11 measured ~1 200 prompt lines per landed commit).
+B  one declared parallel group — lawful today, no promotion needed, seven fields genuinely easy here.
+C  one `Delegating Implementation Worker` — his own proposal, and §1.8 names THIS slice as its
+   recommended first test, almost word for word.
+
+⭐ MY ADDITIONAL ARGUMENT, measured, and it is why I prefer C over B rather than merely tolerating it:
+   THE EIGHT CATALOGS ARE NOT EIGHT INDEPENDENT UNITS OF JUDGEMENT. GLOSSARY.md has fourteen
+   sections and TWELVE of them are UI AREAS shared by every language; only D2, D6 and D7 are
+   language decisions, and D2 (informal Slavic register) does not apply to eight Germanic and Romance
+   languages at all. So all eight catalogs share one terminology discipline, one frozen key set, one
+   byte-identical header, and three plural call sites. ⇒ Eight independent Workers each re-derive
+   those shared decisions and WILL diverge — eight renderings of "Give up", eight almost-identical
+   disclaimers. One accountable Worker sees the shared decision once. CROSS-CATALOG CONSISTENCY IS
+   THE QUALITY PROPERTY AT RISK HERE, and it argues for C.
+⛔ AND THE COST OF C, stated first because it is real: 8 × ~316 keys in one accountable context is
+   exactly the D-02/D-09 failure mode. Mitigation is built into the profile — §1.7 OPEN-1 requires
+   it to SERIALIZE its own mutating subagents, so it commits per catalog and a failure at catalog
+   six leaves five landed and clean rather than a half-written tree.
+⇒ ROUTE: I sent him the exact one-line Slovak message from 5.8b, unmodified, and nothing else.
+  Promotion of a brainstorming entry is RF-01 and the autonomy grant's "use the answers you
+  recommend" does not reach a decision AP assigns to him. ⛔ IF HE SAYS NO OR DOES NOT ANSWER: take
+  B. Do not stall the objective on a protocol experiment.
+⛔ AND C IS DISQUALIFIED FROM C1b, permanently: BRAINSTORMING §1.6 BAD FIT names "any wire-format or
+  schema migration" and "anything E3 or E4".
+```
+
+⭐ **THE OBJECTIVE DOES NOT WAIT FOR THAT ANSWER, and that is the point of the slice order in
+§37.3.** The pre-catalog slice — key set, plural helpers, glossary, picker names — is required under
+all three shapes, so it is prompt `07_implementation_00.md` and it went out while the question was
+in flight. Nothing is idle.
+
+### 37.7 ⭐ DECISION 4 — the catalog header, byte-identical, specified once
+
+Option A's condition (§33) is that every machine-authored catalog declares itself. 5.9 warns that if
+I do not specify the exact bytes I will get eight different disclaimers. **This is the literal block,
+and every catalog carries it as its first lines, unchanged:**
+
+```text
+// ⛔ MACHINE-AUTHORED, NOT REVIEWED BY A NATIVE SPEAKER.
+// Every string below was written by a language model. No speaker of this language has read it.
+// It is PRESENTATION COPY ONLY: no lexicon entry, no tile distribution and no game rule is
+// authored here. That distinction is a standing campaign condition — a UI string may be
+// model-authored; a word list may never be.
+// Terminology and register follow frontend/src/lib/i18n/GLOSSARY.md, sections D6 and D7.
+// Replace with reviewed copy before presenting this locale as production quality.
+```
+
+⚠ **What I deliberately did NOT do: add a counterpart header to `messages.sk.ts`, `.cs.ts` or
+`.pl.ts`.** Those three were authored against GLOSSARY.md with terminology sourced from the Polska
+Federacja Scrabble and Česká asociace Scrabble regulations (D6 cites both, retrieved 2026-09-02), and
+the Cooperator reads Slovak natively. That is a real difference in provenance, so marking only the
+eight new files is accurate rather than inconsistent. **Recording it so nobody "fixes" the asymmetry.**
+
+### 37.8 What I have NOT re-measured, so the next reader knows where the edges are
+
+```text
+NOT re-measured   the eight-gate numbers in the handout capsule as a set (D-03: a ladder over an
+                  untouched tree). I re-measured the five that my own commit could move, and all
+                  five matched: mypy 85 · ruff clean · check clean · pytest 745/4 · lexicons 13/0.
+                  The frontend four are still the previous Orchestrator's numbers.
+NOT re-measured   section 6's C1b inventory (nineteen items) and section 6.2's C1c/B1/C2/C3/C5
+                  coordinates. That work is a DIFFERENT selection and it is the Cooperator's to
+                  make, not mine to infer — `AP.md:2329-2365` Stage 2.
+NOT re-measured   section 8's PROJECT_CONTEXT.md compression. I read `:303-356` and `:1163-1216`
+                  directly for the two grants I relied on.
+NOT verified      that `frontend/public/` holds exactly five PNGs. Irrelevant under Option A: the
+                  flags decision is NONE, and GameLanguagePanel.tsx:51 omits flagSrc when absent.
+⚠ ASSUME A DEFECT IN THIS SECTION TOO. Revisions 1 and 2 of the handout each passed their own
+  review and were wrong nine times; revision 3 found nine more in itself; I found three more in
+  revision 3. The number that keeps coming back is "about three per pass, forever".
+```
+
+### 37.9 The slice plan, and prompt 07/01's readiness review
+
+```text
+S1  MEC-UIL-S1  FREEZE THE CONTRACT.  ⭐ prompt written: ./07_implementation_00.md, E2, one Worker
+    16 keys (8 settings.gameVariant.<slug> + 8 game.lexicon.<lexicon_id>) · 8 switch arms ·
+    8 CLDR plural helpers · a NEW plural.test.ts pinning all twelve language rules executably ·
+    VARIANT_NAME_KEYS 4→12 · AC-LEX-4's IDS 4→12 · the GLOSSARY rows for all of it.
+    ⇒ Ships product value alone: the eight new variants get translated names in sk/cs/pl, and a
+      rejected word in any of the eight lexicons finally names the lexicon. ⛔ Adds NO locale.
+S2  the eight catalogs.   ⛔ BLOCKED ON THE §37.6 TOPOLOGY ANSWER, not on S1's content.
+S3  the wiring.  LOCALES 4→12 · translate.ts TEXT and FN · the LOCALE axis of the three
+    locale-keyed test maps = +136 cells. E2, a Worker, ⛔ never orchestrator-direct: the five-item
+    bar's own words are "if measuring reveals a SECOND FILE, a trust boundary, or a design choice,
+    it was not easy", and this touches four files with a real design choice inside it —
+    ⭐ WHETHER HEADER_EXPECTED AND OVERLAY_EXPECTED SHOULD ASSERT EXACT STRINGS FOR EIGHT LANGUAGES
+    NOBODY HAS READ. My current position, to be decided in that slice's own prompt: keep exact-string
+    cells for the four REVIEWED locales behind a `REVIEWED_LOCALES` const, and assert PROPERTIES over
+    the other eight — non-empty, no ASCII-only fallback leaking through, no untranslated placeholder.
+    104 exact cells over unreviewed copy is 104 cells of false confidence; `i18n.test.ts`'s key-set
+    and interpolation parity across all twelve is the test that actually protects the product.
+    ⛔ AND THIS IS THE COMMIT THAT RUNS ALL EIGHT GATES, per §37.4's binding exception.
+S4  the two naming axes.  INSTALLED_VARIANTS 4→12 ⇒ ownName 48→144, the remaining +96 cells, and
+    the ICELANDIC SUBSTRING TRAP ("Enska" ⊂ "Hollenska" ⊂ … ) that survives today only because
+    `toContain` is case-sensitive. Its own slice, High reasoning, diagnosed against known-good data.
+S5  closure debt.  README.md · libretiles_PRD.md, with numbers derived in that session (§37.5).
+```
+
+⛔ **I OWN THE LEDGER AND IT HAS A DEBT THE MOMENT S1 LANDS.** `90_language_ledger.md` rows
+`italian :460`, `dutch :495` and `afrikaans :968` carry MEASURED statements that S1 falsifies — they
+say `VARIANT_NAME_KEYS` has no entry for those slugs, which is exactly what S1 changes. **Those three
+rows must be corrected when S1 lands, and the `UI-localization` column stays `not-started` for all
+eight until their own catalog ships.** A Worker cannot own that file (RF-03), so it is mine and it is
+recorded here rather than remembered.
+
+**Readiness review of `07_implementation_00.md`, run once, prohibitions read against obligations in
+one pass per R-B — and the pass found four defects in my own draft:**
+
+```text
+1  🐞 THE ALLOWLIST DID NOT CONTAIN A FILE MY OWN PROSE GRANTED. Section 7.2 said
+   `GameLanguagePanel.test.ts` "is on your allowlist ANYWAY"; it was not. ⇒ Added; the ten-path
+   allowlist became eleven and all four count references were re-derived, not patched by eye.
+   ⛔ THIS IS §14 ITEM 17 EXACTLY, and it is the third time this campaign has produced it. The pass
+     that catches it has to be a real pass, not an intention to have one.
+2  🐞 "ADD ONLY" as an implementation boundary CONTRADICTED section 7.3, which authorizes one edit to
+   existing test logic. ⇒ Reworded to "ADDITIVE, with exactly ONE authorized edit, named in 7.3".
+3  🐞 Two arithmetic errors in cross-references: "the twelve real ids of section 4.2" (4.2 lists
+   eight), and "the three EXISTING plural helpers" where four names are already exported.
+4  🐞 An UNLABELLED LINGUISTIC LEAD. I asserted "at least one of your eight new Czech rows takes
+   `ve`" as if measured. I am not a native speaker and I did not measure it. ⇒ Relabelled as a LEAD
+   with my candidate named (`švédském`, by analogy with the standard `ve Švédsku`) and an explicit
+   instruction not to treat it as a specification. ⛔ An unlabelled LEAD acted on as a measurement is
+   the exact failure this project already paid for once.
+⇒ apfieldcheck.py exits 0. Its one initial DEFECT was real and mechanical: my report-format section
+  said "echo the three coordinate fields" without spelling the values, so nothing pinned session 07
+  exchange 01 against a string-patched header. Fixed by naming them literally.
+⇒ REMAINING WEAKNESS I ACCEPT: 639 lines is long for an E2, and D-02 says prompt volume is the
+  largest consumer of my context. It is long because it carries the whole derived plural table and
+  the exhaustive key list, which is what makes it decision-complete and keeps the Worker out of
+  Plan mode (`AP.md:740-746`). I would rather pay it here than in a targeted revision.
+```
