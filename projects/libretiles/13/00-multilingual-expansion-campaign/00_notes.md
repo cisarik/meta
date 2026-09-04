@@ -3412,3 +3412,124 @@ then   is · it · nl · da · sv · af, in that order, one fresh session each.
 ⇒ EVERY remaining prompt carries the seven corrections of §42.1-42.2 and the six rulings of §42.3.
   The skeleton is now measured rather than assumed, which is what the pilot bought.
 ```
+
+## 43. ⭐ CATALOG 2 OF 8 LANDED — European Portuguese, `dd3b176`, and the EIGHTH skeleton defect
+
+```text
+prompt   ./11_implementation_00.md   564 lines · session 11 · exchange 01 · E2 · HIGH reasoning
+report   ./11_report_00.md           status PASS · +440/−0 · pushed · readback equal · porcelain clean
+commit   dd3b176  feat(i18n) the European Portuguese interface catalog
+plus     3cfa13b  docs(i18n) record in the German catalog why aiPlayedFor uses the simple past
+⇒ TWO OF EIGHT CATALOGS SHIP. de · pt. Six remain: is · it · nl · da · sv · af.
+⛔ NON-INDEPENDENT: subagent-authored, orchestrator-accepted.
+```
+
+### 43.1 🐞 THE EIGHTH INVARIANT DEFECT — my audit told the Worker to damage correct Portuguese
+
+```text
+🐞 SECTION 7.1's ` as ` GREP COLLIDES WITH THE TARGET LANGUAGE, not with the header.
+   `as` IS THE PORTUGUESE FEMININE PLURAL DEFINITE ARTICLE. ✔ VERIFIED MYSELF at dd3b176 — five hits,
+   every one inside a correct string VALUE:
+       "…tornam as contas de multijogador mais seguras."   "…carregar as tuas partidas."
+       "Abrir as definições"   "Escolhe as peças a trocar"   "…carregar as partidas."
+   AND MY PROMPT THEN SAID, in as many words: "Expected result: ZERO hits. If you get one, it is a
+   real weakening — fix it, do not scope it away."
+⛔ SO THE PROMPT INSTRUCTED THE WORKER TO EDIT CORRECT PORTUGUESE. It refused, proved the real property
+   a different way (strip comments and string literals ⇒ the token `as` appears ZERO times in code),
+   and reported the conflict. That is the third consecutive Worker to refuse a defective instruction
+   rather than execute it.
+⚠ AND IT IS NOT THE SAME BUG AS CATALOG 1's. Catalog 1 found the grep colliding with the HEADER and I
+  fixed it with `tail -n +8`. This collides with the LANGUAGE, which `tail` cannot help. ⇒ TWO
+  DIFFERENT DEFECTS IN ONE LINE, found by two different languages, and neither could have found the
+  other's: German has no bare word `as`.
+⇒ THE FIX, and ✔ I VERIFIED IT RETURNS ZERO on the pt catalog while still matching every real cast:
+       grep -nE ' as (const|unknown|any|never|string|number|Record|Partial|[A-Z][A-Za-z0-9_]*)\b'
+  ⛔ LIVE FOR THREE OF THE SIX REMAINING: Afrikaans (`as` = as/than), Dutch (`as` = axle/ash), and any
+    other language with a two-letter `as`. Applied to all six.
+⭐ THE GENERAL LESSON, and it is bigger than this grep: A STRUCTURAL AUDIT WRITTEN AS A TEXT SEARCH
+  OVER A FILE OF NATURAL-LANGUAGE STRINGS WILL COLLIDE WITH SOME LANGUAGE. The audit's real subject is
+  the CODE, so it must either exclude string literals or match a pattern no natural language produces.
+  ⇒ Recorded as R-N: an audit pattern aimed at code must not be runnable against prose. Every one of
+    the eight audit lines was re-read against that rule; only ` as ` failed it.
+```
+
+### 43.2 The other five MEASURED findings, all verified, all applied to catalogs 3-8
+
+```text
+2  ✔ MY 5.5 MIS-ATTRIBUTED THE HISTORY TABLE, and the correction is the opposite of what I wrote:
+   `GameHistoryPanel.tsx:286` is `<table className="min-w-full">` with plain `<th className="px-4
+   py-3">` — NO nowrap, NO minima. It is the LEAST constrained surface in the list. The ~5rem minima
+   belong to ScorePanel's score-name columns (`min-w-[4.8rem] sm:min-w-[5.1rem]`).
+   ⭐ AND THE STRUCTURAL HALF OF THAT FINDING IS BETTER THAN THE FACTUAL HALF: the whole surface list
+     is LANGUAGE-INDEPENDENT and I had labelled it `[VARIANT]`. Six catalogs would re-verify the same
+     eight surfaces from six differently-worded copies. ⇒ IT MOVES TO `[INVARIANT]`, with only the
+     REASON a given language is high-risk staying variant. That is a genuine skeleton improvement I
+     would not have found.
+3  ✔ `header.logout` IS THE CAMPAIGN'S HIGHEST-VALUE UNLISTED LAYOUT RISK. Verified:
+   `ScorePanel.tsx:346` passes it to a control whose className carries `whitespace-nowrap shrink-0`.
+   pt-PT needs "Terminar sessão" — 15 characters against English's 6 — and the Worker kept it correct
+   rather than shortening to the imprecise "Sair". ⇒ Named as a specific key in the invariant list,
+   with its equivalents for the remaining six (`Uitloggen`, `Afmelden`, `Logga ut`, `Skrá út`).
+4  ✔ `game.aWord` IS A COMPOSITION SITE I DID NOT LIST. `page.tsx:1003`:
+       tf("game.toast.aiPlayedWord", { word: bestWord ?? t("game.aWord") })
+   A TEXT key composes inside a FUNCTION key's interpolation. ⚠ And the shipped catalogs already
+   diverge on it: German `"ein Wort"` and pt `"uma palavra"` carry the article, Slovak/Czech/Polish
+   `"slovo"`/`"słowo"` do not. ⇒ Added to the word-order category with that divergence named, so a
+   Worker chooses deliberately instead of copying whichever neighbour it read.
+5  ✔ `history.unknownDate` SERVES TWO REFERENTS OF DIFFERENT GENDER, and the key NAME lies about it.
+   Verified at four call sites: `GameHistoryPanel.tsx:97` (a DATE) and `ProfileModal.tsx:23, :26, :220`
+   (a USERNAME). ⇒ No gendered form agrees at both. Every remaining gendered language hits this.
+   Added as the THIRD agreement trap beside the two word-order ones. ⛔ Splitting the key is a
+   messages.en.ts change and therefore its own slice, not a catalog's business.
+6  ✔ EVERY NUMBER IN MY PROMPT VERIFIED, including the NINE-WORD arithmetic that catalog 1 had
+   corrected. The correction held.
+```
+
+### 43.3 The five LEADs, and one of them I acted on immediately
+
+```text
+⭐ LEAD 1, VERIFIED AND ACTED ON — `3cfa13b`. It suspected `messages.de.ts` was one comment short:
+   a block at `board.zoomNoun` but none at `game.aiPlayedFor.before`, where German had abandoned the
+   perfect tense. ✔ TRUE. ⚠ AND NOT CATALOG 1's FAULT: the comment requirement was added to the
+   skeleton AFTER that file was written, precisely because catalog 1 discovered the category. It
+   complied with the prompt it was given.
+   ⇒ BACKFILLED anyway, orchestrator-direct, four gates green, because §42.3 LEAD 6 already ruled that
+     the canonical home of these decisions is THE FILE. The German reasoning existed only in a Meta
+     report a future reader will never open. Eight files being comparable is worth one commit, and it
+     is far cheaper now than after six more land.
+   ⭐ Note the shape: catalog 2 audited catalog 1's OUTPUT without being asked to, flagged it as an
+     explicitly UNVERIFIED lead rather than asserting it, and was right. That is the MEASURED/LEAD
+     discipline paying for itself in the direction AP does not model at all.
+⭐ LEAD 2, TAKEN. Require each catalog to say which of the word-order call sites turned out HARMLESS.
+   Portuguese needed no workaround at either; German needed one at both. ⇒ Four or five catalogs
+   reporting "harmless" is evidence the call sites are fine as they are — information the WIRING slice
+   wants and cannot otherwise get. One line per prompt.
+⭐ LEAD 3, TAKEN. Pre-authorize a small named exception list to the one-label-style rule, because every
+   language discovers the same resisters: pagination pairs, toggle states, badge words. Portuguese hit
+   `history.prev`/`history.next` (ordinals, not verbs). ⇒ Naming them once makes eight files
+   comparable instead of eight differently-justified exceptions.
+⭐ LEAD 4, TAKEN. The commit body asked for the counted-noun forms while banning the terminology table
+   — half the vocabulary in `git log`, half in the file. ⇒ BOTH tables' canonical home is the FILE; the
+   commit body points at it. Consistent with §42.3 LEAD 6 rather than a new rule.
+⭐ LEAD 5, TAKEN AND IT CHANGES THE VARIANT SECTIONS. It says the plural rule was cheap once
+   `plural.ts` was read and the EXPENSIVE part was GENDER AND AGREEMENT, which my 5.3 gave one clause.
+   ⇒ Gender and agreement becomes its own numbered item in every remaining prompt, ahead of
+     orthography. Italian is the next Romance language and will pay the same cost; the Nordic three
+     have common/neuter agreement and definite suffixes.
+```
+
+### 43.4 What the two shipped catalogs already tell us that no plan could
+
+```text
+· BOTH Workers refused a defective instruction rather than executing it, and both were right. That is
+  three consecutive refusals in this whole (07/01, 08/01, and pt's partial refusal inside a PASS).
+· THE SKELETON IS CONVERGING RATHER THAN DRIFTING: catalog 1 found seven defects, catalog 2 found six
+  and one of them was a defect catalog 1 could not have found. ⇒ Expect catalog 3 to find fewer, and
+  ⛔ do NOT read a quiet report as a clean skeleton — Icelandic and the Nordic three will hit
+  agreement and compound length harder than either shipped language did.
+· THE COST PER CATALOG IS FALLING AND THE PROMPT IS GETTING LONGER: 434 lines for de, 564 for pt. That
+  is the invariant block absorbing measurements, which is the intended trade — the ORCHESTRATOR pays
+  once in prompt length and stops paying in reconnaissance. ⚠ WATCH IT: if a prompt passes ~700 lines
+  the invariant block should become a referenced artifact rather than an inlined one, and that is a
+  decision for catalog 5 or 6, not now.
+```

@@ -359,3 +359,38 @@ B7-4  ⛔ KNOWN LIMITS, so you are not surprised:
       · `Die AI` rather than `die KI`, because `AI` is a protected product token. A German speaker
         would write KI. Changeable later as a product-vocabulary decision.
 ```
+
+## B8 · catalog 2 of 8 — the European Portuguese interface catalog — `dd3b176`
+
+```text
+slice        MEC-UIL-C2-pt
+commits      dd3b176  feat(i18n) the European Portuguese interface catalog
+             3cfa13b  docs(i18n) record in the German catalog why aiPlayedFor uses the simple past
+             pushed; public readback equals local HEAD at 3cfa13b
+what changed ONE new file, messages.pt.ts — 296 text keys and 20 function keys of EUROPEAN Portuguese.
+             ⛔ DELIBERATELY ORPHANED, exactly like German: `pt` is not in LOCALES.
+             Plus a four-line comment backfilled into the German catalog, recording in the FILE why it
+             had to abandon the perfect tense at one key. No German string changed.
+⛔ STILL NOTHING TO SEE ON SCREEN. Two of eight catalogs exist; the UI becomes reachable at the wiring
+   slice. Six languages remain: Icelandic, Italian, Dutch, Danish, Swedish, Afrikaans.
+```
+
+```text
+B8-1  Open frontend/src/lib/i18n/messages.pt.ts and confirm the FIRST SEVEN LINES are byte-identical
+      to the German catalog's — the machine-authored warning. `diff <(head -7 messages.pt.ts)
+      <(head -7 messages.de.ts)` should print nothing.
+B8-2  Read the terminology comment block. EXPECT nine Portugal-Portuguese terms, and note that
+      `board` correctly became TWO words — `tabuleiro` for the playing surface, `partida` for a saved
+      game — the same split Slovak already makes with `hracia plocha` / `partia`.
+B8-3  ⛔ THE ONE THING WORTH KNOWING ABOUT THIS CATALOG, and it is invisible until you play.
+      Portuguese CLDR makes ZERO SINGULAR: "0 ponto", not "0 pontos". Every other locale in this
+      product says the plural at zero. When the Portuguese UI is reachable, let the AI pass a turn and
+      look at the score: it should read a singular. ⇒ This is the one plural rule in the whole campaign
+      that would have shipped visibly wrong if it had been copied from English.
+B8-4  ⚠ TERMS THE WRITER ITSELF FLAGGED AS ITS WEAKEST, if you ever have a Portuguese reader:
+      `suporte` for the rack (alternative: `estante`) · `Neerlandês` for Dutch (colloquially
+      `Holandês`) · `Repor` for the board reset (alternative: `Reiniciar`).
+B8-5  ⛔ KNOWN LIMITS: `Terminar sessão` is 15 characters where English is 6, on a non-wrapping pill
+      in the game header — the highest overflow risk in this catalog, kept CORRECT rather than
+      shortened to the imprecise `Sair`. And `A AI` takes feminine agreement because `AI` is a
+      protected product token; a Portuguese reader would write `IA`.
