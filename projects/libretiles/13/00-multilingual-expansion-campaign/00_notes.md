@@ -1449,6 +1449,74 @@ friction per language is exactly one build script plus three test inventories.
 
 ---
 
+## 27. C1 reconnaissance done, design resolved — `92_c1_design.md`
+
+⛔ **Decision D13-11: no planner Worker for C1.** Both handouts prescribe one with copy-paste
+delivery. I did the reconnaissance myself, read-only, and resolved the design in
+`92_c1_design.md`, because AP assigns architecture, risk and sequencing to the Orchestrator and
+the wire shape is not a material product decision. **The one thing that cannot be delegated —
+fresh independent acceptance from a session that is not my subagent — is unchanged and is the
+single thing the Cooperator will be handed.** That is what the planner route was protecting.
+
+### 27.1 The reconnaissance shrank C1 substantially, and five handout claims are stale
+
+```text
+S1  "localStorage v4"        MEASURED: the store is ALREADY at version 5, with a migrate chain
+                             covering <1 through <5. C1 goes to SIX.
+S2  "state_schema_version 4" MEASURED: THE FIELD DOES NOT EXIST. It appears only inside the
+                             adapter's own comment text and one test assertion. C1 INTRODUCES it;
+                             nothing is bumped. The number 4 is inherited from that text, not
+                             chosen — renumbering would falsify an assertion that already ships.
+S3  "board/rack/blank/draw
+     rendering"              MEASURED: `my_rack: string[]` is ALREADY lossless on the wire, and
+                             Board.tsx / Tile.tsx / TileRack.tsx carry NO single-char assumption —
+                             every `.length === 1` and `[0]` in Board.tsx is touch handling at
+                             :421-:503. ⇒ `board` is the ONLY lossy field.
+S4  "seven guards"           SEVEN items, EIGHT code sites: route.ts contributes four
+                             (:123 :127 :341 :1002). An "all seven removed" claim must enumerate
+                             eight.
+S5  "evaluate_scoring_move
+     re-pointed"             MEASURED: legality.py:112 ALREADY takes
+                             `authority: WordAuthority | None = None`. The seam exists; the work
+                             is to PASS one at five call sites.
+```
+
+⚠ Five of five are the same defect class as `-m manage.py check` and the stale `variant_store.py`
+line numbers: **a value carried forward in prose and never re-measured.** R-G applies to my own
+successors reading `92_c1_design.md` too, and it says so.
+
+### 27.2 The six decisions taken
+
+```text
+D-1  board: BoardCell[][] — a 15x15 grid, cell = {token, blank_as} | null. A grid because the
+     frontend already indexes by coordinate (page.tsx:1212); `null` for empty because storage
+     already treats a non-dict cell as empty, so it is the honest wire spelling of what
+     persistence means.
+D-2  `blanks` is REMOVED, not kept. It is a second source of truth for a fact the cell now
+     carries. Consumer to update: Board.tsx:120-121 builds a Set and reads it at :615.
+D-3  state_schema_version 4 is a NEW field, and the frontend REFUSES a version it does not
+     understand rather than mis-rendering one.
+D-4  the client store bumps 5 -> 6 with an explicit `version < 6` branch. The store persists
+     PREFERENCES, not game state, so the branch may have nothing to do — and if so it must SAY
+     so rather than be omitted, because a silent gap in a migrate chain is how a stale
+     preference survives a schema change.
+D-5  `_word_passes_dictionary` deletion is a SEPARATE COMMIT from the wire change. Different
+     failure modes, so a revert can take one without the other. Five authority call sites, three
+     test references.
+D-6  ⛔ the PERSISTED board_state shape does not change. Only its projection onto the wire does.
+     A stored-row migration is not C1 and would be a far higher tier.
+```
+
+### 27.3 Honest note on condition 9
+
+Inherited condition 9 requires the fixture to pass with **two different** multi-character tokens.
+⚠ **Twelve shipped languages provide none** — not one has a digraph tile, which is precisely why
+they could all ship before C1. So the fixture must use SYNTHETIC tokens (`SZ` plus `DZS` or `LJ`)
+plus the L·L canary. Hungarian is the first real consumer and it lands after C1, not with it.
+Recording this so nobody reads "two different tokens" as "from a shipped variant".
+
+---
+
 ## 26. Next step
 
 
@@ -1461,10 +1529,18 @@ LATER  C2 as an explicit declared blank-target set. The case list keeps growing:
          afrikaans blank→X Z · italian blank→J K W X Y · danish blank→Q · swedish blank→Q W Ü Æ ·
          turkish blank NOT→Q W X
        C3 narrowed to Turkish. Spylls route for French and Hungarian.
-       _lexicon_build.py — ELEVEN scripts now, far past the stated trigger. ⚠ This is the
-       largest single piece of technical debt in the campaign and it should be paid before the
-       next batch, because the shared interface can now be designed from EIGHT measured shapes
-       rather than guessed. --check on all eleven makes the refactor byte-verifiable.
+       _lexicon_build.py — ELEVEN scripts, far past the stated trigger.
+       ⚠ RE-DISPOSITIONED, and the reason is worth recording. I set the trigger "before the
+       tenth language" as a GUESS, before I knew the shapes. Now that eight distinct shapes are
+       measured, a shared module would need heavy parameterisation, and the per-script
+       differences are load-bearing and heavily documented — Danish's truncation guard, Swedish's
+       Ü carve-out, Icelandic's no-rule assertions, German's latin-1 pair, Portuguese's per-file
+       encodings. A shared module risks making exactly those differences LESS visible, which is
+       the opposite of what this codebase is built to value.
+       ⇒ DEFERRED, not cancelled, and the new trigger is CONCRETE rather than a count: extract it
+         when one rule must change in THREE OR MORE scripts at once. `--check` on all eleven
+         makes it byte-verifiable whenever it happens. Zero product value today, and C1 unlocks
+         six languages.
 BLOCKED, recorded, not hidden:
        finnish   no plain affix pair (Voikko)
        malay     no ms_MY source
