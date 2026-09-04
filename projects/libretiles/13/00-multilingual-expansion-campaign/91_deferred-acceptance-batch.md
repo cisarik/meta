@@ -245,5 +245,58 @@ B5-4  ⛔ KNOWN LIMIT, stated so you are not surprised: README.md and libretiles
 ```
 
 ⚠ **Numbering note for whoever appends next:** the eight interface catalogs get their own
-entries from **B6 onward**, one per locale as it lands, per the standing obligation that an
+entries from **B7 onward**, one per locale as it lands, per the standing obligation that an
 acceptance step is written when it is generated and never reconstructed at the end.
+
+## B6 · S1, the frozen interface key set and the CLDR plural pin — `cfd1215`
+
+```text
+slice        MEC-UIL-S1. The slice that had to come before the eight catalogs.
+commit       cfd1215  feat(i18n) freeze the interface key set and pin twelve plural rules to CLDR
+             pushed; public readback equals local HEAD at cfd1215
+what changed the eight not-yet-localized variants now show a TRANSLATED NAME in Settings and in the
+             human-queue label in all four existing locales, a rejected word finally names which of
+             the twelve lexicons rejected it, and plural.ts carries a CLDR-correct helper for all
+             twelve target languages with an executable test pinning each rule.
+⛔ ORCHESTRATOR-DIRECT FINISH, so this evidence is PERMANENTLY NON-INDEPENDENT: a subagent Worker
+   authored the implementation under prompt 07/01, correctly returned BLOCKED because that prompt was
+   unsatisfiable, and I made the one-integer correction and landed it. No independent session saw it.
+⛔ AND NO NEW INTERFACE LANGUAGE EXISTS YET. The chrome is still English for those eight. If you
+   expect to find Danish menus, that is the NEXT slice, not this one.
+```
+
+```text
+B6-1  Open Settings and look at the GAME VARIANT picker with the interface language on ENGLISH.
+      EXPECT: twelve entries, and they read EXACTLY as before — Afrikaans, Italian, Dutch, German,
+      Portuguese, Danish, Swedish, Icelandic among them, with no flag beside those eight.
+      ⚠ THE ENGLISH VIEW MUST BE UNCHANGED. The eight new English values are byte-identical to the
+      server names they replaced, so any visible difference here is a defect. Nothing to admire; this
+      step exists to prove nothing broke.
+B6-2  ⭐ NOW SWITCH THE INTERFACE LANGUAGE TO SLOVENČINA and look at the same picker.
+      EXPECT: Afrikánčina · Taliančina · Holandčina · Nemčina · Portugalčina · Dánčina · Švédčina ·
+      Islandčina, instead of the eight English names that were there before. That is the visible
+      product change in this slice.
+      Then switch to Čeština and to Polski and confirm the same eight are translated there too.
+B6-3  Start a game in one of the eight — Danish is a good pick — and play a word that is NOT in that
+      lexicon, with the interface on English.
+      EXPECT: "Not in the Danish lexicon".  ⛔ NOT "Not in the game lexicon", which is what every one
+      of those eight said before this commit.
+      Repeat with the interface on Slovenčina. EXPECT: "Nie je v dánskom lexikóne".
+B6-4  ⛔ THE ONE STEP ONLY YOU CAN ANSWER, and it is a QUESTION rather than a check.
+      With the interface on Slovenčina, play an invalid word in the SWEDISH variant.
+      It will say: "Nie je v švédskom lexikóne".
+      ⇒ SHOULD THAT BE "vo švédskom"?  Czech vocalizes (`ve švédském`) and Polish vocalizes
+        (`we włoskim`), and both match their own shipped rows. Slovak was left as plain `v` ONLY to
+        stay consistent with the pre-existing "Nie je v slovenskom lexikóne", which has shipped for
+        some time.
+      ⇒ If `vo` is correct, then the OLD Slovak row is wrong too and it is a separate two-string fix.
+        If `v` is correct, nothing changes. ⛔ Neither I nor the Worker is a native speaker and
+        neither of us would guess. One word from you settles it, and it needs settling BEFORE the
+        eight catalogs copy the pattern.
+B6-5  ⛔ KNOWN LIMITS, so you are not surprised:
+      · No new interface language exists. LOCALES is still en · sk · cs · pl.
+      · No flags for the eight. That is your decision, not an omission.
+      · The AI prompt still names only Slovak and Collins: ten of the twelve lexicons get a prompt
+        that identifies neither their language nor their word list. Measured this session, recorded
+        as its own future slice, and NOT part of this commit.
+```

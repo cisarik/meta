@@ -2759,3 +2759,149 @@ one pass per R-B — and the pass found four defects in my own draft:**
   the exhaustive key list, which is what makes it decision-complete and keeps the Worker out of
   Plan mode (`AP.md:740-746`). I would rather pay it here than in a targeted revision.
 ```
+
+## 38. ⭐ S1 LANDED at `cfd1215` — after the Worker returned BLOCKED, and it was RIGHT
+
+```text
+prompt   ./07_implementation_00.md   E2, Fresh Implementation Worker, subagent delivery
+report   ./07_report_00.md           status BLOCKED · zero mutation committed · archived verbatim
+commit   cfd1215  feat(i18n) freeze the interface key set and pin twelve plural rules to CLDR
+         pushed; `git ls-remote origin refs/heads/main` = cfd12158a6d992989... = local HEAD;
+         porcelain empty
+⛔ NON-INDEPENDENT, permanently: the implementation is a subagent's and the correction is mine.
+```
+
+### 38.1 🐞 PROMPT DEFECT S1-D1 — MY PROMPT WAS ARITHMETICALLY UNSATISFIABLE
+
+```text
+i18n.test.ts:159   expect(textKeys.length + fnKeys.length).toBe(300);
+```
+
+**My section 2 declared the outcome as 296 text + 20 function keys = 316. My section 7.3 declared
+everything in `i18n.test.ts` outside AC-LEX-4 READ-ONLY. My stage gate required green vitest before
+the commit.** Those three cannot hold together, and the Worker refused to resolve it, citing
+`AP.md:917-932` (omitted permission is not implied, and here it was DENIED, not omitted) and
+`AP.md:2466-2486`. **Verified by me before acting on it:** `sed -n '150,160p'` shows the assertion
+exactly as reported.
+
+```text
+⛔ THIS IS §14 ITEM 17 / R-B FOR THE FOURTH TIME IN THIS CAMPAIGN, AND IT IS THE SECOND TIME IN ONE
+   SESSION. My own §37.9 readiness review found four defects in this same draft — including an
+   allowlist that did not contain a file my prose granted — and MISSED THIS ONE, which is the one
+   that stopped the exchange.
+⇒ THE PATTERN, now measured four times: the defect is never in the thing the prompt is ABOUT. It is
+  in a COUNTER, a TEST HOST, or a GUARD that the prompt's own subject matter changes as a side
+  effect. My enumeration reached the sixteen keys and the plural table; it never asked "what in this
+  repository knows how many keys there are?"
+⭐ THE CHECK THAT WOULD HAVE CAUGHT IT, and it is one command:
+     git grep -nE '\.toBe\(30|toHaveLength\(30|=== 30' -- frontend/src
+  Generalized: BEFORE FREEZING A COUNT, GREP FOR THE COUNT. If a prompt changes the cardinality of
+  anything, search the repository for that cardinality as a literal. Recorded as R-K in the handout's
+  section 7 numbering.
+```
+
+**Correction, orchestrator-direct**: `300` → `316`, split into `expect(textKeys.length).toBe(296)`
+plus `expect(fnKeys.length).toBe(20)` plus the total, with a comment saying the number is hardcoded
+on purpose so that adding a key stays a decision rather than an accident. **I re-ran all four
+frontend gates myself rather than trusting the report:**
+
+```text
+typecheck  clean
+vitest     467 passed | 3 skipped (470)   ⇐ baseline 454 | 3 (457), so +13 and all green
+lint       clean
+build      SUCCEEDS, and ELEVEN dynamic routes / ZERO static — counted from the route table:
+           / · /_not-found · /api/ai/judge · /api/ai/move · /api/models · /api/prompts ·
+           /draw/[id] · /game/[id] · /play · /settings · /waiting/[id], every one marked ƒ.
+```
+
+⚠ **Why orchestrator-direct rather than a session-08 Worker.** The Worker's session was terminated,
+its work was already in the tree, and a fresh Worker's repository gate cannot pass a dirty porcelain
+it did not create. Spending a fourth prompt to change one integer is `AP_DESTILLED.md:725`'s
+"ceremonial extra Workers inside one healthy whole" and `AP_DEFECTS.md` D-11's measured cost —
+~1 200 lines of authored prompt per landed commit, twice resolved by adding one path or one clause.
+The change is one integer already specified by the prompt's own arithmetic, so it clears the
+five-item bar: one file, no trust boundary, no design choice.
+
+### 38.2 ⭐ WHAT THE WORKER FOUND THAT I DID NOT — and I verified all four myself
+
+```text
+1  ⛔ POLISH `w` → `we`, WHICH MY SECTION 5.3 NEVER MENTIONED. I named the Czech `v/ve` and Slovak
+   `v/vo` alternations and omitted Polish entirely. One of the eight triggers it: `we włoskim`.
+   ⚠ AND ITS OWN ARGUMENT FOR WHY THIS OMISSION WAS WORSE THAN THE ONE I DID FLAG: unlike Czech, NO
+     shipped Polish row vocalizes (`w słowackim` · `w czeskim` · `w polskim`), so the file offered no
+     precedent to copy. Following only my named traps ships `w włoskim`. It caught it anyway.
+2  `play/page.tsx:69` — a SECOND render site of `variantDisplayName`, feeding
+   `play.humanQueue.queueFor`. ✔ VERIFIED by me. My section 7.2 named only the picker. ⇒ The human
+   queue label is translated too, so the slice delivers more than I claimed.
+3  `prompts.ts` — ✔ VERIFIED AND WORSE THAN REPORTED. It is not only the two conditionals at `:198`
+   and `:208`: `MovePromptLexiconId` at `:14` and `JudgePromptLexiconId` at `:33` are literal union
+   types `"collins2019" | "slovak"`. ⇒ TEN of the twelve playable lexicons get a prompt that names
+   neither their language nor their lexicon. Same four-vs-twelve shape as the UI gap. Its own slice.
+4  `settings/page.tsx:356` `localeLabelKey: Record<Locale, TextKey>` and `settings.uiLanguage.*`
+   (four entries at `messages.en.ts:93-96`). ✔ BOTH VERIFIED.
+   ⛔ AND THIS PARTIALLY FALSIFIES §37.3's OWN JUSTIFICATION, which is the honest thing to record:
+     I argued the key set must be frozen so the twelve catalogs are never reopened. The wiring slice
+     needs eight `settings.uiLanguage.<locale>` endonym keys, so IT WILL REOPEN ALL TWELVE ANYWAY.
+     ⇒ The Worker's own counter-argument is why I still think S1 was right, and it is a better
+       argument than mine was: the `plural.ts` dependency is HARD (a catalog cannot typecheck without
+       its helper) while the uiLanguage dependency is SOFT, and endonyms are one mechanical 8×12 pass
+       of IDENTICAL strings per locale whereas my sixteen carry four distinct language values each.
+```
+
+⭐ **All four arrived through `Orchestration critique` and `Enumeration widened` — the two report
+fields AP does not require.** That is now `AP_DEFECTS.md` D-01's and D-04's third witness in this
+whole, and the first from a Worker that was told the rule explicitly rather than inferring it.
+
+### 38.3 ⛔ THE ONE STRING I REFUSED TO GUESS, and it is the Cooperator's to settle
+
+```text
+sk   "Nie je v švédskom lexikóne"      ⇐ what shipped
+cs   "Není ve švédském lexikonu"       ⇐ vocalized, matching the shipped `ve slovenském`
+pl   "Nie ma we włoskim leksykonie"    ⇐ vocalized
+```
+
+**The Slovak and Czech rationales in the diff are inconsistent with each other, and I left it that
+way deliberately.** Czech vocalizes before an š/s + consonant cluster, which is why `ve švédském` and
+the pre-existing `ve slovenském` are both right. The analogous Slovak rule also vocalizes before
+s/z/š/ž + consonant, which would give `vo švédskom` — **but the pre-existing shipped Slovak row is
+`v slovenskom`, not `vo slovenskom`.** So there are exactly two self-consistent states:
+
+```text
+(a) Slovak in this product uses plain `v` throughout   ⇐ CURRENT, and the file is consistent
+(b) Slovak vocalizes like Czech, in which case BOTH the new `v švédskom` AND the pre-existing
+    `v slovenskom` are wrong, which makes it a separate fix touching a reviewed string
+```
+
+⛔ **I am not a native speaker and neither is the Worker, so guessing here is exactly the failure R-I
+and R-E exist to prevent: an assertion about a fact I did not measure.** Recorded as acceptance step
+B6-4. Keeping the file self-consistent was the only choice available that cannot be wrong in two
+places at once.
+
+### 38.4 The remaining budget for this objective, re-priced from what S1 taught
+
+```text
+S2  eight catalogs      ⛔ still blocked on the §37.6 topology answer, not on S1.
+                        ⭐ AND S1 CHANGED WHAT THEIR PROMPT MUST CARRY: the Czech `v/ve`, Slovak
+                        `v/vo` and Polish `w/we` alternations are now three NAMED traps with worked
+                        examples in the shipped tree, and 38.3's open question must be settled BEFORE
+                        eight catalogs copy the pattern. The Worker's LEAD 4 asks for exactly that
+                        ordering and it is right.
+S3  wiring              bigger than §37.9 priced it. Files: locales.ts · translate.ts:7,13 ·
+                        i18n.test.ts (three locale-keyed maps, +136 cells on the locale axis) ·
+                        settings/page.tsx:356 · AND `settings.uiLanguage.*` +8 keys, which reopens
+                        all twelve catalogs. Six surfaces, not four. Still E2, still a Worker, and
+                        still the commit that runs all eight gates per §37.4.
+S4  naming axes         unchanged: INSTALLED_VARIANTS 4→12, +96 cells, the Icelandic substring trap.
+S5  closure debt        README.md · libretiles_PRD.md.
+NEW prompt.ts locale    🐞 §38.2 item 3. Ten of twelve lexicons get a prompt that names neither the
+                        language nor the lexicon, and two literal union TYPES enforce it. Not in any
+                        earlier handout, not in this objective, and it is a genuine AI-quality gap
+                        rather than a cosmetic one. Its own slice, and it is the Cooperator's to
+                        select.
+```
+
+⭐ **Ledger updated in the same act** (§37.9's recorded debt, discharged): the three rows whose
+MEASURED text S1 falsified are corrected, and all eight playable-without-locale rows now read
+`not-started as a LOCALE, and its NAME is now translated`, with the evidence. ⛔ **The header stays
+`UI locales 4 / 24`** — no locale shipped; only the names did. The eleven genuinely `not-started.`
+rows and Hungarian's `staged, not implemented` are untouched, and 4 + 1 + 8 + 11 = 24.
