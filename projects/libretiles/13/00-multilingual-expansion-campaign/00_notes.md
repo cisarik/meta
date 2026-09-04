@@ -2905,3 +2905,114 @@ MEASURED text S1 falsified are corrected, and all eight playable-without-locale 
 `not-started as a LOCALE, and its NAME is now translated`, with the evidence. ⛔ **The header stays
 `UI locales 4 / 24`** — no locale shipped; only the names did. The eleven genuinely `not-started.`
 rows and Hungarian's `staged, not implemented` are untouched, and 4 + 1 + 8 + 11 = 24.
+
+## 39. ⭐ THE COOPERATOR ANSWERED BOTH QUESTIONS — and he rejected my topology recommendation
+
+Verbatim, and it is a routing decision plus a design instruction:
+
+> *1.) Preco jednemu Workerovi? Kazdy jazyk zvlast Workerovi je rozumnejsie predsa teda vygenerovat
+> postupne prompty pre 8 Workerov, vsetky prompty dokladne perfektne profesionalne. Nebudes tak minat
+> svoj kontext. Samozrejme treba mat plan co vsetko treba dat kazdemu v akom poradi a kde presne budu
+> zmeny. Na toto by som navrhoval Planner Workera s Plan mode aktivnym pre tohto tiez bude
+> najrozumnejsie urobit dokladny perfektny expertny prompt aby vedel co ma planovat a hlavne aky je
+> goal.  2.) PASS*
+
+### 39.1 What he decided, and it is not option A either
+
+```text
+TOPOLOGY  ⛔ OPTION C REJECTED. Not one Delegating Implementation Worker. EIGHT SEPARATE WORKERS, one
+          language each, prompts generated SEQUENTIALLY, each one thorough.
+          ⇒ That is close to option A but it is not option A as the handout priced it, because he
+            attached the thing that makes A affordable: A PLANNER FIRST.
+PLANNER   a Planner Worker with Plan mode ACTIVE, whose own prompt must be thorough and expert and
+          must above all state the GOAL. Its job: what each of the eight gets, in what order, and
+          exactly where the changes are.
+B6-4      PASS. Slovak `Nie je v švédskom lexikóne` is correct as shipped. ⇒ plain `v` is right, the
+          pre-existing `v slovenskom` needs no change, and the `v`/`vo` question is CLOSED before the
+          eight catalogs copy the pattern. Reconciled prospectively in
+          `91_deferred-acceptance-batch.md` rather than by rewriting B6-4.
+```
+
+### 39.2 ⚠ Why his shape is better than mine, stated plainly, and where I still disagree
+
+```text
+HE IS RIGHT ON THE THING THAT MATTERS, and my 5.8 analysis missed it.
+    I argued FOR one delegating Worker on cross-catalog CONSISTENCY: eight independent Workers each
+    re-derive the shared terminology decisions and diverge. That argument is real but I drew the wrong
+    conclusion from it, because CONSISTENCY IS A PROPERTY OF THE PROMPT, NOT OF THE WORKER COUNT. If a
+    plan fixes the register decision, the terminology grouping and the invariant prompt sections ONCE,
+    then eight independent Workers cannot diverge on them — they are told, not asked.
+    ⇒ His decomposition gets the consistency AND keeps eight separate accountable reports, eight
+      separate inspection points, and eight separate small blast radii. Mine traded all of that away
+      to solve a problem a planner solves better.
+HE IS ALSO RIGHT ABOUT MY CONTEXT, and it is measurable rather than a feeling.
+    `AP_DEFECTS.md` D-02 and D-11: prompt authoring is the single largest consumer of Orchestrator
+    context, ~1 200 authored lines per landed commit in this whole. Eight prompts from scratch is how
+    a fresh Orchestrator dies before the wiring slice. A PLAN THAT SEPARATES THE INVARIANT SECTIONS
+    FROM THE VARIANT ONES turns prompt N+1 into an instantiation instead of an authoring act. That is
+    exactly what he means by "nebudes tak minat svoj kontext", and it is the reason deliverable D4 is
+    the load-bearing one in `08_plan_00.md`.
+⭐ AND IT COSTS NO PROTOCOL PROMOTION AT ALL, which is a real bonus his framing gets for free:
+    eight sequential single-active Worker sessions plus one plan-only exchange are lawful under the
+    pin with ZERO extra ceremony. No `Delegating Implementation Worker` profile, no parallel-group
+    declaration, none of `AP.md:1166-1177`'s seven fields, and nothing promoted out of
+    `BRAINSTORMING.md`. ⇒ The whole 5.8 conflict evaporates rather than being resolved.
+⚠ WHERE I STILL DISAGREE, and I am recording it because he asked for honest feedback rather than
+  agreement: `AP.md:740-746` says do not route Plan mode merely because a task is large, and eight
+  near-identical catalogs against a FROZEN key set is not architecturally uncertain. So a planner is
+  NOT justified by size here.
+  ⇒ BUT IT IS JUSTIFIED, on a different ground than size, and that ground is his: the plan's consumers
+    are eight prompts that will be issued WITHOUT further reconnaissance, and three per-language
+    decisions genuinely need repository-grounded reasoning before the first string is written — the
+    T–V register choice per language, the European-vs-Brazilian Portuguese choice, and the reconciliation
+    of twenty-one key prefixes against eleven glossary UI areas. Those are unrecoverable one string at
+    a time. ⇒ Justified as implementation planning under `PROMPT_CONTRACTS.md:707-713`, not as
+    "the task is big". The prompt says so in as many words so the planner does not over-plan.
+```
+
+### 39.3 The planner exchange, and the one delivery constraint that can invalidate it
+
+```text
+prompt    ./08_plan_00.md   541 lines · session 08 · exchange 01 · Phase: plan · E0 · read-only
+          Planning layer: implementation-planning · Plan disposition: advisory ·
+          Implementation in same Worker session: prohibited · Post-plan implementation session:
+          fresh-worker-session · Maximum plan-only cycles: 1 · Planning Record: initial
+profile   `Implementation-Planning Worker`, defined explicitly in the prompt. The pin's profile enum
+          (`PROMPT_CONTRACTS.md:262`) ends with "or another explicitly defined bounded profile", so
+          naming one is lawful; ⛔ it is a SESSION PROFILE, not a fourth role and not an AP phase.
+route     ⛔ COPY-PASTE, BY THE COOPERATOR, INTO A CLIENT WITH NATIVE PLAN MODE ALREADY ON.
+          `PROMPT_CONTRACTS.md:695-700`: `required` means the client MUST have the mode enabled
+          BEFORE delivery, and IF IT CANNOT, THE PROMPT MUST NOT BE PASTED — I would then have to
+          reissue it as `not-used` with explicit prompt-level read-only planning authority.
+          ⚠ apfieldcheck.py flags exactly this as its one remaining warning, by design.
+deliverables  D1 order of the eight with a reason per position · D2 eight per-language spec sheets
+          including the register and pt-variant decisions · D3 the twenty-one-prefix ↔ eleven-area
+          reconciliation · D4 ⭐ the INVARIANT/VARIANT split of the eight prompts · D5 the layout-
+          overflow risk with a named owner · D6 the per-catalog validation ladder · D7 path
+          disjointness proved or refuted · D8 the wiring dependencies as a LIST, not a plan
+⛔ EXPLICITLY FORBIDDEN TO IT: not one translated string, no mutation, no `npm run build` (it writes
+   `.next/`), no network, and no product decision — those it must return as costed options.
+```
+
+### 39.4 🐞 Two more measurements, one of which corrects my own §37.6
+
+```text
+1  🐞 GLOSSARY.md HAS ELEVEN UI-AREA SECTIONS, NOT TWELVE. The handout's 5.5 says "fourteen sections
+   and twelve of them are UI AREAS", and I repeated "twelve" in §37.6 as part of my own argument for
+   option C. Measured at cfd1215 with `grep -n '^## '`: fourteen sections = THREE language decisions
+   (D2 :12, D6 :23, D7 :48) + ELEVEN UI areas. 3 + 11 = 14.
+   ⚠ The argument I built on it does not change — eleven shared UI areas still means the terminology
+     is shared — but I quoted a number I had not derived, one section after writing R-H into my own
+     readiness review. That is the fifth instance of this shape in this campaign.
+2  ⭐ THE VALIDATION PREMISE OF THE WHOLE OBJECTIVE IS NOW PROVED EMPIRICALLY, not argued.
+   The claim: an ORPHAN catalog — a file nothing imports, whose locale is not in `LOCALES` — is still
+   fully type-checked, which is what makes eight catalogs verifiable BEFORE any wiring.
+   METHOD: created a temporary `messages.__probe.ts` declaring `Record<TextKey, string>` with ONE key,
+   ran `npm run typecheck`, deleted it, confirmed porcelain empty.
+   RESULT: `error TS2740: ... is missing the following properties ... "landing.titleLine1",
+   "landing.titleLine2", "landing.lead", "landing.card.ai.title", and 291 more.`
+   WHY: `tsconfig.json` `include` is `["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts",
+   ".next/dev/types/**/*.ts", "**/*.mts"]` — every `.ts` file, reachable or not.
+   ⇒ The error even NAMES the missing keys. Handed to the planner in §4.4 of its prompt with the three
+     questions the probe does NOT answer: lint tolerance of an orphan module, vitest, and the build.
+```

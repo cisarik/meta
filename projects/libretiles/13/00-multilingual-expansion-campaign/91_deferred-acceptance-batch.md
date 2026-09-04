@@ -300,3 +300,9 @@ B6-5  ⛔ KNOWN LIMITS, so you are not surprised:
         that identifies neither their language nor their word list. Measured this session, recorded
         as its own future slice, and NOT part of this commit.
 ```
+
+> ⭐ **RECONCILIATION, 2026-09-04, prospective and not a rewrite** (`AP.md:322-336`). **B6-4 is
+> ANSWERED: `PASS`.** The Cooperator confirmed that Slovak `Nie je v švédskom lexikóne` is correct as
+> shipped, so plain `v` is right and the pre-existing `Nie je v slovenskom lexikóne` needs no change
+> either. ⇒ **The `v` / `vo` question is CLOSED and the eight later catalogs may copy the shipped
+> Slovak pattern without reopening it.** B6-1, B6-2, B6-3 and B6-5 remain live for his batch.
