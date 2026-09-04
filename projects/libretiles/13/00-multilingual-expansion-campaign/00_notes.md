@@ -3016,3 +3016,154 @@ deliverables  D1 order of the eight with a reason per position · D2 eight per-l
    ⇒ The error even NAMES the missing keys. Handed to the planner in §4.4 of its prompt with the three
      questions the probe does NOT answer: lint tolerance of an orphan module, vitest, and the build.
 ```
+
+## 40. ⛔ THE PLANNER ALSO RETURNED BLOCKED — THREE PROMPT DEFECTS, ALL MINE, AND IT NAMED ONLY TWO
+
+```text
+prompt   ./08_planning_00.md   541 lines · session 08 · exchange 01 · Phase: plan · E0 · read-only
+report   ./08_report_00.md     63 lines · status BLOCKED · D1-D8 not produced · zero mutation
+⇒ TWO CONSECUTIVE EXCHANGES BLOCKED ON MY OWN PROMPT DEFECTS. 07/01 was arithmetically unsatisfiable;
+  08/01 was stopped by a rule I wrote badly. Both Workers were right both times.
+```
+
+⚠ **A filename note, because it matters for the archive.** The Cooperator saved the prompt as
+`08_planning_00.md`, not the `08_plan_00.md` I wrote, and saved the report beside it as
+`08_report_00.md`. Both spellings are lawful `<phase>` values — the pin's own coordinate example at
+`PROMPT_CONTRACTS.md:463` uses `Phase: plan` while `AP_DESTILLED.md:333` projects
+`01_planning_00.md`. **The pair on disk is self-consistent, so I kept it and did NOT rename it:
+`AP.md:322-336` forbids retroactively renaming an archived artifact.** The reissue follows the
+established `_planning_` spelling so the trace does not fork.
+
+### 40.1 🐞 The two defects it named, both verified by me before acting
+
+```text
+1  🐞 PROMPT DEFECT S1P-D1 — STALE `file:line`, AND IT IS R-G FIRING ON ME.
+   My section 4.2 gave the three Slovak plural call sites as `messages.sk.ts:320 :326 :330`.
+   MEASURED at cfd1215: :338 :344 :348.
+   ⇒ EXACTLY +18, and I know precisely where the 18 came from: `git show --numstat cfd1215` on that
+     file reads `18  0`. THE COMMIT THAT MOVED THOSE LINES IS MINE, LANDED IN THIS SESSION, ONE
+     COMMIT BEFORE I WROTE THE PROMPT. I took the coordinates from my own §37.2 measurement, which was
+     taken at 529e691, and carried them across my own diff.
+   ⛔ R-G says never copy a `file:line` from a handout, a notes file or a prior prompt. I have cited
+     that rule four times today, in writing, and then broke it against my own notes file.
+2  🐞 PROMPT DEFECT S1P-D2 — A SELF-CONTRADICTION, AND IT IS R-B FOR THE FIFTH TIME.
+   My D2 required the plan to justify the Portuguese variant choice "against the shipped
+   `portuguese.json` variant's own provenance". My section 6 forbade reading "any backend file, any
+   variant manifest". Arithmetically un-completable, exactly like C-7 in exchange 04/01 and like
+   07/01's key count. ⇒ Verified in my own text with two greps.
+```
+
+### 40.2 ⛔ THE THIRD DEFECT, WHICH THE PLANNER DID NOT NAME AND WHICH IS THE EXPENSIVE ONE
+
+**The stale line number should never have stopped the exchange.** It cost eight deliverables to
+report an off-by-eighteen. And the reason it stopped is not the planner's judgement — **it is that I
+put a "report the difference" instruction inside a list titled `Stopping conditions`:**
+
+```text
+MY SECTION 7, verbatim:
+   "· any number in section 4 differs from what you measure — report the difference; do not silently
+      adopt either version"
+⇒ The bullet says REPORT. The section heading says STOP. A Worker reading its own stopping conditions
+  is right to read the heading as governing, and its report says so in as many words: "the prompt's
+  explicit rule requires stopping on any Section 4 numerical disagreement."
+```
+
+⭐ **TWO NEW RULES, and the second is the one I would keep if I could keep only one.**
+
+```text
+R-L  ⛔ DO NOT PUT A LINE NUMBER IN A PROMPT WHEN A KEY, A SYMBOL NAME OR A GREP WILL DO. R-G says
+     re-measure a `file:line` in the session that writes the prompt; R-L is the stronger form that
+     removes the failure class instead of policing it. A line number is stale the moment anything
+     above it changes — including your own commit from an hour ago. An anchor like
+     `grep -n 'pluralSk(' messages.sk.ts` or "the entry keyed `controls.tilesSelected`" cannot go
+     stale, and it tells the Worker how to FIND it rather than where it WAS.
+     MEASURED COST OF NOT HAVING THIS RULE: one whole planning exchange, for +18.
+R-M  ⛔ A STOPPING CONDITION IS ONLY FOR SOMETHING THAT MAKES THE TASK UNSAFE OR UNSATISFIABLE.
+     Anything else — a wrong number, a stale path, a partial deliverable, an internal contradiction —
+     is a FINDING, and the instruction is "record it, state the assumption you proceeded on, and
+     CONTINUE". Putting a note in the stop list converts an observation into an abort, and the list's
+     TITLE outranks the bullet's verb in the reader's mind. ⇒ Write the stop list last, then read every
+     bullet and ask: "if this fires, is the task genuinely unsafe or genuinely impossible?" If the
+     answer is no, it belongs somewhere else in the prompt.
+     ⚠ AND THE MIRROR OF R-M, which is why both are needed: `AP.md:2466-2486`'s real stopping
+       conditions must STILL be there and must still fail closed. R-M narrows the list; it does not
+       weaken it. The AP-versus-prompt conflict clause does not bend.
+```
+
+### 40.3 ⭐ What I measured myself so the reissue has fewer open questions, not more
+
+```text
+1  THE ORPHAN-CATALOG PREMISE IS NOW PROVEN ACROSS ALL FOUR GATES, not three-questions-open.
+   Method: a temporary VALID orphan `messages.__probe.ts` spreading `enText`/`enFn` into the two
+   catalog types, then all four gates, then deleted with porcelain and HEAD verified.
+       typecheck  clean with a valid orphan; TS2740 NAMING THE MISSING KEYS with an invalid one
+       lint       clean. eslint.config.mjs is ONLY eslint-config-next/core-web-vitals +
+                  eslint-config-next/typescript with no local rule overrides and no import plugin, so
+                  nothing in this project can flag an unimported module.
+       vitest     467 passed | 3 skipped (470) — IDENTICAL with and without the orphan
+       build      succeeds; route table unchanged at ELEVEN dynamic, ZERO static
+   ⇒ A CATALOG CAN BE WRITTEN, COMMITTED AND PUSHED BEFORE ITS LOCALE IS WIRED WITH EVERY GATE GREEN.
+     That is the mechanism the whole objective rests on and it is no longer an argument.
+   ⭐ Session 08 had independently reached the lint conclusion from the config before it stopped, so
+     that one has two witnesses.
+2  PORTUGUESE IS EUROPEAN PORTUGUESE, AND I DERIVED IT INSTEAD OF ASKING FOR IT.
+   `backend/assets/variants/portuguese.json` → `lexicon_provenance.upstream` =
+   "LibreOffice dictionaries pt_PT (Universidade do Minho / Natura)", entry_count 4 119 831,
+   spdx GPL-2.0-only OR LGPL-2.1-only OR MPL-1.1.
+   ⇒ The word list a player is judged against is pt_PT, so the chrome must be pt-PT. Not a preference —
+     a consistency requirement between the interface and the lexicon. Supplied to the reissue as a
+     FACT, which deletes the contradiction of 40.1 defect 2 rather than patching it.
+3  🐞 And the planner reproduced my enumerations exactly — 296 / 20 / 21 prefixes / 10 prefixes /
+   three plural sites. ⇒ The parts of section 4 that were measured in the session that wrote them
+   held. Only the part I imported from an earlier measurement was wrong. That is R-G's whole thesis
+   demonstrated inside one prompt.
+```
+
+### 40.4 The reissue, and it spends the LAST planning cycle deliberately
+
+```text
+prompt    ./09_planning_00.md   session 09 · exchange 01 · fresh-worker-session · Phase: plan
+          Planning cycle: targeted-revision · basis new-repository-or-external-evidence ·
+          Prior planning report ./08_report_00.md · Automatic targeted revisions used: 1
+⛔ WHY targeted-revision AND NOT A FRESH INITIAL CYCLE, and this is the conservative choice on purpose.
+   Session 08 produced NO plan, so it is arguable that the initial cycle was never delivered and the
+   reissue is simply the initial cycle again. That reading costs nothing, which is exactly why I
+   distrust it. `AP.md:352-378` allows ONE targeted revision for new repository evidence, and there IS
+   new repository evidence (:338 :344 :348) and there ARE preserved unaffected decisions (every
+   enumeration session 08 reproduced). ⇒ Taking the revision spends the budget rather than laundering
+   a second free cycle, and it puts a HARD FLOOR under the ceremony: there is no third planning prompt.
+   If 09/01 blocks, the correct record is `Escalation disposition: NEEDS_ORCHESTRATOR_DECISION` and I
+   write the plan orchestrator-direct. The prompt says that in its own opening.
+WHAT CHANGED, all three of my defects and nothing else:
+   · plural call sites are KEY-ANCHORED (`a11y.rackTile`, `error.throttled.minutes`,
+     `controls.tilesSelected`) with `grep -n 'pluralSk('` as the finder — R-L applied
+   · Portuguese is a SUPPLIED FACT in the accepted-decisions section; the manifest prohibition now has
+     no exception and needs none — the contradiction is deleted, not patched
+   · section 4.4's three open questions are replaced by four measured answers, and section 7 is
+     re-scoped per R-M with an explicit ⭐ WHAT IS NOT A STOPPING CONDITION block naming the exact
+     failure that ended session 08
+WHAT I DELIBERATELY DID NOT DO: shorten the eight deliverables. D3 and D4 are the reason a planner
+   exists here at all, and cutting them to save prompt length would be optimizing the wrong number.
+```
+
+⚠ **The honest count for the record: three of my prompts in this campaign have now contained a
+self-contradiction a Worker found and I did not — 04/01's C-7, 07/01's key total, 08/01's manifest
+prohibition. `AP_DEFECTS.md` D-04's thesis is that an author cannot review their own omissions, and I
+am now its fourth, fifth and sixth data point.** The reissue asks the planner to look for a fourth in
+as many words, because assuming one exists is cheaper than being surprised by it.
+
+### 40.5 ⭐ B6 IS `PASS` — Cooperator-observed, and it is the one evidence class no gate produces
+
+He ran the batch and answered `PASS`. ⇒ **`cfd1215` now has rendered-output confirmation from the
+Cooperator's own eyes:** the English picker unchanged, the eight translated names present in Slovak,
+and a rejected Danish word naming the Danish lexicon in both English and Slovak.
+
+```text
+⛔ WHAT IT DOES AND DOES NOT MEAN, because the distinction is the whole point of §8.1 item 2:
+   IT DOES     satisfy the rendered-output rule for this slice — "for anything that renders, render it,
+               or do not claim it". The autonomy grant DEFERS his observation; it never waives it.
+   IT DOES NOT make the slice independently accepted. The implementation was a subagent's and the
+               correction was mine, so the evidence posture stays NON-INDEPENDENT permanently. His
+               observation is a Cooperator function; independence is a Worker function, and the two are
+               different axes.
+```

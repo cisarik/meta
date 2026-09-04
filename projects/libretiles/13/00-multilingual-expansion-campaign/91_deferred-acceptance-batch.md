@@ -305,4 +305,12 @@ B6-5  ⛔ KNOWN LIMITS, so you are not surprised:
 > ANSWERED: `PASS`.** The Cooperator confirmed that Slovak `Nie je v švédskom lexikóne` is correct as
 > shipped, so plain `v` is right and the pre-existing `Nie je v slovenskom lexikóne` needs no change
 > either. ⇒ **The `v` / `vo` question is CLOSED and the eight later catalogs may copy the shipped
-> Slovak pattern without reopening it.** B6-1, B6-2, B6-3 and B6-5 remain live for his batch.
+> Slovak pattern without reopening it.**
+>
+> ⭐ **AND THE WHOLE OF B6 IS NOW `PASS`, observed by the Cooperator himself.** He ran B6-1, B6-2,
+> B6-3 and B6-5 and reported `PASS`. ⇒ `cfd1215` has what no other commit of this session has:
+> **Cooperator-observed confirmation of rendered output**, which is the one evidence class no gate in
+> this repository can produce and which the autonomy grant defers rather than waives. It does NOT make
+> the slice independently accepted — the implementation was a subagent's and the correction was the
+> ORCHESTRATOR's, so the evidence stays non-independent — but the rendered-output rule is satisfied for
+> this slice and that is worth stating plainly.
