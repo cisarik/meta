@@ -1357,19 +1357,114 @@ ICELANDIC 104 tiles (2016 Tinderbox edition under Mattel licence). Ð is a 2-poi
 
 ---
 
-## 24. Next step
+## 25. Swedish and Icelandic — eleventh and twelfth variants — `8a50ded`
+
+### 25.1 Swedish: a carve-out inside a carve-out, and a rule I got wrong first
 
 ```text
-NEXT   Swedish, with the Ü correction in 23.4 applied from the start.
-       Icelandic, once its distribution table is fully extracted; expect NO fold rule.
-THEN   Slovenian — measure whether it needs C1 at all.
+100 tiles · 27 kinds · 29 alphabet (Q and W have no tile) · 822 919 words
+LGPL-3.0-only — the CLEANEST single grant of any language here: one maintainer, one licence,
+no "or later", no second document to contradict it.
+```
+
+The sourced note has THREE classes, not two:
+
+```text
+Å Ä Ö      have tiles           -> KEPT, and they are tile faces
+Ü          no tile, NOT ignored -> NOT folded, then DROPPED by the shape filter
+É è á ç ć  no tile, ignored     -> FOLDED
+```
+
+⛔ **My first measurement folded Ü, and that was wrong.** It would have made `müsli` playable as
+MUSLI — a rule the Swedish edition does not have. **No word count, file size or digest could ever
+have revealed it.** Caught by reading the source note carefully *before* a line of the script
+existed, and now asserted in two places: the build fails if `musli` is present, and the G14 probe
+row carries `musli` in its NEGATIVE set — the first probe in this project to use a negative word
+that is not the nonsense control.
+
+⚠ That is the pattern worth keeping: **the cheapest place to catch a wrong rule is before the
+code exists**, and the second cheapest is an assertion that names the exact artefact the wrong
+rule would produce.
+
+### 25.2 Icelandic: ⭐ the first language since Polish with NO rule at all
+
+```text
+104 tiles · 32 tile kinds EQUAL to the 32-letter alphabet, BOTH directions — only Italian has
+otherwise achieved that · 200 182 words · CC-BY-SA-3.0
+```
+
+MEASURED: the ten non-ASCII letters its lexicon uses —
+`ð 69 668 · ó 34 348 · á 26 191 · æ 24 749 · ö 23 294 · í 19 912 · ú 13 964 · þ 8 883 ·
+ý 6 450 · é 6 108` — and **every one of them is a tile.** A fold would destroy **145 877 playable
+words** instead of enabling any. The only filter is by shape: 77 loanwords carrying c/w/z/q.
+
+⛔ **"No rule" is the easiest thing for a later editor to break**, by analogy with the two Nordic
+siblings that do fold. So the build and the probe both assert the fold ARTEFACTS are absent —
+`madur`, `island`, `fjordur`, `godur` — and all six required words change under a fold. **The
+mistake is caught from both directions.**
+
+### 25.3 The licence question ran BOTH ways this slice
+
+```text
+NORWEGIAN  silence -> BLOCKED. A directory convention is not a grant.
+ICELANDIC  mixed   -> SHIPPED as CC-BY-SA-3.0. The base wordlist is public domain and the
+                      morphological additions are CC BY-SA 3.0; the two are indistinguishable
+                      inside is.dic, so share-alike propagates.
+```
+
+⚠ **Claiming public domain for the whole would have UNDER-stated a real obligation** — the mirror
+of over-claiming, and just as wrong. Determinacy, not permissiveness, is what makes a licence
+shippable: Icelandic names both components and both versions, Norwegian names neither.
+
+### 25.4 Evidence
+
+```text
+--check  swedish.txt        651828f138709520178b55377471d210206eb43da66986699c62ddbb18299a37  IDENTICAL
+         swedish.LICENSE    52917a48987b296395c11d3e729cd26706706742a7bb6be3655f121d1cd189ad  IDENTICAL
+         icelandic.txt      e074a89969c4193c56f93efd10ff10d55571324ea0edc0d0b3a320cb5e5d3fb1  IDENTICAL
+         icelandic.LICENSE  f960f4e10cf58c1cc8476c0ef2fdcad8798a51ca46553152f73f6687f741602f  IDENTICAL
+gates    ruff · mypy 85 · manage.py check · pytest 742 passed 4 skipped · collect-only 746 ·
+         validate_lexicons THIRTEEN assets 0 failed · typecheck 0 · vitest 450 passed 3 skipped ·
+         lint 0 · build 0, ELEVEN dynamic ZERO static
+arithmetic  swedish 100/27/29 · icelandic 104/32/32 with zero either way
+friction three test inventories. pytest 692 -> 742. Zero engine changes.
+posture  ⛔ NON-INDEPENDENT. Orchestrator-direct under D13-8.
+```
+
+### 25.5 Twelve of twenty-four — and the tile-face taxonomy is now eight shapes
+
+```text
+NO RULE            slovak · czech · polish · ⭐ icelandic   every accented letter IS a tile
+TOTAL FOLD         afrikaans · italian                     no marked letter has a tile
+TOTAL + LIGATURE   dutch                                   ĳ -> ij; NFD walks past a ligature
+PARTIAL FOLD       german (ä ö ü) · portuguese (ç) · danish (æ ø å) · swedish (å ä ö)
+FOLD WITH CARVE-OUT swedish   Ü is neither folded NOR a tile face -> dropped
+SHAPE FILTER       danish (þ ð) · swedish (ü ł æ ø μ) · icelandic (c w z q) · portuguese-adjacent
+FREE FROM CASEFOLD german ß -> ss · greek ς -> σ            Unicode does it already
+TOOL DEFECT GUARD  danish 11 truncated lines · all others assert ZERO
+```
+
+⇒ **Eight shapes, none of them in the engine.** Twelve languages, zero engine changes, and the
+friction per language is exactly one build script plus three test inventories.
+
+---
+
+## 26. Next step
+
+
+```text
+NEXT   Slovenian — measure whether it needs C1 at all before assuming it does.
+       ⇒ After that, every language the proven pipeline can reach WITHOUT C1 is shipped.
        C1 (E3) — still the highest-leverage item: hu · hr · es · el · bg · ru in one slice, and
        the only slice needing a Worker plus fresh independent acceptance.
 LATER  C2 as an explicit declared blank-target set. The case list keeps growing:
          afrikaans blank→X Z · italian blank→J K W X Y · danish blank→Q · swedish blank→Q W Ü Æ ·
          turkish blank NOT→Q W X
        C3 narrowed to Turkish. Spylls route for French and Hungarian.
-       _lexicon_build.py — NINE scripts now, well past the stated trigger.
+       _lexicon_build.py — ELEVEN scripts now, far past the stated trigger. ⚠ This is the
+       largest single piece of technical debt in the campaign and it should be paid before the
+       next batch, because the shared interface can now be designed from EIGHT measured shapes
+       rather than guessed. --check on all eleven makes the refactor byte-verifiable.
 BLOCKED, recorded, not hidden:
        finnish   no plain affix pair (Voikko)
        malay     no ms_MY source

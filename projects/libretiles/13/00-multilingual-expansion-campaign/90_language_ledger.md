@@ -124,10 +124,10 @@ ledger opened with.
 10  Portuguese    PLAYABLE     not-started MEASURED ok GPL|LGPL|MPL sourced none***   yes
 11  Dutch         PLAYABLE     not-started MEASURED ok BSD|CC   sourced    none**     yes
 12  Danish        PLAYABLE     not-started MEASURED ok GPL|LGPL|MPL sourced none***   yes
-13  Swedish       not-started  not-started 2 pairs, lic unread  in-compil. C3?        no
+13  Swedish       PLAYABLE     not-started MEASURED ok LGPL-3.0 sourced    none***    yes
 14  Norwegian     BLOCKED      not-started ⛔ NO EXPLICIT GRANT  sourced    (n/a)      no
 15  Finnish       not-started  not-started ⛔ NO SOURCE          in-compil. C3?        no
-16  Icelandic     not-started  not-started af pair, lic present in-compil. C3?        no
+16  Icelandic     PLAYABLE     not-started MEASURED ok CC-BY-SA sourced    NONE ⭐     yes
 17  Croatian      not-started  not-started af pair, lic unread  in-compil. C1         no
 18  Slovenian     not-started  not-started af pair, lic unread  in-compil. C1?        no
 19  Turkish       not-started  not-started af pair 36 MB, LIC   in-compil. C2 C3      no
@@ -138,7 +138,7 @@ ledger opened with.
 ```
 
 ```text
-playable  10 / 24       UI locales  4 / 24
+playable  12 / 24       UI locales  4 / 24
 lexicon reachable by the proven pipeline   22 / 24
 lexicon with NO known licence-clean source  2 / 24   Finnish · Malay
 lexicon source exists but the EXPANDER cannot render it  1 / 24   French — see row 07
@@ -149,6 +149,8 @@ lexicon exists but carries NO EXPLICIT LICENCE GRANT     1 / 24   Norwegian — 
 `none**`     = needed the diacritic fold PLUS an IJ-LIGATURE REWRITE. Dutch, row 11, and it is
                the sharpest asset-level rule so far: 125 444 upstream forms carry U+0133 and NFD
                does not decompose a ligature, so a fold alone leaves 121 891 words unreachable.
+`NONE ⭐`     = needed NO tile-face rewrite AT ALL — Icelandic, row 16, the first since Polish.
+               All ten non-ASCII letters it uses are TILES.
 `none***`    = needed a PARTIAL fold — German, row 06. Ä Ö Ü are TILES and must survive while
                loanword accents fold. A total fold would silently rewrite 155 641 playable
                words. And its eszett rule turned out to need no code at all: Unicode full case
@@ -688,18 +690,44 @@ tests                  auto-enrolled; probe (`hus`, `københavn`, `cafe`) — pl
 blockers               none for gameplay.
 ```
 
-## 13 · Swedish
+## 13 · Swedish — ⭐ PLAYABLE, landed 2026-09-03 at `8a50ded`
 
 ```text
-gameplay status        not-started.
-UI-localization        not-started.
-dictionary status      UNSOURCED. No probe run.
-distribution source    UNSOURCED.
-special-rule reqs      LEAD: Å Ä Ö are distinct letters with their own tiles. Same caution as
-                       Danish — it may need no folding at all.
-capability required    C3 pending measurement; possibly none.
-tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED.
+gameplay status        PLAYABLE. The eleventh variant.
+UI-localization        not-started; degrades gracefully.
+dictionary status      MEASURED ok. swedish.txt 822 919 words / 10 835 202 B, duplicates 0,
+                       non_nfc 0, ZERO undecodable lines. --check IDENTICAL.
+                       ⭐ THE CLEANEST SINGLE GRANT OF ANY LANGUAGE HERE. LICENSE_en_US.txt:
+                       "This dictionary is made available subject to the terms of GNU Lesser
+                       General Public License Version 3." One maintainer (Göran Andersson), one
+                       licence, no "or later", no second document to contradict it.
+                       ⇒ LGPL-3.0-only. Both licence files embedded — the English one carries the
+                         grant asserted, the Swedish one is the author's own wording of it.
+distribution source    SOURCED. 100 tiles, 2 blanks, 27 tile kinds; alphabet_order 29 (A-Z plus
+                       Å Ä Ö). Q and W have no tile — "found only in loanwords, are absent but
+                       can be played with a blank", another C2-EXTENSION case.
+special-rule reqs      ⛔ A CARVE-OUT INSIDE A CARVE-OUT, and it is sourced verbatim: "Å, Ä and Ö
+                       have separate tiles as these are considered separate letters in the
+                       Swedish alphabet; other diacritics like that on É are ignored (EXCEPT Ü).
+                       Ü and Æ require a blank, and as of 2010 only occur in one and three
+                       playable words respectively."
+                       ⇒ THREE classes, not two:
+                           Å Ä Ö      have tiles          -> KEPT, and they are tile faces
+                           Ü          no tile, NOT ignored -> NOT folded, then DROPPED by shape
+                           É è á ç ć  no tile, ignored     -> FOLDED
+                       MEASURED: 3 853 forms rewritten; 320 299 keep å/ä/ö; 155 dropped by shape
+                       — ü 124 · ł 14 · æ 9 · ø 9 · μ 1 (`atatürk`, `bülow`, `bjørnson`,
+                       `jarosław`).
+                       ⛔ MY FIRST MEASUREMENT FOLDED Ü AND THAT WAS WRONG. It would have made
+                         `müsli` playable as MUSLI — a rule this edition does not have, and one
+                         no word count, file size or digest could ever reveal. Caught by reading
+                         the source note carefully BEFORE a line of the script existed.
+                         The build now asserts `musli` is ABSENT, and so does the G14 probe row.
+capability required    none. The rule lives in the asset.
+tests                  auto-enrolled; probe (`hus`, `väg`, `cafe`) with `musli` in the NEGATIVE
+                       set — the first probe row in the project to use a negative word that is
+                       not the nonsense control.
+blockers               none for gameplay.
 ```
 
 ## 14 · Norwegian — ⛔ BLOCKED: no explicit licence grant for the word list
@@ -773,20 +801,56 @@ blockers               distribution UNSOURCED · expansion size UNMEASURED and p
                        uncommittable · lexicon licence UNVERIFIED.
 ```
 
-## 16 · Icelandic
+## 16 · Icelandic — ⭐ PLAYABLE, landed 2026-09-03 at `8a50ded`. NO RULE AT ALL.
 
 ```text
-gameplay status        not-started.
-UI-localization        not-started.
-dictionary status      UNSOURCED. No probe run.
-distribution source    UNSOURCED.
-special-rule reqs      LEAD: Þ Ð Æ Ö and the accented vowels are distinct letters with their
-                       own tiles. ⚠ G7 — font glyph coverage — becomes live here as well as
-                       at Greek and Cyrillic.
-capability required    C3 pending measurement; possibly none.
-tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED ·
-                       glyph coverage unverified (G7).
+gameplay status        PLAYABLE. The twelfth variant.
+UI-localization        not-started; degrades gracefully.
+dictionary status      MEASURED ok. icelandic.txt 200 182 words / 2 537 966 B, duplicates 0,
+                       non_nfc 0, ZERO undecodable lines. --check IDENTICAL.
+                       ⛔ MIXED PROVENANCE, and the expression follows the MORE RESTRICTIVE
+                       component. license.txt states both:
+                         "The wordlist was developed by Orðabók Háskólans … and was released
+                          into the public domain."
+                         "words in the spell checker with additional morphological information
+                          are from the Icelandic Wiktionary Project … under a Creative Commons
+                          Attribution-ShareAlike 3.0 Unported license (CC BY-SA 3.0)."
+                       ⇒ The two are INDISTINGUISHABLE inside is.dic, so the derived asset is
+                         CC-BY-SA-3.0: share-alike propagates, public-domain material imposes
+                         nothing. Claiming public domain for the whole would UNDER-STATE a real
+                         obligation, which is the mirror of over-claiming and just as wrong.
+                       ⚠ Unlike Norwegian this is DETERMINATE — both components named, both
+                         licences named with versions — so it ships. The build asserts BOTH
+                         statements, because the claim is a consequence of the pair.
+distribution source    SOURCED. ⭐ 104 tiles, 2 blanks, 32 tile kinds EQUAL to the 32-letter
+                       Icelandic alphabet exactly, in BOTH directions. Only Italian has
+                       otherwise achieved that. Verified: 102 letter tiles + 2 blanks = 104.
+                       ⚠ THREE DISTRIBUTIONS EXIST and one ships:
+                         2016 Tinderbox, 104 tiles, under Mattel licence  <- SHIPPED, because it
+                             is the actual Scrabble edition, consistent with every other row
+                         Krafla, 100 tiles — "independent of the Scrabble brand", but sanctioned
+                             by Iceland's clubs for tournaments and the national championship,
+                             and supported by Netskrafl. ⇒ A C5 candidate with a real claim.
+                         pre-2016, 104 tiles
+special-rule reqs      ⭐ NONE. THE FIRST LANGUAGE SINCE POLISH WITH NO TILE-FACE REWRITE.
+                       MEASURED: the ten non-ASCII letters its lexicon uses are
+                         ð 69 668 · ó 34 348 · á 26 191 · æ 24 749 · ö 23 294 · í 19 912 ·
+                         ú 13 964 · þ 8 883 · ý 6 450 · é 6 108
+                       and EVERY ONE OF THEM IS A TILE. A fold would destroy 145 877 playable
+                       words instead of enabling any.
+                       Only filter is by SHAPE: 77 loanword forms carrying c/w/z/q — not
+                       Icelandic letters, no tiles — are dropped (`azerbaijaníska` and kin).
+                       ⛔ "NO RULE" IS THE EASIEST THING FOR A LATER EDITOR TO BREAK, by analogy
+                         with the two Nordic siblings that DO fold. So the build and the probe
+                         both assert the fold ARTEFACTS are ABSENT — `madur`, `island`,
+                         `fjordur`, `godur` — and all six required words change under a fold.
+                         The mistake is caught from both directions.
+capability required    NONE.
+tests                  auto-enrolled; probe (`maður`, `þú`, `fjörður`) with `madur` and
+                       `fjordur` in the NEGATIVE set.
+blockers               none for gameplay. ⚠ G7 (font glyph coverage for þ ð æ ö and the accented
+                       vowels) is still unverified by RENDERING — closed by inspection only,
+                       and it becomes live again at Greek and Cyrillic.
 ```
 
 ## 17 · Croatian
