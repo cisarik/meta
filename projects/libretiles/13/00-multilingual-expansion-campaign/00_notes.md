@@ -1024,20 +1024,125 @@ scripts at once.
 
 ---
 
-## 18. Next step
+## 19. German playable, French blocked, and C3 has largely evaporated — `0deac4a`
+
+### 19.1 ⛔ C3's SCOPE COLLAPSED, and it is a measurement, not an opinion
+
+C3 — variant-declared normalization — was the capability I called *"clearly the highest-leverage
+capability left … it unlocks seven languages."* Then I measured what those seven actually need:
 
 ```text
-NEXT   C3 — variant-declared normalization. Now clearly the highest-leverage capability left:
-       it unlocks German, French, Danish, Swedish, Norwegian, Icelandic and part of Turkish,
-       and it is the ONLY way to handle a language where SOME accents fold and others do not.
-       German is the decisive case: ß -> SS while Ä Ö Ü stay distinct.
-       Design note earned this batch: absence of the field must mean today's behaviour exactly,
-       and the field must NOT be reachable by the build-time trick, because German's rule is
-       partial rather than total.
-THEN   the four remaining single-code-point rows, then C1 -> B1/B4/B6.
-BLOCKED and recorded:  Finnish (no plain affix pair) · Malay (no ms_MY source)
-E3     C1 remains the single slice needing a Worker and fresh independent acceptance.
+German     'ß'.casefold() == 'ss'   ⇒ Python implements Unicode FULL case folding, and every
+                                      build script already casefolds. NOTHING TO BUILD.
+                                      Ä Ö Ü are TILES, so they need PRESERVING, not folding —
+                                      a PARTIAL asset rule, no engine change.
+Greek      'ς'.casefold() == 'σ'    ⇒ final sigma is ALREADY unified by the default. Its
+                                      accented vowels need a total fold — an asset rule.
+French     total fold + œ/æ ligature rewrite   ⇒ asset rules, both proven shapes.
+da sv no   Æ Ø Å / Å Ä Ö are TILES  ⇒ partial fold at most, the German shape. Asset rule.
+Icelandic  Þ Ð Æ Ö and accented vowels are all TILES ⇒ possibly no rule at all.
+Turkish    ⛔ THE ONE GENUINE CASE. MEASURED:
+               'İ'.casefold() -> 'i' + U+0307, TWO code points, and NFC does not recompose
+               that sequence has isalpha() == False
+               ⇒ `_filter_words`'s `word.isalpha()` filter would SILENTLY DROP every Turkish
+                 word containing İ, and the board token İ would never match the lexicon.
 ```
+
+⇒ **C3 is a Turkish problem, not a seven-language problem.** Every other language on that list
+is a build-time asset rule of a shape already shipped three times. That is a large reduction in
+remaining engine work, and it was invisible until each language was measured individually.
+
+⚠ **What C3 must therefore actually be**, when Turkish arrives: not "a manifest field selecting a
+normalizer" in the abstract, but specifically **a normalization that does not casefold İ into a
+mark sequence, and a word-shape filter that does not require `isalpha()` of a combining mark.**
+Narrower, sharper, and cheaper than the original framing.
+
+### 19.2 German — the partial fold, and a rule that needed no code
+
+```text
+102 tiles · 29 kinds = A-Z + Ä(6) Ü(6) Ö(8) · no ß tile · 709 844 words · 10.1 MB
+LICENCE  GPL-2.0-only OR GPL-3.0-only. Upstream grants "Version 2 oder 3" — a choice between
+         exactly those two, so NOT -or-later, which would grant a version nobody wrote.
+FIRST ISO8859-1 UPSTREAM. de_DE_frami.aff declares SET ISO8859-1, so unmunch emits latin-1 and
+         the README is latin-1 too. The generalized first-SET-directive assertion caught it.
+         ⇒ The Czech script's encoding comment warned "that difference becomes mojibake in the
+           NEXT language". German was that next language, and the warning paid off exactly once,
+           which is all a warning has to do.
+THE PARTIAL FOLD  223 of 709 883 forms (0.031%) carry é ñ á ç ê à â è — loanwords, no tiles.
+         155 641 words KEEP an umlaut. A total fold would have rewritten all 155 641 while every
+         count-based gate stayed green. The rule is per-character: keep a marked letter that has
+         a tile, fold one that does not. The build asserts a NON-ZERO umlaut count and carries
+         two preservation witnesses in its six-word gate.
+ENGINE CONSTRAINT FOUND: `canonicalize_tile_token('ß')` returns 'SS' because `'ß'.upper()` is
+         'SS', so `_parse_asset_token` rejects a declared 'ß' as `noncanonical`. ß therefore
+         CANNOT appear in a manifest at all. Harmless here — the edition has no ß tile — but a
+         real constraint for any future variant that wants one.
+QUALITY  unmunch expands affixes, not COMPOUNDING, and German Scrabble leans on compounds.
+         `fussball` is measurably absent. Same limitation as every shipped lexicon; it bites
+         German hardest. Recorded, not hidden.
+```
+
+### 19.3 ⛔ French is BLOCKED, and it is a new blocker class
+
+Licence and distribution are both fine — MPL-2.0 Grammalecte 7.0, 102 tiles sourced. **The
+expander is the blocker.**
+
+```text
+fr.dic declares 84 172 stems; unmunch emits 1 470 363 lines
+  only 80 312 are plain alphabetic
+  1 168 520 lines are UNEXPANDED FLAG DATA: `yotta/S.|A`, `Allemagne0/L'D'Q'|`
+  apostrophes appear 5 603 572 times — French elision prefixes, correctly excluded for Scrabble
+⇒ playable output ~77 000 words. The official French lexicon (ODS) is of the order of 400 000.
+```
+
+**A French variant whose dictionary rejects most valid French words is a defect that looks like
+a feature, so French is not shipped.** `fr.aff` uses `FLAG long`, and the Hungarian probe already
+established that Spylls 0.1.7 resolves affix structures the C `unmunch` cannot. **French joins
+Hungarian on the Spylls route.** Its transformation rules are already measured and waiting:
+total fold plus `œ→oe` / `æ→ae`, plus a shape filter to drop 470 superscript/Greek artifacts.
+
+⇒ **This is the third distinct blocker class in the campaign, and naming them separately matters:**
+
+```text
+NO SOURCE        Finnish (no plain affix pair — Voikko) · Malay (no ms_MY)
+EXPANDER FAILS   French (unmunch cannot render FLAG long inflections)
+SIZE             Hungarian (~301 M forms) — and Turkish is the next candidate, 36 MB upstream
+```
+
+### 19.4 Evidence
+
+```text
+--check  german.txt      f4df51be4c52e2aec794ed2bfc6ff842779da5db184f49c3db872aae449a51b5  IDENTICAL
+         german.LICENSE  f4fde505134ad3a2840835d3c15d80c5e55f2310144d48bc3833be056a590b32  IDENTICAL
+gates    ruff · mypy 85 · manage.py check · pytest 642 passed 4 skipped · collect-only 646 ·
+         validate_lexicons NINE assets 0 failed · typecheck 0 · vitest 450 passed 3 skipped ·
+         lint 0 · build 0, ELEVEN dynamic ZERO static
+arithmetic  102 tiles / 29 kinds / 29 alphabet, zero either way
+friction    three test inventories (P13 is now generic). pytest 617 -> 642. Zero engine changes.
+posture     ⛔ NON-INDEPENDENT. Orchestrator-direct under D13-8.
+```
+
+---
+
+## 20. Next step
+
+```text
+NEXT   the remaining rows the proven pipeline reaches, cheapest first:
+         Portuguese  pt_PT — 120 tiles and THREE blanks, the strongest test that bag size and
+                     blank count are truly data-derived. Also a pt_PT/pt_BR C5 question.
+         Danish · Swedish · Norwegian · Icelandic — partial folds at most, German's shape
+         Croatian · Slovenian — need C1 for digraph tiles (hr) / possibly nothing (sl)
+         Greek · Bulgarian · Russian — need C1, then they are easier than Hungarian
+         Spanish — 23 country .dic files, needs C1 + C5
+THEN   C1 (E3, the one Worker slice) unlocks hu · hr · es · el · bg · ru in one stroke.
+       ⇒ C1 is now the single highest-leverage item left, ahead of every capability.
+LATER  C3, narrowed to Turkish only, per 19.1.
+       C2, redesigned as an explicit declared blank-target set, per 17.2.
+       Spylls route for French and Hungarian.
+       _lexicon_build.py extraction — SEVEN scripts now; trigger was "before the tenth".
+BLOCKED and recorded:  Finnish · Malay (no source) · French (expander) · Hungarian (size)
+```
+
 
 
 

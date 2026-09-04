@@ -117,8 +117,8 @@ ledger opened with.
 04  Polish        playable     shipped     MEASURED ok          sourced    none       yes
 23  Afrikaans     PLAYABLE     not-started MEASURED ok LGPL-2.1 sourced    none*      yes
 05  Hungarian     not-started  staged      MEASURED too-big     in-compil. C1         no
-06  German        not-started  not-started af pair, lic unread  in-compil. C3         no
-07  French        not-started  not-started af pair, lic unread  in-compil. C3         no
+06  German        PLAYABLE     not-started MEASURED ok GPLv2|v3 sourced    none***    yes
+07  French        BLOCKED      not-started ⛔ unmunch CANNOT   sourced    (n/a)      no
 08  Italian       PLAYABLE     not-started MEASURED ok GPL-3.0  sourced    none*      yes
 09  Spanish       not-started  not-started 23 pairs, lic LGPL+  in-compil. C1 C4 C5   no
 10  Portuguese    not-started  not-started 2 pairs, lic unread  in-compil. C5?        no
@@ -138,15 +138,20 @@ ledger opened with.
 ```
 
 ```text
-playable  7 / 24        UI locales  4 / 24
+playable  8 / 24        UI locales  4 / 24
 lexicon reachable by the proven pipeline   22 / 24
 lexicon with NO known licence-clean source  2 / 24   Finnish · Malay
+lexicon source exists but the EXPANDER cannot render it  1 / 24   French — see row 07
 `in-compil.` = present in the Wikipedia Official-editions compilation, table not yet extracted
 `none*`      = needed a DIACRITIC FOLD, solved in the LEXICON at build time rather than by a
                capability. Afrikaans and Italian. See rows 23 and 08.
 `none**`     = needed the diacritic fold PLUS an IJ-LIGATURE REWRITE. Dutch, row 11, and it is
                the sharpest asset-level rule so far: 125 444 upstream forms carry U+0133 and NFD
                does not decompose a ligature, so a fold alone leaves 121 891 words unreachable.
+`none***`    = needed a PARTIAL fold — German, row 06. Ä Ö Ü are TILES and must survive while
+               loanword accents fold. A total fold would silently rewrite 155 641 playable
+               words. And its eszett rule turned out to need no code at all: Unicode full case
+               folding already maps ß to ss.
 ```
 
 ⚠ **The two UNSOURCED columns are no longer the blocker. Licence READING is.** A `.dic` pair
@@ -341,35 +346,109 @@ blockers               C1 not landed · distribution UNSOURCED · the lexicon ex
                        tested TOGETHER.
 ```
 
-## 06 · German
+## 06 · German — ⭐ PLAYABLE, landed 2026-09-03 at `0deac4a`
 
 ```text
-gameplay status        not-started.
-UI-localization        not-started.
-dictionary status      UNSOURCED. No probe run.
-distribution source    UNSOURCED.
-special-rule reqs      LEAD: ß plays as SS, but Ä ≠ A, Ö ≠ O, Ü ≠ U. That asymmetry is the
-                       whole reason C3 must be a DATA-DEFINED rule and never a global
-                       strip_diacritics().
-capability required    C3 — variant-declared normalization.
-tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED · C3 not landed.
+gameplay status        PLAYABLE. The eighth variant.
+UI-localization        not-started; degrades gracefully.
+dictionary status      MEASURED ok. german.txt 709 844 words / 10 079 942 B, duplicates 0,
+                       non_nfc 0. LICENCE `GPL-2.0-only OR GPL-3.0-only` — upstream grants
+                       "GNU GPL, Version 2 oder 3", a choice between exactly those two, so the
+                       expression is an OR of two -only identifiers and NOT GPL-2.0-or-later,
+                       which would also grant a version nobody wrote.
+                       ⛔ FIRST ISO8859-1 UPSTREAM. de_DE_frami.aff declares SET ISO8859-1, so
+                       unmunch emits latin-1 AND README_de_DE_frami.txt is latin-1. Decoding
+                       either as UTF-8 puts replacement characters into a shipped word list.
+                       This is exactly the hazard build_czech_lexicon.py's encoding comment
+                       warned the next language about, and the generalized first-SET-directive
+                       assertion is what caught it.
+                       REPRODUCIBLE: build_german_lexicon.py, four pinned SHA-256s,
+                       --check IDENTICAL on both artifacts.
+                       ⚠ QUALITY NOTE, recorded not hidden: unmunch expands AFFIXES, not
+                       COMPOUNDING, and German Scrabble leans on compounds heavily. `fussball`
+                       is measurably absent. This is the same limitation every shipped lexicon
+                       here has, but it bites German hardest.
+distribution source    SOURCED. 102 tiles, 2 blanks, 29 tile kinds = A-Z plus Ä (6 pts),
+                       Ü (6 pts), Ö (8 pts). alphabet_order 29 in DIN-5007-1 order (umlaut
+                       immediately after its base letter), exact equality both directions.
+                       ⛔ ß IS DELIBERATELY ABSENT FROM alphabet_order, and it CANNOT be added:
+                       MEASURED, `canonicalize_tile_token('ß')` returns 'SS' because
+                       `'ß'.upper() == 'SS'`, so `_parse_asset_token` rejects a declared 'ß'
+                       with code `noncanonical`. The edition has no ß tile either, so nothing
+                       is lost — but it is a real engine constraint worth knowing before some
+                       future variant tries to declare one.
+special-rule reqs      ⛔ TWO FINDINGS, and the first one deletes work rather than adding it.
+                       1. ESZETT NEEDS NO RULE. `'ß'.casefold() == 'ss'` — Python implements
+                          Unicode FULL case folding, and `_filter_words` already casefolds.
+                          MEASURED: zero ß survives, `strasse` is present. The transformation
+                          C3 was scoped for is, for German, already in the standard library.
+                       2. THE FOLD MUST BE PARTIAL. Ä Ö Ü are TILES, so they must survive;
+                          loanword accents must fold. MEASURED: 223 of 709 883 forms (0.031%)
+                          carry é 198, ñ 11, á 9, ç 7, ê 2, à 2, â 2, è 1 — and 155 641 words
+                          keep an umlaut. A TOTAL fold would rewrite all 155 641 while every
+                          count-based gate stayed green.
+                          ⇒ The rule is per-character: keep a marked letter that HAS a tile,
+                            fold one that does not. The build asserts a NON-ZERO umlaut count
+                            and carries two preservation witnesses (`käse`, `über`) in its
+                            six-word gate, so a fold that became total fails the build.
+capability required    none. Both rules live in the asset; one of them needed no code.
+tests                  auto-enrolled; probe row is (`haus`, `strasse`, `käse`) — plain,
+                       eszett witness, preservation witness.
+                       ⚠ NAME COLLISION, harmless but confusing: `test_g26b` and `test_t12`
+                       use "german" as a SYNTHETIC never-loadable slug for the
+                       slug_stem_mismatch rule. Both monkeypatch the variants directory, so
+                       they remain isolated and still pass — verified. Left unchanged, because
+                       they are correct; recorded so the next reader is not misled.
+blockers               none for gameplay. Compounding is a quality limitation, not a blocker.
 ```
 
-## 07 · French
+## 07 · French — ⛔ BLOCKED: the licence and distribution are fine, the EXPANDER is not
 
 ```text
-gameplay status        not-started.
+gameplay status        not-started. BLOCKED, and it is a new blocker class.
 UI-localization        not-started.
-dictionary status      UNSOURCED. No probe run.
-distribution source    UNSOURCED.
-special-rule reqs      LEAD: accented vowels play as their base letter (É plays as E). This
-                       is the OPPOSITE of the shipped Slovak and Czech fork, which is why
-                       C3's absence must mean today's behaviour exactly.
-capability required    C3.
+dictionary status      ⛔ SOURCE AND LICENCE ARE BOTH FINE. fr_FR ships fr.dic / fr.aff from
+                       Grammalecte (Olivier R., grammalecte.net) version 7.0 under MPL-2.0 —
+                       clean, permissive, no ambiguity.
+                       ⛔ BUT `unmunch` CANNOT RENDER IT. MEASURED at the pinned commit:
+                         fr.dic declares 84 172 stems
+                         unmunch emits 1 470 363 lines
+                         only 80 312 are plain alphabetic; 1 390 051 contain ' / or |
+                         apostrophes appear 5 603 572 times — French elision prefixes
+                             (PFX L', D', QU') which Scrabble cannot use, correctly excluded
+                         BUT 1 168 520 lines are UNEXPANDED FLAG DATA, e.g.
+                             `yotta/S.|A`      and      `Allemagne0/L'D'Q'|`
+                         ⇒ the affix SUFFIX inflections were never expanded; unmunch emitted
+                           the stem plus its raw flag string instead.
+                       ⇒ playable output is ~77 000 words. The official French Scrabble lexicon
+                         (ODS) is of the order of 400 000. Shipping this would be a variant that
+                         REJECTS most valid French words — a quality defect that looks like a
+                         success, which is exactly what closure condition 4 forbids.
+                       ⛔ SO FRENCH IS NOT SHIPPED. This is a recorded blocker, not a silent
+                         omission, and not a reason to lower the bar.
+                       ROUTE OUT, already proven elsewhere in this project: `fr.aff` uses
+                         `FLAG long`, and the Hungarian probe established that Spylls 0.1.7
+                         resolves affix structures that defeat the C `unmunch` (there it was a
+                         1 559-entry AF alias table). French joins Hungarian on the Spylls
+                         route. Alternatively, a different licence-clean French word list.
+distribution source    SOURCED. 102 tiles from the Official-editions compilation. Not blocked.
+special-rule reqs      MEASURED and ready for when the lexicon is: a TOTAL diacritic fold
+                       (é 21 931, è 2 100, ï 638, â 398, ê 276, ç 211, î 193, ô 186, û 148 …)
+                       PLUS a LIGATURE rewrite `œ -> oe` and `æ -> ae` — 152 œ occurrences, and
+                       NFD does not decompose a ligature, so `cœur` and `œuf` are unreachable
+                       without it. Exactly the Dutch shape.
+                       ⚠ ALSO: 470 forms remain non-a-z after both rules — superscript ᵉ 114,
+                       Greek μ 86, superscript ˢ 63. Those are abbreviation artifacts, not
+                       playable words, and must be DROPPED by shape rather than rewritten.
+                       ⚠ AND a ruleset question: upstream documents FOUR French dictionaries
+                       (Classique recommended · Réforme 1990 · Toutes variantes · …). Which one
+                       `fr.dic` is must be established before shipping. C5 candidate.
+capability required    none in the engine. The blocker is the build pipeline.
 tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED · C3 not landed.
+blockers               ⛔ the expander cannot produce a usable French word list. Everything else
+                       — licence, distribution, transformation rules — is measured and ready.
 ```
+
 
 ## 08 · Italian — ⭐ PLAYABLE, landed 2026-09-03 at `dab6d0d`
 
