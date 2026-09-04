@@ -1830,6 +1830,137 @@ because it makes the SPELLING SPACE the prompt's obligation rather than the Work
 
 ---
 
+## 30. ⭐ C1a LANDED at `529e691` — third issue, PASS, and I verified it myself
+
+```text
+prompt   05_implementation_00.md   task MEC-C1a-third, tier E3, reasoning High
+report   05_report_00.md           status PASS, implementation-PASS
+commit   529e6910ddf57dfbb4a9671bbab668b975067cf8   pushed, public readback equal
+diff     11 files, +483 −99 — exactly the eleven allowlisted paths, all modified, none added
+```
+
+⚠ **One transport failure before it.** The first dispatch of 05/01 died with
+`message_start … while message … is still open` — the Cooperator's own diagnosed
+whole-response-generation hazard. I verified NOTHING had begun: HEAD unchanged, porcelain empty,
+`backend/assets/` empty, `/tmp/opencode/mec-c1a3/` absent, public ref unchanged, `.ap` unchanged.
+⇒ **Delivery died before any outcome existed, so I re-delivered the SAME ordinal 05/01.** That is
+the era-12 database-failure class, not the balance-failure class: an interruption record is for a
+task that BEGAN, and this one had not.
+
+⚠ **And the Cooperator hit the same error again on my own output.** Standing instruction adopted:
+**write Meta in small appends against a sentinel, never one large generation.** This section and
+`05_report_00.md` were both written that way.
+
+### 30.1 What I verified myself, independently of the report
+
+```text
+HEAD == public ref                   529e6910ddf57dfbb4a9671bbab668b975067cf8
+porcelain                            EMPTY
+changed paths                        exactly the eleven allowlisted, by git diff --name-only
+prompts.ts · rack.ts · gamecore/ · diagnostics.py · backend/assets/   UNTOUCHED, by diffstat
+CMD2 max_length=1[^0-9]              ZERO
+CMD3 .length(1)                      ZERO
+CMD1 len(x)==1 in serializers.py     ZERO
+.length === 1 in route.ts            ZERO
+CMD5 ^[?\p{L}                        TWO — prompts.ts:190 and rack.ts:1, the deferred C1b pair
+adapter + constant in services.py    ZERO
+WIRE_STATE_SCHEMA_VERSION = 4        services.py:321, emitted at :450
+"blanks" in services.py              ZERO
+ruff · mypy 85 · manage.py check     clean
+pytest                               745 passed, 4 skipped        742 + 3
+validate_lexicons                    13 asset(s) audited, 0 failed
+typecheck · lint                     exit 0 · exit 0
+vitest                               454 passed | 3 skipped       450 + 4
+build                                exit 0, ELEVEN dynamic, ZERO static
+```
+
+**Every claim reproduced. Result accepted: implementation-PASS at `529e691`.**
+
+⛔ **And that is ALL it is.** C1 is E3. The fresh independent acceptance is still owed, it must come
+from a session that did not implement this, and **it cannot be my subagent** (`AP.md:1395-1405`).
+That is the one thing in this whole campaign I can neither execute nor delegate.
+
+### 30.2 ⛔ A SEVENTH AND EIGHTH SPELLING — and the seventh is a product-blocking defect
+
+```text
+frontend/src/components/game/BlankPicker.tsx:8
+    const ENGLISH_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+```
+
+⛔ **That is the UI that chooses what a blank represents.** A hardcoded twenty-six-entry
+single-code-point English alphabet, so **a blank can never be assigned `SZ` from the product** no
+matter how correct the wire, the serializer and the engine now are.
+
+⛔ **My six-command inventory could not reach it.** The spelling is `"…".split("")` — no `len`, no
+`.length`, no `max_length`, no `\p{L}`, no `charAt`. It is neither in scope nor classified out of
+scope; it is **invisible**. ⭐ And `GameState.alphabet` already ships on the wire, so the fix has a
+source of truth waiting.
+
+```text
+frontend/src/components/game/AIThinkingOverlay.tsx:72
+    const letters = word.toUpperCase().split("");
+```
+
+An eighth of the same shape: a digraph word renders one tile per code point, so `SZA` shows three
+tiles for two played.
+
+⚠ **This is the THIRD consecutive exchange in which my enumeration was the defect.** R-J has now
+been amended twice and still missed a spelling. So the rule needs its third and final form:
+
+```text
+R-J (final)  An enumeration handed to a Worker is a HYPOTHESIS, not a specification. Say so in the
+             prompt. Give the commands, give the classification, and then require the Worker to
+             report any site the commands cannot reach — as an OBLIGATION with its own report
+             field, not as an optional observation. Three exchanges found three spellings I did
+             not have; the fourth will find a fourth, and the prompt should expect it.
+```
+
+### 30.3 The other findings, dispositioned
+
+```text
+MEASURED 3  my section-6 count was short by FIVE, all in allowlisted files (four persist pins plus
+            test_atomic_token_persistence.py:267 pinning the string "state_schema_version 4").
+            -> ADOPTED as a cheap prophylactic: before publishing a fixed assertion count, RUN THE
+               SUITE against the decided change and let the red output produce the list. That is
+               strictly better than any pattern I can author.
+MEASURED 4  ⛔ I attributed `:237` to the WRONG FILE. `"CH" not in variant.playable_letters` is at
+            test_atomic_tile_tokens.py:237, not test_slovak_engine.py, which is only 208 lines
+            long. Substantive claim true, D-10 stands, committed comment points at the right path.
+            ⚠ Had the fix depended on editing that line, D-10 would have been un-completable in
+               exactly the way 04/01 was. R-G again, and it nearly cost a fourth exchange.
+MEASURED 5  gamecore/state.py:153,157 is a THIRD 15x15 validator, and it already rejects
+            isinstance(row, str) — so the save-file validator AGREES with the new wire rather than
+            conflicting with it. No action.
+MEASURED 6  services.py:216-218 `not w.isalpha()` in _word_passes_dictionary means `L·LA` CANNOT
+            PASS THE DICTIONARY today. lexicon_health.py:95 has the identical test.
+            -> ROUTED to C1c, and it enlarges it: C1c is no longer only "pass a WordAuthority",
+               it also has to fix a word-level .isalpha() that rejects the canary's own word.
+LEAD 1,2    prompts.ts:250 and :254 are suspected additional C1b sites, and a labeled row built
+            from BoardCell tokens may need a SEPARATOR rather than a widened count.
+            -> ADOPTED into C1b's scope as questions to measure, not as conclusions.
+LEAD 3      suspected that NO test renders Board.tsx. -> One `find` settles it; I will run it when
+            C1b is scoped, because it decides whether the visual path has any guard at all.
+```
+
+### 30.4 C1's remaining shape
+
+```text
+C1a  ⭐ DONE at 529e691, pending fresh independent acceptance
+C1b  the AI's board view AND the two UI spellings:
+       gamecore/state.py:44   "".join(row_chars)              a 16-char row shifts every column
+       prompts.ts:190         GRID_ROW /^[\p{L}.]{15}$/u      a 16-char row is SILENTLY DROPPED
+       prompts.ts:250 :254    suspected, to measure
+       rack.ts:1              UNICODE_TILE
+       BlankPicker.tsx:8      ⛔ blank can never become a digraph FROM THE PRODUCT
+       AIThinkingOverlay.tsx:72
+     ⭐ and the CORE hash covers only MOVE_SYSTEM_PROMPT, not the parser, so C1b need not move it
+C1c  dictionary authority: WordAuthority at five call sites, delete _word_passes_dictionary,
+     four diagnostics.py guards, AND the word-level .isalpha() in services.py:216 +
+     lexicon_health.py:95 that rejects L·LA
+```
+
+---
+
 ## 26. Next step
 
 
