@@ -1124,24 +1124,127 @@ posture     ⛔ NON-INDEPENDENT. Orchestrator-direct under D13-8.
 
 ---
 
-## 20. Next step
+## 21. Portuguese — ninth variant, and the row that PROVED something — `1eed5ed`
+
+This row was scheduled for one reason and it delivered it.
 
 ```text
-NEXT   the remaining rows the proven pipeline reaches, cheapest first:
-         Portuguese  pt_PT — 120 tiles and THREE blanks, the strongest test that bag size and
-                     blank count are truly data-derived. Also a pt_PT/pt_BR C5 question.
-         Danish · Swedish · Norwegian · Icelandic — partial folds at most, German's shape
-         Croatian · Slovenian — need C1 for digraph tiles (hr) / possibly nothing (sl)
-         Greek · Bulgarian · Russian — need C1, then they are easier than Hungarian
-         Spanish — 23 country .dic files, needs C1 + C5
-THEN   C1 (E3, the one Worker slice) unlocks hu · hr · es · el · bg · ru in one stroke.
-       ⇒ C1 is now the single highest-leverage item left, ahead of every capability.
-LATER  C3, narrowed to Turkish only, per 19.1.
-       C2, redesigned as an explicit declared blank-target set, per 17.2.
-       Spylls route for French and Hungarian.
-       _lexicon_build.py extraction — SEVEN scripts now; trigger was "before the tenth".
-BLOCKED and recorded:  Finnish · Malay (no source) · French (expander) · Hungarian (size)
+⭐ 120 TILES WITH THREE BLANKS LOADS, AUDITS AND PLAYS WITH ZERO CODE CHANGE.
+   `total_tiles` is a property summed from the letter rows (not a manifest field), and the blank
+   is just another letter row, so a bag that is neither 100 tiles nor 2 blanks needed nothing.
+   The campaign handout ASSERTED this. It is now MEASURED.
 ```
+
+```text
+24 tile kinds including a Ç tile worth 3 points · alphabet_order 27, so K W Y are Portuguese
+letters with NO tile (official only since 2009) — the same shape as Slovak's five
+4 119 831 words / 63 137 733 B — the LARGEST asset in the repository, above czech.txt's 54 MB
+```
+
+### 21.1 The sharpest witness written in this campaign
+
+```text
+`coraçao`, from `coração`:
+    a TOTAL fold spells it `coracao`   -> gate fails
+    a MISSING fold leaves `coração`    -> gate fails
+    only the correct PARTIAL rule yields `coraçao`
+ONE word, BOTH failure modes. It is in the build post-condition and in the G14 probe.
+```
+
+Sourced rule: *"While Ç is a separate tile, other diacritical marks are ignored."* Measured:
+í 602 934 · á 505 997 · ã 108 132 · ó 61 062 · é 45 255 · ê 26 672 · õ 21 575 · ú 15 492 ·
+â 12 321 · ô · î · à all fold; **137 997 words keep their cedilla**.
+
+### 21.2 ⛔ Two upstream files disagree about the licence
+
+```text
+README_pt_PT.txt   "All dictionary files and associated programs are currently covered by the
+                    (GPL/LGPL/MPL), by this order." + "1. GPL Version 2  2. LGPL Version 2.1
+                    3. MPL Version 1.1"
+LICENSES.txt       under "Spellchecker", different authors, NO versions:
+                    "covered by the GPL and BSD licence"
+```
+
+Claimed: `GPL-2.0-only OR LGPL-2.1-only OR MPL-1.1`. The README is the **specific, versioned**
+statement about the exact artifact this build consumes, **and** it is the same expression the
+shipped Slovak lexicon already declares — so the claim is consistent with the house rather than
+invented for this row. ⛔ **BSD is deliberately not claimed**, because only the vaguer file
+mentions it. Both documents ship in full inside `portuguese.LICENSE`, so the conflict is visible
+to a reader instead of resolved silently.
+
+⚠ That is what standing condition 5 looks like applied honestly: not "the licence is unclear, so
+disqualify", and not "one file says BSD, so claim BSD". Claim the precise grant, name the
+conflict, ship the evidence.
+
+### 21.3 First mixed-encoding upstream
+
+`pt_PT.aff` and `LICENSES.txt` are UTF-8; `README_pt_PT.txt` is **ISO8859-1 and raises** on a
+UTF-8 read (byte 0xE9, the é of "José"). German's whole pack was latin-1 — this one is mixed, so
+encodings are now named **per file** rather than once per script.
+
+### 21.4 Evidence
+
+```text
+--check  portuguese.txt      dadd466d207b641df420b3dd94864e58266044e32c9a72212daaea35a7453af4  IDENTICAL
+         portuguese.LICENSE  573b813504a35225ae4f22d1565f6acabc5b3b50c59eb0c72b6e3f105bb3dcb2  IDENTICAL
+gates    ruff · mypy 85 · manage.py check · pytest 667 passed 4 skipped · collect-only 671 ·
+         validate_lexicons TEN assets 0 failed · typecheck 0 · vitest 450 passed 3 skipped ·
+         lint 0 · build 0, ELEVEN dynamic ZERO static
+friction three test inventories. pytest 642 -> 667. Zero engine changes.
+posture  ⛔ NON-INDEPENDENT. Orchestrator-direct under D13-8.
+```
+
+---
+
+## 22. Campaign state after nine languages
+
+```text
+PLAYABLE 9 / 24   english · slovak · czech · polish · afrikaans · italian · dutch · german ·
+                  portuguese
+UI       4 / 24   en sk cs pl.  The other five degrade gracefully: no VARIANT_NAME_KEYS entry
+                  means variantDisplayName() falls back to the server display_name, and flagSrc
+                  is omitted. MEASURED, not assumed.
+ASSETS   ten lexicon assets audited, 0 failed. 63 MB is the new largest.
+ENGINE   ⛔ STILL ZERO ENGINE CHANGES ACROSS FIVE NEW LANGUAGES. Every rule any of them needed
+         was expressible in the ASSET at build time. The friction is three test inventories per
+         language plus one build script.
+```
+
+### 22.1 The tile-face rule taxonomy, now complete enough to be useful
+
+```text
+NO RULE            slovak · czech · polish   accented letters ARE tiles, nothing to do
+TOTAL FOLD         afrikaans · italian       no marked letter has a tile
+TOTAL + LIGATURE   dutch                     ĳ -> ij, because NFD walks past a ligature
+PARTIAL FOLD       german (ä ö ü kept) · portuguese (ç kept)
+FREE FROM CASEFOLD german ß -> ss · greek ς -> σ   Unicode full case folding already does it
+```
+
+⇒ **Five distinct shapes, all in data.** A sixth language of any of these shapes is now a
+mechanical exercise. That is the "adding a variant is boring" claim, earned rather than asserted.
+
+### 22.2 Remaining work, ordered by leverage
+
+```text
+1  C1 (E3)  unlocks hu · hr · es · el · bg · ru — SIX languages in one slice. Highest leverage
+            by a wide margin, and the ONLY slice needing a Worker plus fresh independent
+            acceptance that cannot be my subagent.
+2  Nordics  da · sv · no · is — partial folds at most, German's shape. Four languages, no
+            capability, four build scripts.
+3  sl       possibly no capability at all; measure before assuming C1.
+4  C3       Turkish only, per 19.1. Narrow: a normalizer that does not casefold İ into a mark
+            sequence, and a shape filter that does not require isalpha() of a combining mark.
+5  C2       explicit declared blank-target set, per 17.2.
+6  Spylls   French and Hungarian both need it.
+7  refactor _lexicon_build.py — EIGHT scripts now. The trigger ("before the tenth") is reached.
+BLOCKED, recorded, not hidden:  finnish · malay (no source) · french (expander) ·
+                                hungarian (size, decision D taken)
+```
+
+⚠ **Honest reading of 9 of 24.** Four of the remaining fifteen are blocked on facts outside this
+repository. Six are waiting on one E3 slice. Four are mechanical. One needs measuring. That is a
+campaign with a visible finish line, not an open-ended one.
+
 
 
 

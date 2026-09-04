@@ -121,7 +121,7 @@ ledger opened with.
 07  French        BLOCKED      not-started ⛔ unmunch CANNOT   sourced    (n/a)      no
 08  Italian       PLAYABLE     not-started MEASURED ok GPL-3.0  sourced    none*      yes
 09  Spanish       not-started  not-started 23 pairs, lic LGPL+  in-compil. C1 C4 C5   no
-10  Portuguese    not-started  not-started 2 pairs, lic unread  in-compil. C5?        no
+10  Portuguese    PLAYABLE     not-started MEASURED ok GPL|LGPL|MPL sourced none***   yes
 11  Dutch         PLAYABLE     not-started MEASURED ok BSD|CC   sourced    none**     yes
 12  Danish        not-started  not-started af pair, lic unread  in-compil. C3?        no
 13  Swedish       not-started  not-started 2 pairs, lic unread  in-compil. C3?        no
@@ -138,7 +138,7 @@ ledger opened with.
 ```
 
 ```text
-playable  8 / 24        UI locales  4 / 24
+playable  9 / 24        UI locales  4 / 24
 lexicon reachable by the proven pipeline   22 / 24
 lexicon with NO known licence-clean source  2 / 24   Finnish · Malay
 lexicon source exists but the EXPANDER cannot render it  1 / 24   French — see row 07
@@ -578,21 +578,58 @@ blockers               distribution UNSOURCED · which ruleset ships is undecide
                        lexicon licence UNVERIFIED · C1 and C5 not landed.
 ```
 
-## 10 · Portuguese
+## 10 · Portuguese — ⭐ PLAYABLE, landed 2026-09-03 at `1eed5ed`
 
 ```text
-gameplay status        not-started.
-UI-localization        not-started.
-dictionary status      UNSOURCED. No probe run.
-distribution source    UNSOURCED. LEAD: 120 tiles and THREE blanks.
-special-rule reqs      LEAD: none beyond the tile set.
-capability required    none INFERRED. MEASURED support: total_tiles is DERIVED at
-                       variant_store.py:104-106 and is not a manifest field, so a 120-tile
-                       bag with three blanks needs no code change.
-                       ⇒ This row is the STRONGEST TEST that bag size and blank count are
-                       truly data-derived. Worth scheduling for that reason alone.
-tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED.
+gameplay status        PLAYABLE. The ninth variant, and the one scheduled to PROVE something.
+UI-localization        not-started; degrades gracefully.
+dictionary status      MEASURED ok. portuguese.txt 4 119 831 words / 63 137 733 B — the LARGEST
+                       asset in the repository, above czech.txt's 54 MB. Duplicates 0,
+                       non_nfc 0. --check IDENTICAL on both artifacts.
+                       ⛔ LICENCE: TWO UPSTREAM FILES DISAGREE, and the disagreement is recorded
+                       rather than smoothed over.
+                         README_pt_PT.txt  "All dictionary files and associated programs are
+                                           currently covered by the (GPL/LGPL/MPL), by this
+                                           order." plus explicit "1. GPL Version 2
+                                           2. LGPL Version 2.1  3. MPL Version 1.1"
+                         LICENSES.txt      under "Spellchecker", different authors, NO versions:
+                                           "covered by the GPL and BSD licence"
+                       ⇒ The manifest claims GPL-2.0-only OR LGPL-2.1-only OR MPL-1.1, following
+                         the README because it is the SPECIFIC, VERSIONED statement about the
+                         exact artifact this build consumes — and because it is the same
+                         expression the shipped Slovak lexicon already declares, so the claim is
+                         consistent with the house rather than invented for this row.
+                       ⛔ BSD IS DELIBERATELY NOT CLAIMED. Only the vaguer of the two files
+                         mentions it. Both documents ship in full inside portuguese.LICENSE so
+                         the conflict is visible to a reader instead of resolved silently.
+                       ⛔ FIRST MIXED-ENCODING UPSTREAM: pt_PT.aff and LICENSES.txt are UTF-8
+                         while README_pt_PT.txt is ISO8859-1 and RAISES on a UTF-8 read (byte
+                         0xE9, the é of "José"). German's whole pack was latin-1; this one is
+                         mixed, so encodings are now named PER FILE rather than once per script.
+distribution source    SOURCED. ⭐ 120 tiles with THREE BLANKS — 24 tile kinds including a
+                       Ç tile worth 3 points; alphabet_order 27, so K W Y are Portuguese letters
+                       with NO tile (official only since 2009), the same shape as Slovak's five.
+                       Arithmetic verified independently: 117 letter tiles + 3 blanks = 120.
+                       ⇒ THE POINT OF THIS ROW: it PROVES bag size and blank count are derived,
+                         not hardcoded. `total_tiles` is a summed property and the blank is just
+                         another letter row, so 120-and-three loads, audits and plays with ZERO
+                         code change. The claim in the campaign handout is now measured.
+special-rule reqs      PARTIAL fold, German's shape for a different reason. The sourced note
+                       says "While Ç is a separate tile, other diacritical marks are ignored."
+                       MEASURED: í 602 934 · á 505 997 · ã 108 132 · ó 61 062 · é 45 255 ·
+                       ê 26 672 · õ 21 575 · ú 15 492 · â 12 321 · ô · î · à all fold;
+                       137 997 words KEEP their cedilla.
+                       ⭐ THE SHARPEST WITNESS WRITTEN SO FAR: `coraçao`, from `coração`.
+                         a TOTAL fold spells it `coracao`     -> gate fails
+                         a MISSING fold leaves `coração`      -> gate fails
+                         only the correct PARTIAL rule yields `coraçao`
+                       One word, both failure modes. It is in the build gate and in the probe.
+capability required    none. The rule lives in the asset.
+tests                  auto-enrolled; probe (`casa`, `nao`, `coraçao`).
+blockers               none for gameplay. ⚠ 63 MB will draw a GitHub large-file warning, as
+                       czech.txt already does at 54 MB. Under the 100 MB hard limit.
+                       ⚠ pt_BR is a SEPARATE upstream pack and a separate edition — a C5
+                       candidate, not scheduled.
 ```
 
 ## 11 · Dutch — see the PLAYABLE entry above, filed with Italian at `dab6d0d`
