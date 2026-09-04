@@ -5,44 +5,120 @@ implementation, Git, deployment, production, account, filesystem, or external-se
 authority. Task authority comes only from your own prompts; material product decisions come only from
 the Cooperator.
 
-Written 2026-09-04 by the Orchestrator that executed this whole from `ad4ce03` to `529e691`, at a
-coherent boundary: porcelain empty, public readback equal, no Worker in flight, one E3 acceptance
-handed to the Cooperator and outstanding.
+⚠ **ORIGINAL STATEMENT, kept as history and already superseded by note (1) below.** Written 2026-09-04
+by the Orchestrator that executed this whole from `ad4ce03` to `529e691`, at a coherent boundary:
+porcelain empty, public readback equal, no Worker in flight, one E3 acceptance handed to the Cooperator
+and outstanding.
 
-⭐ **Revised the same day, twice, by the session that held that boundary.** (1) The E3 acceptance ran
-and returned `acceptance-PASS` with zero corrections, so C1a is ACCEPTED and C1b is unblocked with a
-nineteen-item scope — sections 3, 3b, 6 and `00_notes.md` §32. (2) The UI-localization product decision
-was put to the Cooperator and ANSWERED — option A, no flags — and he assigned the translations to a
-fresh Orchestrator, which is section 5 and `00_notes.md` §33. **The tree is still clean at `529e691`;
-nothing of that objective is implemented.**
+⭐ **Written as revision 1, then revised twice the same day by the session that held that boundary.
+THIS IS REVISION 3 and it is the one that governs.**
+(1) The E3 acceptance ran and returned `acceptance-PASS` with zero corrections, so C1a is ACCEPTED and
+C1b is unblocked with a nineteen-item scope — sections 3, 3b, 6 and `00_notes.md` §32. (2) The
+UI-localization product decision was put to the Cooperator and ANSWERED — option A, no flags — and he
+assigned the translations to a fresh Orchestrator, which is section 5 and `00_notes.md` §33.
+(3) Revision 3 re-measured every `file:line` in sections 5 and 6 against `529e691` and **found four
+wrong** — corrected in place and listed in section 6.0 — and found that C1b's inventory had been
+paraphrased down from nineteen items to fifteen plus one phantom, which section 6.1 now quotes exactly.
+It added the five things this file was missing: the named disagreements with `00_handout.md`
+(section 0b), the two campaign artifacts your objective must update (5.6), the delivery wording that
+worked nine times (5.7), what "eight Workers in parallel" actually costs under the pin (5.8), and a
+mechanical checklist for your first prompt (5.9). Full defect list in `00_notes.md` §34.
+**The tree is still clean at `529e691`; nothing of that objective is implemented.**
+
+⛔ **PRECEDENCE, and it is the discipline `BRAINSTORMING.md` §2.2 D2 asks for.** This whole has TWO
+handouts. `./00_handout.md` is the opening one and it is **still live** — it owns the governing
+objective, the nine standing conditions and the eleven closure conditions, and this file does NOT
+repeat them. **Where the two disagree, THIS file is later and wins, and every disagreement is named
+explicitly in section 0b.** A handout that silently contradicts its predecessor creates two semantic
+owners, which `AP.md:18-62` forbids.
 
 ---
 
-## 0. Read exactly these four things, in this order, and nothing else first
+## 0. Read exactly these six things, in this order, and nothing else first
 
 ```text
 1  /home/agile/meta/AP_DESTILLED.md          942 lines. The protocol, indexed by line number against
                                              the PINNED .ap. Read once, then work from the citations.
-2  /home/agile/meta/AP_DEFECTS.md            847 lines. ⭐ NEW, and it is why this handout is short.
-                                             Twelve MEASURED defects of AP itself, from this session,
-                                             each with its fix. Section 3 of it is the workflow that
-                                             produced everything good here. ⛔ READ IT BEFORE YOU
-                                             WRITE YOUR FIRST PROMPT.
-3  ./00_notes.md                             the decision record of this whole, thirty sections. It is
-                                             the file this handout compresses. Do not read it front to
-                                             back; use section 1's index and the pointers below.
-4  ./90_language_ledger.md                   twenty-four candidate languages, nine columns, and the
-                                             two source questions already answered.
+                                             ⛔ Its §0 staleness rule applies to THIS file too.
+2  /home/agile/meta/AP_DEFECTS.md            847 lines. ⭐ It is why this handout is short. Twelve
+                                             MEASURED defects of AP itself, from this whole, each with
+                                             its fix. ITS SECTION 3 IS THE WORKFLOW that produced
+                                             everything good here. ⛔ READ IT BEFORE YOUR FIRST PROMPT.
+3  ./00_handout.md                           753 lines. ⭐ THE OPENING HANDOUT, AND IT IS STILL LIVE.
+                                             Read exactly four of its sections and skip the rest:
+                                               §2      the objective, VERBATIM AND GOVERNING — and
+                                                       clause 6 is your objective's authority
+                                               §8      the NINE standing conditions for every batch
+                                               §9      the ELEVEN campaign closure conditions
+                                               §10     delivery — the wording that worked nine times
+                                             ⛔ Section 0b of THIS file names every place it and this
+                                             file disagree. Do not resolve one silently.
+4  ./00_notes.md                             2 191 lines, thirty-three sections. The decision record.
+                                             ⛔ Do NOT read front to back. §33 is your objective; §32
+                                             is C1a's acceptance; §32.2 is C1b's scope.
+5  ./90_language_ledger.md                   twenty-four candidates, nine columns. ⭐ ITS
+                                             `UI-localization` COLUMN IS WHAT YOUR OBJECTIVE MOVES,
+                                             and you own the file — section 5.6.
+6  /home/agile/meta/BRAINSTORMING.md         377 lines, read §1 and §2 only. ⭐ The Cooperator's own
+                                             protocol proposals, and §1.8 names THIS OBJECTIVE as the
+                                             recommended first test of one of them — section 5.8.
+                                             ⛔ Brainstorming is never authority. Promotion is HIS.
 ```
 
-⛔ **Do NOT read the rest of `/home/agile/meta`.** It is tens of thousands of lines and this handout
-plus those four files is the whole of what you need. The one exception is named in section 8.
+⛔ **Do NOT read the rest of `/home/agile/meta`.** It is tens of thousands of lines. Two files outside
+this list are named where they are needed, with full paths so you do not have to search:
+
+```text
+/home/agile/meta/projects/libretiles/PROJECT_CONTEXT.md   1 308 lines. Read :303-356 ("## 2. The
+    Cooperator") — section 8 of this file compresses it but he is the one thing worth reading twice.
+    Decisions 12 and 13, the orchestrator-direct grant, are at :1163-1216.
+/home/agile/meta/projects/libretiles/DEFECT_LEDGER.md     7 378 lines. ⛔ Do not read it. Cited once,
+    at :806-826, for why C1's guards come out together.
+```
 
 ⚠ **`AP_DEFECTS.md` changes how you should work, and the Cooperator asked for it explicitly.** Its
 short form: the ORCHESTRATOR reads the protocol; a WORKER gets **line citations, not documents**;
 trivial work is **orchestrator-direct with no Worker at all**; a Worker's job includes **critiquing
 your prompt and your approach**, and you correct your orchestration from what it says. Do not
 re-derive that. It is measured.
+
+---
+
+## 0b. ⛔ Where this file and `00_handout.md` DISAGREE — all five, named
+
+`BRAINSTORMING.md` §2.2 D2: a later handout must name every disagreement with an earlier one, or the
+whole acquires two semantic owners. These are the five.
+
+```text
+1  READING. `00_handout.md` §0 requires reading `12/00/91_orchestrator-handout.md` (41 451 B) IN FULL
+   as "THE VERIFIED STATE". ⇒ SUPERSEDED. This file's section 2 carries the corrected gate route and
+   section 7 carries R-A..R-F forward in full. You do not need that file. If you find yourself needing
+   it, that is a defect in THIS file — record it.
+2  ⛔ GATES, AND THIS IS THE ONE THAT WILL BITE YOU. `00_handout.md` §8 condition 6 requires "all
+   eight standing gates green, pytest summary quoted verbatim" on EVERY batch. Section 5 of this file
+   says a frontend-only catalog slice runs the FRONTEND FOUR only.
+   ⇒ BOTH POSITIONS ARE DEFENSIBLE AND THE CONFLICT IS REAL. Condition 6 was written for LANGUAGE
+     batches, which touch backend assets, manifests and the Django suite. A `messages.XX.ts` catalog
+     touches no backend file, so the Django suite cannot move — and `AP_DEFECTS.md` D-03 is exactly
+     this: "a project rule can turn AP's own anti-pattern into a mandatory tax", measured twice in
+     this whole at two full ladders for zero mutation.
+   ⇒ ⛔ THE DECISION IS YOURS AND IT MUST BE EXPLICIT. `AP.md:1328-1347` requires "explicit project
+     deviations" in the readiness review. Whichever you choose, WRITE IT DOWN in `00_notes.md` with
+     the reason. Do not skip the backend suite silently, and do not pay for it silently either.
+3  FIRST EXCHANGES. `00_handout.md` §12 orders three: Stage 1, seed the ledger, V9a. ⇒ ALL THREE
+   DISCHARGED. The ledger exists, V9a landed as `4904e29`, Stage 1 is section 1 of this file.
+4  BATCHES. `00_handout.md` §4.2 puts `ms` (Malay) in B2 as one of "the cheapest languages on the
+   whole list". ⇒ MEASURED BLOCKED: there is no `ms_MY` affix pair, and ⛔ Indonesian is NOT Malay
+   and must not be substituted. Section 4.5.
+5  CAPABILITIES. `00_handout.md` §4.1 describes C2 as a field that RESTRICTS the derived blank set,
+   and C3 as unlocking fr/de/tr/is/da/sv/no. ⇒ BOTH RE-SCOPED BY MEASUREMENT: C2 was scoped
+   BACKWARDS (three shipped editions need the OPPOSITE — section 6), and C3 collapsed to TURKISH
+   ONLY because `casefold()` already does German ß and Greek ς. Section 6.
+```
+
+⚠ **What does NOT disagree, and you inherit it unchanged:** the objective at `00_handout.md` §2, all
+nine standing conditions except the gate scope of condition 6, all eleven closure conditions, the
+ledger's nine columns, and the C/B labelling this file's section 6 uses.
 
 ---
 
@@ -56,7 +132,8 @@ main               529e6910ddf57dfbb4a9671bbab668b975067cf8
 public readback    git ls-remote origin refs/heads/main == 529e691   verified 2026-09-04
 porcelain          EMPTY
 AP pin             .ap gitlink 9c5cc44f8b6c92dd56ad2427d13223d7d59c5656, submodule HEAD equal
-Meta repo          /home/agile/meta at c091d63, pushed
+Meta repo          /home/agile/meta — revision 3 of this file is its newest commit; re-measure with
+                   `git -C /home/agile/meta rev-parse HEAD` rather than trusting a SHA printed here
 active Worker      none
 active mutation    none
 your next Worker session ordinal   07     (sessions 01-06 all consumed and archived; 06 is the
@@ -65,10 +142,16 @@ your next Worker session ordinal   07     (sessions 01-06 all consumed and archi
 playable today     12 of 24    english slovak czech polish afrikaans italian dutch german
                                portuguese danish swedish icelandic
 UI locales today    4 of 24    en sk cs pl        ⇐ THIS IS YOUR NEXT OBJECTIVE, section 5
+                               ⭐ and it is not a new objective: `00_handout.md` §2 clause 6 says
+                               "add the corresponding UI locales wherever practical", and closure
+                               condition 3 requires it. You are inside 13/00, not starting a whole.
 lexicon assets     13 audited, 0 failed
 gates at 529e691   mypy 85 · ruff · manage.py check · pytest 745 passed 4 skipped · 749 collected ·
                    validate_lexicons 13/0 · typecheck 0 · vitest 454 passed 3 skipped · lint 0 ·
                    build 0 with ELEVEN dynamic routes and ZERO static
+                   ⚠ measured 2026-09-04 at 529e691 by the previous Orchestrator, NOT re-run for
+                   revision 3 — re-running a full ladder over an untouched tree is D-03. Treat these
+                   as the baseline to compare against, not as evidence you produced.
 ```
 
 ## The twelve commits of this whole, in order
@@ -106,8 +189,10 @@ git status --porcelain=v1             # expect EMPTY
 git ls-remote origin refs/heads/main  # expect 529e6910...
 ls backend/assets/variants/ | wc -l   # expect 12
 ls backend/scripts/ | grep -c lexicon # expect 11 build scripts
-ss -tlnp | grep -E ':(3000|8000)'     # a listener means his dev server is up — do NOT build
-cd /home/agile/meta && git rev-parse HEAD   # expect c091d63b170c8c9a5163cf138d55e1c4a77a0eba
+ss -tlnp | grep -E ':(3000|8000)' # a listener means his dev server is up — do NOT build
+cd /home/agile/meta && git status --porcelain   # expect EMPTY; then `git log --oneline -3` to see
+                                  # revision 3 of this file as the newest commit. ⛔ Do not expect a
+                                  # specific SHA here — this file is committed BY that commit.
 ```
 
 Any difference: classify with all five canonical recovery classes — `accepted-continuation`,
@@ -304,7 +389,7 @@ NO LICENCE GRANT   norwegian — see 4.3 rule 1
 SIZE               hungarian — ~301 M forms at the tightest bound. Decision D is TAKEN and CONFIRMED:
                    committed build script, output GITIGNORED, generated locally at setup, readiness
                    reports `unavailable` until it runs. ⛔ Three alternatives are REJECTED; do not
-                   re-propose them. `00_notes.md` section 5 of the previous handout and the ledger row.
+                   re-propose them. `00_handout.md` §5.1 and the ledger's hungarian row (`:291`).
 ```
 
 ⚠ **Twelve of twenty-four with four well-evidenced blockers is a SUCCESS.** Twenty-four claimed by
@@ -313,7 +398,7 @@ a success — and the Cooperator is presenting this at a job interview.
 
 ---
 
-## 5. ⭐ YOUR NEXT OBJECTIVE — UI localization, and the Cooperator named it himself
+## 5. ⭐ YOUR NEXT OBJECTIVE — UI localization, and it was in the objective from day one
 
 > *Na zaklade lokalizacie gameplay budem chciet aby sa uderne efektivne lokalizovalo aj UI do vsetkych
 > jazykov variant hry ktore budu implementovane.*
@@ -321,36 +406,59 @@ a success — and the Cooperator is presenting this at a job interview.
 ⇒ **Twelve languages are PLAYABLE. Four have a UI.** Close that gap, punchily, for the eight that
 ship without one — and then for every language a later batch adds.
 
-⭐ **The material product decision is ALREADY TAKEN (§5.2: option A, no flags) and the Cooperator
-assigned the translations to a FRESH Orchestrator — you. Nothing is implemented; the tree is clean at
-`529e691`.**
+⭐ **This is NOT a new objective and it does NOT start a new logical whole.** `00_handout.md` §2 is the
+governing objective and its clause 6 reads *"add the corresponding UI locales wherever practical"*;
+closure condition 3 reads *"every language that CAN be implemented under standing condition 5 IS
+playable, **with its UI locale where practical**"*. The Slovak line above is him pointing at a clause
+he already wrote. ⇒ RF-19's changed-objective case (`AP.md:255-262`) does **not** apply. Stay in
+`13/00`, keep the coordinates, take session **07**.
 
-### 5.1 What exists, measured at `529e691`
+⭐ **And the cadence is already granted.** `00_handout.md` §2.2: *"Do not require the COOPERATOR to
+request each language individually"* plus the autonomy grant. **You do not stop between the eight
+catalogs.** You stop only at his four named conditions — a new architectural boundary, missing
+reliable data, an unusable licence, or a red gate. ⚠ None of the four can be triggered by a
+translation catalog, so in practice: do not stop.
+
+### 5.1 What exists, measured at `529e691` — RE-MEASURED for revision 3
 
 ```text
 frontend/src/lib/i18n/locales.ts:1     export const LOCALES = ["en", "sk", "cs", "pl"] as const;
 frontend/src/lib/i18n/locales.ts:3     DEFAULT_LOCALE = "en"
 frontend/src/lib/i18n/locales.ts:4     LOCALE_COOKIE_NAME = "libretiles_locale"
-frontend/src/lib/i18n/messages.{en,sk,cs,pl}.ts    ~300 keys each · 280 text + 20 fn · 1 200 strings
-frontend/src/lib/i18n/plural.ts        pluralEn · pluralSk · pluralCs (= pluralSk, DELIBERATELY) · pluralPl
-frontend/src/lib/i18n/i18n.test.ts     test-enforced key-set AND interpolation parity across LOCALES
+                                       ⭐ `isLocale` and `detectBrowserLocale` follow LOCALES with no
+                                       edit — the primary-subtag split at :13 already handles "de-AT".
+frontend/src/lib/i18n/messages.en.ts   382 lines. 280 text keys + 20 fn keys = EXACTLY 300.
+                                       :319  export const enFn
+                                       :354  export type TextKey = keyof typeof enText
+                                       :359  lexiconRejectionKey() — see 5.5 defect 1
+frontend/src/lib/i18n/messages.sk.ts   347 · messages.cs.ts 347 · messages.pl.ts 350
+frontend/src/lib/i18n/plural.ts        23 lines. pluralEn · pluralSk · pluralCs (= pluralSk,
+                                       DELIBERATELY) · pluralPl
+frontend/src/lib/i18n/translate.ts     :7 TEXT · :13 FN · :24-40 tf, with ONE cast at :38
+frontend/src/lib/i18n/index.ts:24      export { pluralCs, pluralEn, pluralPl, pluralSk }
+frontend/src/lib/i18n/i18n.test.ts     2 021 lines. Test-enforced key-set AND interpolation parity
+                                       across LOCALES.
                                        :956-961 INSTALLED_VARIANTS = english slovak czech polish
                                        :983     ownName: per-variant display name per locale
-frontend/src/lib/i18n/GLOSSARY.md      the translation glossary. :51-53 records that pluralSk is WRONG
-                                       for Polish at 22, 23, 24, 122 — which is why pluralPl exists.
-frontend/public/                        cs.png en.png hu.png pl.png sk.png drevo.jpeg
+frontend/src/lib/i18n/GLOSSARY.md      489 lines. :51-53 records that pluralSk is WRONG for Polish at
+                                       22, 23, 24, 122, 123, 124 — SIX values, not four; the previous
+                                       revision of this file undercounted them. That is why pluralPl
+                                       exists, and :53 says "Do not fold them into one".
+frontend/public/                       cs.png en.png hu.png pl.png sk.png drevo.jpeg — all five PNGs
+                                       are 48×32 RGBA, ~4 KB.
                                        ⚠ hu.png ships for a language with no manifest and no locale.
                                        Keep it; the Hungarian slice CLAIMS it. `00_notes.md` §14.
 frontend/src/components/settings/GameLanguagePanel.tsx:12-24
                                        VARIANT_NAME_KEYS and VARIANT_FLAG_SRC, four entries each.
-                                       ⭐ variantDisplayName() FALLS BACK to the server display_name
-                                       and flagSrc is OMITTED when absent — which is why eight
-                                       backend variants appear in the picker with no UI edit at all.
+                                       ⭐ variantDisplayName() at :26-34 FALLS BACK to the server
+                                       display_name, and :51 OMITS flagSrc when absent — which is why
+                                       eight backend variants already appear in the picker with no UI
+                                       edit at all, and why "no flags" costs nothing.
 ```
 
 ### 5.2 ⭐ THE DECISION IS TAKEN — OPTION A, NO FLAGS. Do not re-ask it.
 
-The previous handout priced this in three options and named the choice as the Cooperator's. **It was
+The opening handout priced this in three options and named the choice as the Cooperator's. **It was
 put to him and he answered.** Full record in `00_notes.md` §33.
 
 ```text
@@ -378,15 +486,20 @@ messages.{sk,cs,pl}.ts are `Record<TextKey, string>` plus `{ [K in FnKey]: (type
 ⇒ A NEW CATALOG FILE TYPECHECKS AGAINST `messages.en.ts` ALONE. `tsc --noEmit` catches a missing key,
   an extra key, and a wrong interpolation parameter — with the locale NOT yet in LOCALES, and without
   `i18n.test.ts` running at all.
-⇒ Eight catalogs are eight INDEPENDENT Workers, each gated on typecheck, before one wiring file is
-  touched. The parity test the previous handout called the obstacle is not the gate on the catalogs;
-  it is the gate on the WIRING, which is one small slice after them.
+⇒ So the parity test that revision 1 of this file called the obstacle is not the gate on the
+  CATALOGS; it is the gate on the WIRING, one small slice after them. Each catalog is independently
+  verifiable BEFORE anything is wired, which is what makes this objective cheap.
 ```
 
 Wiring, when the catalogs are green — each of these is a type error if half-done, so it cannot
-half-land: `locales.ts:1` LOCALES 4→12 · `translate.ts:7-18` TEXT and FN, 8 entries each ·
-`index.ts:24` 8 plural re-exports. ⛔ `translate.ts:20-40`'s single cast stays untouched; its comment
-explains why it is safe, and the mapped type above is the reason.
+half-land: `locales.ts:1` LOCALES 4→12 · `translate.ts:7` TEXT and `:13` FN, 8 entries each ·
+`index.ts:24` 8 plural re-exports. ⛔ `translate.ts:38`'s single cast stays untouched; the comment at
+`:29-36` explains why it is safe, and the mapped type above is the reason.
+
+⚠ **One thing to decide before you write catalog 1, because it is cheaper now than later:** whether
+the eight `settings.gameVariant.*` keys and the `lexiconRejectionKey` arms (5.5) go in. Every catalog
+must define every `TextKey`, so **adding a key later means editing all twelve files again.** Decide the
+key set once, up front, and write it into the first prompt.
 
 ### 5.4 ⭐ The plural rules are DERIVED AND VERIFIED. Take them; do not re-guess them.
 
@@ -399,89 +512,316 @@ af nl de da sv   one/other, and over integers 0..3000 each is IDENTICAL to `en` 
                  divergences. ⛔ Identical is NOT the same rule: Danish CLDR accepts a fraction as
                  `one` (da 0.5 → one, en 0.5 → other). The helpers TRUNCATE, which is what makes the
                  identity real. ⇒ FIVE FUNCTIONS, NOT FIVE ALIASES. `pluralCs = pluralSk` is an alias
-                 only because those two agree over the WHOLE domain, fractions included — which is
-                 the distinction the old §5.4 was reaching for.
+                 only because those two agree over the WHOLE domain, fractions included, and
+                 `GLOSSARY.md:53` already says "do not fold them into one".
 is               ⛔ `i % 10 == 1 && i % 100 != 11`. 21, 31, 101, 121 are `one`; 11 and 111 are
-                 `other`. Diverges from `en` at 269 integers in 0..3000.
+                 `other`. Diverges from `en` at 269 integers in 0..3000. It is NOT the Nordic shape.
 it               THREE categories one/many/other. `many` is integer-reachable at 1 000 000.
 pt               THREE categories, AND ⛔ ZERO IS SINGULAR (CLDR `one: i = 0..1`). "0 ponto".
                  ⭐ A passed turn and an empty score both display zero, so a copied English rule is
                  visibly wrong on a real board — not in a corner case.
 ⚠ pluralSk's third parameter is NAMED `many` but is CLDR `other` over integers. Every shipped Slovak
   and Czech string is CORRECT (the slot holds the genitive plural, right for 0 and 5+). Polish is
-  different: pluralPl's third slot really is CLDR `many`. ⇒ A comparison test must declare the
-  slot→category mapping per language. ⛔ Do not fix that parameter NAME in the same slice as eight
-  new languages.
+  different: pluralPl's third slot really is CLDR `many` (pl 0 → many, verified). ⇒ A comparison test
+  must declare the slot→category mapping PER LANGUAGE rather than assume the parameter names are CLDR
+  category names. ⛔ Do not fix that parameter NAME in the same slice as eight new languages.
+⚠ There are only THREE plural call sites per catalog — points, minutes, tile count (`messages.sk.ts`
+  :320, :326, :330). So the whole plural surface is nine words per language, not a burden.
 ```
 
-### 5.5 🐞 Two gaps this objective walks into. Both measured, neither in the old handout.
+### 5.5 🐞 Two gaps this objective walks into. Both measured, neither in any earlier handout.
 
 ```text
-1  `lexiconRejectionKey()` switches on collins2019 · slovak · czech · polish only. EIGHT playable
-   variants' lexicons fall through to `game.lexicon.unknown`, so a rejected Danish word cannot name
-   what rejected it. ⇒ A REAL gap that exists TODAY at four locales, independent of adding eight.
+1  `messages.en.ts:359` `lexiconRejectionKey()` switches on collins2019 · slovak · czech · polish
+   only, defaulting to `game.lexicon.unknown`. EIGHT playable variants' lexicons fall through, so a
+   rejected Danish word cannot name what rejected it. ⇒ A REAL gap that exists TODAY at four locales,
+   independent of adding eight more. Price it as its own slice — 8 keys × 12 locales plus 8 switch
+   arms — or fold its KEYS into the catalogs per 5.3's warning and its SWITCH into the wiring.
 2  `i18n.test.ts:983` `ownName` becomes 144 CELLS if both axes go to twelve, and it asserts each
-   label contains its own variant's name and NO other variant's name in that locale.
+   label contains its own variant's name and NO other variant's name in that locale — 12 × 12 × 11
+   substring assertions.
    ⛔ ICELANDIC IS THE TRAP: "Enska" is a substring of "Hollenska" AND of "Svenska". It survives today
    only because `toContain` is case-sensitive and the cells are capitalised. Luck, not design.
    ⇒ Do NOT weaken that test to land the matrix. Both naming axes are their own slice, AFTER the
      catalogs, diagnosed against four locales of known-good data first.
 ```
 
-⚠ **Slicing, prompts and Worker count are YOURS.** My recommendation is catalogs first (they
-parallelise and self-verify), wiring second, the two naming axes third — a recommendation only, and
-the 144-cell matrix is exactly what a fresh session should price against `AP_DEFECTS` D-02 rather
-than inherit as a plan.
+### 5.6 ⛔ TWO CAMPAIGN ARTIFACTS YOUR OBJECTIVE MUST UPDATE, and you own both
 
-GATES the frontend only: `npm run typecheck`, `npm run test`, `npm run lint`, `npm run build`.
-      ⛔ This objective touches NO backend file, so running the Django suite over it is D-03. Say so
-      in the prompt.
+Neither is optional and neither is a Worker's job — RF-03 (`AP.md:111-117`): a Worker's authority dies
+at its terminal report, so it cannot own an artifact that spans the campaign.
+
+```text
+./90_language_ledger.md    ⭐ THE `UI-localization` COLUMN IS THE COLUMN YOUR OBJECTIVE MOVES.
+    :141                   header reads exactly `playable  12 / 24       UI locales  4 / 24` → 12 / 24
+    THE EIGHT ROWS, each measured for revision 3 — ⛔ the ledger's sections are NOT in numeric order,
+    so go by line number, not by the `## NN ·` heading:
+        german     :356      italian    :460      dutch      :495      portuguese :588
+        danish     :645      swedish    :697      icelandic  :808      afrikaans  :968
+    each currently reads `UI-localization        not-started…`  →  `shipped. MEASURED: …`
+    ⚠ The four shipped rows (english :175 · slovak :219 · czech :246 · polish :268) show the exact
+      wording to match: a status word, then `MEASURED:` and the evidence. Copy that shape.
+    ⛔ DO NOT TOUCH the other twelve `not-started` rows. `french :412`, `norwegian :737`, `finnish
+      :788` and `malay :1037` are BLOCKED languages and `hungarian :291` says `staged, not
+      implemented` and cites hu.png — B1 owns that one. A UI locale for a language that cannot be
+      played is not "shipped", it is a false row.
+./91_deferred-acceptance-batch.md   append a B5 entry AT THE MOMENT each catalog lands, not at the end.
+    ⛔ `00_handout.md` §8 condition 8 and the autonomy grant both require this. If you add a locale
+      and do not add its steps, they will be reconstructed from memory at the end and WILL be wrong.
+    ⇒ The observable expectation for a locale is exactly the kind of thing his eyes can check in ten
+      seconds: switch the UI to that locale, confirm the board screen has no English left in it, and
+      confirm ONE plural string at 1 and at 2 (for pt, also at 0 — see 5.4).
+    ⚠ Its existing B4 preamble was written while C1a's acceptance was outstanding and carries a dated
+      reconciliation note now that it PASSED. B4-2 is still the only pixel evidence that will exist.
+```
+
+### 5.7 ⭐ The delivery wording that worked nine times — reuse it, do not re-invent it
+
+`00_handout.md` §10, and it is the highest-value operational paragraph in this campaign:
+
+> *ordinary batch slice — subagent Worker, delivered by giving it the Meta path and instructing it to
+> read that file IN FULL as its complete authority, with an explicit statement that the path is
+> DELIVERY ONLY and no other Meta file may be read. Nine exchanges, zero confusion. Reuse the wording.
+> Record: `Sub-agents/internal delegation: bounded authority` and NEVER call the result independent.*
+
+```text
+⛔ AND THE TWO FAILURE MODES ALREADY PAID FOR, from `00_handout.md` §10:
+   killed MID-TASK      → an interruption companion, and the session ordinal IS consumed
+   killed BEFORE the Worker received anything → safe to RE-DELIVER the same ordinal, because no
+                          authority was consumed and no outcome existed
+   ⇒ Know which one you are looking at BEFORE you write either record.
+⚠ `AP_DEFECTS.md` D-06: under this pin subagent delivery still needs the ceremonial authorization
+  line in every prompt. It is boilerplate, it is required, and it grants delivery — never independence.
+```
+
+### 5.8 ⛔ "EIGHT WORKERS IN PARALLEL" IS NOT FREE UNDER THIS PIN — read this before you plan it
+
+Revision 2 of this file said the eight catalogs "can run in parallel". **That was loose, and correcting
+it is the most important thing in revision 3.** `AP.md:1166-1177`: the default is **exactly ONE active
+accountable Worker workstream**. Parallel topology is an explicit bounded exception requiring **group
+identity, disjoint path ownership, a shared-state read/write matrix, exact baselines and sync points,
+side-effect authority, an integration owner with a deterministic order, and stale/overlap stop rules**
+— and `AP_DESTILLED.md:448-453` adds that coordinated parallel activity is **not** independent
+verification. You have three lawful shapes. Pick one deliberately and say why.
+
+```text
+A  EIGHT SEQUENTIAL EXCHANGES. One Worker, one catalog, one report, eight times. ⛔ Safest and
+   dumbest: AP_DEFECTS D-11 measured roughly 1 200 lines of authored prompt to land ONE commit, and
+   D-02/D-09 say the prompt-writing is the single largest consumer of your context. Eight of these is
+   how a fresh Orchestrator runs out of context before the wiring slice.
+B  ONE DECLARED PARALLEL GROUP. ⭐ The seven required fields are unusually easy to satisfy here, and
+   that is a real argument: path ownership is PERFECTLY DISJOINT (one new file each, nothing shared),
+   the shared-state matrix is `messages.en.ts` READ-ONLY by all eight, the baseline is one commit, and
+   the integration owner is YOU at the wiring slice. ⛔ You must still write all seven fields down.
+C  ONE `Delegating Implementation Worker`. ⭐ AND THE COOPERATOR PROPOSED EXACTLY THIS, FOR EXACTLY
+   THIS SLICE. `BRAINSTORMING.md` §1 is his idea — conversationally "Worker Orchestrator" — and §1.8
+   names its recommended first test: *"roughly 300 message keys across one new messages.hu.ts, one
+   LOCALES entry, one plural function, and a glossary section — one coherent outcome, no trust
+   boundary, high mechanical volume, and a defect is immediately visible as wrong on-screen text."*
+   ⇒ That is THIS OBJECTIVE, eight times over. §1.6 lists it as a GOOD FIT in as many words:
+     "translating one interface locale across many components".
+   ⛔ Four hard constraints if you use it, all from `BRAINSTORMING.md` §1.3-§1.7:
+     · it is a WORKER SESSION PROFILE, never a fourth role — as a role it FORKS the protocol (RF-15).
+       Field value: `Delegating Implementation Worker`. His name stays in Slovak conversation.
+     · it is NEVER independent, with no exception, and can never supply an E3 acceptance.
+     · it must NOT issue authoritative Worker prompts of its own — that boundary is what stops a
+       prompt-generation LOOP, and it is the whole reason the constraint is written down.
+     · it must SERIALIZE its own mutating subagents (§1.7 OPEN-1) and disclose its decomposition,
+       including the six extra report fields §1.5 proposes — of which the load-bearing one is
+       "evidence a subtask CLAIMED that this Worker did not re-measure itself".
+   ⛔ AND WHERE IT MUST NOT BE USED: §1.6 BAD FIT names "any wire-format or schema migration" and
+     "anything E3 or E4". ⇒ C1b IS DISQUALIFIED. Do not reach for this on section 6's work.
+   ⛔ PROMOTION IS THE COOPERATOR'S (RF-01, and `BRAINSTORMING.md`'s own header). Brainstorming never
+     becomes authority automatically. Using it is a decision to put to him in one line — and §1.8 asks
+     for an honest comparison afterwards: total tokens, defects found per exchange, and whether you
+     could still evaluate the report.
+```
+
+⚠ **My reading, and it is a recommendation only: C for the eight catalogs, then a WORKER for the
+wiring.** C is his own proposal, this is his own named test case, the fit is exact, and the failure mode
+is visibly wrong on-screen text rather than a silent security hole. **But B is the conservative choice
+and A is the one that cannot be criticised.**
+
+⛔ **And do NOT take the wiring orchestrator-direct, however small it looks.** The project-local grant
+(`AP_DESTILLED.md:205-213`, `PROJECT_CONTEXT.md:1163-1216`) carries a five-item bar whose own words are:
+*"if measuring reveals a SECOND FILE, a trust boundary, or a design choice, it was not easy — it goes
+back to a Worker."* The wiring touches **four** files at once. ⇒ It is a Worker, at E2, and its evidence
+would otherwise be permanently non-independent for no saving. Whichever shape you pick, the readiness
+review at `AP.md:1328-1347` wants "selected working-copy topology and validation ladder WITH A WHY".
+
+GATES for a catalog slice: `npm run typecheck`, `npm run test`, `npm run lint`, `npm run build` — the
+      frontend four. ⛔ See section 0b disagreement 2 before you skip the Django suite: the conflict
+      with standing condition 6 is REAL and your deviation must be explicit and recorded.
+
+### 5.9 ⭐ YOUR FIRST PROMPT, MECHANICALLY — the parts that are not judgement calls
+
+⛔ **This is a CHECKLIST, not a prompt, and it grants nothing.** Every field value below must be read
+out of `PROMPT_CONTRACTS.md` in the pin before you write it — `AP_DESTILLED.md:759-761` records that
+quoting an AP field value from memory produced three invalid fields in one prompt, then a fourth in the
+repair, then a fifth in the patch of the repair. **Read the enum. Then run the checker.**
+
+```text
+COORDINATES         Logical whole identity: multilingual-expansion-campaign   ⛔ UNCHANGED — section 5
+                      explains why this is not a new whole
+                    Worker session ordinal: 07        (01-06 consumed; 06 was the C1a acceptance)
+                    Worker exchange ordinal: 01       (RESET to 01 because the session is fresh)
+META FILENAMES      meta_exchange_index = exchange ordinal − 1, so session 07 exchange 01 is
+                      ./07_<phase>_00.md   and   ./07_report_00.md
+                    ⛔ `_01` as a first suffix is invalid, and `<phase>` may never be `report`,
+                      `interruption` or `handout`. `AP_DESTILLED.md:271-297`.
+ROUTING             Worker session target: fresh-worker-session
+                    Native planning mode: not-used
+                    ⛔ `required` means the CLIENT must have native Plan mode enabled BEFORE delivery;
+                      if it cannot, the prompt MUST NOT be pasted. You do not need Plan mode here:
+                      `AP.md:740-746` forbids routing it merely because a task is large, and a catalog
+                      is decision-complete once 5.3 and 5.4 are in the prompt.
+SUB-AGENTS          Sub-agents/internal delegation: bounded authority — delivery route only; you remain
+                      the one accountable Worker and must not delegate further
+                    ⛔ CHANGE THIS SENTENCE if you take 5.8 option C — a Delegating Implementation
+                      Worker is exactly the case where "must not delegate further" is wrong, and it
+                      needs the four constraints of 5.8 written into the grant instead.
+TIER, RECOMMENDED   E1 for ONE catalog file: localized, reversible, no trust boundary, and the type
+                      system is the strong focused check. ⇒ Overhead budget `minimal` in D-09's terms.
+                    E2 for the WIRING slice: it is cross-cutting, user-visible and touches four files
+                      at once. ⇒ the named decision risk is "a locale reaches users with English
+                      strings in it", and the parity test is what settles it.
+                    ⛔ NEITHER IS E3. There is no security boundary, no migration and no production
+                      mutation here, so do NOT buy a fresh independent acceptance for a catalog. The
+                      campaign's one E3 is C1 and it is already spent.
+ALLOWLIST           exactly one new file per catalog slice: frontend/src/lib/i18n/messages.XX.ts
+NEGATIVE SCOPE      ⛔ messages.en.ts is READ-ONLY — it is the type source for all eleven others.
+                    ⛔ locales.ts, translate.ts, index.ts, i18n.test.ts are the WIRING slice, not this
+                      one. A catalog slice that edits them has silently become the wiring slice.
+                    ⛔ No backend file. No `frontend/public/` asset (no flags — 5.2).
+REPORT, BEYOND THE COMPACT CORE — ask for exactly these two and nothing else:
+                    Orchestration critique: none | <findings>, in TWO labelled lists, MEASURED and
+                      LEAD, scoped to the PROMPT, the APPROACH, the SEQUENCING and the STATED GOAL.
+                      ⭐ This field is not in AP. It caught TWELVE Orchestrator defects in this one
+                        whole and not one came from self-review — `AP_DEFECTS.md` D-01.
+                      ⛔ The labels ARE the mechanism. An unlabelled LEAD was once acted on as a
+                        measurement and became a production defect.
+                    Enumeration widened: none | <anything my commands could not reach>
+                      ⭐ D-04. Say in the prompt that your key list is a HYPOTHESIS and give the
+                        command that produced it.
+                    ⛔ Do NOT ask for verbatim command output on an E1 catalog. D-02: one such request
+                      in this whole produced twelve full command dumps for a `+483 −99` diff and broke
+                      the delivery channel twice.
+BEFORE ISSUING      python3 /home/agile/meta/projects/libretiles/apfieldcheck.py <prompt.md>
+                    ⚠ 8 861 B, mode `-rw-r--r--` — NOT executable, so `python3` is required, not `./`.
+                    Signature is `apfieldcheck.py [-h] [--ap AP] prompt`; `--ap` already defaults to
+                    the pinned `/home/agile/Projects/libretiles/.ap`, so pass the prompt and nothing
+                    else. Exit 0 on EVERY prompt. It diffs AP field values and coordinate consistency
+                    against that pin.
+```
+
+⚠ **And the one thing to put in the catalog prompt that has nothing to do with AP:** the header every
+catalog must carry, declaring it machine-authored and unreviewed. That header is the Cooperator's
+option-A condition (5.2) and it is the only thing standing between this objective and eight languages
+of prose that a reader cannot tell from reviewed copy. **Specify its exact wording yourself, once, and
+require it byte-identical in all eight files** — otherwise you will get eight different disclaimers.
 
 ---
 
 ## 6. The rest of the campaign, ordered by leverage
 
+### 6.0 ⛔ FOUR COORDINATES IN REVISION 2 OF THIS FILE WERE WRONG. I re-measured; here they are.
+
+R-G says never copy a `file:line` from a handout. Revision 3 obeyed its own rule and re-measured every
+citation in sections 5 and 6 at `529e691`. **Four were wrong, and one of them was a wrong FILE.**
+
 ```text
-C1b  ⭐ UNBLOCKED — C1a is accepted. Its scope is now the NINETEEN-ITEM inventory the independent
-     audit returned; see `06_report_00.md`'s required field and `00_notes.md` §32.2. The sites the
-     previous Orchestrator had already measured:
-       backend/gamecore/state.py:44   grid.append("".join(row_chars))
-                                      a 16-char row SHIFTS EVERY COLUMN to its right
-       backend/gamecore/state.py:48   ai_rack="".join(ai_rack) collapses a digraph rack
-       frontend/src/lib/prompts.ts:190  GRID_ROW = /^[\p{L}.]{15}$/u
-                                      ⛔ a 16-char row does not misalign — it FAILS the regex and is
-                                      SILENTLY DROPPED, so the model gets a SHORT BOARD
-       frontend/src/lib/prompts.ts:250 :254   suspected, to measure
-       frontend/src/lib/rack.ts:1     UNICODE_TILE = /^[\p{L}?]$/u
-       frontend/src/components/game/BlankPicker.tsx:8
-                                      ⛔ "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")
-                                      A BLANK CAN NEVER BE ASSIGNED A DIGRAPH FROM THE PRODUCT.
-                                      `GameState.alphabet` already ships on the wire — the fix has a
-                                      source of truth waiting.
-       frontend/src/components/game/AIThinkingOverlay.tsx:72   word.toUpperCase().split("")
-     ⭐ AND SEVEN THE AUDIT ADDED, each verified by the previous Orchestrator at 529e691:
-       backend/gamecore/legality.py:28    LETTERS = frozenset("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-       backend/gamecore/legality.py:143   error copy says "A-Z" while the CHECK is set membership
-       backend/gamecore/move_search.py:33 _BLANK_LETTERS = string.ascii_uppercase
-       frontend/src/lib/prompts.ts:267    rows[row][col] — one column per UTF-16 unit
-       frontend/src/lib/constants.ts      TILE_POINTS is A-Z plus "?" only
-       frontend/src/lib/ai-turn-simulation.test.ts:119 · rack.test.ts:4
-       ⚠ backend/tests/test_atomic_tile_tokens.py:532   asserts len(row) == 15 on the AI grid.
-         ⛔ THAT FILE IS THE L·L CANARY'S HOST — the one file three consecutive prompts forbade
-         touching. C1b MUST edit it, so its prompt must say so explicitly and must not simply
-         inherit the old prohibition.
-     ⚠ THE AUDIT LABELLED ITS OWN INVENTORY: "it is a search, not a proof of absence." Treat it as
-       R-J tells you to — a HYPOTHESIS — and make widening it a required field again.
-     ⭐ AND THE GOOD NEWS, measured: the MOVE CORE hash covers only `MOVE_SYSTEM_PROMPT`
-       (`prompts.test.ts:79-84`), NOT the three grid functions — so C1b can repair them WITHOUT
-       moving the pinned hash. And `gamecore/state.py:63,104-125` already carries a structured
-       `grid: list[list[str | None]]` for the save file, beside the lossy one.
+state.py:48        → :49    off by one. :48 is `blanks=blanks,`; the join is at :49.
+prompts.ts:254     → GONE   revision 2 listed it as "suspected, to measure". MEASURED: it is
+                            `if (rows.length !== 15)`, a row-COUNT guard, not a code-point assumption.
+                            ⇒ It is NOT a C1b site. The real per-cell site in that function is :267,
+                              which is already in the list. Do not spend a step on :254.
+services.py:862 · :1649  → :866 · :1653    both off by four.
+game/variant_store.py    → ⛔ gamecore/variant_store.py    WRONG FILE. `backend/game/variant_store.py`
+                            DOES NOT EXIST. Both line numbers (82, 108-112) are correct once the
+                            directory is fixed.
+```
+
+⚠ **That is four defects in one file that had already been proof-read twice, and every one of them was
+found by spending sixty seconds on `sed -n`.** Do it again for anything you quote. `AP_DEFECTS.md` D-04
+is the general form: you cannot review your own omissions.
+
+### 6.1 C1b — ⭐ UNBLOCKED, and its scope is the audit's NINETEEN, quoted exactly
+
+⛔ **Revision 2 of this file paraphrased the inventory and lost four items.** The authoritative list is
+`06_report_00.md:296-315`, under the heading *"REQUIRED FIELD — the remaining one-code-point inventory,
+any spelling, including out of scope"*. Here it is with revision 3's measurements against it:
+
+```text
+ 1  prompts.ts:190              GRID_ROW = /^[\p{L}.]{15}$/u                                ✔ EXACT
+                                ⛔ A 16-char row does not misalign — it FAILS the regex and is
+                                SILENTLY DROPPED, so the model gets a SHORT BOARD.
+ 2  prompts.ts:250              `trimmed.split("").join(" ")` on a rack string                ✔ EXACT
+ 3  prompts.ts:267-274          `rows[row][col]` — one column per UTF-16 unit                 ✔ EXACT
+ 4  rack.ts:1                   UNICODE_TILE = /^[\p{L}?]$/u                                 ✔ EXACT
+ 5  diagnostics.py:373 :374 :782 :789   FOUR len == 1 letter guards                          ✔ ALL FOUR
+                                ⛔ REVISION 2 DROPPED THESE ENTIRELY and mentioned them only under
+                                C1c. :782 is `len(ch) == 1 and "A" <= ch <= "Z"` — a RANGE test, a
+                                spelling no `\p{L}` or `max_length` search reaches.
+ 6  gamecore/state.py:44 · :49  joined AI grid, and joined ai_rack                            ✔ (:49, not :48)
+                                ⛔ A 16-char row SHIFTS EVERY COLUMN to its right.
+ 7  move_search.py:33           _BLANK_LETTERS = string.ascii_uppercase                       ✔ EXACT
+ 8  legality.py:28              LETTERS = frozenset("ABCDEFGHIJKLMNOPQRSTUVWXYZ")             ✔ EXACT
+ 9  BlankPicker.tsx:8           "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")                        ✔ EXACT
+                                ⛔ A BLANK CAN NEVER BE ASSIGNED A DIGRAPH FROM THE PRODUCT, however
+                                correct the wire is. `GameState.alphabet` already ships on the wire,
+                                so the fix has a source of truth waiting.
+10  AIThinkingOverlay.tsx:72    word.toUpperCase().split("")                                  ✔ EXACT
+11  ai-turn-simulation.test.ts:111-123   15-dot rows and split("")                            ✔ (:119)
+12  constants.ts                TILE_POINTS — A-Z plus "?" only, 27 keys, starts :23          ✔ EXACT
+13  rack.test.ts:4              English split("")                                             ✔ EXACT
+14  test_slovak_ranked_search.py:75-76 · :93                                                  ✔ ALL THREE
+                                ⛔ REVISION 2 DROPPED THIS. :93 tests membership against a literal
+                                A-Z string.
+15  test_slovak_full_game.py:106 · :111   assert len(...) == 1                                ✔ BOTH
+                                ⛔ REVISION 2 DROPPED THIS.
+16  test_czech_polish_variants.py:89      assert all(len(token) == 1 for token in tiles)      ✔ EXACT
+                                ⛔ REVISION 2 DROPPED THIS.
+17  test_atomic_tile_tokens.py:532   asserts len(row) == 15 on the AI grid                    ✔ EXACT
+                                ⛔ THAT FILE IS THE L·L CANARY'S HOST — the one file three consecutive
+                                prompts forbade touching. C1b MUST edit it, so its prompt must say so
+                                EXPLICITLY and must not simply inherit the old prohibition.
+18  services.py:218             `_word_passes_dictionary` → `not w.isalpha()`                 ✔ EXACT
+                                ⛔ `L·LA` CANNOT PASS THE DICTIONARY TODAY. `lexicon_health.py:95` has
+                                the identical test. Shared with C1c — decide which slice owns it.
+19  legality.py:143             error copy "Letter must be A-Z or '?'" while the CHECK is set
+                                membership. A second copy sits at :147.                       ✔ EXACT
+```
+
+```text
+⇒ THE AUDIT ALSO CLEARED TWO FILES, and that is evidence too: "declared-scope files `serializers.py`
+  and `route.ts` retain no one-code-point letter guard."
+⚠ AND IT LABELLED ITS OWN INVENTORY: "it is a search, not a proof of absence." That is R-J honoured by
+  a Worker that was never told the rule. ⇒ Treat the nineteen as a HYPOTHESIS. Give the prompt the
+  commands. Make "name any site my commands cannot reach" an OBLIGATION with its own report field.
+  ⛔ THREE CONSECUTIVE ATTEMPTS AT C1a EACH FOUND A SPELLING THE PREVIOUS INVENTORY COULD NOT REACH.
+  THE FOURTH WILL FIND A FOURTH. Expect it, budget for it, and do not treat its absence as success.
+⭐ AND THE GOOD NEWS, measured: the MOVE CORE hash covers only `MOVE_SYSTEM_PROMPT`
+  (`prompts.test.ts:79-84`, the only `createHash` use in that file), NOT the three grid functions — so
+  C1b can repair them WITHOUT moving the pinned hash that standing condition 1 requires proved
+  unchanged. And `gamecore/state.py:63` plus `:104-125` already carry a structured
+  `grid: list[list[str | None]]` for the save file, sitting right beside the lossy one.
+⛔ C1b IS DISQUALIFIED FROM 5.8's OPTION C. `BRAINSTORMING.md` §1.6 BAD FIT: "any wire-format or
+  schema migration, where 'broken between two slices' is the named hazard" and "anything E3 or E4".
+```
+
+### 6.2 The rest, unchanged in substance from revision 2
+
+```text
 C1c  dictionary authority, ENLARGED by a finding: `evaluate_scoring_move` at `legality.py:112`
-     already accepts `authority: WordAuthority | None`, so the seam exists and the work is to PASS
-     one at five call sites (`services.py:862`, `:1649`, `diagnostics.py:476`, `move_search.py:373`,
-     `:585`), delete `_word_passes_dictionary`, and fix four `diagnostics.py` guards.
-     ⛔ PLUS: `services.py:216-218` `not w.isalpha()` means `L·LA` CANNOT PASS THE DICTIONARY today,
-     and `lexicon_health.py:95` has the identical test. Same defect class as the serializer's.
+     already accepts `authority: WordAuthority | None` (the def starts at `:104`), so the seam EXISTS
+     and the work is to PASS one at five call sites — ⭐ RE-MEASURED, and two moved:
+       services.py:866 (was 862)  ·  services.py:1653 (was 1649)  ·  diagnostics.py:476  ·
+       move_search.py:373  ·  move_search.py:585
+     then delete `_word_passes_dictionary` (still present, `services.py:209`, one call site at `:131`)
+     and fix the four `diagnostics.py` guards.
+     ⛔ OVERLAP WITH C1b, DECIDE IT IN THE PROMPT: items 5 and 18 of 6.1 are the same four guards and
+     the same `isalpha()`. One slice must own them or two prompts will both allowlist
+     `diagnostics.py` and race.
 B1   HUNGARIAN. Needs C1a+C1b. Inherits six conditions from two eras: two DIFFERENT multi-character
      tokens in the fixture, the L·L canary, `unavailable` without crashing before the local build,
      the code-point ceiling DERIVED and justified, the six-word gate as a build post-condition, an
@@ -510,8 +850,9 @@ C3   ⛔ NARROWED TO TURKISH ONLY, and this is a measured scope collapse worth k
                word containing İ. `00_notes.md` "### 19.1".
 C4   face-versus-lexical realization. NO language on the target list needs it. Design so
      multi-realization is not PRECLUDED and BUILD NOTHING.
-C5   ruleset identity. `variant_name` exists at `variant_store.py:82`, feeds `display_label` at
-     `:108-112`, and is declared by NO shipped manifest — so that branch is still untested. Needed by
+C5   ruleset identity. `variant_name` exists at ⛔ `backend/gamecore/variant_store.py:82` — NOT
+     `backend/game/`, which does not exist — feeds `display_label` at `:108-112`, and is declared by
+     NO shipped manifest — so that branch is still untested. Needed by
      es, and candidates exist for pt (pt_BR), no (Bokmål/Nynorsk), nl (the pre-1998 IJ tile) and
      is (Krafla, which is tournament-sanctioned but explicitly independent of the brand).
 DEBT eleven build scripts share ~350 near-identical lines. ⚠ RE-DISPOSITIONED, and read the reason
@@ -566,8 +907,9 @@ python3 /home/agile/meta/projects/libretiles/apfieldcheck.py <prompt.md>   exit 
 
 ## 8. The Cooperator — the parts that change how you work
 
-`PROJECT_CONTEXT.md:303-356` is authoritative and it is the ONE file outside section 0 you may need.
-What matters most here:
+`/home/agile/meta/projects/libretiles/PROJECT_CONTEXT.md:303-356` — the section is literally titled
+`## 2. The Cooperator` and runs to `## 3. Never do this` at `:346`. It is authoritative and this
+section only compresses it. What matters most here:
 
 ```text
 language     to him Slovak, masculine forms; your self-reference feminine; Worker prompts and reports
@@ -576,10 +918,18 @@ emoji        begin every message with the signal, and END every message with an 
              emoji-annotated block of what HE must do. Label manual test steps B1-1, B1-2.
 his stake    MATERIAL — a job interview. A fresh clone that crashes, a control that does nothing, or a
              number that does not mean what it claims is a FIRST-CLASS DEFECT in his frame.
-his replies  terse: A · Pokracuj · ano · suhlas · moment. Confirm an ambiguous one-word instruction in
-             ONE LINE before spending a session on it — or better, MEASURE it. When he wrote
-             "sowpods.txt vymazane" I could not tell whether it meant "it is deleted" or "delete it",
-             and one `git log` answered it. `00_notes.md` section 10.
+his replies  terse: A · Pokracuj · ano · suhlas · moment. ⛔ CONFIRM AN AMBIGUOUS ONE-WORD INSTRUCTION
+             IN ONE LINE before spending a session on it — or better, MEASURE it.
+             ⚠ MEASURED TWICE, and the second time cost work: "sowpods.txt vymazane" could have meant
+             "it is deleted" or "delete it", and one `git log` answered it (`00_notes.md` §10). Then
+             `Pokracuj` was read as authority to IMPLEMENT the translations and it was not — he
+             corrected it with `PREKLADY MA ROBIT FRESH ORCHESTRATOR` and a session's work was
+             reverted (`00_notes.md` §33). **`Pokracuj` means "carry on with the plan", not "start
+             executing whatever you last mentioned."**
+             ⭐ AND THE POSITIVE FINDING: he answers a COSTED MULTIPLE-CHOICE question directly and
+             immediately. Three options with the trade-off stated got "A" in one turn. ⇒ When a
+             material decision is his, ask it as options with prices — do not guess, and do not write
+             a paragraph asking him to think.
 never        read or print backend/.env or frontend/.env.local; let a credential value, prefix, length
              or hash reach chat, a report or Meta; ask him for a destructive action; create permanent
              BOOT_*/NEXT_*/WORKERS.md/ORCHESTRATOR_HANDOFF.md files.
@@ -629,43 +979,67 @@ twice.
 
 ---
 
-## 9. Restoration readiness review
+## 9. Restoration readiness review — re-run for revision 3
 
 ```text
-contradiction review      PASS. Nine stale claims in the two previous handouts are named explicitly:
-                          section 5 of `92_c1_design.md` lists five for C1, and `00_notes.md` "### 3.2"
-                          lists eight stale line references in the era-12 handout. Nothing is hidden.
-omission review           PASS. NOTHING IS OWED. The C1a independent acceptance returned
+contradiction review      PASS, and it is STRONGER than in revision 2. Every disagreement with
+                          `00_handout.md` is now named in section 0b — all five, including the gate
+                          conflict that revision 2 left implicit. Nine stale claims in the two earlier
+                          handouts remain named in `92_c1_design.md` §5 and `00_notes.md` "### 3.2".
+omission review           PASS. NOTHING IS OWED. C1a's independent acceptance returned
                           `acceptance-PASS` and is archived as `06_report_00.md`. Every prompt/report
-                          pair of this whole is archived.
-stale-state review        PARTIAL BY DESIGN. Every number was measured 2026-09-04 at 529e691, and the
-                          Cooperator commits to `main` himself. Section 1 exists so you re-measure.
-                          ⚠ R-G says re-measure every `file:line` in this handout before quoting it.
-                          I broke that rule twice in one session; the previous Orchestrator broke it
-                          eight times. Assume this file has stale coordinates too.
-authority review          PASS. This document grants nothing. Stated at the top.
+                          pair of this whole is archived. ⭐ Revision 3 closed four omissions of
+                          revision 2: the ledger and deferred-batch obligations (5.6), the delivery
+                          wording (5.7), the parallel-topology cost (5.8), and FOUR MISSING ITEMS of
+                          C1b's nineteen (6.1 items 5, 14, 15, 16).
+coordinate review         ⚠ PARTIAL, DELIBERATELY. Revision 3 re-measured every `file:line` in
+                          sections 5 and 6 and found FOUR WRONG — listed in 6.0, corrected in place.
+                          ⛔ It did NOT re-measure sections 4, 7 or 8. Assume those carry stale
+                          coordinates and re-measure before quoting. R-G exists because this file's
+                          predecessor was wrong eight times.
+stale-state review        PARTIAL BY DESIGN. Every repository number was measured 2026-09-04 at
+                          `529e691`; the gate counts were NOT re-run for revision 3 because a ladder
+                          over an untouched tree is D-03. The Cooperator commits to `main` himself.
+                          Section 1 exists so you re-measure.
+authority review          PASS. This document grants nothing. Stated at the top, and section 5.9's
+                          checklist says so again where it would matter most.
+precedence review         ⭐ NEW, and it is what `BRAINSTORMING.md` §2.2 D2 asks for. TWO handouts
+                          govern this whole. `00_handout.md` is still live and owns the objective, the
+                          nine standing conditions and the eleven closure conditions. This file is
+                          later and wins where they disagree, and section 0b names all five places.
 active-mutation review    PASS. Porcelain empty, public readback equal, no Worker in flight.
 active-Worker review      PASS. Sessions 01-06 all terminated and archived. Your first fresh session
-                          is 07.
+                          is 07, exchange 01, and 5.9 spells out the filenames.
 security-boundary review  PASS. Secret, host, network, browser, filesystem, account and Git boundaries
-                          are stated in section 8.
+                          are stated in section 8. ⚠ This objective crosses none of them: it adds
+                          presentation strings to the frontend and touches no credential, no network
+                          call and no backend surface.
 strategic-direction
-  review                  PASS. The objective is the Cooperator's verbatim text in section 5, and the
-                          ONE material product decision inside it — how far to take UI localization —
-                          is explicitly flagged as HIS, with three costed options and a recommendation.
+  review                  PASS. The objective is `00_handout.md` §2 clause 6, which is his own verbatim
+                          text, and closure condition 3 is what completing it satisfies. The ONE
+                          material product decision inside it is TAKEN — option A, no flags,
+                          section 5.2 — and it is not to be re-opened.
 next-step executability
-  review                  PASS. Section 1 is executable immediately and read-only. Section 3 is one
-                          question to the Cooperator. Section 5.3 is priced.
+  review                  PASS. Section 1 is executable immediately and read-only. Section 5.9 is a
+                          mechanical checklist for the first prompt. Section 5.8 is the one genuine
+                          decision waiting for you, and all three of its options are lawful.
 
 RESTORATION CLASSIFICATION: PASS
 ```
 
-Reasoning recommendation for your first substantial prompt: **Medium** for one catalog under section
-5.3 — 300 keys against a type that checks them for you, with the plural rule already derived in 5.4,
-does not earn High, and `AP.md:740-746` names over-routing as an anti-pattern. **Medium** for the
-wiring. **High** for the 144-cell `ownName` matrix in 5.5, where the failure is a substring collision
-across twelve languages, and **High** for C1b, with its named risk already stated: it changes what the
-MODEL sees, and it fails SILENTLY. **Extra High is not warranted anywhere.**
+⛔ **The one thing this file cannot do for you.** `AP.md:2329-2365` and `AP_ORCHESTRATOR.md:15-60`:
+continuation is two-staged, and **Stage 2 is the Cooperator explicitly selecting exactly ONE bounded
+next logical whole.** He has already done that for UI localization in as many words — option A, no
+flags, fresh Orchestrator — so you may treat section 5 as selected. **But a handout never supplies
+current authority.** If you find yourself about to act on anything in section 6 instead, that is a
+different selection and it is his to make, not yours to infer.
+
+Reasoning recommendation for your first substantial prompt: **Medium** for one catalog under 5.3 — 300
+keys against a type that checks them for you, with the plural rule already derived in 5.4, does not
+earn High, and `AP.md:740-746` names over-routing as an anti-pattern. **Medium** for the wiring.
+**High** for the 144-cell `ownName` matrix in 5.5, where the failure is a substring collision across
+twelve languages. **High** for C1b, with its named risk already stated: it changes what the MODEL sees,
+and it fails SILENTLY. **Extra High is not warranted anywhere.**
 
 ## 10. The one-paragraph version
 
@@ -676,16 +1050,18 @@ than by design. Four languages are blocked and each names its exact missing thin
 form of this campaign rather than a shortfall. The one E3 slice, the wire format, landed at `529e691`
 on its third attempt after two Workers correctly refused a defective grant, and its independent
 acceptance has now returned `acceptance-PASS` with zero corrections — so C1a is accepted, C1b is
-unblocked with a nineteen-item scope, and two disclosures ride along that are constraints rather than
-history: no pixel certification, and a user-silent version skew that forces a joint deploy (section 3).
-Your next objective is the Cooperator's own: twelve languages play and four have a UI, so close that
-gap punchily — and the material product decision that section 5.2 used to reserve for him is TAKEN
-(option A, eight full machine-authored catalogs, no flags), with the translations assigned to you
-because he said so in as many words. Nothing of it is implemented, the plural rules are already derived
-and verified for all eight, and each catalog typechecks alone — so eight Workers can run in parallel. Before you write your first prompt, read `AP_DEFECTS.md`: twelve measured defects of the
-protocol itself, including the one that matters most here — that a Worker's job includes critiquing
-your prompt and your approach, and that twelve of the previous Orchestrator's own defects were caught
-that way and not one by its own review.
+unblocked with an inventory of nineteen exact sites in section 6.1, and two disclosures ride along that
+are constraints rather than history: no pixel certification, and a user-silent version skew that forces
+a joint deploy. Your objective is the UI localization that `00_handout.md` §2 clause 6 asked for on day
+one and closure condition 3 requires: eight full machine-authored catalogs, no flags, decided by the
+Cooperator and assigned to you in as many words. Nothing of it is implemented, the plural rules are
+already derived and verified against CLDR for all eight, each catalog typechecks against
+`messages.en.ts` alone — and section 5.8 is the one real decision left, because "eight Workers in
+parallel" costs seven declared fields under this pin or one profile the Cooperator has to promote.
+Before you write your first prompt, read `AP_DEFECTS.md`: twelve measured defects of the protocol
+itself, including the one that matters most here — that a Worker's job includes critiquing your prompt
+and your approach, and that twelve of the previous Orchestrator's own defects were caught that way and
+not one by its own review.
 
 **This document grants no mutation authority. Verify repository and public truth independently before
 you act.**

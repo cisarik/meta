@@ -181,6 +181,15 @@ what changed a multi-code-point tile now crosses the game-state wire losslessly,
 (`06_acceptance_00.md`) had not returned when this entry was written. **If that acceptance has not
 happened, do B4-1 and stop — do not treat the rest as confirmation.**
 
+> ⭐ **RECONCILIATION, 2026-09-04, prospective and not a rewrite.** The acceptance HAS since run. It
+> returned `status PASS · acceptance-PASS · zero corrections`, archived as `./06_report_00.md`, from a
+> session that neither designed nor implemented the candidate and was not a subagent of the
+> Orchestrator. ⇒ **B4-1 is SATISFIED and B4-2 through B4-4 are live.** The paragraph above is kept
+> exactly as written because it was true when written — `AP.md:322-336`: historical artifacts stay
+> interpretable and are never retroactively rewritten.
+> ⚠ **B4-2 remains the ONLY pixel evidence this slice will ever get.** The acceptance independently
+> confirmed that no test in the repository renders the board component. Your eyes are the instrument.
+
 ```text
 B4-1  ⛔ FIRST: confirm the independent acceptance of 529e691 exists and PASSED. If it does not
       exist, this entry is not ready and nothing below it counts.

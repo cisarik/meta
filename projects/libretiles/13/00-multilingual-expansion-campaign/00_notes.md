@@ -2189,3 +2189,75 @@ ITS OWN slicing, prompts, Worker count, and whether the eight `settings.gameVari
         session should price against AP_DEFECTS D-02 rather than inherit as a plan.
 ⛔ NOT   one translated string from this session. I wrote none, and the revert is verified.
 ```
+
+## 34. Revision 3 of the handout — the Cooperator asked for it to be perfect, and it was not
+
+His instruction, after the session that wrote revision 2 had been compacted:
+
+> *MOMENT PROSIM ESTE UPRAV HANDOUT TAK ABY BOL 100% perfektny … chcem si byt isty, ze handout =
+> generovanie prompt pre fresh Agent Orchestratora prebehne hladko … POZOR na 00_handout_00.md a
+> spominany 93_orchestrator-handout.md — ten velmi opatrne aby si sa nestal fresh Orchestratorom ty..
+> PRETOZE BY MOHOL VZNIKNUT LOOP*
+
+⛔ **The loop hazard is real and I treated it as a constraint on my own behaviour.** I read the campaign
+directory, `AP_DESTILLED.md`, `AP_DEFECTS.md` and `BRAINSTORMING.md`, and I re-measured the repository —
+but I issued no prompt, opened no session 07, and wrote no product code. The one subagent I used was a
+read-only measurement task with no orchestration language in its grant, precisely so it could not
+mistake itself for the successor. **Revision 3 is handout work, not campaign work.**
+
+### 34.1 ⭐ Nine defects in revision 2, all measured, all mine
+
+```text
+1  FOUR WRONG COORDINATES, and one was a wrong FILE. `state.py:48` is `blanks=blanks,` — the join is
+   at :49. `services.py:862` and `:1649` are both off by four (866, 1653). And
+   `backend/game/variant_store.py` DOES NOT EXIST; the module is `backend/gamecore/variant_store.py`.
+   ⇒ R-G is my own rule and revision 2 broke it four times. Sixty seconds of `sed -n` found all four.
+2  ⛔ C1b's NINETEEN-ITEM INVENTORY WAS PARAPHRASED AND LOST FOUR ITEMS. `06_report_00.md:296-315` is
+   the authoritative list. Revision 2 dropped item 5 (`diagnostics.py:373 :374 :782 :789` — FOUR
+   len == 1 guards, one of them the RANGE test `"A" <= ch <= "Z"` that no `\p{L}` search reaches) and
+   items 14, 15, 16 (three Slovak/Czech test files). It also carried a PHANTOM: `prompts.ts:254`,
+   which revision 2 listed as "suspected" and which is measurably a row-COUNT guard, not a code-point
+   assumption. ⇒ This is D-04 reproducing itself INSIDE the handout that documents D-04.
+3  ⛔ "EIGHT WORKERS IN PARALLEL" WAS UNLAWFUL AS WRITTEN. `AP.md:1166-1177` defaults to exactly ONE
+   accountable workstream; parallel topology needs seven declared fields. Revision 2 recommended the
+   shape without the fields. ⇒ Revision 3 gives three lawful shapes and prices each.
+4  NO PRECEDENCE STATEMENT. `BRAINSTORMING.md` §2.2 D2 requires a later handout to name every
+   disagreement with an earlier one. Revision 2 never mentioned `00_handout.md` at all, so its nine
+   standing conditions, its eleven closure conditions and its governing objective were invisible.
+   ⇒ New section 0b names all five disagreements, and the gate conflict is the one that would have bitten.
+5  ⛔ THE OBJECTIVE LOOKED NEW AND IS NOT. `00_handout.md` §2 clause 6 already says "add the
+   corresponding UI locales wherever practical", and closure condition 3 requires it. Revision 2
+   presented UI localization as a fresh objective, which invites an RF-19 changed-objective error and a
+   new logical-whole identity for work that is already inside 13/00.
+6  TWO CAMPAIGN ARTIFACTS WERE UNMENTIONED. `90_language_ledger.md`'s `UI-localization` column is the
+   column this objective moves — eight rows plus the `:141` header — and `91_deferred-acceptance-batch.md`
+   must be appended to at the moment each catalog lands. ⚠ AND MY FIRST DRAFT OF THAT VERY SECTION
+   GUESSED THE EIGHT LINE NUMBERS AND GOT ALL FOUR I NAMED WRONG: german is :356, not afrikaans;
+   :412 is FRENCH, which is BLOCKED and must not be touched. Measured and corrected.
+7  THE DELIVERY WORDING THAT WORKED NINE TIMES WAS LEFT BEHIND in `00_handout.md` §10, together with
+   the two subagent failure modes and which one consumes a session ordinal.
+8  NOTHING TOLD THE SUCCESSOR HOW TO WRITE ITS FIRST PROMPT. That was his actual request. New section
+   5.9 gives coordinates, Meta filenames, both routing fields, the tier recommendation with reasons,
+   the allowlist, the negative scope, the two report fields worth asking for, and `apfieldcheck.py`
+   with the detail that it is NOT executable.
+9  `BRAINSTORMING.md` WAS NEVER CITED, and it contains the single most relevant thing in the archive:
+   §1.8 names an interface-locale slice of ~300 keys as the recommended FIRST TEST of his own
+   `Worker Orchestrator` idea. ⇒ That is this objective, eight times. Recorded as 5.8 option C with
+   its four constraints, its BAD-FIT list (which disqualifies C1b), and the note that promotion is HIS.
+```
+
+### 34.2 What I did NOT do, deliberately
+
+```text
+· No prompt, no session 07, no product code. The loop hazard he named is the reason.
+· Did NOT re-run the gate ladder. The tree is untouched at 529e691 and a ladder over an unmodified
+  tree is `AP_DEFECTS.md` D-03. The capsule now says the numbers are the previous session's baseline.
+· Did NOT re-measure sections 4, 7 and 8 of the handout. Only 5 and 6 were re-measured, and the
+  readiness review SAYS SO under a new `coordinate review` row rather than implying whole-file freshness.
+· Did NOT rewrite `91_deferred-acceptance-batch.md`'s stale B4 preamble. It was true when written, so
+  it got a dated prospective reconciliation note instead — `AP.md:322-336`.
+```
+
+⚠ **The honest limit of revision 3.** Nine defects in a file that had already been proof-read twice
+means the next reader should assume there are more. The handout now says that in its own readiness
+review instead of claiming freshness it does not have.
