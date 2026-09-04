@@ -394,3 +394,31 @@ B8-5  ⛔ KNOWN LIMITS: `Terminar sessão` is 15 characters where English is 6, 
       in the game header — the highest overflow risk in this catalog, kept CORRECT rather than
       shortened to the imprecise `Sair`. And `A AI` takes feminine agreement because `AI` is a
       protected product token; a Portuguese reader would write `IA`.
+
+## B9 · catalog 3 of 8 — the Icelandic interface catalog — `490426a`
+
+```text
+slice        MEC-UIL-C3-is
+commit       490426a  feat(i18n) the Icelandic interface catalog
+             pushed; public readback equals local HEAD at 490426a
+what changed ONE new file, messages.is.ts — 296 text keys and 20 function keys of Icelandic.
+             ⛔ DELIBERATELY ORPHANED like the other two. THREE of eight catalogs now exist:
+             German, European Portuguese, Icelandic. Five remain.
+```
+
+```text
+B9-1  Confirm the header is byte-identical to the other two:
+      `diff <(head -7 messages.is.ts) <(head -7 messages.de.ts)` prints nothing.
+B9-2  Read the terminology block. EXPECT nine Icelandic terms, and note two deliberate choices the
+      writer flagged as its weakest: `jóker` for the blank (an Icelandic player may say
+      `auður stafur`) and `grind` for the rack (`standur` and `rekki` are equally plausible).
+B9-3  ⭐ Icelandic collapses TILE and LETTER into one word, `stafur`. That is a real divergence from
+      German and Portuguese, which split them, and it is defensible — Czech and Slovak already differ
+      from each other on the same term. Worth one look if you ever have an Icelandic reader.
+B9-4  ⛔ TWO PRODUCT DEFECTS THIS CATALOG FOUND, both OUTSIDE its own file and both now queued as
+      their own work. Nothing for you to do; recorded so the batch is honest:
+      · The Settings language picker's SEARCH cannot fold `ð þ æ ß`. Typing `strasse` will not find
+        `Straße` and `thyska` will not find `Þýska`. Latent today, live the moment the eight locales
+        are wired. Being fixed before wiring.
+      · `history.outcome.unknown` is a string twelve catalogs write and the product can never show —
+        the saved-board table has no branch for it. Being removed with the wiring key change.

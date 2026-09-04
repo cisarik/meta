@@ -3533,3 +3533,136 @@ plus     3cfa13b  docs(i18n) record in the German catalog why aiPlayedFor uses t
   the invariant block should become a referenced artifact rather than an inlined one, and that is a
   decision for catalog 5 or 6, not now.
 ```
+
+## 44. ⭐ CATALOG 3 OF 8 LANDED — Icelandic, `490426a` — and it found TWO PRODUCT DEFECTS, not skeleton ones
+
+```text
+prompt   ./12_implementation_00.md   635 lines · session 12 · exchange 01 · E2 · HIGH reasoning
+report   ./12_report_00.md           status PASS · +480/−0 · pushed · readback equal · porcelain clean
+commit   490426a  feat(i18n) the Icelandic interface catalog
+⇒ THREE OF EIGHT SHIP. de · pt · is. Five remain: it · nl · da · sv · af.
+⛔ NON-INDEPENDENT: subagent-authored, orchestrator-accepted.
+```
+
+⭐ **Eleven MEASURED findings and three LEADs — the strongest critique of the campaign. And the two
+most valuable are NOT corrections to my prompt: they are PRODUCT DEFECTS that need their own slices.**
+
+### 44.1 🐞 TWO PRODUCT DEFECTS, both verified by me, both outside the catalog work
+
+```text
+1  🐞 `foldForSearch` CANNOT FOLD `ð þ æ ß`, AND ITS OWN COMMENT CLAIMS THE LIST IS COMPLETE.
+   `locales.ts:23` says "Letters NFD + `\p{Diacritic}` cannot fold: stroke (ł), D-stroke (đ), slashed
+   O (ø)". ⇒ THAT LIST IS INCOMPLETE. `ð` `þ` `æ` `ß` are the same class — no combining diacritic, so
+   NFD cannot decompose them — and none has an entry.
+   ✔ VERIFIED by running the shipped function myself:
+       Þýska  → þyska    ⇒ typing `thyska`  does NOT match
+       Sænska → sænska   ⇒ typing `saenska` does NOT match
+       Straße → straße   ⇒ typing `strasse` does NOT match   ⛔ AND GERMAN ALREADY SHIPS
+       Íslenska → islenska ✔ works, because NFD folds the acute
+   ⇒ PremiumPicker's search silently fails for those inputs. LATENT TODAY (no shipped locale's labels
+     contain those letters) and LIVE THE MOMENT the wiring slice lands German, Icelandic, Danish or
+     Swedish. ⭐ AND IT IS A DEFECT OF THE SAME CLASS THIS CAMPAIGN KEEPS FINDING: a comment that
+     enumerates a set and claims completeness, while the set is short.
+   ⇒ DISPOSITION: its own slice, BEFORE the wiring slice, because wiring is what makes it user-visible.
+     Recorded in §44.4. ⛔ NOT folded into a catalog: `locales.ts` is on every catalog's forbidden list
+     for good reason, and a Worker that fixed it would have merged two slices.
+2  🐞 `history.outcome.unknown` HAS NO PRODUCT CALL SITE — twelve catalogs author a dead string.
+   ✔ VERIFIED: `OUTCOME_META` at `GameHistoryPanel.tsx:36-74` has exactly SEVEN arms — waiting,
+   in_progress, won, lost, draw, gave_up, abandoned. There is no `unknown` arm. The key's only other
+   appearances are `i18n.test.ts:1491` and `GLOSSARY.md`.
+   ⇒ Six catalogs already carry it, eight will, twelve after wiring. Each spends real agreement effort
+     on a string that cannot render — Icelandic's report notes it had to choose an invariable neuter
+     form for it alongside the seven live ones.
+   ⇒ DISPOSITION: NOT a catalog's business (removing a key is a `messages.en.ts` change, and that file
+     is frozen for this objective). Recorded as a candidate for the key-set slice that the wiring will
+     already have to open — it is adding eight endonym keys anyway, so removing one dead key is free
+     there and expensive anywhere else.
+```
+
+### 44.2 The skeleton corrections, applied to catalogs 4-8
+
+```text
+M1 🐞 THE AUDIT BLOCK'S THIRD DEFECT, and this one collides with MY OWN MANDATED COMMENTARY.
+   `grep -n 'plural' "$F"` must show "1 import + 3 calls, nothing else" — but §4 REQUIRES a
+   counted-noun comment block, and a block documenting plural behaviour naturally writes the word
+   `plural` or names the helper. The Worker's first draft had 7 hits, three of them required English
+   prose, and it rewrote its own comments rather than weaken the file.
+   ⭐ SO R-N GENERALIZES AGAIN: an audit pattern aimed at CODE must not be runnable against PROSE —
+     AND NOT AGAINST THE FILE'S OWN MANDATED COMMENTARY EITHER. Three defects, one audit block, three
+     different collision partners: the header (catalog 1), the target language (catalog 2), my own
+     required comments (catalog 3). ⇒ FIX: `grep -nE '^[^/]*plural'`, i.e. exclude comment lines.
+   ⚠ AND THE HONEST READING: I have now written three versions of that one line and each was wrong in
+     a new way. The pattern-vs-prose problem is structural, not a typo, and the right long-term shape
+     is an audit that parses rather than greps. Not worth building for five remaining catalogs; worth
+     stating so the next campaign does not repeat it.
+M2 🐞 I GOT `history.unknownDate`'s RATIO BACKWARDS. ✔ Verified: `GameHistoryPanel.tsx:97` is a DATE,
+   `ProfileModal.tsx:23` and `:26` are inside `formatJoinedDate` — also DATES — and only `:220` is a
+   USERNAME. So it is THREE DATES + ONE USERNAME, and my §5.2 said the reverse. The conclusion holds
+   (one username site means no declined form works everywhere) but catalogs 4-8 would have reasoned
+   from a wrong ratio. Corrected.
+M3 🐞 "SIX WORDS" UNDERCOUNTS FOR ANY LANGUAGE WHOSE PREDICATE PARTICIPLE AGREES. Icelandic needed
+   `pluralIs(count, "stafur valinn", "stafir valdir")` — two words per slot, because the participle
+   agrees and cannot sit outside the selection the way German's invariable `ausgewählt` does.
+   ⇒ "six SLOT FILLERS per site", not "six words". Live for da · sv · nl · it. ⚠ Note this is the
+     SECOND correction to that same arithmetic: catalog 1 fixed 9→6, catalog 3 fixed "words"→"fillers".
+M4 ⭐ MY 21/101 EMPHASIS LANDS ON ONE SITE OF THREE, and the measurement behind that is good work:
+   `controls.tilesSelected` is bounded by rack size 7; `a11y.rackTile`'s points is a TILE FACE VALUE
+   and the maximum across all twelve shipped manifests is 10. Only `error.throttled.minutes` can
+   actually be 21 or 101. ⇒ The requirement stays (the signatures are unbounded `number`) but the
+   EMPHASIS moves to the one site that can reach it, so catalogs 4-8 spend attention correctly.
+M6 · M7 · M11 accepted: PremiumPicker's SEARCH is a second constrained property of that surface (and
+   it is defect 1 above); there is a second `max-w-md` at `GameHistoryPanel.tsx:269`; and my
+   `Board.tsx:665-680` range is a line off. All three corrected.
+M8 ⭐ A FOURTH CALL-SITE TRAP. `history.open` serves BOTH a column heading (`:295`) and a button label
+   (`:139`), and at `:139` it alternates in the same slot with `history.current` — an infinitive
+   against an adjective in one position. ⇒ Added to the word-order category. A language whose headings
+   are nouns and whose buttons are verbs cannot reuse one string there.
+⭐ AND THE STRUCTURAL POINT IT MADE ABOUT MY OWN LABELLING: §5.6's MECHANISM ("report all twelve
+   language names so the collision set can be re-derived from your actual strings") is `[VARIANT]` and
+   should be `[INVARIANT]` — the twelve-name table is the input to that future test in ALL EIGHT
+   catalogs, and the collision set must be derived from eight sets of strings. Only the Icelandic
+   collision FACTS are variant. ⇒ Promoted.
+```
+
+### 44.3 What Icelandic taught that no other language could
+
+```text
+· ⭐ `header.logout` IS NOT A RISK IN ICELANDIC. `Skrá út` is 7 characters against English's 6 and far
+  shorter than pt-PT's 15. ⇒ The campaign's "highest measured overflow risk" is language-specific, and
+  having a catalog report a named risk as ABSENT is exactly as useful as having one report it as
+  present. That is why the prompt asks.
+· ⭐ ALL THREE WORD-ORDER CALL SITES WERE HARMLESS FOR ICELANDIC, and the reasons are structural
+  rather than lucky: verb-before-number order fits the fixed score span; verb-object order is already
+  `[action][noun]`; and Icelandic HAS NO INDEFINITE ARTICLE AT ALL, so `game.aWord`'s bare noun is not
+  a stylistic choice. ⇒ Two of three languages now report harmless. One more and the wiring slice can
+  reasonably conclude the call sites do not need changing.
+· ⚠ `history.unknownDate` IS CHEAPER IN ICELANDIC than in Portuguese, because Icelandic's unmarked
+  standalone form is the NEUTER and that is correct for both a feminine date and a neuter username,
+  while Portuguese's unmarked form is masculine. ⇒ A trap's cost is language-specific too.
+· ⭐ AND IT AUDITED THE TWO EARLIER CATALOGS UNPROMPTED, twice, labelling both honestly: an unverified
+  observation about German's singular/plural register in a hero line, and a CHECK that CONFIRMED
+  catalog 2's `\u00A0` thousands separator was right for pt-PT — recorded specifically so catalog 4
+  does not re-litigate it. ⇒ That is the third catalog in a row to audit its predecessors' output
+  without being asked, and the first to record a NEGATIVE result to save future work.
+```
+
+### 44.4 The queue after this, updated by what the three catalogs found
+
+```text
+next    catalog 4 of 8: ITALIAN, session 13, baseline 490426a, HIGH reasoning (third `many` slot,
+        gender and agreement as its own numbered item, elision before vowels).
+then    nl · da · sv · af. ⛔ The Nordic pair stays adjacent so catalog 7's prompt can guard against
+        Danish bleed explicitly, and af stays last.
+NEW     🐞 `foldForSearch` + `EXPLICIT_SEARCH_FOLDS` — add `ð þ æ ß`. ⛔ ITS OWN SLICE, BEFORE WIRING,
+        because wiring is what makes it user-visible. One file, one const, and the comment that claims
+        completeness must be corrected in the same commit.
+NEW     🐞 `history.outcome.unknown` is dead — fold its REMOVAL into the key-set change the wiring
+        slice must make anyway (it adds eight endonym keys), where it is free.
+WIRING  now carries: LOCALES 4→12 · translate.ts TEXT and FN · settings/page.tsx `localeLabelKey` AND
+        the unconditional `flagSrc` defect · +8 endonym keys reopening all twelve catalogs ·
+        i18n.test.ts's locale-indexed fixture families · PremiumPicker.test.ts · api.test.ts ·
+        GLOSSARY.md's endonym inventory · AGENTS.md. ⛔ ALL EIGHT GATES, per §37.4's bound exception.
+⚠ PROMPT LENGTH: 434 → 564 → 635 lines. The invariant block is absorbing measurements as designed, but
+  §43.4's threshold is real. ⇒ DECIDE AT CATALOG 5 whether the invariant block becomes a referenced
+  artifact. Two more catalogs of growth at this rate reaches it.
+```
