@@ -1517,6 +1517,169 @@ Recording this so nobody reads "two different tokens" as "from a shipped variant
 
 ---
 
+## 28. ⛔ Exchange 03/01 returned BLOCKED with zero mutation, and it was RIGHT
+
+```text
+prompt   03_implementation_00.md    task MEC-C1a, tier E3, reasoning High
+report   03_report_00.md            status BLOCKED, Phase-qualified result not-applicable
+tree     unchanged at 8a50ded. Porcelain empty. No commit, no push, nothing staged.
+```
+
+The Worker ran the full gate ladder at baseline, verified every one of my section-3 coordinates
+line by line, observed the L·L canary passing pre-change, then stopped on two of my own stopping
+conditions. **Four defects in my prompt, and one architectural finding I had missed entirely.**
+
+### 28.1 🐞 PROMPT DEFECT E1-D2 — an absence claim short by two sites
+
+```text
+I CLAIMED   seven items, EIGHT code sites, and required proof P-D: "NO SINGLE-CODE-POINT GUARD
+            REMAINS ON A LETTER PATH … the eight coordinates"
+MEASURED BY ME after the report, at route.ts:329 and :334:
+                !/^[\p{L}?]$/u.test(letter)
+                letter === "?" && (!blankAs || !/^\p{L}$/u.test(blankAs))
+            `^…$` around a single \p{L} matches EXACTLY ONE CODE POINT. Both sit in the SAME
+            FUNCTION as site 7.
+⛔ CONSEQUENCE  removing site 7 alone is a COMPLETE NO-OP. normalizePlacementData would still
+            return null for `SZ`, so the AI could never place a digraph — while all eight gates
+            went green and P-D reported a clean absence.
+CLASS       D6. The same defect as the case-sensitive sowpods grep: an ABSENCE CLAIM I asserted
+            without enumerating its pattern exhaustively. R-E says a pattern must be run both
+            ways; it does not yet say a COUNT must be derived from a search rather than a list.
+RULE R-J    A per-site absence claim must be generated FROM A SEARCH, not from a hand list. If a
+            prompt says "the N sites", the N must come from a grep whose pattern is quoted in the
+            prompt, so a Worker can re-run it and get the same N.
+```
+
+⚠ **The Worker nearly fixed sites 9 and 10 silently** — they are inside the allowlist and in the
+same function — and did not, because *"your count of eight is a load-bearing premise of P-D's
+report contract and silently reporting ten under an eight-row heading would corrupt the acceptance
+record."* That is better judgement than my prompt deserved.
+
+### 28.2 🐞 PROMPT DEFECT E1-D3 — a stage gate that could not be satisfied
+
+I made F3 (the schema-refusal test) a pre-commit stage gate, and allowlisted no file matching
+vitest's default `**/*.{test,spec}.?(c|m)[jt]s?(x)`. **None of the nine paths is a test file the
+runner would collect.** The natural host, `frontend/src/hooks/useGameStore.test.ts`, exists and
+already exercises the migrate chain — and I left it off.
+
+⇒ A genuine contradiction between an obligation and an allowlist. **Class R-B: prohibitions and
+obligations written in separate passes and never read against each other.** My own section-8
+cross-check paragraph claimed I had done that pass. I had not done it for the TEST hosts.
+
+### 28.3 🐞 PROMPT DEFECT E1-D4 — two file paths that do not exist
+
+```text
+I CLAIMED   frontend/src/components/game/Tile.tsx and components/game/TileRack.tsx
+ACTUAL      frontend/src/components/tiles/Tile.tsx and components/tiles/TileRack.tsx
+```
+
+`components/game/` exists but holds the overlay, score panel and controls. The substantive claim —
+no single-code-point assumption in those components — **holds at the real paths**, and the Worker
+verified it there. Harmless because both are off-allowlist under either spelling, but it is R-G
+again: **I asserted a path I had not listed.** Also unnamed: `components/board/Cell.tsx` is the
+actual per-cell renderer and belongs on that list.
+
+### 28.4 🐞 PROMPT DEFECT E1-D5 — section 6 undercounted the re-pointing, and section 8 forbade it
+
+Beyond the five references I enumerated, three more assertions encode the OLD wire shape and are
+all inside the allowlist:
+
+```text
+test_atomic_token_persistence.py:233-253   asserts len(board)==15, every row a 15-char str,
+                                           board[7][7]=="A", blanks==[{"row":7,"col":7}]
+test_api.py:1078                           data["state"]["board"][7][7:9] == "AT"
+test_api.py:1324                           data["state"]["board"][7][7:10] == "JOE"
+```
+
+⇒ And my section 8 said *"Section 6 is the one authorized re-pointing"*, which reads as forbidding
+exactly the edits the allowlist permits. **Same class as defect D3 of era 12** — two instructions
+about the same file that cannot both hold.
+
+### 28.5 ⛔ THE FINDING — the AI's own board view is worse than the wire, and I had missed it
+
+```text
+backend/gamecore/state.py:32-44   build_ai_state_dict
+    row_chars.append(cell.letter)  ...  grid.append("".join(row_chars))
+:48 ai_rack="".join(ai_rack)
+```
+
+⛔ **A single `SZ` makes that row SIXTEEN characters and silently shifts every column to its
+right.** `ai_rack` collapses a digraph rack into an ambiguous character run. It flows through
+`services.py:1602` → `compact_state` at `:1618` → `prompts.ts:314` `extractGridRows` /
+`renderLabeledBoard` / `listAnchorSquares`.
+
+⇒ **After C1a as I scoped it, the HUMAN would see `SZ` correctly and the MODEL would see a
+corrupted, off-by-one grid.** That is a silent wrong board — precisely what decision D-3 exists to
+prevent — one layer inward, and `gamecore/state.py` was neither allowlisted nor prohibited.
+
+**I verified both halves myself** at `state.py:32-44` and `services.py:1602/1618`. The Worker rates
+it higher-risk than the dictionary-authority work I had scheduled next. **I agree, and it changes
+the plan.**
+
+⭐ **One thing this does NOT cost, measured by me after the report:** `MOVE_SYSTEM_PROMPT` is
+`moveSystemPromptFor(englishMoveSpec)` at `prompts.ts:186` — a static template — while
+`extractGridRows` (:227), `renderLabeledBoard` (:238) and `listAnchorSquares` (:253) are separate
+exported functions used at :314-319 to build the USER message. So **the three functions can change
+without touching the hashed constant**, and standing condition 1's MOVE CORE hash survives. That
+was the thing I most feared and it is not a problem.
+
+### 28.6 C1 is THREE parts, not two
+
+```text
+C1a  the WIRE projection — the human's board.        ten guard sites, schema 4, store 5->6
+C1b  the AI'S BOARD VIEW — build_ai_state_dict, compact_state, and the three prompts.ts grid
+     functions. ⛔ NEWLY DISCOVERED. Higher risk than C1c because it fails SILENTLY.
+C1c  DICTIONARY AUTHORITY — WordAuthority at five call sites, _word_passes_dictionary deleted.
+ORDER  C1a, then C1b, then C1c. C1b must not precede C1a, because it is the same shape question
+       one layer inward and the wire decision (D-1) should settle the representation first.
+```
+
+### 28.7 Other findings, dispositioned
+
+```text
+MEASURED 3  diagnostics.py:373,374,782,789 hold four more single-code-point letter guards.
+            -> Correctly forbidden in 03/01 by D-5. They belong to C1c's exchange. Recorded.
+MEASURED 4  serializers.py:275 also tests `.isalpha()`, which is FALSE for `L·L`. Dropping only
+            the length test leaves the digraph accepted and the INTERPUNCT rejected.
+            -> ADOPTED into the reissue: the replacement predicate must drop `.isalpha()` or
+            delegate to the variant's playable set, and it must be named explicitly.
+            ⚠ And the canary would NOT catch it: F2 is a backend-legality canary and does not
+            traverse PlacementSerializer. A canary that cannot reach the code is not a canary
+            for that code.
+MEASURED 7  consumers.py forwards get_game_state_for_user verbatim, so multiplayer is covered
+            for free — but the client refusal must therefore cover the websocket frames too, and
+            one ingress file is off-allowlist. -> Confirms the refusal belongs in setGameState.
+MEASURED 8  move-history and the draw payload are ALREADY lossless. -> No work in any exchange.
+            A scope reduction, and the first one this campaign got from a Worker rather than me.
+MEASURED 9  gamecore/state.py:79 already calls its SAVE format "schema 4". The wire's inherited 4
+            and the save's 4 are two different axes. -> Recorded so nobody conflates them; the
+            reissue will say so in prose.
+LEAD 4      once sites 3/4 relax, PlacementSerializer accepts any non-empty token and nothing
+            bounds its length. -> ADOPTED: the reissue must add an explicit token-length bound in
+            the same exchange that removes the guard. An unbounded `letter` reaching the scoring
+            path is a real hazard, not a theoretical one.
+```
+
+### 28.8 Coordinates for the reissue
+
+```text
+The exchange is CONSUMED: a Worker received it, worked, and produced a terminal report. This is
+not the era-12 dispatch-failure case where nothing had begun.
+Assumptions CHANGED MATERIALLY — two new guard sites, a widened allowlist, a new predicate
+requirement, a token bound, and a third sub-slice discovered. That is AP's changed-route trigger,
+and the subagent session is gone regardless.
+⇒ fresh-worker-session, Worker session ordinal 04, Worker exchange ordinal 01.
+```
+
+⚠ **What this exchange cost and what it bought.** It cost one full gate ladder and produced zero
+product change. It bought: two guard sites that would have made C1a a silent no-op, a
+contradiction that would have forced an unauthorized edit or a skipped fixture, three
+old-shape assertions that would have failed the suite mid-slice, and **a corrupted AI board view
+that would have shipped green.** On an E3 slice touching a live multiplayer product, that is the
+cheapest possible outcome.
+
+---
+
 ## 26. Next step
 
 
