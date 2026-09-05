@@ -4577,3 +4577,127 @@ THEN   S4 the naming axes · S5 closure condition 11 (README, PRD).
 HIS    B13-3 chat/chatt · B10-3 badge length · B7-3 German terminology · and the `prompts.ts` union-type
        slice, which is his to SELECT rather than mine to schedule.
 ```
+
+## 52. ⭐ THE KEY-SET HALF OF THE WIRING — `a944e76`, plus `779aa55` for two stale comments
+
+```text
+prompt   ./19_implementation_00.md   340 lines · session 19 · exchange 01 · E1 · minimal budget
+report   ./19_report_00.md           status PASS · 14 files, +117/−6 · pushed · readback equal
+commits  a944e76  feat(i18n) twelve interface-language endonyms
+         779aa55  docs(i18n) two comments that counted four catalogs when there are twelve
+⇒ THE KEY SET IS 304 text + 20 fn = 324, and `settings.uiLanguage.*` covers twelve locales.
+⛔ `LOCALES` IS STILL FOUR. Nothing added is reachable. That was the point.
+```
+
+### 52.1 ⭐ WHY I SPLIT THE WIRING, and the measurement that decided it
+
+```text
+Before writing anything I ran a PROBE: wired `LOCALES` 4→12 and `translate.ts`'s two tables in the
+working copy, measured the damage, then reverted and verified the tree green again.
+✔ MEASURED, and this is the number that decided the split:
+     typecheck errors      28   in exactly TWO files
+       settings/page.tsx    1   TS2740 — `localeLabelKey` needs twelve entries
+       i18n.test.ts        27   18× TS2740 (locale-keyed `Record` maps missing eight keys)
+                               10× TS7053 (inline object literals indexed by locale)
+     vitest failures       13   ALL in i18n.test.ts
+⭐ AND THE FINDING THAT MATTERS MOST FOR THE NEXT SLICE: `api.test.ts` and `PremiumPicker.test.ts` DO NOT
+  BREAK. Their loops iterate hardcoded `["en","sk","cs","pl"]` literals rather than `LOCALES`, so they
+  keep passing and silently UNDER-COVER. ⛔ `api.test.ts` is the file asserting that a tokenless 401 does
+  not leak whether a username exists — in "all four locales". With twelve wired, eight locales' 401
+  strings would be unverified for user-enumeration leakage and NOTHING WOULD GO RED.
+  ⇒ That is a coverage gap masquerading as a passing suite, and a Worker that fixes only what is red
+    would leave it. It goes in the wiring prompt explicitly.
+⇒ SO THE WIRING SPLITS: this slice was fourteen files of rote editing with ZERO design decisions; the
+  next is ~8 files with a real one. `AP_DEFECTS.md` D-16's split obligation, applied deliberately for the
+  second time in this campaign.
+```
+
+### 52.2 ⭐ ALL FOUR OF ITS MEASURED FINDINGS ARE CORRECT — I verified each
+
+```text
+M1 ✔ `messages.en.ts` said "Do not translate these FOUR strings back into exonyms" four lines above the
+   group the same commit grew to TWELVE.
+M2 ✔ `GLOSSARY.md` said "a missing key in any of `en`/`sk`/`cs`/`pl` is a TypeScript error". Measured:
+   ELEVEN catalogs are declared `Record<TextKey, string>` and only `messages.en.ts` is unannotated,
+   because it is the type source. ⇒ The sentence UNDERSTATED the guarantee, and it has been stale since
+   the first of the eight new catalogs landed.
+M3 ✔ MY CAPITALIZATION FRAMING OVERSTATED ITS OWN REACH. CLDR already returns `Afrikaans`, `Deutsch` and
+   `Nederlands` capitalized, so the decision changed FIVE of eight values, not eight. ⚠ My prompt's own
+   parenthetical said "five of the eight LOWERCASE" and was right; the surrounding sentence then treated
+   it as a decision over all eight. Two adjacent statements, one precise and one loose.
+M4 ⭐ AND THIS IS THE SHARPEST: §5's IDENTITY LOOP CANNOT DETECT A MISSING FILE. I called it "the slice's
+   real evidence" — but it pipes through `sort -u`, so eleven catalogs carrying the block print output
+   BYTE-IDENTICAL to twelve, and the `sed 's/^ *//'` additionally hides an indentation error.
+   ⇒ THE WORKER CLOSED THE GAP ITSELF rather than reporting a hole: it added an occurrence count over
+     UNSTRIPPED lines (12 each) and an md5 of the inserted eight-line block, identical across all twelve
+     files. ✔ I re-ran the occurrence count: 12 occurrences, 1 distinct form, for every key.
+   ⛔ A CHECK I DESIGNED TO BE THE EVIDENCE COULD NOT PROVE THE THING I SAID IT PROVED, and a Worker
+     designed a better one in the same exchange. Recorded as R-R: A COUNTING CHECK THAT DEDUPLICATES
+     CANNOT COUNT. If the property is "N copies", the check must print N.
+```
+
+### 52.3 ⛔ AND IT REFUSED TWO REPAIRS BECAUSE MY GRANT DID NOT COVER THEM — correctly
+
+```text
+It found M1 and M2, both one-line false statements, and DID NOT FIX EITHER. Its reason, verbatim: "the
+Implementation boundary is 'ADD eight keys per catalog', which does not cover comment edits, and
+AP.md:917-932 — omitted permission is not implied permission."
+⭐ THAT IS EXACTLY RIGHT, and it is the ninth time in this campaign a Worker has declined to improvise
+  inside a bounded grant. ⛔ AND IT NAMED THE ASYMMETRY THAT FORCED THE REFUSAL: my §4.1 said, of
+  `i18n.test.ts`, "the comment says 296 text keys — update the prose too, or it contradicts the
+  assertions it introduces", and said nothing about the comment four lines above the keys it was adding.
+⇒ A GRANT THAT REQUIRES FIXING A STALE COUNT IN ONE FILE AND IS SILENT ABOUT THE IDENTICAL STALENESS IN
+  THE NEXT IS MY DEFECT. Recorded as the eighth instance of R-B in this campaign — prohibitions and
+  obligations written in separate passes and not read against each other.
+⇒ REPAIRED ORCHESTRATOR-DIRECT as `779aa55`, not folded into the wiring slice as the Worker suggested:
+  two comment lines, both false, in files the wiring already has nineteen reasons to touch. Precedent in
+  this campaign for repairing a false statement directly is `32312ba` (AGENTS.md's claim that Slovak play
+  was not enabled). Adding two more items to the largest remaining slice buys nothing.
+⚠ ITS LEAD 1 IS WORTH CARRYING FORWARD RATHER THAN ACTING ON: the capitalized endonyms are right for a
+  standalone picker row and would read wrong INLINE IN A SENTENCE in at least Icelandic and Portuguese,
+  where a language name is an ordinary common noun. ⇒ No code path reads these keys today. If a later
+  surface ever renders one mid-sentence, that surface is where the problem appears, not here. Recorded.
+⚠ AND ITS OWN NEAR-MISS IS WORTH NOTING FOR ITS HONESTY: its first `git commit` carried an invalid flag
+  `--no-verify=false`, git refused it, no commit was made, and it re-ran plainly so hooks ran. It reported
+  that specifically because the malformed flag NAMES A FORBIDDEN BEHAVIOUR — hooks were never bypassed.
+  ⇒ Reporting a rejected attempt at something forbidden, rather than only reporting outcomes, is the
+    behaviour the near-miss field exists for.
+```
+
+### 52.4 What remains — one substantive slice, and it is the last
+
+```text
+NEXT   ⭐ S3b THE WIRING PROPER. E2, a Worker, ⛔ ALL EIGHT GATES per §37.4's bound exception, because it
+       is the commit that changes what a user can reach.
+       MEASURED SCOPE, from §52.1's probe rather than from estimation:
+         locales.ts        LOCALES 4→12
+         translate.ts      eight imports and eight rows in each of TEXT and FN
+         settings/page.tsx `localeLabelKey` 4→12 entries, AND ⛔ its UNCONDITIONAL
+                           `flagSrc: /${value}.png`, which with twelve locales requests EIGHT MISSING
+                           PNGs. `GameLanguagePanel.tsx:51` already shows the fix shape —
+                           `...(flagSrc ? { flagSrc } : {})`.
+         i18n.test.ts      28 type errors and 13 failing tests. ⭐ AND THE ONE REAL DESIGN DECISION OF
+                           THE WHOLE OBJECTIVE, which §37.9 flagged and I now settle: introduce
+                           `REVIEWED_LOCALES = ["en","sk","cs","pl"]`, keep EVERY existing exact-string
+                           map and loop keyed on THAT, and add ONE property-based block over all twelve
+                           — non-empty, no untranslated-English leakage, every interpolation parameter
+                           present. ⛔ Hand-writing exact expected strings for eight unreviewed languages
+                           would be hundreds of cells of FALSE CONFIDENCE, and `i18n.test.ts`'s key-set
+                           and interpolation parity across twelve is the test that actually protects the
+                           product.
+         api.test.ts       ⛔ WILL NOT GO RED and must still change — §52.1. Its two 401 security loops
+                           iterate a hardcoded four-locale literal. Twelve wired means eight locales'
+                           401 strings unverified for user-enumeration leakage.
+         PremiumPicker.test.ts   same shape: a hardcoded four-locale fixture that silently under-covers.
+         NEW               ⭐ the ASCII-FOLDABILITY INVARIANT (§51.4 LEAD 4): for every locale in LOCALES
+                           and every picker-searched label, `foldForSearch(label)` must be pure ASCII.
+                           That is the assertion whose absence let the Icelandic search defect ship for
+                           four catalogs, and the wiring slice is where it has a home.
+         GLOSSARY.md · AGENTS.md   the four-locale statements
+       ⛔ AND IT PROCEEDS WITHOUT SECTION-12 OBSERVATIONS, because catalog 8's report was lost (§49.5).
+THEN   S4 the naming axes (`INSTALLED_VARIANTS` 4→12, `ownName` to 144 cells, the Icelandic collisions) ·
+       S5 closure condition 11 (README, PRD) · then the campaign closure record.
+⛔ NOT IN SCOPE and staying queued: the three `messages.en.ts` shape repairs (split `history.unknownDate`,
+  delete dead `history.outcome.unknown`, collapse `aiPlayedFor` into one fn key) and GLOSSARY's missing
+  czech and polish `gameVariant` rows. None is required by the objective; all are recorded.
+```
