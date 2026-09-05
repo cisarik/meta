@@ -126,7 +126,7 @@ ledger opened with.
 12  Danish        PLAYABLE     shipped     MEASURED ok GPL|LGPL|MPL sourced none***   yes
 13  Swedish       PLAYABLE     shipped     MEASURED ok LGPL-3.0 sourced    none***    yes
 14  Norwegian     BLOCKED      not-started ⛔ NO EXPLICIT GRANT  sourced    (n/a)      no
-15  Finnish       not-started  not-started ⛔ NO SOURCE          in-compil. C3?        no
+15  Finnish       BLOCKED      not-started ⛔ NO SOURCE          in-compil. C3?        no
 16  Icelandic     PLAYABLE     shipped     MEASURED ok CC-BY-SA sourced    NONE ⭐     yes
 17  Croatian      not-started  not-started af pair GPL2|LGPL2.1|MPL1.1 in-comp. C1    no
 18  Slovenian     BLOCKED      not-started af pair ⚠ LGPL/GPL NO VERSION in-comp. C1? no
@@ -134,7 +134,7 @@ ledger opened with.
 20  Greek         not-started  not-started af 10MB MPL1.1|GPL2+|LGPL2.1+ in-comp. C1  no
 21  Bulgarian     BLOCKED      not-started ⛔ COPYING, NO GRANT  in-comp. C1           no
 22  Russian       not-started  not-started af pair BSD-3+markmod in-comp. C1          no
-24  Malay         not-started  not-started ⛔ NO SOURCE          in-compil. none       no
+24  Malay         BLOCKED      not-started ⛔ NO SOURCE          in-compil. none       no
 ```
 
 ```text

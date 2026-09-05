@@ -5038,3 +5038,26 @@ the spelling dictionary is offered under it.
   ⛔ 12 + 6 + 6 = 24. Every row is now either playable, licence-clean-with-named-blockers, or blocked with
   a named cause. ⭐ CLOSURE CONDITION 4 IS SATISFIABLE FOR THE FIRST TIME.
 ```
+
+### 54.6 🐞 THE RECONCILIATION CAUGHT AN INCONSISTENCY I HAD JUST CREATED
+
+```text
+After writing §54.5's "12 + 6 + 6 = 24" I counted the scan table's GP column to check it. ⛔ IT SAID
+BLOCKED 4, NOT 6 — French, Norwegian, Slovenian, Bulgarian. Finnish and Malay were sitting at
+`not-started` with `⛔ NO SOURCE` in their DICT column.
+⇒ ⛔ SO I HAD JUST INTRODUCED AN ASYMMETRY: I marked Slovenian and Bulgarian `BLOCKED` for a licence cause
+  while leaving Finnish and Malay `not-started` for a NO-SOURCE cause that is strictly harder — you cannot
+  build a lexicon from a source that does not exist. The GP column meant two different things in one table.
+⇒ FIXED BY MAKING THE COLUMN MEAN ONE THING: `BLOCKED` = a named cause that no scheduling decision can
+  clear. Six rows: French (expander cannot render) · Norwegian (no grant) · Finnish (no source) ·
+  Slovenian (unversioned grant) · Bulgarian (no grant) · Malay (no source).
+  ⇒ `not-started` now means exactly "licence-clean, awaiting distribution and capability" — and it is
+    exactly the six: Hungarian · Spanish · Croatian · Turkish · Greek · Russian.
+✔ 12 + 6 + 6 = 24, counted from the file, and the two halves of the ledger now agree.
+🐞 AND THE COUNT ITSELF BIT ME TWICE MORE BEFORE IT WORKED: I read the GP field as awk `$2` when `$2` is the
+  LANGUAGE NAME, and got 0 / 0 / 24. ⇒ THIRD POSITIONAL SLIP OF THIS SESSION, after §53.8's fixed-offset
+  substr and §54.1's guessed filenames. ⭐ ALL THREE HAVE ONE SHAPE: I addressed data by WHERE I expected it
+  instead of by WHAT IT IS. The tell each time was a total that was obviously impossible — 0 playable, zero
+  buckets, eight empty directories — so the reconciliation is what caught all three.
+⇒ R-U: WHEN A COUNT COMES OUT IMPOSSIBLE, SUSPECT THE ACCESSOR BEFORE THE DATA.
+```
