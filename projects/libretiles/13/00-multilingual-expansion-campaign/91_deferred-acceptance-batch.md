@@ -553,3 +553,50 @@ B13-5 ⭐ KNOWN GOOD, recorded because it is evidence: Swedish needed no workaro
       places the code fixes word order, and it explained why in terms of North versus West Germanic
       rather than by agreeing with Danish. `BÄST` is four characters — cannot be read as untranslated
       English, because of the ä.
+
+## B14 · catalog 8 of 8 — the Afrikaans interface catalog — `0a4fcc2`
+
+```text
+slice        MEC-UIL-C8-af — the LAST catalog. Eight of eight now exist.
+commit       0a4fcc2  feat(i18n) the Afrikaans interface catalog
+             pushed; public readback equals local HEAD at 0a4fcc2
+what changed ONE new file, messages.af.ts — 296 text keys and 20 function keys of Afrikaans.
+             ⛔ STILL DELIBERATELY ORPHANED, like the other seven. LOCALES is FOUR.
+⛔ AND THIS ENTRY IS WRITTEN DIFFERENTLY FROM THE OTHER SEVEN, because this exchange had no report:
+   the Worker finished the file and its delivery channel died before it could report. I verified the
+   file myself — structure, the four Dutch-divergence greps, all four gates — and committed it
+   orchestrator-direct. Every claim below is my measurement or the file's own comments, never a
+   Worker's statement. Details in ./17_interruption_00.md.
+```
+
+```text
+B14-1 Confirm the header is byte-identical across all EIGHT new catalogs:
+      `for f in de pt is it nl da sv af; do diff -q <(head -7 frontend/src/lib/i18n/messages.$f.ts) \
+         <(head -7 frontend/src/lib/i18n/messages.de.ts) || echo "$f DIFFERS"; done`
+      EXPECT: no output at all.
+B14-2 ⭐ THE CHECK THAT PROVES THE HARDEST DISCIPLINE IN THE CAMPAIGN WORKED. Afrikaans DESCENDS from
+      Dutch, and messages.nl.ts was required reading — the closest trap of the eight. Three checks:
+        grep -cE '^[^/]*\b(jouw|jij|je)\b' frontend/src/lib/i18n/messages.af.ts    → 0
+        grep -cE '^[^/]*ij'                frontend/src/lib/i18n/messages.af.ts    → 0
+        grep -cE '^[^/]*lijk'              frontend/src/lib/i18n/messages.af.ts    → 0
+      All three are zero, verified by me. A single lifted Dutch word would show in one of them.
+B14-3 ⭐ WORTH READING EVEN IF YOU READ NOTHING ELSE IN THIS BATCH. Open messages.af.ts and read the
+      comment block above `afText` — about 120 lines. It is the only record of this catalog's reasoning
+      that exists, because the report was lost, and it happens to be the best-documented file of the
+      eight. It explains why `wedstryd` and not `party`, why `blokkie` and not `teël` or `steen`, and
+      why the Afrikaans double negative `nie … nie` changes clause shape rather than words.
+B14-4 ⭐ AND ONE THING THAT IS A GENUINE FINDING RATHER THAN A CHECK. The code composes the AI's score
+      line as [text][score][text] in a fixed order. German and Dutch both had to abandon the natural
+      perfect tense there because their participle goes last. Afrikaans has the same problem AND cannot
+      use their escape — it has a simple past for only a handful of verbs. It used the present tense
+      instead: "Die AI behaal 34 punte". ⇒ Three related languages, three different workarounds, for
+      one call site. That call site is now a known constraint and it is queued for repair in the wiring
+      slice rather than worked around a fourth time.
+B14-5 ⛔ KNOWN LIMITS, and one is a real loss rather than a caveat:
+      · The Worker's own list of strings it was least sure of DOES NOT EXIST. Every other catalog gave
+        me sixteen to twenty-six flagged items; for Afrikaans the only risk signal is what it chose to
+        comment in the file. If you ever have an Afrikaans reader, this is the catalog to look at
+        hardest, precisely because it is the one nobody flagged.
+      · No native speaker has read any of the eight. Each file's first seven lines say so.
+      · STILL NOTHING TO SEE ON SCREEN. Eight catalogs exist; none is reachable. The wiring slice is
+        next and it is where the twelve locales become real.

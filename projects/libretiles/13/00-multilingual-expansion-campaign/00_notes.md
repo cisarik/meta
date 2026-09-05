@@ -4280,3 +4280,188 @@ next    catalog 8 of 8: AFRIKAANS, session 17, baseline fde3321. ⛔ THE LAST ON
         should be expected to bite, pointed at Dutch's answers.
 then    the fold-repair slice (LIVE defect), then the wiring slice with THREE shape problems.
 ```
+
+## 49. ⭐ CATALOG 8 OF 8 — EIGHT CATALOGS EXIST. And this exchange ended WITHOUT A REPORT.
+
+```text
+prompt   ./17_implementation_00.md    730 lines · session 17 · exchange 01 · E2 · High reasoning
+outcome  ./17_interruption_00.md      ⛔ AN INTERRUPTION COMPANION, NOT A REPORT
+commit   0a4fcc2  feat(i18n) the Afrikaans interface catalog   pushed, readback equal, porcelain clean
+⇒ EIGHT OF EIGHT SHIP: de · pt · is · it · nl · da · sv · af. TWELVE catalogs exist in the tree.
+⛔ AND THE OBJECTIVE IS NOT DONE. Eight catalogs existing is not twelve reachable interface locales.
+  LOCALES is still four. The wiring slice is next and it is separate.
+```
+
+### 49.1 🐞 THE ORCHESTRATOR'S DEFECT: I read "nothing began" out of output that said otherwise
+
+```text
+Delivery attempt 1 failed with a STREAM MULTIPLEXING FAULT — "Received message_start … while … is still
+open" — AFTER the Worker had finished authoring. `messages.af.ts`, 50 577 bytes, mtime 10:19, untracked.
+⛔ I THEN RAN A STATE CHECK AND CONCLUDED "NOTHING BEGAN", AND THE SAME OUTPUT BLOCK CONTAINED BOTH THE
+   TRUTH AND THE LIE:
+       git status --porcelain=v1   →   ?? frontend/src/lib/i18n/messages.af.ts     ← TRUE
+       ls …/messages.af.ts         →   "cannot access"                            ← FALSE, wrong cwd
+⇒ I BELIEVED THE FALSE ONE BECAUSE IT MATCHED MY EXPECTATION. The delivery had failed, so I expected
+  nothing to have run, and one of the two signals agreed with me.
+⇒ AND I RE-DELIVERED THE SAME ORDINAL FOR AN EXCHANGE WHOSE WORK WAS ALREADY COMPLETE. It was harmless
+  only because the provider refused attempt 2 before a second Worker started. ⛔ Had it succeeded, a
+  second Worker would have met a dirty tree it did not create and its repository gate would have failed —
+  the protocol catching my error, not me.
+⛔ THE SHARPEST PART: THE CAMPAIGN ALREADY HAD THIS EXACT DISTINCTION AND I HAD USED IT CORRECTLY ONE
+  EXCHANGE EARLIER. `00_handout.md` §10 separates "killed MID-TASK → interruption companion, ordinal
+  CONSUMED" from "killed BEFORE the Worker received anything → safe to re-deliver". §47.1 applied it
+  correctly to Danish and even recorded "I MEASURED the classification rather than assuming it".
+  ⇒ KNOWING A RULE IS NOT THE SAME AS MEASURING THE FACT IT KEYS ON. I cited the rule, then classified by
+    expectation instead of by evidence.
+⭐ R-Q: A DISPATCH FAILURE DOES NOT TELL YOU WHETHER WORK BEGAN — THE TREE DOES. Check
+  `git status --porcelain=v1` AND `ls` the target from the repository root, and when two signals disagree
+  believe the one that is harder to fake. ⚠ And the meta-lesson: the check that would have caught this
+  costs one command, and I ran it — I just read past its answer.
+⭐ AND CREDIT WHERE IT IS DUE: the state was re-measured properly because THE COOPERATOR ASKED whether the
+  second subagent had run and whether the catalog was intact. His question, not my process, is what
+  surfaced it.
+```
+
+### 49.2 ⭐ THE CATALOG-1 RULING THAT RESCUED THIS EXCHANGE
+
+```text
+At catalog 1 (§42.3 LEAD 6) the campaign ruled: THE FILE IS THE CANONICAL HOME of every vocabulary and
+grammar decision, because a reviewer opens the file and not a report. It was ruled for REVIEWABILITY.
+⇒ IT IS WHY THIS INTERRUPTION IS RECOVERABLE RATHER THAN A LOSS. The report is unreachable and the
+  decisions survive, in ~120 lines of in-file commentary: the nine frozen terms with reasons, the
+  register, the label style, the orthography, the U+00A0 measurement, the four Dutch-divergence grep
+  results, and a divergence block naming eight concrete differences from the parent language.
+⭐ A DECISION MADE FOR ONE REASON PAID OFF FOR A DIFFERENT ONE. Worth recording as the strongest argument
+  in the campaign for putting durable decisions in the artifact rather than in the correspondence about
+  the artifact — and it generalizes past this project: a report is a message and can be lost; a committed
+  file is state.
+```
+
+### 49.3 ⭐ THE PREDICTION IS CONFIRMED — and refined a third time
+
+```text
+The campaign's most-corrected inference reached its decisive test, and the file answers it AT THE KEY:
+  `game.aiPlayedFor.before`  ⛔ BITES AFRIKAANS. The perfect puts its participle clause-final, which the
+     fixed middle span cannot express.
+     ⭐ AND THE ESCAPE IS NEITHER GERMAN'S NOR DUTCH'S — both fell to the SIMPLE PAST; Afrikaans has a
+       well-formed simple past for only a handful of verbs (`was had kon wou moes sou wis`) and `behaal`
+       is not one, "so that escape does not exist". It used the PRESENT, finite and therefore verb-second.
+       ⇒ The cost is a TENSE rather than a REGISTER.
+  `board.reset`  ✔ DOES NOT BITE, with a reason rather than an inheritance: `herstel` is INSEPARABLE so
+     nothing is stranded, and imperative and infinitive are one string so there is no style to abandon.
+     "A separable choice such as `stel terug` WOULD have bitten, which is why this one was made
+     deliberately."
+⇒ THE MECHANISM HOLDS ON FIVE LANGUAGES WITH A MECHANISM RATHER THAN A VOTE — de · nl · af bite, pt · is ·
+  it · da · sv do not — AND IT IS REFINED ONCE MORE: the constraint is on a CLAUSE-FINAL PARTICIPLE, so
+  the escape a language has depends on which finite tenses it owns. THREE VERB-FINAL LANGUAGES NEEDED
+  THREE DIFFERENT ANSWERS. ⇒ The wiring slice can now act on this: the call site is a real constraint on
+  a real class of languages, not a stylistic preference.
+⭐ AND THE PATH THAT GOT HERE IS THE CAMPAIGN'S BEST EVIDENCE FOR R-O: a 3-0 majority, then a break, then
+  a named property, then a misclassification of one language into it, then two confirmations, then a
+  decisive test. Six exchanges to convert a vote into a mechanism.
+```
+
+### 49.4 🐞 A THIRD MEMBER OF THE COUNTING FAMILY, and each fix exposed the next
+
+```text
+THE FILE SAYS five predecessors ship the `\u00A0` escape; MY PROMPT SAID four. ✔ THE FILE IS RIGHT —
+`messages.sv.ts` carries `279\u00A0496` and my generating loop iterated a HAND-TYPED list that omitted it.
+⇒ THE FAMILY, and the shape of the progression is the finding:
+    §46.2  five claims asserted FROM MEMORY            → fix: generate by command
+    §48.1  asked a LIBRARY what a file should contain   → fix (R-P): read the file
+    §49    read the files, but TYPED THE FILE LIST      → fix: enumerate the inputs from the filesystem
+⭐ EACH FIX WAS CORRECT AND EACH EXPOSED THE NEXT LAYER. R-P is extended rather than replaced: read the
+  file, AND let the shell produce the list of files. ⛔ A HAND-TYPED ENUMERATION IS A MEMORY CLAIM WEARING
+  A COMMAND'S CLOTHES.
+⚠ Swedish's own comment also says four — correctly, because it was the fifth and was describing its
+  predecessors. Only my prompt was wrong.
+```
+
+### 49.5 ⛔ WHAT IS PERMANENTLY LOST, and the wiring slice must budget for it
+
+```text
+· THE WORKER'S FLAGGED RISKS. Every predecessor produced sixteen to twenty-six items naming the strings it
+  was least sure of and the labels it thought might overflow. ⛔ For Afrikaans that list does not exist.
+  The only surviving risk signal is what the Worker chose to comment in the file. THIS IS THE REAL LOSS.
+· ITS ORCHESTRATION CRITIQUE. Seven catalogs returned sixty-five findings against the skeleton, three of
+  them defects I introduced. The eighth's findings do not exist, and the two the file happens to reveal
+  were found by ME reading it, not by the Worker reporting them.
+· ⛔ SECTION 12 — `What the wiring slice needs to know`. The one thing no other catalog was asked for,
+  requested precisely because this was the LAST Worker to see the whole key set before wiring.
+  ⇒ UNRECOVERABLE. The wiring slice proceeds without it and must budget the reconnaissance it would have
+    saved. Recorded in §50's queue.
+· its byte-identical-to-Dutch count (§4 Rule B), its byte-identical-to-English count, its context
+  pressure, and its near-miss record.
+⚠ NOT LOST, because the file carries it: every per-site call-site verdict with its structural reason.
+⛔ AND THE AUTHORING STEP IS NOW UNATTRIBUTED AS WELL AS NON-INDEPENDENT. No Worker signed off on this
+  file. The commit message says so, the interruption companion says so, and this section says so, so that
+  no later artifact can imply otherwise.
+```
+
+## 50. ⭐ EIGHT CATALOGS DONE — the state of the objective, and what remains
+
+```text
+SHIPPED, twelve catalogs in the tree:  en sk cs pl  +  de pt is it nl da sv af
+LOCALES:                              still FOUR — en sk cs pl
+⛔ THE OBJECTIVE IS NOT SATISFIED. Closure condition 3 wants twelve reachable interface locales, and
+  §37.9's S1-S5 plan puts the wiring after the catalogs. Eight orphaned files are not a shipped feature.
+```
+
+### 50.1 The remaining work, in order, with everything the eight catalogs added to it
+
+```text
+NEXT   🐞 THE FOLD-REPAIR SLICE, and it is a LIVE DEFECT rather than a precaution (§44.1, §47.3).
+       `locales.ts`'s `EXPLICIT_SEARCH_FOLDS` cannot fold `æ Æ þ Þ ð Ð ß œ ı`, and its comment at `:23`
+       claims the unfoldable list is complete when it names only `ł đ ø`.
+       ✔ MEASURED LIVE TODAY in shipped Icelandic: `Þýska → þyska` and `Sænska → sænska`, so no ASCII
+         query finds either picker row.
+       ⛔ AND THE TRAP INSIDE IT: the map covers `đ` U+0111 D-STROKE while Icelandic's letter is `ð`
+         U+00F0 ETH — different codepoints, and the comment's "D-stroke (đ)" wording would let a repair
+         slice conclude eth is handled and fix nothing. NAME `ð` BY CODEPOINT.
+       ⇒ Before wiring, because wiring is what makes it user-visible. One file, one const, one comment.
+THEN   S3 THE WIRING SLICE. E2, a Worker, ⛔ ALL EIGHT GATES per §37.4's bound exception.
+       Surfaces, now nine rather than the four §37.9 first priced:
+         locales.ts LOCALES 4→12 · translate.ts TEXT and FN · index.ts ·
+         settings/page.tsx `localeLabelKey` AND ⛔ its UNCONDITIONAL `flagSrc: /${value}.png`, which
+           would request eight missing PNGs (§41.1 defect 4) ·
+         +8 `settings.uiLanguage.*` ENDONYM keys, which REOPENS ALL TWELVE CATALOGS ·
+         i18n.test.ts's locale-indexed fixture families — more than the three maps first named ·
+         PremiumPicker.test.ts and api.test.ts, whose "four locales" claims are now wrong ·
+         GLOSSARY.md's endonym inventory AND its missing czech and polish rows (§48.3 M5) ·
+         AGENTS.md's four-locale sentence
+       ⛔ AND THE THREE `messages.en.ts` SHAPE PROBLEMS fold in here, where the key set is open anyway:
+         split the dual-role `history.unknownDate` (three dates + one username) · delete the DEAD
+         `history.outcome.unknown` (OUTCOME_META has seven arms and no such branch) · collapse
+         `game.aiPlayedFor.before`/`.points` into ONE function key taking `{score}`, which is what forced
+         three of eight catalogs into a tense they did not want.
+       ⚠ Plus `messages.de.ts`'s "Eleven rows" comment, off by one (§48.3 M7).
+       ⛔ AND IT PROCEEDS WITHOUT SECTION-12 OBSERVATIONS (§49.5). Budget that reconnaissance.
+THEN   S4 the naming axes: `INSTALLED_VARIANTS` 4→12, the `ownName` matrix to 144 cells, and the
+       ICELANDIC SUBSTRING COLLISION — `Enska ⊂ Hollenska` and `Enska ⊂ Íslenska`, the campaign's single
+       collision outlier across all twelve catalogs.
+THEN   S5 closure condition 11: README.md and libretiles_PRD.md still describe an English-only product.
+       ⚠ Derive the numbers in that session; they will be twelve and twelve, not twelve and four.
+HIS    B13-3, the `chat`/`chatt` decision — Swedish is the first catalog where the token choice changes a
+       byte, and it is his to settle. Plus the badge-length question (B10-3) and the German terminology
+       (B7-3). None blocks the wiring.
+OPEN   🐞 `prompts.ts`'s `MovePromptLexiconId` and `JudgePromptLexiconId` are literal unions
+       `"collins2019" | "slovak"`, so TEN of twelve playable lexicons get an AI prompt that names neither
+       their language nor their word list. A genuine AI-quality gap, its own slice, and ⛔ HIS to select.
+```
+
+### 50.2 What the eight catalogs cost and what they returned
+
+```text
+EIGHT EXCHANGES, sessions 10-17, one commit each, every one green on the frontend four.
+PROMPT LENGTH   434 → 564 → 635 → 629 → 662 → 658 → 695 → 730 lines. The invariant block absorbed
+                measurements as intended; §43.4's referenced-artifact threshold was never crossed.
+FINDINGS        sixty-five against the skeleton across seven reports, of which ⛔ SIX WERE DEFECTS I
+                INTRODUCED MYSELF and THREE were in one audit line that four different languages each
+                broke differently.
+⭐ THE MECHANISM THAT PRODUCED ALL OF IT is the one AP does not require: two labelled lists, MEASURED and
+  LEAD, in a report field the protocol has no slot for. Catalogs 6 and 7 went further and defined their
+  own label semantics at the top of the section; catalog 7 stated its confidence UNEVENLY on purpose.
+  ⇒ `AP_DEFECTS.md` D-01 now has seven independent witnesses in one whole.
+⚠ AND THE HONEST LEDGER ON MY SIDE: I corrected two Worker measured claims across eight exchanges, and
+  Workers corrected six of mine. That ratio is the right way round, and it is the argument for the field.
+```
