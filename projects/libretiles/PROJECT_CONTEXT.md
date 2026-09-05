@@ -13,12 +13,24 @@ if this file and the repository disagree, **the repository wins and this file ne
 `09/00-backend-security-hardening/99_closure.md`. 32 findings `verified-closed`, 13 rejected as false
 positives, all residuals dispositioned with sign-off where required.
 
-**Two logical wholes are OPEN.** `ui-internationalization` (Meta 10/00) is roughly 60 percent done with
-no active mutation. `multilingual-tile-token-foundation` (Meta 11/01) holds an accepted `planning-PASS`
-and is ready for slice F1. `czech-polish-hungarian-variant-activation` (Meta 11/02) is NOT STARTED and
-is blocked on Cooperator-supplied dictionaries. Execution order is `10/00`, then `11/01`, then `11/02`,
-then `11/00`. The 10/00 opening Cooperator decisions are in section 13; the 11/01 alphabet data is in
-section 14.
+⛔ **THIS PARAGRAPH WAS STALE FOR TWO ERAS AND IS NOW CORRECTED.** It said two wholes were open and named
+`10/00`, `11/01`, `11/02`, `11/00` as the execution order. Current truth, measured at
+`84ddf1fdca3f6bb4c855794136355958e7f55885`:
+
+```text
+09/00 backend-security-hardening   CLOSED    19cfec9 · 99_closure.md
+10/00 ui-internationalization      CLOSED    47ed8bf · 99_closure.md
+11/01 multilingual-tile-token-foundation   SUPERSEDED   11/01-.../98_supersession.md
+11/02 czech-polish-hungarian-variant-activation SUPERSEDED  11/02-.../98_supersession.md
+12/00 multilingual-expansion       SUPERSEDED   12/00-.../98_supersession.md
+13/00 multilingual-expansion-campaign  ⭐ THE ACTIVE WHOLE. Its UI-localization objective is COMPLETE;
+                                   the campaign is NOT closed — see its 99_closure.md for which
+                                   conditions remain and why.
+```
+
+⇒ The 10/00 opening Cooperator decisions are in section 13; the 11/01 alphabet data is in section 14. Both
+remain valid as HISTORY. ⛔ Neither grants authority — task authority comes only from the current
+authoritative Orchestrator prompt.
 
 Three slices of `10/00` have landed and were Cooperator-accepted in his own browser:
 `a5aff1214d97d28f2d27e55de5de19f09faf9c0e` (S1 — the typed two-locale message system and the localized
@@ -42,6 +54,15 @@ expects "ten deliberately untracked files in `frontend/public`" describes an ear
 obligation is **discharged** and `10/00` R1 can reference `/en.png`, `/sk.png`, `/cs.png`, `/hu.png`,
 `/pl.png` immediately. Full RF-12 classification of that commit (`unrelated-owner-work`, secondary
 `accepted-continuation`) is in `10/00-ui-internationalization/94_orchestrator-restoration.md` section 1.
+
+⭐ **TWELVE BOARD LANGUAGES ARE PLAYABLE AND ALL TWELVE HAVE AN INTERFACE LOCALE**, measured at
+`84ddf1f`: `ls backend/assets/variants/` is 12, `game.views.list_variant_summaries()` reports
+`readiness: "playable"` for all twelve, `LOCALES` in `frontend/src/lib/i18n/locales.ts` is
+`en sk cs pl de pt is it nl da sv af`, and every catalog carries the same 304 text + 20 function keys.
+⚠ The eight newest interface catalogs are MACHINE-AUTHORED with no second-opinion review; exact wording is
+pinned only for `REVIEWED_LOCALES = en sk cs pl` and the other eight are covered structurally. ⚠ Flags exist
+for four locales, so eight picker rows deliberately show an endonym with no flag.
+⛔ The paragraph below is the ERA-11 state, kept because its Hungarian analysis is still the live one:
 
 ⛔ **THREE OF THE FOUR VISEGRÁD LANGUAGES ARE PLAYABLE: Slovak, Czech, Polish.** Czech and Polish landed
 at `2917251` with real inflected lexicons from LibreOffice hunspell — 3 930 497 and 3 721 704 words,

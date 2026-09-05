@@ -7376,3 +7376,133 @@ genuinely observable.
 This also retires the ledger line "modal focus trap and ESC" from the manual-acceptance list above: ESC is
 covered by item 2, the focus trap does not exist by design, and the announcement half is unobservable.
 
+
+## Era 13 — the multilingual expansion campaign, UI-localization objective
+
+Recorded 2026-09-05 at `84ddf1fdca3f6bb4c855794136355958e7f55885`. Full narrative in
+`13/00-multilingual-expansion-campaign/00_notes.md` §37-§56; condition-by-condition state in that
+directory's `99_closure.md`, which is a closure-READINESS record and **not** a closure declaration.
+
+### mec-13-D01 — the interface-language picker requested eight images that do not exist
+
+```text
+status    FIXED at 96fbd48
+found by  the ORCHESTRATOR, by measurement, while scoping the wiring slice — NOT by any gate
+severity  user-visible on the one surface whose job is to be legible to a user who cannot read the
+          current interface
+```
+
+`InterfaceLanguagePanel` built its picker options with an unconditional
+``flagSrc: `/${value}.png` ``. `frontend/public/` holds four locale flags — `en`, `sk`, `cs`, `pl` —
+plus `hu.png`, which is not a locale and is asserted to be REJECTED by `isLocale`. Wiring `LOCALES`
+from four to twelve would therefore have shipped **eight 404s or eight broken-image glyphs**, one per
+row, in the interface-language picker.
+
+⛔ **NO GATE IN THIS REPOSITORY GOES RED FOR IT.** It is a template string, so it always has a value:
+TypeScript, ESLint, vitest and the Next.js build are all silent. It surfaces only as a runtime 404.
+
+Fixed with the shape already in the tree at `GameLanguagePanel.tsx` — a `LOCALE_FLAG_SRC` lookup of
+the flags that exist plus a conditional spread, with `flagSrc` left optional. Eight flagless rows are
+the correct outcome, not a compromise: the label is an endonym, which is what the rule says a user
+scans for. `PremiumPicker.test.ts`'s new `AC-PICKER-FLAGLESS` pins it.
+
+**The lesson worth keeping:** a computed asset path cannot be type-checked. Where a path is built from
+a value that a later slice will widen, the existence of the asset needs its own lookup table.
+
+### mec-13-D02 — a shipped Icelandic catalog was unreachable by search for four catalog slices
+
+```text
+status    FIXED at c9078f2, then GUARDED at 96fbd48
+found by  a Worker, reported as a LEAD; verified by the ORCHESTRATOR
+severity  a whole language's variant names unfindable by any plain-keyboard query
+```
+
+`foldForSearch` folded `đ` U+0111 D-STROKE but not `ð` U+00F0 ETH — two different letters that look
+alike — so Icelandic labels folded to strings containing a non-ASCII byte and no ASCII query matched
+them. `EXPLICIT_SEARCH_FOLDS` went from 6 to 16 entries.
+
+⛔ **IT SURVIVED FOUR SLICES BECAUSE NOTHING ASSERTED THE PROPERTY.** The fold table was reviewed by
+eye, letter by letter, which is exactly the review that misses a look-alike pair.
+
+`AC-FOLD-ASCII-12` now asserts the invariant over 144 endonym cells and 144 variant-name cells: for
+every locale in `LOCALES`, `foldForSearch` of every searched label must be pure ASCII. It was green
+the moment it was written, which is the point — a regression guard, not a repair.
+
+**The lesson worth keeping:** a test that enumerates a lookup table's entries would have PASSED
+throughout this bug, because the table was complete with respect to itself. Assert the property over
+the real data, not the table.
+
+### mec-13-D03 — two test files under-covered eight locales while staying green
+
+```text
+status    FIXED at 96fbd48
+found by  the ORCHESTRATOR, by probing the wiring in a throwaway working copy and measuring what did
+          NOT break
+severity  security-adjacent
+```
+
+`api.test.ts`'s two `AC-SEC` cases — that a tokenless 401 is byte-identical whether or not the
+username exists, and that a token-bearing 401 uses session-expired wording — iterated a hardcoded
+`["en","sk","cs","pl"]` literal rather than `LOCALES`. Wiring twelve locales left them **green** with
+eight locales' 401 strings never checked for user-enumeration leakage. A catalog rendering "no such
+user" in Danish would have shipped green. `PremiumPicker.test.ts` had the same shape plus a fixture in
+which every row had a flag, so it could not represent the product's real state after D01.
+
+Both now iterate `LOCALES` for the property assertions while keeping exact-string maps pinned to the
+reviewed four.
+
+**The lesson worth keeping:** the dangerous test is not the one that fails when you widen a
+dimension — it is the one that does not.
+
+### mec-13-D04 — Bulgarian ships licence text with no grant
+
+```text
+status    OPEN — recorded blocker, ledger row 21
+found by  the ORCHESTRATOR, orchestrator-direct and NON-INDEPENDENT after two dispatch failures
+severity  blocks a language; not a code defect
+```
+
+`bg_BG/` at the pinned LibreOffice commit ships 17 979 bytes of bare GNU GPL Version 2 text in
+`COPYING` and **not one statement** applying it to the spelling dictionary. Every other candidate
+location was exhausted with its HTTP status recorded: `README_bg_BG.txt`, `README`, `README.txt`,
+`LICENSE`, `LICENCE`, `README.bgOffice` all 404; `description.xml` names the package with no licence
+element; `dictionaries.xcu` has zero matches for `licen|copyright|GPL`; `META-INF` holds only
+`manifest.xml`; the first 1 601 bytes of `bg_BG.aff` carry no banner. Its only two READMEs license
+the **hyphenation** and **thesaurus** packages.
+
+A bare `COPYING` is conventionally read as covering its directory, and reasonable projects ship on
+that reading — but Norwegian was blocked on exactly this shape, and applying the rule twice with two
+strictnesses would be worse than blocking. One upstream communication would clear it.
+
+**The distinction worth keeping, because the obvious inference is wrong:** GPLv2 §9 and LGPL-2.1 §13
+rescue an UNVERSIONED grant — they state that where no version is specified the licensee may choose
+any version ever published, which is what made Slovenian determinate. They do **not** rescue
+Bulgarian, because they answer "which version?" and never "does any licence apply at all?". Turkish
+is the control case: `tr_TR/LICENSE` is 16 KB of MPL-2.0 **text** while the 367-byte `README.txt`
+carries the actual **grant**. Text and grant are different artifacts.
+
+### Orchestrator defects recorded against myself this era
+
+```text
+mec-13-M01  A PROXIMITY CHECK MEASURES PROXIMITY, NOT PRESENCE. My byte-identity comment audit looked
+            three lines above each key and reported ten missing justifications. TWO WERE FALSE:
+            German `board.reset` and Dutch `board.zoomNoun` are both justified in a comment attached
+            to their SIBLING key, because the two keys render in one button and the explanation is
+            about their joint word order. Repaired as eight, not ten.
+mec-13-M02  FIVE POSITIONAL SLIPS IN ONE SESSION, all one shape — addressing data by WHERE I expected
+            it instead of by WHAT IT IS: a fixed-offset `substr` against a variable-width column;
+            eight guessed upstream filenames read as "nothing there"; awk `$2` when `$2` was the
+            language name; a predicted LGPL `§14` that is `§13`; and a verbatim-block replacement that
+            matched five of eight paragraphs. ⭐ EVERY ONE was caught by a result that was obviously
+            impossible — 0 playable, zero buckets, eight empty directories, a licence section that
+            does not exist. R-U: when a count comes out impossible, suspect the accessor before the data.
+mec-13-M03  TWO PARTS OF ONE FILE DISAGREEING, three times, and each time it was MY file. `messages.en.ts`
+            said "these FOUR strings" four lines above a group the same commit grew to twelve;
+            `GLOSSARY.md` understated its own guarantee; and the language ledger's scan table said
+            `shipped` while a detail section eight hundred lines away said the chrome was still English,
+            through two subsequent edits of that same file.
+mec-13-M04  A PROMPT THAT SHIPS A RULE BEATS ONE THAT SHIPS AN ENUMERATION. I named two test blocks
+            needing a property/wording split. A Worker applying the RULE found SIX, with no false
+            positives. My reconciliation arithmetic then failed because my list was wrong, and the
+            Worker stated the failure rather than adjusting a number until it closed.
+```
