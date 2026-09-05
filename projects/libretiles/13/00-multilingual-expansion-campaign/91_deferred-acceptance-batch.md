@@ -600,3 +600,36 @@ B14-5 ⛔ KNOWN LIMITS, and one is a real loss rather than a caveat:
       · No native speaker has read any of the eight. Each file's first seven lines say so.
       · STILL NOTHING TO SEE ON SCREEN. Eight catalogs exist; none is reachable. The wiring slice is
         next and it is where the twelve locales become real.
+
+## B15 · the picker-search fold repair — `c9078f2`
+
+```text
+slice        MEC-UIL-FOLD. ⛔ NOT a new feature — a repair of a defect that shipped four catalogs ago.
+commit       c9078f2  fix(i18n) picker search can fold æ þ ð ß œ ı
+             pushed; public readback equals local HEAD at c9078f2
+what changed frontend/src/lib/i18n/locales.ts — the search-fold table 6 → 16 entries, and the comment
+             that wrongly claimed the list was complete. Plus the one existing fold test, 13 → 31
+             assertions. NO new feature, NO new locale, LOCALES still four.
+```
+
+```text
+B15-1 ⭐ THIS IS THE ONE STEP IN THE WHOLE BATCH THAT IS A BUG YOU COULD HAVE FOUND YOURSELF, and it
+      shipped in the Icelandic catalog. It is B12-2 from the previous batch, now expected to PASS.
+      ⇒ When the locales are reachable: switch the interface to Íslenska, open the game-variant picker,
+        and type `thyska`, then `saenska`.
+        BEFORE this commit: both found NOTHING. The German and Swedish rows were unreachable by any
+        query typeable on a plain keyboard, because `Þýska` and `Sænska` contain letters the search fold
+        could not convert.
+        AFTER: `thyska` finds Þýska and `saenska` finds Sænska.
+      ⚠ Nothing else about the picker changes. If either still finds nothing, that is a real regression
+        and worth reporting immediately.
+B15-2 ⚠ ONE SIDE EFFECT, measured and deliberate, so it does not surprise you. In the Icelandic picker,
+      typing `enska` now matches FOUR rows instead of three — Enska, Hollenska, Íslenska and now Sænska.
+      ⇒ That is not a bug and it is not new in kind: `enska` was already matching three rows, because in
+        correct Icelandic "Enska" really is a substring of "Hollenska" and "Íslenska". Making Sænska
+        findable at all necessarily makes it findable by that query too. A row went from unreachable to
+        reachable, at the cost of one query being one row less selective.
+B15-3 ⛔ WHAT IS NOT FIXED, and it is queued rather than forgotten: nothing yet PREVENTS this class of
+      defect. There is no test asserting that every searchable label in every locale folds to plain
+      ASCII, which is why this went unnoticed for four catalogs. That invariant is folded into the wiring
+      slice, where all twelve locales become reachable and the assertion has a natural home.

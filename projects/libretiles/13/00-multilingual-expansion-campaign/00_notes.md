@@ -4465,3 +4465,115 @@ FINDINGS        sixty-five against the skeleton across seven reports, of which �
 ⚠ AND THE HONEST LEDGER ON MY SIDE: I corrected two Worker measured claims across eight exchanges, and
   Workers corrected six of mine. That ratio is the right way round, and it is the argument for the field.
 ```
+
+## 51. ⭐ THE FOLD DEFECT IS REPAIRED — `c9078f2`, and it was a LIVE defect in shipped Icelandic
+
+```text
+prompt   ./18_implementation_00.md   345 lines · session 18 · exchange 01 · E1 · Medium · minimal budget
+report   ./18_report_00.md           status PASS · 2 files, +48/−2 · pushed · readback equal
+commit   c9078f2  fix(i18n) picker search can fold æ þ ð ß œ ı
+⭐ AND THE PROMPT WAS 345 LINES against 434-730 for the catalogs. `AP_DEFECTS.md` D-09 says AP prices
+  rigor and never prices cost; this is the first slice of the campaign where the grant was deliberately
+  scaled DOWN to the blast radius, and it worked — one exchange, no blocks, nine findings returned.
+```
+
+### 51.1 ✔ VERIFIED REPAIRED BY ME, independently of the report
+
+```text
+EXPLICIT_SEARCH_FOLDS   6 → 16 entries
+  Þýska  → thyska    ✔ was `þyska`, reachable by NO ASCII query
+  Sænska → saenska   ✔ was `sænska`, reachable by NO ASCII query
+  ðđÐĐ   → dddd      ✔ THE TRAP IS CLOSED — was `ðdðd`, d-stroke folding and eth not
+⇒ Two picker rows that shipped four catalogs ago and could not be found by anything a user can type on a
+  plain keyboard are now findable. That is the whole slice.
+⭐ AND THE WORKER'S OWN FAIL-FIRST DISCIPLINE WENT BEYOND WHAT I ASKED. I required the new cases to fail
+  first; it also ran the pre-change file ONCE WITH SOFT ASSERTIONS so it could see all eighteen fail
+  rather than only the first, then REVERTED that and verified `grep -c 'expect.soft'` = 0 before staging.
+  ⇒ It recognized that a soft assertion left behind is a permanently weakened test, and it reported the
+    near-miss rather than quietly cleaning up. ✔ I checked: zero `expect.soft` in the committed file.
+```
+
+### 51.2 ⭐ ITS LEAD 1 WAS RIGHT, I MEASURED IT, AND IT HAS A FINDING
+
+```text
+LEAD 1 said: folding `æ → ae` makes previously-distinct labels ASCII-equal in principle, and the wiring
+slice may want to re-measure the campaign's collision property against the NEW table.
+✔ MEASURED BY ME, both tables, over the twelve catalogs' picker labels:
+   FOLD COLLISIONS (two labels folding to the SAME string):  ZERO in every catalog, before and after.
+   FOLDED SUBSTRING pairs in Icelandic:   BEFORE 2  →  AFTER 3
+     before: enska ⊂ hollenska · enska ⊂ islenska
+     after:  enska ⊂ hollenska · enska ⊂ islenska · ⭐ enska ⊂ saenska   ← NEW
+⇒ CONSEQUENCE, measured precisely: typing `enska` in the Icelandic picker matched THREE rows before and
+  matches FOUR now.
+⭐ AND IT IS A STRICT IMPROVEMENT, NOT A REGRESSION, which is the part worth stating plainly:
+     before  `Sænska` folded to `sænska` ⇒ findable by NOTHING typeable
+     after   `Sænska` folds to `saenska` ⇒ findable by `saenska`, `sae`, `enska`, `ska` …
+  The cost is that one query is one row less selective; the gain is that a row went from UNREACHABLE to
+  reachable. ⛔ And `enska` was ALREADY matching three rows, because `enska ⊂ hollenska` and
+  `enska ⊂ íslenska` are properties of correct Icelandic — the campaign's single recorded collision
+  outlier (§44.2 / §48.1). This adds a fourth member to a set that already existed.
+⇒ NO ACTION. Recorded because the wiring slice's `ownName` matrix asserts on RAW values with a
+  case-sensitive `toContain`, not on folded ones, so this cannot move that test. ✔ Checked.
+```
+
+### 51.3 🐞 M1 — MY OWN PROMPT ASKED FOR SOMETHING §4.2 FORBADE
+
+```text
+MY §5 said: "expect MORE passing tests than the 467 passed / 3 skipped baseline".
+MY §4.2 said: "⛔ Add NO new test block and NO new file. Extend the one that exists."
+⛔ VITEST COUNTS `it` BLOCKS. Extending one block cannot raise the case count.
+✔ MEASURED: 467 passed / 3 skipped before AND after. What grew is the ASSERTION count inside that one
+  block: 13 → 31, which I verified against `0a4fcc2` rather than taking the report's number.
+⇒ THE WORKER DID THE RIGHT THING: named the contradiction as MEASURED, stated the assumption it
+  proceeded on, and continued rather than blocking. That is §8's "NOT stopping conditions" working
+  exactly as designed.
+⇒ THE LESSON IS SMALL BUT IT IS THE SAME ONE AS EVER: I wrote the evidence requirement and the scope
+  restriction in different passes and did not read one against the other. R-B, and this is the seventh
+  instance in the campaign. ⚠ For a 345-line prompt with a two-file allowlist I had no excuse of volume.
+⇒ CORRECT FORM for a slice that extends an existing block: "expect the same case count and MORE
+  assertions; report both numbers." Recorded for whatever slice next extends a test rather than adding one.
+```
+
+### 51.4 The other findings, and one I am acting on
+
+```text
+M2 ✔ It confirmed the two shipped values independently AND honestly disclaimed what it did not check:
+   "I did NOT re-run the 192-value census, so that number is unverified by me." ⭐ That is the confidence
+   gradient catalog 7 introduced, now habitual — a Worker separating what it measured from what it
+   inherited, unprompted.
+M3 ✔ The eth/d-stroke trap is MEASURABLE and not merely a documentation hazard: `ðđÐĐ → ðdðd` before.
+   ⇒ A repair that trusted the old comment would have been a no-op for Icelandic. The trap was worth the
+     paragraph it got.
+M4 ✔ All ten mappings accepted; `ħ`/`ŧ` correctly left out.
+M5 ✔ BLAST RADIUS MEASURED RATHER THAN ASSUMED: `foldForSearch` has ONE product call site
+   (`PremiumPicker.tsx:28` and `:31`), no other test file references it, and no test file anywhere
+   contains any of the six new letters. ⇒ That is WHY the full suite could not regress, stated as a
+   mechanism instead of "the suite passed".
+⚠ ITS ONE DEVIATION, disclosed rather than hidden: the new comment is SIX lines where I asked for four or
+  five. ⇒ ACCEPTED WITHOUT RESERVATION. It names nine letters by codepoint and carries all four required
+  clauses; my line budget was a guess and its judgement was better. ⛔ A Worker that trims a
+  codepoint-naming comment to hit an arbitrary line count would be optimizing the wrong number.
+⭐ LEAD 4 TAKEN AS A QUEUED ITEM, and it is the right diagnosis: NOTHING PREVENTS THIS DEFECT CLASS
+  RECURRING. There is no invariant test asserting that every picker-searched label folds to pure ASCII,
+  and such a test would have caught this at authoring time rather than four catalogs later.
+  ⇒ ADDED TO THE WIRING SLICE, where all twelve catalogs' labels become reachable and the assertion has
+    its natural home: for every locale in LOCALES and every picker-searched label, `foldForSearch(label)`
+    must be pure ASCII. ⛔ Not now — it belongs with the wiring, not bolted onto a two-file repair.
+⚠ LEAD 2 and LEAD 3 noted, no action: `ẞ` U+1E9E has no entry by scope and no shipped label contains it,
+  and `İ` U+0130 already folds via NFD. Both correctly reasoned rather than asserted.
+```
+
+### 51.5 The queue after this
+
+```text
+NEXT   ⭐ S3 THE WIRING SLICE — and it is now the LAST substantive slice of the objective.
+       ⇒ It lands on a CORRECT fold table, which is exactly why this ran first.
+       ⇒ AND IT GAINS ONE ITEM FROM LEAD 4: the ASCII-foldability invariant over every picker-searched
+         label in every locale. Cheap there, and it closes the class rather than the instance.
+       Everything else it carries is in §50.1 — nine surfaces, three `messages.en.ts` shape problems,
+       GLOSSARY's missing czech and polish rows, `messages.de.ts`'s off-by-one comment, ALL EIGHT gates,
+       and ⛔ no section-12 observations because catalog 8's report was lost (§49.5).
+THEN   S4 the naming axes · S5 closure condition 11 (README, PRD).
+HIS    B13-3 chat/chatt · B10-3 badge length · B7-3 German terminology · and the `prompts.ts` union-type
+       slice, which is his to SELECT rather than mine to schedule.
+```
