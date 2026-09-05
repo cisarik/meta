@@ -5922,3 +5922,92 @@ eight gates      ruff · mypy 85 files · manage.py check · pytest 813 passed/4
   place a multigraph board cannot be expressed · `lexicon_health.py`'s stale citation · migration 0008's
   two divergent JSONField defaults.
 ```
+
+## 64. ⭐ THE C1 ACCEPTANCE PROMPT IS WRITTEN — and I must NOT deliver it
+
+```text
+prompt   ./26_acceptance_00.md   388 lines · session 26 · exchange 01 · E3 · Fresh Independent Audit
+         apfieldcheck 0 defects 0 warnings
+⛔ COPY-PASTE ROUTE. `00_handout.md` §10: "C1 acceptance — FRESH INDEPENDENT ACCEPTANCE. ⛔ NOT your
+  subagent." ⇒ I STOP AT THE FILE. He delivers it to a separately launched session.
+⭐ AND THE REASON IS NOT CEREMONY: `AP.md:1117` requires fresh independent audit before final acceptance of
+  an E3 change. Slice A was implemented by my subagent and committed by me. Slice B likewise. ⇒ BOTH ARE
+  NON-INDEPENDENT BY CONSTRUCTION, and routing the audit through my own subagent would leave C1 with no
+  independent evidence at all while looking like it had some.
+✔ PRE-FLIGHT, every gated value re-derived at the moment of writing: HEAD 3d7eae9 · HEAD^ cbb2865 ·
+  HEAD^^ b50f84a · `.ap` 9c5cc44 · porcelain 0 · oracle digest 260bfe15… · oracle blob 406062c6… ·
+  Slice A 27 paths, Slice B 13 paths — ⭐ both counts match what the prompt claims.
+```
+
+### 64.1 ⭐ THE DESIGN DECISION: NEGATIVE CONTROLS, because a passing audit proves nothing
+
+```text
+The accepted plan's §4 gave ten procedural steps. ⛔ TEN STEPS OF "CONFIRM X" CAN ALL PASS WITHOUT THE AUDIT
+  HAVING TESTED ANYTHING, because every one of them is satisfied by reading a file that says the right thing.
+⇒ SO I ADDED A CONTROL MATRIX: six POSITIVE controls that must hold, and ⭐ SIX NEGATIVE CONTROLS THAT MUST
+  FAIL. A negative control that PASSES is a REJECT finding.
+     N1 ⭐ EDIT the frozen oracle's text in a SCRATCH COPY and re-run. The pinned-digest assertion MUST FAIL.
+        ⇒ If it passes, the oracle is not pinned and every parity claim is unproven. This is the single most
+          important instruction in the prompt.
+     N2 build a `Cell` with `token="?"`, `blank_as=None` and evaluate over it. MUST fail closed.
+     N3 call `evaluate_scoring_move` with NO authority. MUST be a TypeError — a working callable fallback
+        means the collapse did not happen.
+     N4 hand `buildMoveUserPrompt` an UNSTRUCTURED context with a multigraph snapshot. MUST throw. If it
+        renders anything, the old lie is still reachable.
+     N5 `_word_passes_dictionary` outside the parity test. MUST be comments only.
+     N6 a slug BRANCH in `gamecore/`/`game/`. MUST find none — ⚠ and I warned that many slug LITERALS are
+        legitimate, so it must CLASSIFY rather than count. ⭐ That warning exists because MY OWN first grep
+        of this returned 21 literals and read like 21 violations.
+⇒ ⭐ THAT IS THE TRANSFERABLE LESSON OF WRITING THIS: AN AUDIT WITHOUT NEGATIVE CONTROLS MEASURES THE
+  AUDITOR'S READING COMPREHENSION, NOT THE ARTIFACT.
+```
+
+### 64.2 ⭐ I HANDED IT MY OWN MISTAKES ON PURPOSE
+
+```text
+Three places where the prompt tells the acceptor about a trap I FELL INTO, because an acceptor who repeats
+my error draws my wrong conclusion:
+  · `head -c -1` on the oracle digest. ⛔ Without it the digest differs, and the Slice A Worker's first
+    published command omitted it. ⇒ An acceptor following that form would conclude the oracle DRIFTED and
+    REJECT a correct slice. The prompt says to verify BOTH forms so they know which they are looking at.
+  · the `bytes` figures are UTF-8 bytes, NOT `String.prototype.length`. Fixture 01 has two EM DASHes at
+    three bytes each, so `.length` reports 1378 against a pin of 1382. ⭐ I PRINTED THAT CONTRADICTION
+    MYSELF — matching digests beside differing byte counts — and had to correct my own accessor. The prompt
+    says the digest is authoritative.
+  · `PYTHON_DOTENV_DISABLED=1` cannot run any gate on this host. I propagated it from the plan without
+    testing it. The prompt forbids it and says why.
+⭐ AND ONE WHERE I HANDED OVER A CLAIM RATHER THAN A CONCLUSION: `makemigrations --check` exits 1 at all
+  three commits. I told the acceptor the ORCHESTRATOR claims it is pre-existing and byte-identical across
+  them, then wrote: "⭐ DO NOT TAKE THAT ON TRUST — section 5 makes you verify it, and it is a good test of
+  whether the audit is real." ⇒ A pre-existing failure I assert is exactly the kind of thing an audit should
+  refuse to inherit.
+```
+
+### 64.3 ⭐ THE HARDEST QUESTION IN THE PROMPT, and only an independent session can ask it
+
+```text
+Step 3 does not stop at "does the oracle exist and match a digest". It asks:
+     "are the expectations the oracle asserts the BASELINE's expectations, or were they ADJUSTED TO MATCH THE
+      IMPLEMENTATION? Read the corpus construction and the six named synthetic disagreements and judge
+      whether each new verdict is genuinely the correct one or merely the one the new code produces."
+⛔ THAT IS THE ONE THING NEITHER I NOR EITHER WORKER CAN ANSWER, and it is where a silent verdict change
+  would hide. The six synthetic disagreements are the cases where the new path DELIBERATELY differs from the
+  old — `Á + CS` routing, one physical `CS` tile with lexical entry `cs`, an exact forbidden `S + Z`. ⭐ Each
+  is defensible, and "defensible" is exactly what a motivated implementer would also say about a wrong one.
+⇒ IF THE ORACLE IS CIRCULAR, R2 FAILS AND SO DOES C1. The prompt says that in those words.
+```
+
+### 64.4 What happens after the verdict
+
+```text
+PASS  ⇒ closure condition 1 becomes satisfiable for C1 and condition 9 IS that acceptance ⇒ I re-run
+      condition 7's eight gates at the closing commit, rewrite `99_closure.md` from closure-READINESS to a
+      closure record, and update the ledger.
+REJECT ⇒ ONE BOUNDED CORRECTION returns to the implementing side, ⛔ not to the acceptor —
+      `AP.md:1395-1405`, and the prompt tells it so. Then a scoped re-acceptance.
+⛔ EITHER WAY THE CAMPAIGN DOES NOT CLOSE ON C1 ALONE. Twelve of twenty-four languages remain, six of the
+  seven licence-clean rows still need a TILE DISTRIBUTION sourced, and condition 8's deferred acceptance
+  batch is delivered but unanswered.
+⚠ AND THE HONEST HEADLINE IS UNCHANGED BY C1 EITHER WAY: it makes NO new language playable. The capability
+  exists; the content does not.
+```
