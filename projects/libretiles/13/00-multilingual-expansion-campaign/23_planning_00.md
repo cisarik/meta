@@ -13,7 +13,7 @@ Task identity: MEC-C1-PLAN — plan capability C1, MULTI-CODE-POINT TILES END TO
     remainder rather than from the handout's original scope. Produce an implementable plan and stop.
 Phase: Planning
 Implementation authority: none
-Exact baseline: 84ddf1fdca3f6bb4c855794136355958e7f55885
+Exact baseline: b50f84a06d05c95f32a7b9f930a4b42648d2990a
 Changed-path allowlist: NONE. ⛔ Zero paths. You produce a plan as your report.
 Implementation boundaries: ⛔ no file created, edited, staged or committed anywhere. ⛔ No migration
     written. ⛔ No test written. The plan NAMES what an implementation session will do; it does not do it.
@@ -109,7 +109,7 @@ backend/tests/test_atomic_token_persistence.py  ⭐ READ EVERY TEST NAME. It is 
 
 ```bash
 cd /home/agile/Projects/libretiles
-git rev-parse HEAD                    # MUST be 84ddf1fdca3f6bb4c855794136355958e7f55885
+git rev-parse HEAD                    # MUST be b50f84a06d05c95f32a7b9f930a4b42648d2990a
 git rev-parse HEAD:.ap                # MUST be 9c5cc44f8b6c92dd56ad2427d13223d7d59c5656
 git -C .ap rev-parse HEAD             # MUST be the SAME 9c5cc44 — detached HEAD is CORRECT
 git status -sb                        # MUST be ## main...origin/main
@@ -119,6 +119,13 @@ git status --porcelain=v1             # MUST be EMPTY, and MUST STILL BE EMPTY W
 ⛔ Never attach, update or commit inside `.ap`. Any divergence: classify with the five canonical recovery
 classes — `accepted-continuation`, `unrelated-owner-work`, `stale-clone`, `unpublished-candidate`,
 `unexplained-divergence` — and stop.
+
+⚠ **THE BASELINE MOVED ONE COMMIT AFTER THIS PROMPT WAS FIRST WRITTEN, and you should know why.** The
+Cooperator placed eight flag PNGs in `frontend/public/` and `b50f84a` wired them into the two flag lookup
+tables, corrected three documents, and split one test fixture. ⛔ NOTHING IN THAT COMMIT TOUCHES C1's
+SCOPE — no `gamecore/` file, no `game/` file, no migration, no authority path, no `Cell`. Section 3's
+measurements were all taken at `84ddf1f` and every one of them still holds at `b50f84a`. ⭐ If you find
+one that does not, that is a MEASURED finding and I want it.
 
 ## 2. What C1 is, and why it is the last thing the campaign owes
 
@@ -262,7 +269,7 @@ ALREADY LANDED AND TESTED
 ```bash
 cd /home/agile/Projects/libretiles
 git status --porcelain=v1    # MUST be EMPTY
-git rev-parse HEAD           # MUST still be 84ddf1fdca3f6bb4c855794136355958e7f55885
+git rev-parse HEAD           # MUST still be b50f84a06d05c95f32a7b9f930a4b42648d2990a
 ```
 
 ```text

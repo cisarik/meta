@@ -690,9 +690,9 @@ B17-2 🐞 A DEFECT THIS COMMIT FIXED THAT NO GATE COULD SEE, and it is worth on
       flags exist. Wiring twelve would have requested EIGHT MISSING IMAGES — a broken-image glyph or
       a 404 per row, in the one screen whose job is to be legible to someone who cannot read the
       current interface. TypeScript cannot see it: a template string always has a value.
-      ⇒ WHAT YOU SHOULD SEE: the four rows English, Slovenčina, Čeština, Polski have a flag. The
-        other EIGHT have NO flag and just the endonym. ⛔ That is correct and deliberate, not missing
-        work — the label is the thing the rule says you scan for.
+      ⇒ ⭐ SUPERSEDED BY `b50f84a`, AFTER YOU SUPPLIED THE EIGHT MISSING PNGs: ALL TWELVE rows now
+        have a flag. ⚠ When this entry was written only four did, and eight rows deliberately showed
+        the endonym alone. ⇒ WHAT YOU SHOULD SEE NOW: twelve rows, twelve flags.
       ⇒ ⛔ IF YOU SEE A BROKEN-IMAGE ICON ON ANY ROW, that is a real regression: report it.
       ✔ ORCHESTRATOR-VERIFIED IN THE RENDERED HTML: `/de.png`, `/pt.png`, `/is.png`, `/it.png`,
         `/nl.png`, `/da.png`, `/sv.png`, `/af.png` appear ZERO times; `/en.png`, `/sk.png`,

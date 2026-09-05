@@ -376,8 +376,8 @@ UI-localization        SHIPPED. MEASURED at 96fbd48: `de` is in LOCALES, transla
                        304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
                        ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
                        REVIEWED_LOCALES = en sk cs pl, and `de` is covered STRUCTURALLY instead
-                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
-                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ✔ A 48x32 flag PNG shipped at b50f84a, so its
+                       picker row carries a flag like the original four.
 dictionary status      MEASURED ok. german.txt 709 844 words / 10 079 942 B, duplicates 0,
                        non_nfc 0. LICENCE `GPL-2.0-only OR GPL-3.0-only` — upstream grants
                        "GNU GPL, Version 2 oder 3", a choice between exactly those two, so the
@@ -488,8 +488,8 @@ UI-localization        SHIPPED. MEASURED at 96fbd48: `it` is in LOCALES, transla
                        304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
                        ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
                        REVIEWED_LOCALES = en sk cs pl, and `it` is covered STRUCTURALLY instead
-                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
-                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ✔ A 48x32 flag PNG shipped at b50f84a, so its
+                       picker row carries a flag like the original four.
 dictionary status      MEASURED ok. italian.txt 3 128 429 words / 46 670 737 B, duplicates 0,
                        non_nfc 0. LICENCE GPL-3.0-only, and -only rather than -or-later
                        deliberately: the grant reads "version 3, as published by the Free
@@ -529,8 +529,8 @@ UI-localization        SHIPPED. MEASURED at 96fbd48: `nl` is in LOCALES, transla
                        304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
                        ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
                        REVIEWED_LOCALES = en sk cs pl, and `nl` is covered STRUCTURALLY instead
-                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
-                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ✔ A 48x32 flag PNG shipped at b50f84a, so its
+                       picker row carries a flag like the original four.
 dictionary status      MEASURED ok. dutch.txt 1 293 086 words / 16 525 202 B, duplicates 0,
                        non_nfc 0. LICENCE ⭐ THE FIRST DUAL LICENCE IN THIS REPOSITORY:
                        `BSD-3-Clause OR CC-BY-3.0`, offered by OpenTaal "at the discretion of
@@ -632,8 +632,8 @@ UI-localization        SHIPPED. MEASURED at 96fbd48: `pt` is in LOCALES, transla
                        304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
                        ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
                        REVIEWED_LOCALES = en sk cs pl, and `pt` is covered STRUCTURALLY instead
-                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
-                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ✔ A 48x32 flag PNG shipped at b50f84a, so its
+                       picker row carries a flag like the original four.
 dictionary status      MEASURED ok. portuguese.txt 4 119 831 words / 63 137 733 B — the LARGEST
                        asset in the repository, above czech.txt's 54 MB. Duplicates 0,
                        non_nfc 0. --check IDENTICAL on both artifacts.
@@ -696,8 +696,8 @@ UI-localization        SHIPPED. MEASURED at 96fbd48: `da` is in LOCALES, transla
                        304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
                        ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
                        REVIEWED_LOCALES = en sk cs pl, and `da` is covered STRUCTURALLY instead
-                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
-                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ✔ A 48x32 flag PNG shipped at b50f84a, so its
+                       picker row carries a flag like the original four.
 dictionary status      MEASURED ok. danish.txt 317 167 words / 4 195 410 B, duplicates 0,
                        non_nfc 0. --check IDENTICAL on both artifacts.
                        ⭐ THE STRONGEST LICENCE EVIDENCE IN THE REPOSITORY. README_da_DK.txt
@@ -755,8 +755,8 @@ UI-localization        SHIPPED. MEASURED at 96fbd48: `sv` is in LOCALES, transla
                        304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
                        ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
                        REVIEWED_LOCALES = en sk cs pl, and `sv` is covered STRUCTURALLY instead
-                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
-                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ✔ A 48x32 flag PNG shipped at b50f84a, so its
+                       picker row carries a flag like the original four.
 dictionary status      MEASURED ok. swedish.txt 822 919 words / 10 835 202 B, duplicates 0,
                        non_nfc 0, ZERO undecodable lines. --check IDENTICAL.
                        ⭐ THE CLEANEST SINGLE GRANT OF ANY LANGUAGE HERE. LICENSE_en_US.txt:
@@ -876,8 +876,8 @@ UI-localization        SHIPPED. MEASURED at 96fbd48: `is` is in LOCALES, transla
                        304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
                        ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
                        REVIEWED_LOCALES = en sk cs pl, and `is` is covered STRUCTURALLY instead
-                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
-                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ✔ A 48x32 flag PNG shipped at b50f84a, so its
+                       picker row carries a flag like the original four.
 dictionary status      MEASURED ok. icelandic.txt 200 182 words / 2 537 966 B, duplicates 0,
                        non_nfc 0, ZERO undecodable lines. --check IDENTICAL.
                        ⛔ MIXED PROVENANCE, and the expression follows the MORE RESTRICTIVE
@@ -1050,8 +1050,8 @@ UI-localization        SHIPPED. MEASURED at 96fbd48: `af` is in LOCALES, transla
                        304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
                        ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
                        REVIEWED_LOCALES = en sk cs pl, and `af` is covered STRUCTURALLY instead
-                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
-                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ✔ A 48x32 flag PNG shipped at b50f84a, so its
+                       picker row carries a flag like the original four.
 dictionary status      MEASURED ok. afrikaans.txt 148 267 words / 1 677 283 B, duplicates 0,
                        non_nfc 0. LICENCE: LGPL-2.1-only, stated in README_af_ZA.txt §5 which
                        embeds the full LGPL 2.1 text; the whole README ships as

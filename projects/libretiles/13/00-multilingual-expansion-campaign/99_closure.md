@@ -108,11 +108,14 @@ Every non-English lexicon is reproducible from a pinned upstream commit by a com
       is complete in substance and its own wording presumes a closing commit that does not exist yet.
 
 11  libretiles_PRD.md, README.md and AGENTS.md describe what actually ships
-    ✔ SATISFIED at `1a6f63c` and `84ddf1f`. All three name twelve playable variants and twelve
-      interface locales, and all three carry the four residuals rather than omitting them: the eight
+    ✔ SATISFIED at `1a6f63c`, `84ddf1f` and `b50f84a`. All three name twelve playable variants and
+      twelve interface locales, and all three carry the residuals rather than omitting them: the eight
       machine-authored catalogs have had no second-opinion review, exact wording is pinned for four
-      of twelve, flags exist for four of twelve, and the Slovak list is a hunspell expansion rather
-      than an SSS-official list.
+      of twelve, and the Slovak list is a hunspell expansion rather than an SSS-official list.
+      ⭐ THE FOURTH RESIDUAL IS RETIRED at `b50f84a`: the Cooperator supplied the eight missing 48x32
+      flag PNGs himself, both lookup tables now carry twelve, and all three documents were corrected
+      in the same commit. ⛔ The tables stay PARTIAL with a conditional spread deliberately — an
+      unconditional path is mec-13-D01 and a thirteenth locale must not reintroduce it.
 ```
 
 ## 3. The three things that block closure, stated plainly
@@ -246,7 +249,6 @@ blocker to work around.
   `isLocale`. Removing it needs file-deletion authority no slice has held.
 · `VARIANT_SLUGS` is duplicated in `i18n.test.ts`; deduping needs a TDZ-aware move
 · nine tests pin four locales by per-locale LITERAL rather than by a loop, so no `awk` scan sees them
-· `AGENTS.md` says four locale flags "exist" where five PNGs exist and four are WIRED
 · the PRD's `Updated:` header date has no repository-verifiable source and was left alone
 · `docs/architecture.md` was out of every slice's scope this era
 · `frontend/src/lib/prompts.ts` `MovePromptLexiconId` and `JudgePromptLexiconId` are literal unions

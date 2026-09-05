@@ -5483,3 +5483,77 @@ can run without asking the planner · and what it could not determine.
   ⭐ A reader who is told "C1 unlocks hu and hr" and then gets no new language has been misled by us, not
     by the work.
 ```
+
+## 60. ⭐ HE SUPPLIED THE EIGHT MISSING FLAGS MID-EXCHANGE — `b50f84a`, and a residual retires
+
+```text
+commit  b50f84a  feat(i18n) all twelve locales get a flag   14 files, +75/−28 · pushed · readback equal
+⭐ I NOTICED IT BY ACCIDENT, and that is worth recording: the repository gate at the END of the C1
+  planning exchange printed EIGHT UNTRACKED PNGs that were not there at the start. ⇒ Running the gate
+  again on the way out, rather than only on the way in, is what caught it.
+```
+
+### 60.1 Classification, and why the assets and the code had to be ONE commit
+
+```text
+✔ MEASURED BEFORE TOUCHING ANYTHING: af da de is it nl pt sv, all PNG, ALL 48x32 — the same normalized
+  dimensions as the five already tracked. All THIRTEEN files distinct by md5, so no flag is duplicated.
+⇒ CLASSIFIED `unrelated-owner-work` with secondary `accepted-continuation` — the identical classification
+  era 10 gave `61c9f09`, where he committed the first five flags himself. ⭐ There is precedent for HIM
+  owning these binaries, so the classification was not a judgement call.
+⛔ AND THE ONE REAL DECISION: I committed owner-placed BINARIES rather than leaving them untracked, and it
+  had to be the same commit as the code. Splitting them would have wired twelve flag paths against four
+  committed files ⇒ EIGHT MISSING IMAGES ⇒ mec-13-D01 IN REVERSE, and no gate in this repository detects
+  it. ⭐ A defect I recorded three exchanges ago was the exact argument for not splitting.
+```
+
+### 60.2 ⭐ THE TEST DECISION — a fixture that mirrors production would have LOST coverage
+
+```text
+`PremiumPicker.test.ts`'s `ENDONYMS` fixture had twelve rows of which four carried a flag, and its comment
+said a fixture where every row has one "cannot represent the configuration this product actually ships".
+⇒ ⛔ THAT SENTENCE IS NOW TRUE IN REVERSE, and the naive fix — give all twelve a flag — WOULD HAVE DELETED
+  THE ONLY COVERAGE OF THE FLAGLESS PATH. `flagSrc` is still OPTIONAL on `PremiumPickerOption`, and the
+  GAME-VARIANT picker still reaches that path for any slug absent from `VARIANT_FLAG_SRC`.
+⇒ SO IT SPLIT INTO TWO FIXTURES, which is the same property-versus-configuration move as §53.4's rule:
+     `ENDONYMS`     twelve rows, twelve flags — mirrors the shipping configuration EXACTLY
+     `MIXED_FLAGS`  three rows, one deliberately flagless `xx / Ruritanian` — keeps the CONDITIONAL
+                    RENDER covered, which nothing shipping exercises today
+⇒ THREE cases now hold where two did: every shipped row renders its flag and the trigger repeats the
+  selected one (13 images) · a flagless row renders its label and NO `<img>` · the trigger image is
+  OMITTED when the SELECTED row has no flag. Assertion count 64 → 68; vitest 477 → 478.
+⭐ RECORDED AS R-X: WHEN PRODUCTION STOPS EXERCISING A BRANCH, THE TEST MUST START. A fixture that only
+  mirrors the shipping configuration silently drops every path production no longer takes.
+```
+
+### 60.3 ✔ VERIFIED BY RENDERING, and the control is the part that matters
+
+```text
+Production build · `next start` on loopback 3100 · real HTTP · stopped by exact PID · port verified free.
+     /settings                    HTTP 200, 35 632 B (was 34 304 B — the eight new img elements)
+     all twelve flag paths        PRESENT in the returned HTML
+     each of the twelve fetched   HTTP 200, every one
+     ⭐ CONTROL /xx.png           HTTP 404
+⇒ ⭐ THE CONTROL IS WHY THIS IS EVIDENCE RATHER THAN A COINCIDENCE. Twelve 200s alone would be consistent
+  with a server that returns 200 for anything; a 404 for a path that should not exist proves the twelve
+  200s mean the files are really there. ⚠ I did not run a control on the FIRST flag probe in §58.2 —
+  there I proved absence, which needs no control, but the habit was missing and it is cheap.
+```
+
+### 60.4 What retired, and what deliberately did not
+
+```text
+✔ RETIRED — the residual "flags exist for only four of twelve", removed from README.md and
+  libretiles_PRD.md, corrected in AGENTS.md, corrected in `99_closure.md` condition 11, superseded in
+  `91_deferred-acceptance-batch.md` B17-2 with a note saying what he WOULD have seen before, and corrected
+  in all EIGHT of the ledger's per-language UI blocks.
+⛔ NOT RETIRED, and still true: the eight catalogs are machine-authored with no second-opinion review ·
+  exact wording is pinned for four of twelve · the Slovak list is a hunspell expansion, not SSS-official.
+⛔ AND ONE QUEUED ITEM IS NOW SHARPER RATHER THAN GONE: `frontend/public/hu.png` is STILL an orphan — no
+  locale, no variant, and `hu` is asserted REJECTED by `isLocale`. ⇒ Thirteen PNGs, twelve of which are
+  wired. ⚠ `99_closure.md`'s routed-onward line about AGENTS.md's flag imprecision is deleted because the
+  sentence it described no longer exists.
+⚠ AND THE C1 PLANNER PROMPT IS UNAFFECTED: `23_planning_00.md` is about representation and word authority
+  and names no flag. Its baseline `84ddf1f` is now one commit behind HEAD. ⇒ THAT MATTERS AND I AM FIXING
+  IT — a planner told to gate on `84ddf1f` would stop at a divergence I caused myself.
+```
