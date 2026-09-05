@@ -116,11 +116,11 @@ ledger opened with.
 03  Czech         playable     shipped     MEASURED ok          sourced    none       yes
 04  Polish        playable     shipped     MEASURED ok          sourced    none       yes
 23  Afrikaans     PLAYABLE     shipped     MEASURED ok LGPL-2.1 sourced    none*      yes
-05  Hungarian     not-started  staged      MEASURED too-big     in-compil. C1         no
+05  Hungarian     not-started  staged      MEASURED too-big LGPL3+|MPL2 in-comp. C1    no
 06  German        PLAYABLE     shipped     MEASURED ok GPLv2|v3 sourced    none***    yes
 07  French        BLOCKED      not-started ⛔ unmunch CANNOT   sourced    (n/a)      no
 08  Italian       PLAYABLE     shipped     MEASURED ok GPL-3.0  sourced    none*      yes
-09  Spanish       not-started  not-started 23 pairs, lic LGPL+  in-compil. C1 C4 C5   no
+09  Spanish       not-started  not-started 23 pairs GPL3+|LGPL3+|MPL1.1 in-comp. C1 C4 C5 no
 10  Portuguese    PLAYABLE     shipped     MEASURED ok GPL|LGPL|MPL sourced none***   yes
 11  Dutch         PLAYABLE     shipped     MEASURED ok BSD|CC   sourced    none**     yes
 12  Danish        PLAYABLE     shipped     MEASURED ok GPL|LGPL|MPL sourced none***   yes
@@ -128,21 +128,33 @@ ledger opened with.
 14  Norwegian     BLOCKED      not-started ⛔ NO EXPLICIT GRANT  sourced    (n/a)      no
 15  Finnish       not-started  not-started ⛔ NO SOURCE          in-compil. C3?        no
 16  Icelandic     PLAYABLE     shipped     MEASURED ok CC-BY-SA sourced    NONE ⭐     yes
-17  Croatian      not-started  not-started af pair, lic unread  in-compil. C1         no
-18  Slovenian     not-started  not-started af pair, lic unread  in-compil. C1?        no
-19  Turkish       not-started  not-started af pair 36 MB, LIC   in-compil. C2 C3      no
-20  Greek         not-started  not-started af pair 10 MB        in-compil. C1         no
-21  Bulgarian     not-started  not-started af pair, COPYING     in-compil. C1         no
-22  Russian       not-started  not-started af pair, lic unread  in-compil. C1         no
+17  Croatian      not-started  not-started af pair GPL2|LGPL2.1|MPL1.1 in-comp. C1    no
+18  Slovenian     BLOCKED      not-started af pair ⚠ LGPL/GPL NO VERSION in-comp. C1? no
+19  Turkish       not-started  not-started af pair 36 MB MPL-2.0 in-comp. C2 C3       no
+20  Greek         not-started  not-started af 10MB MPL1.1|GPL2+|LGPL2.1+ in-comp. C1  no
+21  Bulgarian     BLOCKED      not-started ⛔ COPYING, NO GRANT  in-comp. C1           no
+22  Russian       not-started  not-started af pair BSD-3+markmod in-comp. C1          no
 24  Malay         not-started  not-started ⛔ NO SOURCE          in-compil. none       no
 ```
 
 ```text
 playable  12 / 24       UI locales  12 / 24   ⭐ every playable variant now has its interface locale
 lexicon reachable by the proven pipeline   22 / 24
+⭐ ALL EIGHT `lic unread` ROWS ARE NOW READ — see notes section 54, orchestrator-direct, read-only,
+   at pinned commit 75f5dff8c972fff4a32e4ea8434722c277f02a3f. Licence is no longer an open axis.
 lexicon with NO known licence-clean source  2 / 24   Finnish · Malay
 lexicon source exists but the EXPANDER cannot render it  1 / 24   French — see row 07
-lexicon exists but carries NO EXPLICIT LICENCE GRANT     1 / 24   Norwegian — see row 14
+lexicon exists but carries NO EXPLICIT LICENCE GRANT     2 / 24   Norwegian row 14 · ⭐NEW Bulgarian
+   row 21 — bg_BG/ ships bare GPLv2 COPYING text and NOT ONE statement scoping the spelling
+   dictionary; its only two READMEs license the HYPHENATION and THESAURUS packages instead
+lexicon grant names a copyleft licence with NO VERSION    1 / 24   ⚠NEW Slovenian row 18 — "covered by
+   the GNU/LGPL and GNU/GPL License", no version, plus a SUN election clause that is a downstream
+   distributor's choice rather than the holders' grant. ⛔ COOPERATOR RULING, not an engineering call.
+licence-clean and awaiting DISTRIBUTION + capability      6 / 24   Hungarian · Spanish · Croatian ·
+   Turkish · Greek · Russian. ⭐ Five of the six say `distribution UNSOURCED` or `in-compil.`, so the
+   remaining bottleneck is TILE DISTRIBUTION and capability C1 — NOT licences.
+⇒ 12 playable + 6 licence-clean-with-named-blockers + 6 blocked-with-named-cause = 24. Every row is
+  now dispositioned, which is what closure condition 4 asks for.
 `in-compil.` = present in the Wikipedia Official-editions compilation, table not yet extracted
 `none*`      = needed a DIACRITIC FOLD, solved in the LEXICON at build time rather than by a
                capability. Afrikaans and Italian. See rows 23 and 08.
@@ -590,7 +602,7 @@ capability required    C1 (multigraph tiles on the wire) · C5 (ruleset identity
                        C4 only if a face-versus-lexical realization is genuinely needed.
 tests                  none. C5 must give display_label its FIRST test.
 blockers               distribution UNSOURCED · which ruleset ships is undecided ·
-                       lexicon licence UNVERIFIED · C1 and C5 not landed.
+                       licence READ ok: GPL-3.0-or-later OR LGPL-3.0-or-later OR MPL-1.1-or-later · C1 and C5 not landed.
 ```
 
 ## 10 · Portuguese — ⭐ PLAYABLE, landed 2026-09-03 at `1eed5ed`
@@ -819,7 +831,7 @@ special-rule reqs      LEAD: Ä and Ö are distinct letters with their own tiles
 capability required    C3 pending measurement; possibly none.
 tests                  none.
 blockers               distribution UNSOURCED · expansion size UNMEASURED and plausibly
-                       uncommittable · lexicon licence UNVERIFIED.
+                       uncommittable · licence not reached: NO SOURCE is the blocker, not the grant.
 ```
 
 ## 16 · Icelandic — ⭐ PLAYABLE, landed 2026-09-03 at `8a50ded`. NO RULE AT ALL.
@@ -890,7 +902,7 @@ special-rule reqs      LEAD: DŽ, LJ and NJ as tiles ⇒ digraph tiles on the wi
                        cheapest confirmation that C1 generalized rather than special-cased.
 capability required    C1.
 tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED · C1 not landed.
+blockers               distribution UNSOURCED · licence READ ok: GPL-2.0 OR LGPL-2.1 OR MPL-1.1 · C1 not landed.
 ```
 
 ## 18 · Slovenian
@@ -904,7 +916,7 @@ special-rule reqs      LEAD: Č Š Ž are distinct single letters; whether any d
                        is part of the probe. It may need nothing beyond today's foundation.
 capability required    C1 pending measurement; possibly none.
 tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED.
+blockers               distribution UNSOURCED · ⛔ LICENCE READ AND INDETERMINATE: unversioned GNU/LGPL+GNU/GPL grant.
 ```
 
 ## 19 · Turkish
@@ -927,7 +939,7 @@ capability required    C2 — variant-declared blank targets, MEASURED absent (`
                        returns 0 hits under BOTH `git grep -n` and `git grep -in`) ·
                        C3 — variant-declared normalization.
 tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED · C2 and C3 not
+blockers               distribution UNSOURCED · licence READ ok: MPL-2.0 · C2 and C3 not
                        landed · the .upper() question above is UNRESOLVED and must be
                        measured before Turkish is scheduled.
 ```
@@ -948,7 +960,7 @@ capability required    none new IF C1 has landed. INFERRED from the handout's ow
                        part.
                        ⚠ G7 — font glyph coverage — is live here.
 tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED ·
+blockers               distribution UNSOURCED · licence READ ok: MPL-1.1 OR GPL-2.0+ OR LGPL-2.1+ ·
                        glyph coverage unverified (G7).
 ```
 
@@ -962,7 +974,7 @@ distribution source    UNSOURCED.
 special-rule reqs      LEAD: Cyrillic, single-code-point throughout.
 capability required    none new if C1 landed. INFERRED.
 tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED ·
+blockers               distribution UNSOURCED · ⛔ LICENCE READ AND ABSENT: bare GPLv2 COPYING, no grant ·
                        glyph coverage unverified (G7).
 ```
 
@@ -978,7 +990,7 @@ special-rule reqs      LEAD: Ё versus Е is a normalization question. Й, Ъ, �
                        letters.
 capability required    none new if C1 landed. INFERRED.
 tests                  none.
-blockers               distribution UNSOURCED · lexicon licence UNVERIFIED ·
+blockers               distribution UNSOURCED · licence READ ok: BSD-3-Clause + mark-modifications ·
                        expansion size UNMEASURED · glyph coverage unverified (G7).
 ```
 

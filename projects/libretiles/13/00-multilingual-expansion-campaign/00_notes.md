@@ -4886,3 +4886,155 @@ D4 ⛔ NEITHER of my prompts mentioned that `tiles.py` is variant-driven or that
   playable, twelve localized — the two numbers now coincide, which is what closure condition 3 asked for and
   is NOT the same as progress on the remaining twelve languages.
 ```
+
+## 54. ⭐ THE EIGHT LICENCES ARE READ — six clean, one blocker, one for the Cooperator
+
+```text
+prompt   ./22_planning_00.md   292 lines · session 22 · exchange 01 · E1 · read-only, ZERO paths
+⛔ DISPATCH FAILED TWICE. I performed the reads MYSELF. ⇒ ORCHESTRATOR-DIRECT, NON-INDEPENDENT,
+  read-only. `00_handout.md` §10 anticipated exactly this — "be ready to complete read-only evidence work
+  yourself, recording the non-independence permanently when you do." ⭐ RECORDED PERMANENTLY HERE.
+✔ THE TREE IS BYTE-IDENTICAL: HEAD 84ddf1f, porcelain EMPTY, `.ap` 9c5cc44. Nothing was written under
+  /home/agile/Projects. Eighteen files fetched to /tmp only.
+⇒ ⭐ SIX OF EIGHT ARE LICENCE-CLEAN. ONE IS A NEW RECORDED BLOCKER. ONE NEEDS A COOPERATOR RULING.
+```
+
+### 54.1 ⛔ THE LEDGER'S DIRECTORY NAMES WERE WRONG, and my first probe was worse
+
+```text
+🐞 The ledger implies `es_ES`. ⛔ THAT PATH 404s AT THE PINNED COMMIT. The directory is `es`, and it holds
+  TWENTY-THREE regional `.aff`/`.dic` pairs — es_AR … es_VE, es_ES among them.
+🐞 AND MY OWN FIRST PROBE WAS THE WORSE ERROR: I guessed filenames (`README_$d.txt`, `license.txt`, …) across
+  eight directories and got EIGHT EMPTY RESULTS. I read that as "nothing there". ⛔ IT MEANT "I GUESSED
+  WRONG EIGHT TIMES." The control fetch — `is/license.txt`, known to exist — returned 200, which is what
+  told me the method was broken rather than the upstream.
+⇒ Switching to the GitHub tree/contents API made the REPOSITORY ENUMERATE ITS OWN FILES: 62 top-level
+  directories at the pinned commit. Every subsequent finding came from enumeration, not from guessing.
+⇒ Recorded as R-T: A NEGATIVE RESULT FROM A GUESSED NAME IS NOT EVIDENCE OF ABSENCE. Enumerate, then read.
+  ⚠ Same family as R-P and R-R: let the source list itself.
+✔ AND ONE TRAP I FLAGGED IN THE PROMPT RESOLVED HARMLESSLY: `es` has 24 `.dic` to 23 `.aff`. The unpaired
+  one is `hyph_es` — hyphenation patterns, not a word list. Not a provenance problem at all.
+```
+
+### 54.2 ⭐ SIX CLEAN — grants quoted, versions named, derived works covered
+
+```text
+HUNGARIAN  hu_HU/README_hu_HU.txt
+   "The contents of this software may be used under the terms of the GNU Lesser General Public License
+    Version 3 or later (the "LGPL" …) or the Mozilla Public License Version 2.0 or later (the "MPL" …)"
+   ⇒ LGPL-3.0-or-later OR MPL-2.0-or-later · DETERMINATE · AFRIKAANS precedent (self-contained, versioned)
+   ⚠ The pointers `COPYING.LGPL` and `COPYING.MPL` "in the root folder of the source tree" BOTH 404 at the
+     pinned commit. ⇒ A BROKEN POINTER, NOT A MISSING GRANT: the grant names both licences with versions,
+     so it stands on its own text. Recorded so a build script does not try to fetch them.
+SPANISH    es/LICENSE.md + es/README_hunspell_es.txt
+   "Este diccionario para corrección ortográfica, integrado por el fichero de afijos y la lista de
+    palabras (__LOCALE__[.aff|.dic]) se distribuye bajo un triple esquema de licencias disjuntas:
+    GNU GPL versión 3 o posterior, GNU LGPL versión 3 o posterior, ó MPL versión 1.1 o posterior."
+   ⇒ GPL-3.0-or-later OR LGPL-3.0-or-later OR MPL-1.1-or-later · DETERMINATE
+   ⭐ THE STRONGEST GRANT OF THE EIGHT, and for a reason that matters to THIS product: it scopes itself
+     explicitly to "the affix file AND THE WORD LIST". Every other grant covers "the dictionary" and leaves
+     you to argue that a derived word list is inside it. Spanish says the word list by name.
+CROATIAN   hr_HR/README_hr_HR.txt — "GPL 2.0/LGPL 2.1/MPL 1.1 tri-license"
+   ⇒ GPL-2.0 OR LGPL-2.1 OR MPL-1.1 · DETERMINATE · versions named, though no licence TEXT ships in-dir
+TURKISH    tr_TR/README.txt — "This dictionary is licensed under MPL 2.0 License."
+   ⇒ MPL-2.0 · DETERMINATE. ✔ AND THE TRAP I FLAGGED IS REAL AND RESOLVED: `tr_TR/LICENSE` is the
+     16 KB MPL 2.0 TEXT ("Mozilla Public License Version 2.0"), while the 367-byte README.txt carries the
+     GRANT. ⭐ Text and grant are different artifacts and only one of them licenses anything.
+GREEK      el_GR/README_el_GR.txt — "Version: MPL 1.1/GPL 2.0/LGPL 2.1" plus the full MPL tri-licence
+   boilerplate, "either the GNU General Public License Version 2 or later … or the GNU Lesser General
+   Public License Version 2.1 or later"
+   ⇒ MPL-1.1 OR GPL-2.0-or-later OR LGPL-2.1-or-later · DETERMINATE
+   ⚠ MIXED PROVENANCE, and it is the ICELANDIC shape: the same README also records a 2002 predecessor
+     ("License : GNU GPL", based on ispell material from Mitalas and Seraskeris). The 2015 section is
+     titled "The new Licence:" and reads as relicensing the whole. ⇒ Determinate under the tri-licence,
+     and the conservative expression is the tri-licence, since GPL-2.0-or-later is available in it either
+     way. ⛔ A build script must record BOTH sections in its `.LICENSE`, as Icelandic's does.
+RUSSIAN    ru_RU/README_ru_RU.txt — BSD-family, four conditions, "Copyright (c) 1997-2008,
+   Alexander I. Lebedev … Redistribution and use in source and binary forms, WITH OR WITHOUT
+   MODIFICATION, are permitted provided that …"
+   ⇒ BSD-3-Clause plus a mark-modifications clause · DETERMINATE · permissive, NO share-alike
+   ⭐ THE ONLY GRANT OF THE EIGHT THAT EXPLICITLY COVERS MODIFICATION, which is exactly what this product
+     does — expand, filter, rewrite tile faces. Every other grant needs the derived-work argument made.
+   ⛔ BUT IT CARRIES A CLAUSE NO OTHER SHIPPED LEXICON HAS: "Modified versions must be clearly marked as
+     such." Our asset IS a modified version. ⇒ `russian.LICENSE` must state that the word list is a
+     filtered hunspell expansion, not Lebedev's file. Cheap, and a real obligation rather than a footnote.
+```
+
+### 54.3 ⛔ BULGARIAN IS A NEW RECORDED BLOCKER — the NORWEGIAN precedent, and I looked everywhere
+
+```text
+`bg_BG/` ships COPYING — 17 979 bytes of bare GNU GPL Version 2 TEXT — and NOT ONE STATEMENT anywhere that
+the spelling dictionary is offered under it.
+✔ EXHAUSTED, every candidate location, each with its HTTP status:
+     README_bg_BG.txt · README · README.txt · LICENSE · LICENCE · README.bgOffice   ALL 404
+     description.xml            200 — names "Bulgarian spelling dictionary, hyphenation rules, and
+                                     thesaurus" and a version. ⛔ NO licence element.
+     dictionaries.xcu           200 — ZERO case-insensitive matches for licen|copyright|GPL
+     META-INF/                  200 — manifest.xml only
+     bg_BG.aff first 1 601 B    206 — `SET UTF-8`, `TRY …`, then affix rules. ⛔ NO licence banner.
+     README_hyph_bg_BG.txt      200 — scopes HYPHENATION: "bghyphen.tex — TeX hyphenation patterns for
+                                     Bulgarian, Copyright 2000 Anton Zinoviev". ⛔ NOT the word list.
+     README_th_bg_BG_v2.txt     — the THESAURUS package. ⛔ NOT the word list.
+⇒ ⛔ SO THE ONLY TWO READMEs IN THE DIRECTORY LICENSE THE TWO PACKAGES WE DO NOT WANT. My §3 trap said
+  exactly this and it is confirmed.
+⚠ AND HERE IS THE HONEST TENSION, which I am recording rather than resolving in the product's favour: a
+  bare `COPYING` containing GPLv2 in a directory is CONVENTIONALLY read as "this directory is GPLv2", and
+  reasonable projects ship on that reading. ⛔ BUT STANDING CONDITION 5 MAKES AN UNCLEAR LICENCE A
+  DISQUALIFICATION, NOT A FOOTNOTE, and no sentence anywhere states that the Bulgarian WORD LIST is
+  offered under that text. Norwegian was blocked on precisely this — a licence file with no grant naming
+  the material. ⇒ Treating Bulgarian differently would mean the campaign applied its own rule twice with
+  two different strictnesses.
+⇒ DISPOSITION: `⛔ NO EXPLICIT GRANT FOR THE SPELLING DICTIONARY`. Second member of the Norwegian class.
+⭐ AND IT IS A CHEAP UNBLOCK IF THE COOPERATOR WANTS IT: one upstream issue asking bgOffice to state the
+  word list's licence. That is a communication, not engineering.
+```
+
+### 54.4 ⚠ SLOVENIAN IS THE ONE I WILL NOT DECIDE — an unversioned grant plus a THIRD PARTY's election
+
+```text
+`sl_SI/README_sl_SI.txt` grants:
+     "The Slovenian spelling dictionary is covered by the GNU/LGPL and GNU/GPL License and supports
+      Slovenian language (sl_SI)."
+⛔ NO VERSION NUMBER. Not "v2.1", not "or later", not "GPLv2". The authors are named — Amebis d.o.o.,
+  Tomaž Erjavec, Aleš Košir, Primož Peterlin — and the form data records "URL for License:
+  http://www.gnu.org/copyleft/lgpl.html", a MOVING TARGET that resolved to LGPLv2.1 in October 2006 and to
+  LGPLv3 today.
+⭐ AND THEN THE FILE ENDS WITH A CLAUSE THAT IS NOT THE AUTHORS' AT ALL:
+     "For the avoidance of doubt, except that if any license choice other than GPL or LGPL is available it
+      will apply instead, SUN ELECTS to use only the Lesser General Public License version 2.1 (LGPLv2) at
+      this time for any software where a choice of LGPL license versions is made available … or where a
+      choice of which version of the LGPL is applied is otherwise unspecified."
+⇒ ⛔ THAT CLAUSE IS AN ELECTION BY SUN MICROSYSTEMS, A DOWNSTREAM DISTRIBUTOR, NOT A GRANT BY THE COPYRIGHT
+  HOLDERS. It tells you which version SUN chose to use. Whether it fixes the version for US is a legal
+  question about whose election binds a third party — and it is exactly the kind of question I told the
+  Worker not to reason its way through.
+⇒ DISPOSITION: `INDETERMINATE — unversioned copyleft grant, resolution path named but not by the holders`.
+  ⭐ Distinct from Bulgarian: Bulgarian has NO grant for the material; Slovenian HAS a grant naming the
+    material and omits the version. Two different blockers, and lumping them would lose the difference.
+⇒ ⭐ AND IT IS THE CHEAPEST OF ALL TO UNBLOCK, which is why it goes to the Cooperator rather than to a
+  build slice: `sl_SI.dic` is 2 967 766 bytes and the language may need NO new capability. If he accepts
+  the Sun election as fixing LGPL-2.1, Slovenian becomes schedulable immediately.
+```
+
+### 54.5 ⭐ WHAT THIS RESOLVES, AND WHAT IT DELIBERATELY DOES NOT
+
+```text
+✔ ONE AXIS, EIGHT ROWS. Licence UNVERIFIED is gone from every one of the eight.
+⛔ AND NOT ONE OF THE SIX CLEAN ROWS IS THEREBY SHIPPABLE. Every one still carries other blockers that this
+  slice did not touch and must not be read as having touched:
+     Hungarian   distribution `in-compil.` · C1 multigraph · dictionary MEASURED TOO-BIG
+     Spanish     distribution `in-compil.` · C1, C4, C5
+     Croatian    distribution UNSOURCED · C1 (DŽ LJ NJ digraph tiles)
+     Turkish     distribution UNSOURCED · C2 + C3 · ⛔ the `.upper()` question — `canonicalize_tile_token`
+                 uses plain `.upper()`, and Turkish I/İ is not Unicode default casing. UNRESOLVED.
+     Greek       distribution UNSOURCED · G7 glyph coverage
+     Russian     distribution UNSOURCED · expansion size UNMEASURED · G7
+⇒ ⭐ THE REAL SHAPE OF THE REMAINING WORK IS NOW VISIBLE, and it is NOT licences: it is DISTRIBUTION
+  SOURCING plus capability C1. Five of the six clean rows say `distribution UNSOURCED`, and the tile
+  distribution is the one input no upstream dictionary can supply.
+⇒ REVISED CAMPAIGN ARITHMETIC: 12 playable · 6 licence-clean and awaiting distribution+capability ·
+  6 blocked with named causes (French expander · Norwegian no grant · Bulgarian NO GRANT ⭐NEW ·
+  Slovenian unversioned ⚠COOPERATOR · Finnish no source · Malay no source).
+  ⛔ 12 + 6 + 6 = 24. Every row is now either playable, licence-clean-with-named-blockers, or blocked with
+  a named cause. ⭐ CLOSURE CONDITION 4 IS SATISFIABLE FOR THE FIRST TIME.
+```
