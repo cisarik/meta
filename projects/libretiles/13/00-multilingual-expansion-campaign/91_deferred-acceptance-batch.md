@@ -633,3 +633,203 @@ B15-3 ⛔ WHAT IS NOT FIXED, and it is queued rather than forgotten: nothing yet
       defect. There is no test asserting that every searchable label in every locale folds to plain
       ASCII, which is why this went unnoticed for four catalogs. That invariant is folded into the wiring
       slice, where all twelve locales become reachable and the assertion has a natural home.
+
+---
+
+## B16 · the twelve interface-language endonyms — `a944e76` · `779aa55`
+
+```text
+slice        MEC-UIL-W1. The key-set half of the wiring, deliberately separated from the half with
+             decisions in it.
+commit       a944e76  feat(i18n) twelve interface-language endonyms
+             779aa55  docs(i18n) two comments that counted four catalogs when there are twelve
+             both pushed; public readback equal
+what changed eight `settings.uiLanguage.*` keys added to ALL TWELVE catalogs, byte-identical in each,
+             and the pinned key count 296/20/316 → 304/20/324. ⛔ `LOCALES` STAYED AT FOUR, so nothing
+             this commit added was reachable by you when it landed.
+```
+
+```text
+B16-1 ⛔ THERE IS NOTHING FOR YOU TO OBSERVE IN THIS COMMIT, and that is the point rather than an
+      omission. It added twelve valid `TextKey`s that no code path read yet. ⇒ Verified instead by the
+      compiler: eleven catalogs are `Record<TextKey, string>`, so a missing key in any of them is a
+      build error, and `npm run typecheck` was clean. ⭐ Its effects become observable in B17, which
+      is the commit that made them reachable.
+B16-2 ⚠ ONE THING TO KNOW rather than to check: the endonyms are CAPITALIZED — `Deutsch`, `Íslenska`,
+      `Português` — where CLDR returns five of the eight lowercase. Deliberate: a picker row is a
+      standalone list item, and twelve rows of which five are lowercase are harder to scan than
+      twelve that match. ⇒ If you think a language's own name looks wrong capitalized in a LIST, say
+      which one. ⛔ Do not judge it as mid-sentence text; no surface renders these mid-sentence.
+```
+
+## B17 · ⭐ EIGHT LANGUAGES BECOME REACHABLE — `96fbd48`
+
+```text
+slice        MEC-UIL-W2b. The commit that changes what you can reach. The whole objective's point.
+commit       96fbd48  feat(i18n) wire eight interface locales
+             pushed; public readback equal
+what changed `LOCALES` 4 → 12 and `translate.ts` wires all twelve catalogs, so German, Portuguese,
+             Icelandic, Italian, Dutch, Danish, Swedish and Afrikaans are selectable. Plus a repaired
+             flag defect, `REVIEWED_LOCALES`, and two new structural test blocks.
+```
+
+```text
+B17-1 ⭐ THE MAIN STEP. Open Settings. The interface-language picker must now offer TWELVE rows, and
+      each must show that language's OWN name: English · Slovenčina · Čeština · Polski · Deutsch ·
+      Português · Íslenska · Italiano · Nederlands · Dansk · Svenska · Afrikaans.
+      ⇒ Pick Deutsch. The chrome must become German — `Einstellungen`, `Oberflächensprache`,
+        `Denkzeit der AI`, `Dein Gegner`. Then pick Íslenska and it must become Icelandic —
+        `Afbrigði viðureignar`, `Fljótleg borðlesning`.
+      ⇒ Then set it back to whatever you prefer. The choice persists across a reload.
+      ✔ ORCHESTRATOR-VERIFIED BY RENDERING, not by reading code: production build, `next start` on
+        loopback port 3100, real HTTP GET of `/settings`. All twelve endonyms present in the returned
+        HTML; `<html lang="de">` with a German-only cookie and `<html lang="is">` with an Icelandic
+        one; `Einstellungen` absent from the Icelandic page, so there is no locale leak.
+B17-2 🐞 A DEFECT THIS COMMIT FIXED THAT NO GATE COULD SEE, and it is worth one look because it would
+      have been ugly. The picker built each row's flag as `/<locale>.png` UNCONDITIONALLY. Only four
+      flags exist. Wiring twelve would have requested EIGHT MISSING IMAGES — a broken-image glyph or
+      a 404 per row, in the one screen whose job is to be legible to someone who cannot read the
+      current interface. TypeScript cannot see it: a template string always has a value.
+      ⇒ WHAT YOU SHOULD SEE: the four rows English, Slovenčina, Čeština, Polski have a flag. The
+        other EIGHT have NO flag and just the endonym. ⛔ That is correct and deliberate, not missing
+        work — the label is the thing the rule says you scan for.
+      ⇒ ⛔ IF YOU SEE A BROKEN-IMAGE ICON ON ANY ROW, that is a real regression: report it.
+      ✔ ORCHESTRATOR-VERIFIED IN THE RENDERED HTML: `/de.png`, `/pt.png`, `/is.png`, `/it.png`,
+        `/nl.png`, `/da.png`, `/sv.png`, `/af.png` appear ZERO times; `/en.png`, `/sk.png`,
+        `/cs.png`, `/pl.png` appear.
+B17-3 ⭐ A DETAIL THAT PROVES THE CATALOGS ARE REAL RATHER THAN COPIED, and it is the nicest thing to
+      look at. The landing page footnote counts the dictionary. The THOUSANDS SEPARATOR follows the
+      language: English `279,496` · German and Icelandic `279.496` · Afrikaans `279 496` (a space).
+      ✔ ORCHESTRATOR-VERIFIED by rendering all four over HTTP.
+B17-4 ⚠ WHAT THIS COMMIT DELIBERATELY DOES NOT CLAIM, so you calibrate what you are looking at: the
+      eight new catalogs are MACHINE-AUTHORED and nobody has reviewed their wording against a second
+      opinion. Exact expected strings are pinned in tests ONLY for `en sk cs pl`; the other eight are
+      checked structurally — same key set, nothing empty, no untranslated English leaking, every
+      interpolation parameter surviving, every picker label ASCII-foldable.
+      ⇒ ⭐ SO WORDING FEEDBACK ON THE EIGHT IS GENUINELY USEFUL HERE and is not covered by any test.
+        If a German or Dutch string reads wrong to you, that is exactly the gap.
+B17-5 ⛔ ONE BOUNDARY OF MY OWN VERIFICATION, stated rather than hidden. The GAME-VARIANT picker's
+      translated exonyms — `Tschechisch` in German, `Þýska` in Icelandic — could NOT be rendered by
+      my probe, because `/api/game/variants/` returns 401 without a logged-in session and my probe
+      had none. ⇒ Those 144 label cells are proven by TEST (`AC-QUEUE-VARIANT`, B19) and NOT by
+      rendering. When you open Settings while logged in, that picker is the one surface in this batch
+      whose rendering nobody has observed.
+```
+
+## B18 · eight byte-identical values justified, three stale backend counts — `6b8cb54`
+
+```text
+slice        ORCHESTRATOR-DIRECT repair. Comment-only.
+commit       6b8cb54  docs(i18n) justify eight byte-identical values and three stale counts
+             pushed; public readback equal
+what changed comments only, in three catalogs and three backend files. ⛔ NO value changed; the
+             identical-to-English counts are unmoved at sk 19 · cs 19 · pl 19 · de 18 · pt 19 · is 16 ·
+             it 21 · nl 22 · da 20 · sv 19 · af 18 of 304.
+```
+
+```text
+B18-1 ⛔ NOTHING RENDERS DIFFERENTLY. There is nothing to observe and no step to run.
+      ⇒ It exists because the campaign rule is that a translated value which is byte-identical to
+        English must SAY WHY. Eight had no justification: Portuguese `PTS`, Italian `Account`,
+        `Password`, `Account`, `Email`, Dutch `Account`, `Account`, `Score`. All are naturalized
+        loanwords or exact cognate abbreviations and each now says so in a comment.
+B18-2 ⚠ ONE THING WORTH YOUR JUDGEMENT, and it is a WORDING question in Italian. `profile.email` is
+      `Email`, unhyphenated, while German uses `E-Mail`, Dutch and Danish `E-mail`, Swedish
+      `E-post`, Afrikaans `E-pos`, Icelandic `Netfang`. ⇒ Italian really has settled on the
+      unhyphenated form, so this is deliberate. ⛔ But if you know otherwise, this is the kind of
+      call that no test can make.
+```
+
+## B19 · the variant-naming axis grows to twelve — `78e84ef`
+
+```text
+slice        MEC-UIL-W3 part A. Test-only.
+commit       78e84ef  test(i18n) twelve-slug variant-naming axis
+             pushed; public readback equal
+what changed `INSTALLED_VARIANTS` 4 → 12 slugs, and the collision invariant re-expressed so it needs
+             ZERO hand-written exonyms: 144 slug × locale cells and 1584 ordered pairs asserted.
+```
+
+```text
+B19-1 ⛔ NOTHING RENDERS DIFFERENTLY — this commit only made a test see the whole product.
+B19-2 ⭐ BUT IT FOUND SOMETHING WORTH KNOWING, and it is the Icelandic thing again. The old test
+      checked that a variant's queue label never CONTAINS another variant's name, case-sensitively.
+      That passed only by accident of capitalization: in Icelandic, `Enska` (English) sits inside
+      `Hollenska` (Dutch), `Íslenska` (Icelandic) and `Sænska` (Swedish). A lowercase rendering
+      anywhere would have broken it — and Icelandic and Portuguese both treat language names as
+      ordinary common nouns, so it was a matter of time.
+      ⇒ The check now folds to ASCII first and matches on WORD BOUNDARIES, which is
+        case-insensitive and still gives zero collisions across all twelve locales.
+B19-3 ⚠ WHAT TO WATCH FOR IN USE, since this is the one thing tests cannot cover: if you ever see a
+      queue label or variant row that names TWO languages — "Fronta: Čeština (Angličtina)" or
+      anything like it — that is the defect class this invariant exists to catch, and it would mean
+      the invariant's assumption about label shape stopped holding.
+```
+
+## B20 · the documents describe what ships — `1a6f63c` · `84ddf1f`
+
+```text
+slice        MEC-UIL-W3 part B, plus one ORCHESTRATOR-DIRECT correction.
+commit       1a6f63c  docs describe twelve playable variants and twelve interface locales
+             84ddf1f  docs(prd) nine providers, twelve word lists, twelve languages in the summary
+             both pushed; public readback equal
+what changed README.md, libretiles_PRD.md. ⛔ NO code. No gate in this repository reads either file.
+```
+
+```text
+B20-1 ⭐ THE ONE STEP HERE IS A READING, AND IT IS THE ARTIFACT YOU WILL SHOW SOMEONE. Read
+      `README.md`'s Features list and its new `## Languages` section, and `libretiles_PRD.md`'s FR-01,
+      new FR-12 and section 8 Known Gaps.
+      ⇒ They must claim TWELVE playable board languages and TWELVE interface locales, and they must
+        also carry FOUR limitations without softening them: the eight newest catalogs are
+        machine-authored with no second-opinion review · tests pin exact wording for four of twelve ·
+        flags exist for four of twelve · the Slovak list is a hunspell expansion and NOT SSS-official.
+      ⇒ ⛔ IF ANY OF THOSE FOUR IS MISSING OR SOFTENED, say so. A README that overclaims is worse
+        than a stale one, and this is the file a reader judges the project by.
+B20-2 ⚠ ONE CORRECTION WORTH SEEING, because it was wrong for a long time. The PRD described the AI
+      layer as "an OpenAI-compatible adapter against OpenRouter and NVIDIA NIM". Measured against
+      `provider-registry.ts`: NINE providers ship, and `EXACT_PROVIDER_METADATA` marks five `direct`,
+      two `watchlist`, one `legacy` — and the legacy one is `nvidia-nim`. ⇒ The old sentence named the
+      LEGACY provider and the compatibility-tail base while omitting all five direct providers.
+B20-3 ⚠ ONE THING I LEFT ALONE ON PURPOSE: the PRD header still says `Updated: August 25, 2026`. The
+      date has no repository-verifiable source, and every claim in that commit had to have a command
+      behind it. ⇒ Tell me if you want it bumped; it is one line.
+```
+
+## B21 · ⭐ THE CAMPAIGN-LEVEL QUESTION, and it is the only one that needs a DECISION
+
+```text
+Not a slice. This is the batch's closing item and the only step whose answer changes what happens next.
+```
+
+```text
+B21-1 ⛔ THE CAMPAIGN CANNOT CLOSE ON ITS OWN TERMS, and I want your ruling rather than my workaround.
+      Closure condition 1 allows each capability C1-C5 exactly two outcomes: LANDED WITH TESTS, or
+      RECORDED NOT-NEEDED WITH THE MEASUREMENT SHOWING NO TARGET LANGUAGE REQUIRES IT.
+      ⇒ C1 (multi-code-point tiles end to end) is NEITHER, and cannot be made either without being
+        built, because the handout itself names Hungarian and Croatian as requiring it.
+      ⇒ MEASURED STATE: C4 is legitimately not-needed-with-measurement — the one clean row. C5 is
+        partial: `variant_name` exists and has eleven test lines, but zero of twelve manifests declare
+        it. C1 has a partial foundation — wire schema 4 and `WordAuthority` exist, but
+        `_word_passes_dictionary` still has 55 occurrences where the handout requires it deleted.
+        C2 is absent. C3 is absent as a field, and its problem was solved a different way on purpose:
+        every diacritic decision for the eight new languages was solved IN THE LEXICON at build time.
+      ⇒ ⭐ THREE ROUTES, AND ONLY THESE THREE:
+          (a) build C1 — planner first, then implementation, then FRESH INDEPENDENT ACCEPTANCE that
+              cannot be my subagent. It unlocks Hungarian and Croatian.
+          (b) re-disposition condition 1 explicitly: accept the campaign closing with C1 unbuilt and
+              recorded as NOT REACHED rather than not-needed.
+          (c) leave the campaign open.
+      ⛔ I will not pick for you. (b) is a change to the campaign's own closure terms and only you can
+        make it; (a) is real work of E3 weight; (c) is honest and costs nothing.
+B21-2 ⭐ AND THE NUMBER TO PRESENT, WHICHEVER YOU PICK, because it is a success at twelve rather than a
+      failure at twenty-four:
+        12 playable board languages, all twelve with an interface locale
+         7 licence-clean and waiting on a SOURCED TILE DISTRIBUTION — Hungarian, Spanish, Croatian,
+           Slovenian, Turkish, Greek, Russian
+         5 blocked with named, evidenced causes — French (`unmunch` cannot expand the pair),
+           Norwegian (no explicit grant), Finnish (no source), Bulgarian (licence text but NO GRANT
+           naming the word list), Malay (no source)
+        24 all dispositioned. Closure condition 4 is satisfied.
+      ⇒ The remaining bottleneck is neither code nor law: six of the seven clean rows need a tile
+        distribution sourced from a language authority.

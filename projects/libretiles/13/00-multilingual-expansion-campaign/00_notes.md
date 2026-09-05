@@ -5303,3 +5303,78 @@ INHERITED 17  "an `unavailable` variant is UNSELECTABLE at the three server site
   licence-clean and waiting on data · five blocked with named, evidenced causes · all twenty-four
   dispositioned. A success at twelve, not a failure at twenty-four.
 ```
+
+## 58. ⭐ THE BATCH IS COMPLETE AND DELIVERED — and assembling it caught TWO of my own failures
+
+```text
+Meta commit for this section plus 91_deferred-acceptance-batch.md B16-B21.
+⭐ HE CHOSE CONDITION 8, AND THE FIRST THING I DID WAS DISCOVER THE FILE WAS INCOMPLETE.
+```
+
+### 58.1 🐞 THE BATCH FILE'S OWN RULE WAS BROKEN BY THE LAST SEVEN COMMITS — INCLUDING THE BIGGEST
+
+```text
+`91_deferred-acceptance-batch.md:4-5` states its own rule: "Appended to at the moment each slice lands,
+NEVER RECONSTRUCTED AT THE END."
+⛔ MEASURED: the file ended at B15 (`c9078f2`). SEVEN commits had landed since with NO ENTRY:
+   a944e76 · 779aa55 · 96fbd48 · 6b8cb54 · 78e84ef · 1a6f63c · 84ddf1f
+⇒ ⛔ AND ONE OF THEM IS `96fbd48`, THE COMMIT THAT CHANGES WHAT A USER CAN REACH — the single most
+  observable commit of the entire campaign had no acceptance entry. ⭐ I broke the one rule the file
+  exists to enforce, on the one commit it mattered most for.
+⇒ WHY IT HAPPENED, and it is worth naming rather than excusing: every one of those seven landed during a
+  run of provider/channel failures, where each recovery pushed me straight from "verify the report" to
+  "write the next prompt". The append step is the cheapest thing in the loop and therefore the first thing
+  a recovery skips.
+⇒ Recorded as R-V: THE CHEAPEST STEP IN A LOOP IS THE ONE AN INTERRUPTION EATS. If a rule says "at the
+  moment it lands", an interruption is exactly when it will be violated.
+⇒ REPAIRED: B16-B21 appended, 200 lines. ⛔ AND I MARKED THEM HONESTLY AS RECONSTRUCTED — they were
+  written from the commit bodies and from fresh measurement, not from contemporaneous notes.
+```
+
+### 58.2 ⭐ AND THE RENDERED-OUTPUT RULE WAS ALSO UNDISCHARGED — so I rendered it
+
+```text
+The same file's §19-29 says the autonomy grant "does NOT remove the rendered-output rule: for anything that
+renders, render it, or do not claim it — production build, `next start` on a loopback port, HTTP client,
+stop by exact PID."
+⛔ I HAD NOT DONE IT. `99_closure.md` claimed "the picker offers all twelve endonyms" from READING
+  `settings/page.tsx`. That is a code claim wearing a rendering claim's clothes.
+✔ SO I RAN THE PROBE, and it is the strongest evidence this campaign has:
+     production build · `setsid next start -p 3100` · real HTTP GET · stopped by exact PID, never pkill
+     /settings                     HTTP 200, 34 304 B
+     twelve endonyms               ALL TWELVE present in the returned HTML
+     🐞 THE FLAG DEFECT            /de.png /pt.png /is.png /it.png /nl.png /da.png /sv.png /af.png
+                                   appear ZERO times · /en.png /sk.png /cs.png /pl.png appear
+                                   ⇒ THE FIX IS PROVEN IN RENDERED OUTPUT, not just in a test
+     cookie=de                     <html lang="de">, `Einstellungen`, `Oberflächensprache`,
+                                   `Denkzeit der AI`, `Dein Gegner`
+     cookie=is                     <html lang="is">, `Afbrigði viðureignar`, `Fljótleg borðlesning`,
+                                   and `Einstellungen` ABSENT ⇒ no locale leak
+     ⭐ THE NICEST FINDING, and no test asserts it: the landing footnote's THOUSANDS SEPARATOR follows the
+       language. en `279,496` · de and is `279.496` · af `279 496` with a space. That is `Intl` doing real
+       locale typography through twelve wired catalogs, observed over HTTP.
+⇒ ⛔ AND ONE BOUNDARY I RECORDED INSTEAD OF PAPERING OVER: the GAME-VARIANT picker's 144 exonym cells could
+  NOT be rendered. `/api/game/variants/` returns 401 without a session and my probe had none. ⇒ Those
+  labels are proven by TEST (`AC-QUEUE-VARIANT`) and NOT by rendering, and B17-5 says so to him. ⭐ The
+  rendered-output rule's honest form is "render it OR DO NOT CLAIM IT" — so I did not claim it.
+✔ Both servers stopped by exact PID; ports 3100 and 8100 verified free; repository tree unchanged.
+```
+
+### 58.3 What the batch asks him, and the one thing only he can answer
+
+```text
+B16-B20 are OBSERVATION steps, and I marked the ones I verified by rendering so he does not redo them.
+⭐ B21 IS THE ONLY DECISION IN THE WHOLE BATCH, and it is the campaign's closure terms:
+   condition 1 permits two outcomes per capability and C1 is NEITHER, and cannot be made either without
+   being built, because the handout names Hungarian and Croatian as requiring it.
+   ⇒ THREE ROUTES AND ONLY THREE: (a) build C1 at E3 with fresh independent acceptance that cannot be my
+     subagent · (b) explicitly re-disposition condition 1 to accept closure with C1 NOT REACHED ·
+     (c) leave the campaign open.
+   ⛔ I DID NOT PICK. (b) changes the campaign's own closure terms and only he can do that. ⭐ This is the
+     one place in this campaign where my autonomy grant genuinely does not reach — it covers
+     microapprovals, and this is a change to the rules the work is judged by.
+⚠ AND FOUR WORDING QUESTIONS ARE FLAGGED AS GENUINELY USEFUL rather than as chores, because no test covers
+  them: the capitalized endonyms in a list (B16-2), Italian `Email` unhyphenated against six other
+  catalogs' hyphenated forms (B18-2), the four residuals in README and the PRD (B20-1), and the PRD's
+  stale `Updated:` date (B20-3). ⇒ Plus the three already open: B13-3, B10-3, B7-3.
+```
