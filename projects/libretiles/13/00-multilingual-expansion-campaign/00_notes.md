@@ -3974,3 +3974,157 @@ with wiring    🐞 split `history.unknownDate`, delete `history.outcome.unknown
 ⚠ PROMPT LENGTH 434 → 564 → 635 → 629 → 662. Creeping again. The three remaining prompts absorb ten
   more corrections, so §43.4's threshold is live at catalog 7 and I will re-check it there.
 ```
+
+## 47. ⭐ CATALOG 6 OF 8 LANDED — Danish, `b0f8a28` — and L1 corrects a claim I asserted as fact
+
+```text
+prompt   ./15_implementation_00.md   658 lines · session 15 · exchange 01 · E2 · Medium reasoning
+report   ./15_report_00.md           status PASS · +605/−0 · pushed · readback equal · porcelain clean
+commit   b0f8a28  feat(i18n) the Danish interface catalog
+⇒ SIX OF EIGHT SHIP. de · pt · is · it · nl · da. Two remain: sv · af.
+```
+
+### 47.1 ⚠ THE DISPATCH FAILED TWICE BEFORE THIS RAN, and the classification mattered
+
+```text
+attempt 1  provider error, verbatim: "No available channel for model claude-opus-5 under group default"
+attempt 2  cancelled before the subagent started
+⇒ CLASSIFIED per `00_handout.md` §10 as "killed BEFORE the Worker received anything → SAFE TO RE-DELIVER
+  THE SAME ORDINAL, because no authority was consumed and no outcome existed." ⛔ NOT the mid-task case,
+  which would have consumed session 15 and required an interruption companion.
+⇒ ⭐ AND I MEASURED THE CLASSIFICATION RATHER THAN ASSUMING IT, three ways: HEAD still `57596e8` = the
+  prompt's own baseline · porcelain empty · `messages.da.ts` ABSENT. Plus `md5sum` on the prompt to
+  confirm the file was untouched and `apfieldcheck` exit 0 again before re-delivery.
+⇒ RE-DELIVERED as 15/01, the SAME ordinal, with one added paragraph telling the Worker why it might find
+  no prior state. It ran clean.
+⭐ THE HANDOUT'S §10 EARNED ITS PLACE. Two dispatch failures in `12/00` paid for that distinction, and it
+  is the second time this campaign has needed it. ⚠ FOR A SUCCESSOR: a provider-level dispatch error is
+  NOT a Worker failure and NOT an interruption. Measure the three things above before writing any record.
+```
+
+### 47.2 🐞 L1 — I ASSERTED THAT DANISH IS VERB-FINAL IN SUBORDINATE CLAUSES. IT IS NOT.
+
+```text
+MY PROMPT, twice, as a NAMED DECISION RISK and again in §6.5:
+   "DANISH IS V2 WITH VERB-FINAL SUBORDINATE ORDER. YOU MAY NOT INHERIT EITHER VERDICT."
+   "Danish `har … scoret` has the same shape as both [German and Dutch]."
+⛔ WRONG. Verb-final subordinate order is a CONTINENTAL WEST GERMANIC property that MAINLAND SCANDINAVIAN
+  LOST. Danish is V2 in main clauses and SVO in subordinate clauses too; the systematic main/subordinate
+  difference is ADVERB placement, not verb position. And in the perfect the participle stands IMMEDIATELY
+  AFTER THE AUXILIARY, BEFORE its object — `AI'en har scoret 34 point`.
+⇒ WHICH IS EXACTLY WHY ALL FOUR CALL SITES ARE HARMLESS FOR DANISH: the participle fits the fixed middle
+  span natively, so Danish KEEPS THE PERFECT TENSE where German fell to `spielte` and Dutch to `scoorde`.
+⭐ AND THE MECHANISM IS NOW CORRECT AND SHARPER THAN MINE WAS: THIS PAIR OF CALL SITES BITES EXACTLY THE
+  VERB-FINAL WEST GERMANIC LANGUAGES — de · nl · af — AND NO OTHER. Not "Germanic". Not "V2".
+⛔ NOTE WHAT I GOT RIGHT AND WHAT I GOT WRONG, because the distinction is the lesson. §46.1 recorded
+  R-O correctly: "before treating N agreeing reports as evidence, name the property they share." I
+  named the property — VERB-FINALITY — and then MISCLASSIFIED DANISH INTO IT. ⇒ R-O caught the invalid
+  inference and did not stop me from getting the taxonomy wrong one level down. Recorded as R-O's
+  corollary: NAMING THE RIGHT PROPERTY IS HALF THE WORK; ASSIGNING EACH CASE TO IT CORRECTLY IS THE
+  OTHER HALF, AND THE SECOND HALF IS WHERE A NON-SPECIALIST FAILS.
+⇒ CONSEQUENCES, and they run in OPPOSITE directions for the two remaining prompts:
+    SWEDISH (7)    ⛔ inherits the NON-verb-final property. Its prompt must carry the CORRECTED premise,
+                   or catalog 7 is told to expect a trap that cannot bite it and may "solve" it by
+                   abandoning the perfect for no reason. ⇒ Expect all four HARMLESS; ask anyway.
+    AFRIKAANS (8)  ⛔ IS West Germanic and IS verb-final in subordinate clauses. ⇒ Expect BOTH sites to
+                   BITE, and point it at Dutch's answers as the likely shape: the simple past at
+                   `aiPlayedFor`, and the IMPERATIVE at `board.reset` (which takes its object after it,
+                   so it satisfies the fixed span order that an infinitive cannot).
+```
+
+### 47.3 ⭐ M2 — THE FOLD GAP IS A LIVE DEFECT IN SHIPPED ICELANDIC, and it has a trap inside it
+
+```text
+I framed the `æ` gap as a PROSPECTIVE Danish risk with "nothing for you to do". ⛔ It is already live.
+✔ VERIFIED MYSELF by running the shipped `foldForSearch` over the committed picker labels:
+     messages.is.ts  settings.gameVariant.german   `Þýska`  → `þyska`   ⛔ NON-ASCII RESIDUE
+     messages.is.ts  settings.gameVariant.swedish  `Sænska` → `sænska`  ⛔ NON-ASCII RESIDUE
+  ⇒ NO ASCII QUERY FINDS EITHER ROW in the Settings picker, and both shipped four catalogs ago.
+⭐ AND THE TRAP INSIDE THE TRAP, which would have made a careless repair a no-op. ✔ VERIFIED with
+  `unicodedata`:
+     đ  U+0111  LATIN SMALL LETTER D WITH STROKE   ← IS in EXPLICIT_SEARCH_FOLDS
+     ð  U+00F0  LATIN SMALL LETTER ETH             ← IS NOT, and it is the ICELANDIC letter
+  `locales.ts:23`'s comment says "D-stroke (đ)". ⇒ A repair slice that reads that comment and concludes
+  eth is handled FIXES NOTHING. Two visually similar glyphs, two different codepoints, one covered.
+⇒ THE QUEUED SLICE IS RE-SCOPED AND RE-FRAMED:
+    from  "add `ð þ æ ß` before wiring, as a Danish precaution"
+    to    "REPAIR A LIVE DEFECT IN SHIPPED ICELANDIC, and cover the full unfoldable set the Worker
+           measured: æ Æ þ Þ ð Ð ß œ ı — with `ð` named by CODEPOINT so it is not confused with `đ`."
+  ⛔ Still its own slice and still before wiring; the priority rises from precaution to repair.
+```
+
+### 47.4 M1, M3, M5 — verified, and one is a correction I carried for three catalogs
+
+```text
+M1 ✔ `page.tsx:426` IS NOT THE GIVE-UP DIALOG. Verified: `:426` is a `max-w-md` panel and the
+   `game.giveUp.*` strings are consumed at `:669-671` by `window.confirm(giveUpMessage)` — their ONLY
+   call site in the tree. ⇒ Those two strings render in NATIVE BROWSER CHROME: OS font, no CSS width, no
+   markup. That is a different constraint class from a styled panel, and I mislabelled it in three
+   consecutive prompts. Corrected for sv and af with `:671` and the `window.confirm` fact.
+M3 ✔ EVERY OTHER CROSS-CATALOG NUMBER REPRODUCED — and this is the payoff of §46.2's mechanism change.
+   After five counting errors in one prompt, I switched to generating every cross-catalog claim by
+   command in the session that writes the prompt. This prompt carried roughly thirty such numbers and
+   the Worker re-derived all of them: zero wrong. ⭐ The fix worked, measurably, one exchange later.
+M5 ✔ A PRE-EXISTING GLOSSARY GAP: its Settings table lists TEN `settings.gameVariant.*` rows and omits
+   CZECH and POLISH. Nothing is broken (`messages.en.ts` is the type source) but an author working from
+   that table would produce ten names and be caught only by `tsc`. ⇒ Folded into whatever slice next
+   touches GLOSSARY.md — the wiring slice already must.
+```
+
+### 47.5 The LEADs, and one adds a THIRD known shape problem
+
+```text
+⭐ L2 TAKEN. `game.aiPlayedFor.before` + `.points` is a SENTENCE SPLIT ACROSS TWO KEYS with an
+   un-reorderable span between them. ⇒ That is a SHAPE problem of the same class as the two already
+   queued, not a translation problem, and it has now forced two of six catalogs into a tense they did
+   not want. ⇒ Listed as the THIRD known-and-queued `messages.en.ts` shape problem, so catalogs 7 and 8
+   stop re-deriving the analysis. The eventual fix — one function key taking `{score}` — is scoped once,
+   in the same slice as the other two.
+⭐ L3 TAKEN. The "choose the shortest idiomatic term but never abbreviate meaning away" ruling has been
+   restated per-language five times. It is a campaign ruling, not a per-language fact. ⇒ [INVARIANT],
+   with only the one-line risk GRADE left variant. Shortens both remaining prompts.
+⭐ L4 TAKEN, and it is a real gap. §4 forbids "an English value as a placeholder" without saying how a
+   reviewer tells a LEGITIMATE COINCIDENCE from a SKIPPED KEY. Danish hit six; Swedish will hit more
+   (`Chat`, `Send`, `Type`, `Score`, `Premium`, `AI`) and Afrikaans substantially more because of its
+   lexical overlap with English. ⇒ New [INVARIANT] rule: a value byte-identical to English is permitted
+   ONLY when it is genuinely the correct native form, and MUST carry a comment saying so.
+⭐ L5 TAKEN, and it is R-O again in miniature. My §5.4 said "six for six used one word" for the
+   rival/opponent collapse — a count doing exactly the work the invalid three-agreeing-catalogs
+   inference did. ⇒ Reworded to "seven for seven SO FAR — verify for your language and say so", matching
+   the framing §5.2 already uses correctly. ⛔ Applies to every "N for N" claim in the skeleton, not
+   just this one; I swept them.
+⚠ L6 NOTED WITH APPROVAL rather than actioned: it states its confidence UNEVENLY on purpose, naming
+   four items it would not want treated as measured. ⇒ That is the first report to volunteer a
+   confidence gradient without being asked, and it is worth more than a uniform hedge.
+```
+
+### 47.6 What Danish added, and the queue
+
+```text
+· ⭐ ALL FOUR CALL SITES HARMLESS, with a MECHANISM rather than luck — and it is the datum that corrected
+  my taxonomy. Two catalogs (de, nl) bite; four (pt, is, it, da) do not; the dividing line is verb-final
+  West Germanic.
+· ⭐ THE PASS-NOUN STREAK BROKE. Icelandic, Italian and Dutch all lacked a usable noun for the pass move;
+  Danish HAS one (`melde pas` is settled game usage), so `Pas afvist` needs no rephrasing. Four
+  catalogs, three gaps, one hit — and the fourth reported it as a positive rather than inheriting the
+  workaround.
+· `header.logout` = `Log ud`, SIX characters, tying English and beating every catalog but Italian.
+  Third language to report the campaign's "highest overflow risk" as effectively absent.
+· `point` is INVARIABLE in number, so both plural slots carry the same word — Icelandic's `stig` shape,
+  independently reached.
+· Danish marks definiteness as a SUFFIX, so `AI` becomes `AI'en` / `AI'ens` with an apostrophe. The
+  gender choice is visible in nearly every AI string rather than only in an article.
+next    catalog 7 of 8: SWEDISH, session 16, baseline b0f8a28. Medium. ⛔ CARRIES THE CORRECTED PREMISE
+        (non-verb-final ⇒ expect all four harmless, ask anyway) · the three Danish forms it must not
+        reuse (`brik`/`brikkerne`/`pose` · `æ ø å` against `å ä ö` · the `-lig` suffix-transfers-stem-
+        does-not trap) · `window.confirm` for `game.giveUp.*` · the third shape problem · L3's invariant
+        ruling · L4's byte-identical rule · L5's "so far" rewording.
+then    catalog 8: AFRIKAANS. ⛔ THE STRONGEST MITIGATION OF THE CAMPAIGN: Dutch is its trap (six named
+        divergences), the Next.js doc's title-cased Dutch example must be defused, AND it is verb-final
+        so BOTH call sites should be expected to bite.
+before wiring  🐞 the fold-repair slice, now a LIVE-DEFECT repair: `æ Æ þ Þ ð Ð ß œ ı`, `ð` named by
+        codepoint, and the `locales.ts:23` comment that claims completeness corrected.
+with wiring    🐞 THREE shape problems now: split `history.unknownDate` · delete dead
+        `history.outcome.unknown` · collapse `game.aiPlayedFor.before`/`.points` into one function key ·
+        plus GLOSSARY's missing czech and polish rows.
+```

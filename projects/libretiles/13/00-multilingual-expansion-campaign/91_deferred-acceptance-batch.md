@@ -485,3 +485,35 @@ B11-4 ⛔ KNOWN LIMITS: `board.reset` is `Herstel`, an imperative inside an othe
       control set — forced by the code, which composes `[action][noun]` in a fixed order that Dutch
       infinitives cannot satisfy. Commented in the file. And Dutch compounds make the board's zoom-hint
       pill the tightest surface again: 18 + 20 + 9 characters against English's 13 + 11 + 4.
+
+## B12 · catalog 6 of 8 — the Danish interface catalog — `b0f8a28`
+
+```text
+slice        MEC-UIL-C6-da
+commit       b0f8a28  feat(i18n) the Danish interface catalog
+             pushed; public readback equals local HEAD at b0f8a28
+what changed ONE new file, messages.da.ts — 296 text keys and 20 function keys of Danish.
+             ⛔ DELIBERATELY ORPHANED. SIX of eight catalogs exist: German, European Portuguese,
+             Icelandic, Italian, Dutch, Danish. Two remain: Swedish, Afrikaans.
+```
+
+```text
+B12-1 Confirm the header is byte-identical across all six:
+      `diff <(head -7 messages.da.ts) <(head -7 messages.de.ts)` prints nothing.
+B12-2 ⛔ THE ONE THING IN THIS BATCH THAT IS A REAL BUG YOU CAN SEE, and it is NOT in the Danish file.
+      The Settings language picker's SEARCH is already broken for two rows that shipped four catalogs
+      ago. In the ICELANDIC interface, the German row reads `Þýska` and the Swedish row reads `Sænska`,
+      and NO plain-ASCII typing finds either — thorn and æ cannot be folded by the code that folds
+      search input, and nothing was added for them.
+      ⇒ When the locales are reachable: switch the interface to Íslenska, open the game-variant picker,
+        type `thyska`, then `saenska`. EXPECT both to find nothing. That is the defect.
+      ⇒ Being repaired in its own commit before the wiring slice. Nothing for you to do now; this step
+        exists so the batch is honest about a live defect rather than only about new work.
+B12-3 ⚠ Terms the writer named as its least certain: `brikholder` for the tile rack (the shorter
+      `brikbakke` is the alternative), `ordliste` for the lexicon (a deliberate departure from the
+      cognate `leksikon`, which skews to "encyclopedia" in Danish), and whether `valgt` should inflect
+      to `valgte` at plural tile counts.
+B12-4 ⭐ A GOOD SIGN, recorded because it is evidence and not decoration: Danish needed NO workaround at
+      any of the four places where the code fixes word order — the first catalog to clear all four with
+      a structural reason rather than luck, and it keeps the natural perfect tense that German and Dutch
+      both had to abandon. `Log ud` is also six characters, tying English, so the game header gains room.
