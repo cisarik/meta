@@ -5683,3 +5683,124 @@ DISCIPLINE that closes the hole I only gestured at:
 ⚠ ONE LEAD I AM CARRYING RATHER THAN ACTING ON: three-code-point labels like `DZS` may need visual sizing
   work, and NO CLIPPING DEFECT WAS MEASURED. ⛔ Do not widen production UI without evidence.
 ```
+
+## 62. ⭐ C1 SLICE A IS LANDED — `cbb2865`, and the Worker BLOCKED rather than adjudicate
+
+```text
+prompt   ./24_implementation_00.md   489 lines · session 24 · exchange 01 · E3
+report   ./24_report_00.md           status BLOCKED, work COMPLETE, publication withheld
+commit   cbb2865  feat(gamecore) canonical cells and one word authority   27 files, +2366/−577
+⭐ THE CHANNEL DIED MID-SLICE AND R-Q PAID OUT A THIRD TIME: the tree showed six modified gamecore files
+  AND a 1070-line oracle file. I resumed the SAME subagent session with measured state — including that
+  46 of its 50 oracle tests passed and that all four failures named remaining work — and it finished.
+```
+
+### 62.1 ⛔ IT REFUSED TO COMMIT, AND IT WAS RIGHT — the gate's premise was false
+
+```text
+`makemigrations --check --dry-run` wants a migration. My §6.1 said, in bold: "if that command wants a
+migration, YOUR CHANGE LEAKED INTO THE MODEL LAYER."
+⛔ THAT PREMISE IS FALSE AT THIS BASELINE, and the Worker proved it rather than working around it: the same
+  command wants the SAME migration at the UNTOUCHED baseline, with byte-identical output.
+✔ I VERIFIED IT MYSELF, independently, before accepting: `git archive b50f84a` into /tmp, same interpreter,
+  `models.py` byte-identical to HEAD, and `diff` of the two command outputs EMPTY. Both exit 1.
+⇒ ROOT CAUSE, measured: `game/migrations/0008_atomic_token_state_schema.py:37` defines its OWN LOCAL
+  `default_structured_board` instead of importing `game.models.default_structured_board`. Django compares a
+  JSONField default BY QUALIFIED PATH, so migration state and model can never agree. `playerslot.rack`
+  diverges the same way.
+⇒ ⭐ SO THE GATE'S REAL SIGNAL IS SATISFIED — no model-layer leakage — WHILE ITS EXIT CODE IS 1. A gate can
+  be right about the thing it measures and wrong about the thing it asserts.
+⭐ AND THE WORKER'S REASONING FOR STOPPING IS THE BEST SENTENCE IN THE REPORT: "the ⭐ not-stopping list
+  covers a prompt CLAIM disagreeing with measurement, but does not lift an explicit ⛔ commit prohibition —
+  and this is the campaign's only E3 slice, where the gate structure exists precisely so the implementer
+  does not adjudicate."
+  ⇒ ⛔ IT DISTINGUISHED A FALSIFIABLE CLAIM FROM A PROHIBITION. My grant let it correct my numbers; it did
+    not let it lift a ⛔. Tenth instance of a Worker declining to improvise inside a bounded grant, and the
+    highest-stakes one — an E3 slice where improvising would have been invisible in the diff.
+⇒ MY DISPOSITION: option (a), its own smaller recommendation. Accepted as `Pre-Existing Failure
+  Classification`, committed ORCHESTRATOR-DIRECT after I re-derived every claim that matters. ⛔ Creating
+  `0009` is forbidden to this slice and would be a DIFFERENT change with its own risk; leaving the defect
+  visible beats silently fixing it inside the E3 slice.
+```
+
+### 62.2 ⭐ THE ORACLE IS THE BEST PIECE OF EVIDENCE THIS CAMPAIGN HAS PRODUCED
+
+```text
+✔ Frozen oracle = VERBATIM BYTE COPY of `services.py:209-222` at `b50f84a`, deliberately keeping the name
+  `_word_passes_dictionary` so the comparison is a BYTE comparison rather than a paraphrase.
+✔ DIGEST 260bfe15306f4785eb015c3357e5b596cfe72eecd9f54807fdf0a88da2a36461 — ⭐ AND I RE-DERIVED IT MYSELF
+  FROM THE BASELINE GIT OBJECT. It matches exactly.
+✔ ORDER RESPECTED: additive `word_authority.py` → oracle written → oracle vs the LIVE helper, 2 359 324
+  checks, ZERO disagreements → full corpus green → ONLY THEN the deletion. The stage gate held.
+⭐ AND IT WENT BEYOND WHAT I ASKED: two PERMANENT tests fetch the pinned blob, `exec` the ACTUAL baseline
+  helper out of git, and diff it against the oracle in-suite. ⇒ The oracle cannot drift even if nobody ever
+  runs the acceptor's command.
+🐞 A NEAR-MISS IT CAUGHT ITSELF, and it is the kind that would have wasted an acceptor's day: its first
+  published re-derivation command was `sed -n '209,222p' | sha256sum`, which yields a DIFFERENT digest
+  because `sha256sum` includes the trailing newline `sed` leaves and `ast.get_source_segment` omits. ⇒
+  Corrected to `... | head -c -1 | sha256sum`. ⭐ An acceptor following the first form would have concluded
+  the oracle had drifted and blocked a correct slice.
+✔ THE CORPUS, and the pair count matches the planner's independent measurement exactly:
+     10 457 ordered tile pairs · 328 685 ordered triples · 21 676 672 lexicon entries visited ·
+     17 245 796 realizable-by-tile-set compared as real token sequences · Slovak 103 entries / 135 prefixes ·
+     25 public-query strings × 12 variants · 24 language locks
+  ⇒ ⛔ ZERO shipped formed-word verdict differences. ZERO public-query differences. Asserted, not asserted-ish.
+⭐ AND THE MEMORY DETAIL THAT MAKES IT AFFORDABLE IS A REAL FINDING: 21.7 M entries compare in ~25 s only
+  with PER-VARIANT EVICTION of `fastdict._INDEX_CACHE`; loading twelve lexicons at once would need several GB.
+```
+
+### 62.3 ⭐ IT FOUND A THIRD AND FOURTH GUARD — and correctly left them alone
+
+```text
+`diagnostics.py:781-789` — `_ascii_letter` and `is_diacritic_letter` — also carry `len(...) == 1`.
+⇒ ⭐ IT REPORTED THEM AND DID NOT TOUCH THEM, with the right reason: they are OBSERVATIONAL CLASSIFIERS used
+  only inside `any(...)` test assertions, never a validity gate, and `len == 1` is intrinsic to "a single
+  diacritic letter". ⛔ Fixing them would have been scope creep dressed as thoroughness.
+⚠ BUT IT NAMED THE LATENT GAP: `is_diacritic_letter("DŽ")` is FALSE, so a Croatian digraph carrying a
+  diacritic would not satisfy the diagnostic scenarios' "exercises non-ASCII" assertion. ⇒ Queued.
+⭐ AND IT FOUND ONE MORE THING MY PROMPT DID NOT NAME BUT §4.2 REQUIRED: `classify_complete_formed_words`
+  routed on LEXICAL code-point length (`len(folded) != 2`) and now routes on PHYSICAL token count. ⇒ That is
+  the difference between "two characters" and "two tiles", which is the entire subject of C1.
+```
+
+### 62.4 🐞 TWO DEFECTS IN MY OWN PROMPT, and one made a ⭐ requirement unsatisfiable
+
+```text
+D1 ⛔ `PYTHON_DOTENV_DISABLED=1` — which I copied from the plan into §3.1 and §6.1 — CANNOT RUN ANY GATE ON
+   THIS HOST. ✔ I measured it while checking the oracle: it strips `DJANGO_SECRET_KEY`, and once that is
+   supplied it strips `DJANGO_ALLOWED_HOSTS`; `settings.py` calls `load_dotenv` unconditionally and refuses
+   to start. ⇒ I caught this MYSELF, mid-exchange, and passed the correction into the resume prompt. ⭐ The
+   plan proposed it and I propagated it without testing it — a recipe copied from a planner is still my claim.
+D2 ⛔ §5.3's enumerated synthetic tile set — `A Á CS SZ DZS L·L ?` — CANNOT PRODUCE TWO DIFFERENT
+   SEGMENTATIONS OF ONE LEXICAL STRING, because no two of those tokens overlap. ⇒ THE ⭐ REQUIREMENT I
+   MARKED AS THE PROOF THAT BOUNDARIES ARE PRESERVED WAS UNSATISFIABLE AS SPECIFIED.
+   ⭐ The Worker added `S` and `Z` — which is what real Hungarian has, and is exactly why boundaries must be
+     preserved rather than reconstructed — and delivered the proof both ways: `SZA` legal as `SZ`+`A` and
+     illegal as `S`+`Z`+`A`; `ASZ` illegal as `A`+`SZ` and legal as `A`+`S`+`Z`. Same lexical string,
+     opposite verdicts. ⇒ No boundary-reconstructing path could distinguish those, which is the whole point.
+   ⇒ R-Z: WHEN SPECIFYING A FIXTURE THAT MUST EXHIBIT AN AMBIGUITY, CHECK THAT THE FIXTURE CAN EXPRESS IT.
+     I enumerated tokens for coverage and never asked whether they overlap.
+⚠ AND MY AP CITATIONS WERE FIXED THIS TIME: `:1117` for the E3 row, `:278` and `:1137` for fresh
+  independence, after the planner caught `:1136-1147` and `:1395-1405` as stale.
+```
+
+### 62.5 Two pre-existing defects it surfaced, and what remains
+
+```text
+🐞 P1 `tests/diagnostics/test_turn_probe.py:137-144` `apply_scenario` still writes a LEGACY JOINED-STRING
+   board (`["." * 15] * 15`) and sets `session.blanks`, a field migration 0008 REMOVED. `_board_from_session`
+   requires per-cell dicts, so those scenarios SILENTLY REPLAY ON AN EMPTY BOARD. ⇒ ⛔ THE TESTS PASS FOR THE
+   WRONG REASON. Pre-existing, flagged, left alone — and it is the sharpest kind of finding, because a green
+   test that exercises nothing is worse than a red one.
+🐞 P2 `gamecore/lexicon_health.py:16,88` cite `game/services.py:216` for the two-code-point floor. That line
+   no longer holds it. Comment-only, outside the allowlist, now stale.
+⚠ AND ONE LEAD WORTH KEEPING: `accepts_tokens` passes the RAW joined string to `contains_main` while
+  `accepts_word_query` passes the NORMALIZED one — they differ by one application of `normalize`. The
+  21.7 M-entry sweep found zero divergence, which SUGGESTS `NFC∘casefold` is idempotent over all twelve
+  shipped lexicons, but idempotence was NOT PROVEN in general and a future non-Latin lexicon could expose it.
+✔ CLOSURE CONDITION 1 IS NOW CLOSER, NOT SATISFIED: C1 needs Slice B — the lossless AI context and truthful
+  candidate presentation — and then FRESH INDEPENDENT ACCEPTANCE that is not mine and not my subagent.
+⛔ AND I DELETED A SECRET COPY I HAD MADE MYSELF: verifying the baseline needed `backend/.env` in the /tmp
+  export. I removed the whole export immediately and verified it was gone. ⇒ Recording it because a secret
+  I copied is a secret I am responsible for, even in /tmp, even for ninety seconds.
+```
