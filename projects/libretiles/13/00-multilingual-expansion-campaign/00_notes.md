@@ -4701,3 +4701,188 @@ THEN   S4 the naming axes (`INSTALLED_VARIANTS` 4→12, `ownName` to 144 cells, 
   delete dead `history.outcome.unknown`, collapse `aiPlayedFor` into one fn key) and GLOSSARY's missing
   czech and polish `gameVariant` rows. None is required by the objective; all are recorded.
 ```
+
+## 53. ⭐ THE OBJECTIVE IS CLOSED — five commits, and the Cooperator reframed the finale as an AUDIT
+
+```text
+prompt   ./20_implementation_00.md   615 lines · session 20 · exchange 01 · E2 · ⛔ NEVER DELIVERED
+prompt   ./20_implementation_01.md   661 lines · session 20 · exchange 02 · E2 · CONTINUATION
+report   ./20_report_01.md           status PASS · 8 files · pushed · readback equal
+prompt   ./21_implementation_00.md   380 lines · session 21 · exchange 01 · E2 · two commits
+report   ./21_report_00.md           status PASS · 3 files · pushed · readback equal
+data     ./20_measurement_output.txt the dead Worker's measurement pass, which I ran and kept
+commits  96fbd48  feat(i18n) wire eight interface locales
+         6b8cb54  docs(i18n) justify eight byte-identical values and three stale counts  [MINE]
+         78e84ef  test(i18n) twelve-slug variant-naming axis
+         1a6f63c  docs describe twelve playable variants and twelve interface locales
+         84ddf1f  docs(prd) nine providers, twelve word lists, twelve languages in the summary  [MINE]
+⇒ TWELVE PLAYABLE VARIANTS, TWELVE INTERFACE LOCALES, all eight gates green at 84ddf1f.
+⇒ Closure conditions 3 and 11 are SATISFIED. `00_handout.md` §2 clause 6 is discharged.
+```
+
+### 53.1 ⭐ HE REFRAMED THE FINALE — "toto bude de facto hlbkovy audit" — AND HE WAS RIGHT
+
+```text
+I was mid-measurement on the wiring scope when he said the finale would de facto be a deep audit. I took
+it as authority to widen from "get the scope right" to "find everything that would make the closure record
+false", and it paid for itself several times over. ⭐ WHAT THE AUDIT FOUND THAT §52.4 DID NOT:
+  1 ⛔ A FOURTH under-covering file §52.4 never named: `draw-result.test.ts` iterates `["en","sk"]`, so it
+    under-covers TEN locales, not eight. §52.1 had named only `api.test.ts` and `PremiumPicker.test.ts`.
+  2 🐞 `AC-PROFILE-DUP` fails for a reason that is NOT a missing cell: it asserts `profile.email === "Email"`,
+    false in SEVEN of twelve because `E-Mail`/`E-mail`/`E-post`/`E-pos`/`Netfang` are all CORRECT. ⇒ The
+    catalogs are right and the TEST was English-centric — true only by coincidence of the four-locale cohort.
+    A mechanical re-key would have hidden that. This is what produced the property-versus-wording rule.
+  3 The locale-keyed structures are not three but three ANNOTATED plus four UNANNOTATED plus six inline —
+    ten TS7053 sites. My carried "three locale-keyed maps" was an undercount.
+  4 ✔ The ASCII-foldability invariant ALREADY HOLDS: 144/144 endonym cells and 144/144 variant-name cells.
+    ⇒ So it is a REGRESSION GUARD, not a defect discovery, and the prompt had to say so or a Worker would
+      hunt a bug that is not there.
+  5 ⭐ THE FOLD CREATES A COLLISION THE RAW TEXT DOES NOT: Icelandic `Sænska` → `saenska` CONTAINS `enska`.
+    Raw text has 2 collisions, the fold has 3. Word boundaries on the fold give 0 across all twelve.
+    ⇒ That measurement is what let S4 assert the collision invariant over 144 cells with ZERO hand-written
+      exonyms and ZERO exemptions — strictly stronger than the 4×4 exact-string map it replaced.
+  6 20 non-structural byte-identical values across the eight catalogs, 10 without the mandated comment.
+  7 Three stale backend "all four" comments where the truth is eleven, twelve and thirteen.
+⇒ ⛔ AND ONE HYPOTHESIS THE AUDIT KILLED: I expected the backend to have the same silent-under-coverage
+  shape as the frontend. IT DOES NOT. P13 is parametrized over all eleven scripts, all twelve manifests
+  declare `lexicon_provenance`, `validate_lexicons` audits 13 assets. Prose-only staleness. ⭐ Recording a
+  hypothesis that measurement REFUTED is worth as much as recording one it confirmed.
+```
+
+### 53.2 🐞 MY OWN AUDIT HAD A FALSE-POSITIVE RATE OF TWO IN TEN
+
+```text
+My byte-identity comment check looked three lines above each key. It reported TEN gaps. ⛔ TWO WERE FALSE:
+German `board.reset` and Dutch `board.zoomNoun` are both justified — in a comment attached to their SIBLING
+key, because the two keys render in ONE BUTTON and the explanation is about their joint word order.
+⇒ ⭐ A PROXIMITY HEURISTIC CANNOT FIND A JUSTIFICATION THAT DOCUMENTS TWO KEYS FROM ONE PLACE. I caught it
+  only because I re-checked by searching each whole file before editing. Had I trusted the first pass I
+  would have added a redundant comment to a key that already had one, in two languages.
+⇒ Recorded as R-S: A PROXIMITY CHECK MEASURES PROXIMITY, NOT PRESENCE. If the property is "documented
+  somewhere", search the whole unit.
+⇒ The repair landed as `6b8cb54` — EIGHT comments, not ten — and its commit body records the two false
+  positives and why, so the next auditor does not re-report them.
+```
+
+### 53.3 ⛔ THE CHANNEL DIED FOUR TIMES AND R-Q EARNED ITS KEEP TWICE
+
+```text
+Provider/channel failures this session: 4 recovery-attempt interrupts plus one hard subagent failure
+(`Received message_start … while … is still open`). ⭐ TWICE the dispatch told me nothing and THE TREE TOLD
+ME EVERYTHING:
+  · after the first dispatch of `20_implementation_00.md` I printed `git status --porcelain`, SAW THREE
+    MODIFIED FILES, and my own echo line still said "(porcelain empty = NO work began)". ⛔ I published a
+    contradiction between a measurement and its own caption in the same output block. I corrected it in the
+    next command rather than moving on. ⇒ R-Q is not "check the tree"; it is "READ WHAT THE TREE SAID".
+  · the dead Worker had wired `locales.ts` and `translate.ts` CORRECTLY and appended a throwaway
+    measurement block to `i18n.test.ts`. ⇒ I read the wiring line by line, RAN the measurement block,
+    kept its output as `20_measurement_output.txt`, reverted that one file, and confirmed 28 typecheck
+    errors — the wiring's exact damage — before writing the continuation prompt.
+⭐ SO THE SECOND PROMPT IS A GENUINELY NEW ARTIFACT, NOT A RE-DELIVERY: `20_implementation_01.md` declares
+  the two modified files as an `unpublished-candidate` with disposition ALREADY MADE, forbids editing them,
+  and hands the Worker the dead Worker's measurements as section 2 — including a 20-key interpolation
+  fixture it did not have to rebuild. ⇒ A dispatch failure cost one exchange ordinal and ZERO work.
+⚠ Contrast with §49: catalog 8's report was lost because the work finished before the channel died. Here the
+  channel died EARLY, so the artifact was recoverable. The difference is when, not whether.
+```
+
+### 53.4 ⭐ THE ONE DESIGN DECISION, AND THE RULE IT PRODUCED
+
+```text
+`REVIEWED_LOCALES = ["en","sk","cs","pl"]`: exact strings pinned for the four reviewed locales, all twelve
+covered structurally. ⛔ Hand-writing expected strings for eight unreviewed languages would have been
+hundreds of cells of false confidence.
+⇒ ⭐ BUT THE DECISION THAT ACTUALLY MATTERED IS THE ONE THE AUDIT FORCED, and I wrote it as a RULE rather
+  than a list: WHEN A RED BLOCK CONTAINS AN ASSERTION THAT IS A PROPERTY RATHER THAN A WORDING, THAT
+  ASSERTION KEEPS ALL TWELVE. I named two such blocks. ⛔ THE WORKER FOUND SIX, using the rule.
+  ⇒ Four needed a genuine extraction; two already held their property in a separate loop. ⭐ THE RULE
+    OUTPERFORMED MY LIST FOUR TO TWO, and it produced no false positives — all six property assertions
+    were green over twelve on first execution.
+⇒ ⭐ THAT IS THE TRANSFERABLE LESSON OF THIS SESSION: A PROMPT THAT SHIPS A RULE PLUS A WORKED EXAMPLE
+  BEATS A PROMPT THAT SHIPS AN ENUMERATION, because the enumeration is only as complete as my audit and the
+  rule is as complete as the file. Both prompts said "your measurement outranks my implication" and both
+  Workers used it.
+⛔ AND MY RECONCILIATION FORMULA WAS WRONG BECAUSE MY LIST WAS: §8.2 predicted 13 − 2 = 11 wholly-moved
+  describes. Measured: 13 gained a REVIEWED loop, 6 appear in both columns, so 7 moved wholly. The Worker
+  stated the failure to reconcile instead of adjusting a number until it closed — which is exactly what
+  the "say so rather than adjusting" clause was for. Ninth instance of that clause paying out.
+```
+
+### 53.5 ⭐ FOUR MORE ORCHESTRATOR DEFECTS, all found by Workers, all measured
+
+```text
+D1 ⛔ `i18n.test.ts` has NO twelve-locale enumeration-fragment check. My §5.1 asserted one existed and told
+   the Worker to cross-reference it rather than duplicate. Its `AC-SEC` block iterates a FOUR-ENTRY object
+   literal built from direct catalog imports. ⇒ THE PREMISE WAS FALSE. The Worker wrote no third copy and
+   moved the property to `api.test.ts` over RENDERED messages, which is the stronger surface. Tenth
+   instance of a Worker declining to act on a premise it could not verify.
+D2 ⛔ MY §2.1 PROSE CONTRADICTED MY OWN §2.1 TABLE — "at most eleven characters" while naming
+   `landing.brand`, whose length IS eleven, as an exception. True maximum excluding exemptions is TEN.
+   ⚠ This one had teeth: it is exactly what fixes the leakage threshold at 11 rather than 12, and at 12
+   `landing.brand`'s exemption would be DEAD CODE. A loose sentence beside a precise table, again — the
+   same shape as §52.2's M3.
+D3 ⛔ "only FOUR locale flags exist under `frontend/public/`" is imprecise: `ls *.png` is FIVE, because
+   `hu.png` is an orphan. The verifiable claim is that flags are WIRED for four. The Worker wrote the
+   wired form into both documents instead of my file-count form. ⚠ `AGENTS.md:192` still carries my
+   imprecision — recorded, and NOT worth a commit.
+D4 ⛔ NEITHER of my prompts mentioned that `tiles.py` is variant-driven or that the bag is 100-120 tiles
+   rather than 100. Both documents asserted "100 tiles" as a universal. ⭐ THE WORKER MEASURED
+   `load_variant(slug).total_tiles` FOR ALL TWELVE and corrected both — italian and portuguese 120,
+   icelandic 104, afrikaans/dutch/german 102, danish 101, the other five 100.
+   ⇒ Had it done the literal find-and-replace my prompt implied, the PRD would still ship a false number.
+```
+
+### 53.6 What I repaired ORCHESTRATOR-DIRECT, and why not as a slice
+
+```text
+6b8cb54  eight byte-identity comments (pt 1 · it 4 · nl 3) + three stale backend counts (11 · 12 · 13).
+         ⇒ Comment-only, zero behaviour, and the eight-gate evidence is cheap. Precedent: 32312ba, 779aa55,
+           3cfa13b. ⛔ Folding it into the wiring slice would have added ten items to the largest slice.
+84ddf1f  the PRD's provider paragraph named TWO providers when NINE ship — and named the LEGACY one and the
+         compatibility-tail base while omitting all FIVE `direct` providers. Plus the PRD one-sentence
+         summary and README's Tech Stack line, the last two places still reading English-only.
+         ⭐ THIS CAME FROM A WORKER'S LEAD 6, not from my audit. I verified all nine names against
+           `provider-registry.ts` one at a time and enumerated `catalog_tier` by parsing the file:
+           5 direct · 2 watchlist · 1 legacy. ⇒ Closure condition 11 binds the PRD, so a Worker's
+           out-of-scope LEAD about a document I own became my commit.
+⛔ STILL QUEUED, all measured and recorded, none required by the objective: the three `messages.en.ts`
+  shape problems · GLOSSARY's missing `czech`/`polish` `gameVariant` rows · `hu.png` (needs deletion
+  authority) · `VARIANT_SLUGS` duplicated in `i18n.test.ts` (needs a TDZ-aware move) · the nine tests that
+  pin four locales by per-locale LITERAL rather than by a loop, which no `awk` scan can see · `AGENTS.md`'s
+  four-flags imprecision · the PRD's stale `Updated:` date · `docs/architecture.md`.
+```
+
+### 53.7 What remains for CAMPAIGN closure, which is not objective closure
+
+```text
+✔ CONDITION 3 satisfied · ✔ CONDITION 11 satisfied · ✔ CONDITION 7 all eight gates green at 84ddf1f
+⛔ CONDITION 2  the ledger's `UI locales 4 / 24` line is now FALSE — it is 12 / 24. Twenty-four rows still
+   need all nine columns.
+⛔ CONDITION 8  the deferred acceptance batch, delivered ONCE, at the end. B5-B15 exist; B13-3, B10-3 and
+   B7-3 are open Cooperator items.
+⛔ CONDITION 10 `99_closure.md`, the ledger, `PROJECT_CONTEXT.md`, `DEFECT_LEDGER.md` through 84ddf1f.
+⚠ AND THE HONEST HEADLINE FOR CONDITION 4, which §9's own warning says must not be softened: TWELVE of
+  twenty-four are playable with twelve interface locales. Four are recorded blockers with named causes —
+  French (unmunch cannot render the pair), Norwegian (no explicit licence grant), Finnish and Malay (no
+  licence-clean source). The remaining eight are `in-compil.` with licences unread. ⭐ That is the number
+  to present, and it is a success at twelve, not a failure at twenty-four.
+
+### 53.8 The ledger, reconciled by construction
+
+```text
+✔ EIGHT rows moved UI `not-started` → `shipped`: 06 German · 08 Italian · 10 Portuguese · 11 Dutch ·
+  12 Danish · 13 Swedish · 16 Icelandic · 23 Afrikaans. Summary line `UI locales 4 / 24` → `12 / 24`.
+✔ RECONCILED, and the count is by WORD MATCH on the UI field rather than by column position:
+     UI shipped     12      ⇒ exactly the twelve playable variants
+     UI staged       1      ⇒ row 05 Hungarian, and it EXPLAINS the orphan `frontend/public/hu.png`
+     UI not-started 11
+     total          24      12 + 1 + 11 = 24
+🐞 MY FIRST COUNT PRINTED ZERO FOR EVERY BUCKET. I extracted the UI field with a fixed `substr` offset, and
+  the language-name column is not fixed width — `Portuguese` is four characters longer than `Danish`, so the
+  offset slid. ⇒ The row listing beside it was visibly correct while the totals said 0, which is the only
+  reason I caught it. Recorded as another member of the counting family: A POSITIONAL EXTRACTION MEASURES
+  POSITION, NOT VALUE. Match the word.
+⇒ ⛔ `playable 12 / 24` is UNCHANGED and must stay unchanged. This session shipped no new lexicon. Twelve
+  playable, twelve localized — the two numbers now coincide, which is what closure condition 3 asked for and
+  is NOT the same as progress on the remaining twelve languages.
+```

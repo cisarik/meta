@@ -115,19 +115,19 @@ ledger opened with.
 02  Slovak        playable     shipped     MEASURED ok          sourced    none       yes
 03  Czech         playable     shipped     MEASURED ok          sourced    none       yes
 04  Polish        playable     shipped     MEASURED ok          sourced    none       yes
-23  Afrikaans     PLAYABLE     not-started MEASURED ok LGPL-2.1 sourced    none*      yes
+23  Afrikaans     PLAYABLE     shipped     MEASURED ok LGPL-2.1 sourced    none*      yes
 05  Hungarian     not-started  staged      MEASURED too-big     in-compil. C1         no
-06  German        PLAYABLE     not-started MEASURED ok GPLv2|v3 sourced    none***    yes
+06  German        PLAYABLE     shipped     MEASURED ok GPLv2|v3 sourced    none***    yes
 07  French        BLOCKED      not-started ⛔ unmunch CANNOT   sourced    (n/a)      no
-08  Italian       PLAYABLE     not-started MEASURED ok GPL-3.0  sourced    none*      yes
+08  Italian       PLAYABLE     shipped     MEASURED ok GPL-3.0  sourced    none*      yes
 09  Spanish       not-started  not-started 23 pairs, lic LGPL+  in-compil. C1 C4 C5   no
-10  Portuguese    PLAYABLE     not-started MEASURED ok GPL|LGPL|MPL sourced none***   yes
-11  Dutch         PLAYABLE     not-started MEASURED ok BSD|CC   sourced    none**     yes
-12  Danish        PLAYABLE     not-started MEASURED ok GPL|LGPL|MPL sourced none***   yes
-13  Swedish       PLAYABLE     not-started MEASURED ok LGPL-3.0 sourced    none***    yes
+10  Portuguese    PLAYABLE     shipped     MEASURED ok GPL|LGPL|MPL sourced none***   yes
+11  Dutch         PLAYABLE     shipped     MEASURED ok BSD|CC   sourced    none**     yes
+12  Danish        PLAYABLE     shipped     MEASURED ok GPL|LGPL|MPL sourced none***   yes
+13  Swedish       PLAYABLE     shipped     MEASURED ok LGPL-3.0 sourced    none***    yes
 14  Norwegian     BLOCKED      not-started ⛔ NO EXPLICIT GRANT  sourced    (n/a)      no
 15  Finnish       not-started  not-started ⛔ NO SOURCE          in-compil. C3?        no
-16  Icelandic     PLAYABLE     not-started MEASURED ok CC-BY-SA sourced    NONE ⭐     yes
+16  Icelandic     PLAYABLE     shipped     MEASURED ok CC-BY-SA sourced    NONE ⭐     yes
 17  Croatian      not-started  not-started af pair, lic unread  in-compil. C1         no
 18  Slovenian     not-started  not-started af pair, lic unread  in-compil. C1?        no
 19  Turkish       not-started  not-started af pair 36 MB, LIC   in-compil. C2 C3      no
@@ -138,7 +138,7 @@ ledger opened with.
 ```
 
 ```text
-playable  12 / 24       UI locales  4 / 24
+playable  12 / 24       UI locales  12 / 24   ⭐ every playable variant now has its interface locale
 lexicon reachable by the proven pipeline   22 / 24
 lexicon with NO known licence-clean source  2 / 24   Finnish · Malay
 lexicon source exists but the EXPANDER cannot render it  1 / 24   French — see row 07
