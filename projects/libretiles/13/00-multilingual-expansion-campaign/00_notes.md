@@ -5804,3 +5804,121 @@ D2 ⛔ §5.3's enumerated synthetic tile set — `A Á CS SZ DZS L·L ?` — CAN
   export. I removed the whole export immediately and verified it was gone. ⇒ Recording it because a secret
   I copied is a secret I am responsible for, even in /tmp, even for ninety seconds.
 ```
+
+## 63. ⭐ C1 IS COMPLETE — Slice B at `3d7eae9`, and the Worker BLOCKED CORRECTLY TWICE
+
+```text
+prompt   ./25_implementation_00.md   390 lines · session 25 · exchange 01 · E3 · BLOCKED, zero mutation
+prompt   ./25_implementation_01.md   226 lines · session 25 · exchange 02 · E3 · amendment, four clauses
+commit   3d7eae9  feat(ai) lossless multigraph AI context and truthful candidates   13 files, +1396/−62
+⛔ THE WORKER NEVER REPORTED EXCHANGE 02. Its account balance was exhausted mid-slice:
+  `预扣费额度失败, 用户剩余额度: $0.001542, 需要预扣费额度: $0.129846`
+⇒ ⭐ `00_handout.md` §10 ANTICIPATED THIS EXACT CLASS — "dispatch failed twice in 12/00 for external
+  reasons — an account balance, and a provider database error." ⇒ NOT a channel failure. A funding failure,
+  and no amount of retrying changes it.
+```
+
+### 63.1 ⭐ EXCHANGE 01 STOPPED WITH ZERO MUTATION — and the block was my defect twice over
+
+```text
+It ran the repository gate, captured the byte-parity oracle, measured all eight gates at baseline, and then
+STOPPED WITHOUT EDITING ONE FILE, because completion required a path outside the allowlist.
+⛔ `backend/tests/test_atomic_tile_tokens.py:551-554` pins the LEGACY AIState: the exact key list including
+  `blanks`, string rows of length 15, and `ai_rack == "QI"`. THREE of those four assertions are mutually
+  exclusive with the structured shape §4.1 requires.
+✔ I VERIFIED IT INDEPENDENTLY, including that the file appears in my prompt EXACTLY ONCE — at line 146, in
+  the list of files to RUN for the baseline, and NOT in the changed-path allowlist.
+⇒ ⛔ MY DEFECT TWICE OVER: I built the allowlist from the accepted plan's Slice B table, and THE PLAN DID
+  NOT LIST IT EITHER. That file was in SLICE A's allowlist, where those four assertions needed no change
+  because Slice A never touched `build_ai_state_dict`. ⇒ THE OBLIGATION MOVED TO SLICE B AND THE ALLOWLIST
+  DID NOT FOLLOW IT. Recorded as R-AA: WHEN A SLICE BOUNDARY MOVES A FUNCTION, CHECK WHICH TESTS PIN ITS
+  SHAPE — a test can pin a contract from outside the slice that changes it.
+⭐ AND IT DECLINED THE AVAILABLE WORKAROUND FOR THE RIGHT REASON, unprompted: adding a SECOND structured
+  producer beside the legacy one would have passed every gate and left TWO AI-state producers with the
+  sidecar alive — "the exact two-sources-of-truth-for-one-fact §4.1 names as the defect class. That is a
+  design decision above my authority." ⇒ Eleventh instance of a Worker refusing to improvise inside a
+  bounded grant, and the second in two slices where the improvisation would have been invisible in the diff.
+```
+
+### 63.2 ⭐ ITS EXCHANGE-01 MEASUREMENTS WERE BETTER THAN MY SPECIFICATION — two went INTO the spec
+
+```text
+🐞 THE BLANK PATH BREAKS ROWS TOO, and my §2 blamed multigraph tiles alone. It measured grid row 8 at LENGTH
+  16 for a blank realizing `CS`, because the legacy grid stores the REALIZED token. ⇒ Row lengths were
+  {15, 16, 18} — THREE different lengths in one board. ⭐ The structured cell `{token:"?", blank_as:"CS"}`
+  fixes both at once, and I promoted it into amendment A4.
+🐞 THE RACK LINE IS FABRICATED, AND IT IS WORSE THAN THE BOARD DEFECT. `formatRackMultiset('SZDZS?')` →
+  `"S Z D Z S ?"` — ⛔ SIX TILES CLAIMED FROM THREE, and `D` IS NOT EVEN A TILE IN THAT VARIANT. ⇒ It
+  invents a legal-looking rack the model will try to play from. My §2 never mentioned the rack line.
+⭐ AND THE CONSUMER DOES NOT FAIL, IT SILENTLY DROPS: `extractGridRows` returned 14 rows — discarding
+  precisely the one informative row — and anchors degraded to the literal string `"(7,7)"`.
+⚠ AND ONE CONFLICT IN MY OWN PROMPT THAT IT RESOLVED CORRECTLY: §4.1 said remove the `blanks` sidecar, §4.2
+  said `compact_state` stays byte-identical, and its fixture 03 proved the legacy labeled board renders a
+  blank INDISTINGUISHABLY from a real tile — so `blanks:[...]` inside the raw `compact_state` is the ONLY
+  channel carrying blank identity on the legacy path. ⇒ Jointly satisfiable ONLY by DERIVING that line from
+  the cells at render time. I ruled it as amendment A2, which is what it proposed.
+✔ IT ALSO SWEPT FOR A FOURTH BOUNDARY-LOSING PATH and found NONE, naming five split sites and clearing
+  `BlankPicker.tsx` (prefers `gameState.alphabet`) and `route.ts` (needs no change, with two measured
+  reasons). ⭐ A negative sweep with its reasoning shown is worth as much as a finding.
+```
+
+### 63.3 🐞 AND MY OWN VERIFICATION CONTRADICTED ITSELF — sixth accessor slip
+
+```text
+Checking byte parity I printed IDENTICAL sha256 digests beside DIFFERENT byte counts — 1378 now versus 1382
+pinned for fixture 01. ⛔ THAT IS IMPOSSIBLE: a matching digest proves the string is identical.
+⇒ THE BUG WAS MINE: `p.length` is UTF-16 CODE UNITS; the pin was UTF-8 FILE BYTES. Fixture 01 contains two
+  EM DASHes at three bytes each ⇒ exactly the 4-byte gap. Fixed with `Buffer.byteLength(p,"utf8")`, after
+  which 3 of 3 are byte-identical.
+⭐ SIXTH TIME THIS SESSION that addressing data by the wrong accessor produced a wrong number, and the sixth
+  time an IMPOSSIBLE RESULT was the tell. R-U keeps earning its keep.
+⛔ AND A NEAR-MISS I CAUGHT BEFORE IT COST THE EVIDENCE: my first re-verification reused the Worker's own
+  capture script, which WRITES `prompt-NN.txt`. Running it would have OVERWRITTEN the baseline captures with
+  post-change output and destroyed the only oracle. ⇒ I backed the four files out of the harness directory
+  first, then wrote a read-only comparator. ⭐ A capture script and a verification script are different
+  tools; reusing one as the other destroys what it was built to preserve.
+```
+
+### 63.4 ✔ WHAT I VERIFIED MYSELF BEFORE COMMITTING, since no report existed
+
+```text
+byte parity      3 of 3 single-code-point prompts BYTE-IDENTICAL; CORE_SHA256
+                 c7acc2701fefd6d4aa6a69945c8a692f707053282ddfc333df1e00971964eb60 UNMOVED
+producer         keys ['ai_rack','ai_score','grid','human_score','turn'] — `blanks` GONE · row lengths {15}
+                 · (7,7) {'token':'SZ','blank_as':None} · (8,7) {'token':'?','blank_as':'CS'}
+                 · ai_rack ['SZ','DZS','?']
+consumer         RACK: SZ DZS ? · row 07 |.|.|.|.|.|.|.|SZ|DZS|.|.|.|.|.|.| · row 08 |…|?=CS|…|
+                 · ANCHORS (6,7) (6,8) (7,6) (7,9) (8,6) (8,8) (9,7)
+rejection        an unstructured context with a multigraph snapshot THROWS
+                 `UnstructuredMultigraphContextError`: "tile boundaries must never be reconstructed from a
+                 joined string" ⇒ ⭐ NOT a best-effort fallback, which is the whole point
+exports          `containsMultigraphToken`, `isMultigraphToken`, `UnstructuredMultigraphContextError` —
+                 one predicate in `prompts.ts` per amendment A3, imported by the overlay, not duplicated
+allowlist        13 changed paths, ALL inside the amended allowlist · oracle blob still
+                 406062c6056b805ce9b23d1704b5d868b8bc0367 · no migration, asset or lockfile
+eight gates      ruff · mypy 85 files · manage.py check · pytest 813 passed/4 skipped (was 804/4) ·
+                 validate_lexicons 13/0 · typecheck 0 · vitest 504/3/507 (was 475/3/478) · lint ·
+                 build 11 dynamic / 0 static · makemigrations exit 1 BYTE-IDENTICAL to baseline
+```
+
+### 63.5 ⭐ C1 THE CAPABILITY IS COMPLETE — C1 THE CLOSURE CONDITION IS NOT
+
+```text
+✔ A multigraph tile is now atomic end to end: validation, scoring, persistence, the wire, THE AI'S VIEW, and
+  the user-facing candidate list. Two slices, `cbb2865` and `3d7eae9`.
+⛔ CLOSURE CONDITION 1 STILL NEEDS FRESH INDEPENDENT ACCEPTANCE covering BOTH slices, and condition 9 is
+  that acceptance. ⭐ IT CANNOT BE ME AND IT CANNOT BE MY SUBAGENT — `AP.md:1117`, `:278`, `:1137`. My
+  pre-commit verification of both slices is thorough and NON-INDEPENDENT, and saying otherwise would void
+  the only thing the tier is for.
+⇒ THE ACCEPTOR'S SCRIPT ALREADY EXISTS: the accepted plan's §4 ten-step procedure, and it is executable by
+  a stranger — it names the oracle re-derivation command, the allowlist diffs baseline→A and A→B, the five
+  Cell cases, and the transport evidence.
+⛔ AND THE HONEST HEADLINE, UNCHANGED BY EITHER SLICE: C1 MAKES NO NEW LANGUAGE PLAYABLE. Hungarian and
+  Croatian still need tile distributions sourced, and Hungarian needs a lexicon `unmunch` cannot produce.
+  ⭐ The capability now exists; the content does not. Twelve playable, seven licence-clean, five blocked.
+⚠ QUEUED, MEASURED, NOT DONE: the AI context carries NO premium information while the prompt prints a
+  PREMIUM LEGEND — a different lossiness, and adding it would move bytes for twelve languages ·
+  `test_turn_probe.py`'s `apply_scenario` writing a legacy joined-string board, which will now also be the
+  place a multigraph board cannot be expressed · `lexicon_health.py`'s stale citation · migration 0008's
+  two divergent JSONField defaults.
+```
