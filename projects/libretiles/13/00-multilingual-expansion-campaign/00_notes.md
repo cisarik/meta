@@ -5557,3 +5557,129 @@ Production build · `next start` on loopback 3100 · real HTTP · stopped by exa
   and names no flag. Its baseline `84ddf1f` is now one commit behind HEAD. ⇒ THAT MATTERS AND I AM FIXING
   IT — a planner told to gate on `84ddf1f` would stop at a divergence I caused myself.
 ```
+
+## 61. ⭐ THE C1 PLAN IS ACCEPTED — and it corrected SIX of my claims, four of them scope-changing
+
+```text
+prompt   ./23_planning_00.md   334 lines · session 23 · exchange 01 · E3 · PLANNER, copy-paste
+report   ./23_report_00.md     the plan, delivered back through the Cooperator
+disposition  ⭐ ACCEPTED as the basis for implementation. Two slices, A then B, in that order.
+⛔ I VERIFIED EVERY REFUTATION MYSELF BEFORE ACCEPTING. All six hold. Four change C1's SCOPE.
+```
+
+### 61.1 ⛔ "NO SURVIVING GUARDS" WAS WRONG — and my grep is why
+
+```text
+I claimed in §59.1 that I could find no guard rejecting a multi-code-point token, across gamecore/*.py
+and game/*.py. ⇒ THE PLANNER FOUND FOUR, and I confirmed every one:
+  🐞 G1  backend/game/diagnostics.py:373-374
+         `return len(blank) == 1 and blank.isalpha() and blank in playable`
+         `return len(normalized) == 1 and normalized.isalpha()`
+         ⇒ TWO surviving one-character guards, in the AI diagnostic placement predicate.
+     ⛔ WHY I MISSED THEM, and it is the fifth instance of one habit: my pattern was
+       `len\((token|letter|tile|t)\) *[!=<>]=* *1` — I ENUMERATED VARIABLE NAMES. The real variables are
+       `blank` and `normalized`. ⭐ I searched for the names I expected instead of the SHAPE of the check.
+       Same family as §53.8's fixed offset, §54.1's guessed filenames, §54.6's awk `$2`, §55.2's §14.
+       ⇒ R-Y: WHEN SEARCHING FOR A PATTERN, MATCH THE PATTERN, NOT THE IDENTIFIERS YOU IMAGINE IN IT.
+  🐞 G2  frontend/src/lib/prompts.ts:190   `const GRID_ROW = /^[\p{L}.]{15}$/u`
+         ⇒ EXACTLY FIFTEEN CODE POINTS PER ROW. A multigraph row has MORE. ⛔ I NEVER SEARCHED THE
+           FRONTEND FOR GUARDS AT ALL — my §59.1 sentence said "gamecore/*.py and game/*.py" and I let
+           the scope of my own search stand in for the scope of the claim.
+  🐞 G3  frontend/src/components/game/AIThinkingOverlay.tsx:72
+         `const letters = word.toUpperCase().split("")`
+         ⇒ A multigraph candidate renders as FABRICATED single tiles: `SZ` becomes an `S` tile and a `Z`
+           tile, with invented per-tile point values. ⭐ It would look correct and be a lie.
+  🐞 G4  backend/game/services.py:908-909 — A SIXTH AUTHORITY SITE I DID NOT COUNT
+         `is_word = _word_checker(session)` then
+         `invalid_words = [word for word, _ in words_coords if not is_word(word)]`
+         ⇒ THE HUMAN PERSISTED-MOVE WORD LOOP validates JOINED STRINGS directly, bypassing
+           `evaluate_scoring_move` entirely. I inventoried five `evaluate_scoring_move` call sites and
+           called that the authority surface. ⛔ IT IS NOT THE ONLY AUTHORITY SURFACE.
+```
+
+### 61.2 ⭐ THE AI CONTEXT IS MEASURABLY LOSSY — I reproduced it exactly
+
+```text
+The DEFECT_LEDGER said `build_ai_state_dict` "is still lossy for multi-code-point cells; that is F3's, not
+F2b's". I put the question to the planner as a scope judgement. ⇒ IT MEASURED, AND SO DID I:
+     board with SZ at (7,7) and DZS at (7,8), rack ["SZ","DZS","?"]
+     grid row 7   '.......SZDZS......'   LENGTH 18   ⛔ MUST BE 15
+     ai_rack      'SZDZS?'               ⛔ THREE TILES COLLAPSED INTO AN AMBIGUOUS STRING
+⇒ ⭐ AND THE TWO DEFECTS COMPOUND INTO SOMETHING NEITHER IS ALONE: the backend emits an 18-character row
+  and the frontend's `GRID_ROW` regex demands exactly 15, so the AI path for a multigraph variant is broken
+  at BOTH ends — the producer is malformed and the consumer rejects it.
+⇒ THE PLANNER'S JUDGEMENT, WHICH I ACCEPT: C1 CANNOT HONESTLY BE CALLED "END TO END" while the AI's view of
+  the board loses tile boundaries. ⇒ Hence slice B, and hence B is E3 rather than a tidy-up.
+⭐ THAT IS EXACTLY THE JUDGEMENT I DELEGATED RATHER THAN MADE, and delegating it was right: a planner that
+  had to look at the code to answer it found the compounding pair, which I would not have.
+```
+
+### 61.3 ⭐ THE VERDICT-EQUIVALENCE ANSWER IS BETTER THAN THE ONE I ASKED FOR
+
+```text
+I asked for a mechanism and named a differential run as one option. ⇒ THE PLAN GIVES A FOUR-STEP ORACLE
+DISCIPLINE that closes the hole I only gestured at:
+  1  FREEZE the exact baseline helper as a labelled test-only legacy oracle, recording source provenance
+     and DIGEST
+  2  while production still has the helper, verify the frozen oracle AGREES with it
+  3  compare oracle against WordAuthority over real loaded dictionaries and real `WordFound` sequences
+  4  ⭐ AFTER DELETION, KEEP THE ORACLE, and the independent acceptor compares its source against the
+     BASELINE GIT OBJECT — "it is not allowed to drift with the implementation"
+⇒ ⛔ STEP 4 IS THE PART I DID NOT THINK OF, and it is the one that matters: a frozen oracle that the
+  implementer may edit is not an oracle. Pinning it to `git show` of the baseline makes it falsifiable by
+  someone who did not write it.
+✔ AND IT ALREADY RAN THE CORPUS: 10 457 ordered tile pairs across all twelve shipped sets, ZERO
+  disagreements; Slovak's 103-entry allowlist and its 135 distinct prefixes, ZERO disagreements.
+⭐ THEN IT DID THE THING THAT MAKES THIS A PLAN RATHER THAN A REPORT: it built SYNTHETIC cases that DO
+  disagree, and dispositioned each — `Á + CS` present only in the two-tile authority (old false, new true),
+  the same pair present only in the main dictionary (old true, new false), one physical `CS` tile with
+  lexical entry `cs`, `L·L + A` via a custom index, and an exact declared forbidden `S + Z`.
+⇒ ⭐ AND THE RULING THAT FALLS OUT OF IT IS THE SHARPEST SENTENCE IN THE PLAN: "verdict equivalence is
+  required over shipped legal tile configurations; UNIVERSAL EQUIVALENCE WOULD PRESERVE KNOWN MULTIGRAPH
+  DEFECTS." ⇒ The old path is not a gold standard to be reproduced. It is wrong in exactly the cases C1
+  exists to fix, and the plan says which ones and why each new verdict is the correct one.
+```
+
+### 61.4 🐞 MY AP CITATIONS WERE STALE, and the planner checked them
+
+```text
+⛔ I cited `AP.md:1136-1147` as the E3 row and `AP.md:1395-1405` as fresh independent acceptance. MEASURED
+  at the pin: `:1136-1147` is prose about E3/E4 combination and when to use fresh independence; the E3 ROW
+  is at `:1117`. `:1395-1405` is "Independence Without Audit Recursion" — related, not the definition;
+  the fresh-acceptance provisions are at `:278` and `:1137`.
+⇒ ⭐ THE PLANNER REPORTED IT AS "the cited AP line ranges are stale at the pinned revision … the governing
+  provisions were located; NO SUBSTANTIVE CONFLICT WAS FOUND." ⇒ It did the right thing twice: it did not
+  trust my citation, and it did not stop over a citation defect when the substance held.
+⚠ I have been citing those ranges across several prompts this campaign. The IMPLEMENTATION prompt must
+  carry `:1117` and `:278`.
+```
+
+### 61.5 The disposition, and what the plan is honest about not knowing
+
+```text
+⭐ ACCEPTED. Two slices:
+   SLICE A  canonical cells + ONE formed-word authority. E3. `board.py` `scoring.py` `state.py` `types.py`
+            `word_authority.py` `legality.py` `move_search.py` `services.py` `diagnostics.py` `AGENTS.md`,
+            plus 15 existing test files and 2 new. Requires keyword `authority`, DELETES the callable
+            branch and `_word_passes_dictionary`.
+   SLICE B  lossless AI context + truthful candidate presentation. E3. Backend production and frontend
+            consumption IN THE SAME COMMIT.
+⭐ AND ITS ANSWER TO MY "WHAT DOES TOGETHER MEAN NOW" QUESTION IS EXACTLY RIGHT: there is no remaining
+  v3/v4 game-state transition to coordinate, so "together" now means (A) all authoritative backend callers
+  and search certification switch together, and (B) AI-context production and consumption switch together.
+  ⇒ Neither commit claims the whole capability. Both are coherent.
+✔ IT ALSO ANSWERED THE INHERITED-CONDITION QUESTION WITH TEST NAMES, and corrected me: F1 uses **SZ and
+  DZS**, not CS/SZ as I wrote in §59.1 — CS is covered separately by P4's blank. Inherited 9 (two different
+  multi-char tokens) and 10 (the L·L canary) are ALREADY represented, by
+  `test_f1_two_multicodepoint_tokens_cross_the_wire_losslessly`,
+  `test_hungarian_synthetic_draw_exchange_place_score_bingo_no_split` and
+  `test_interpunct_token_loads_places_scores_and_validates`. ⛔ But it flags that the L·L canary currently
+  reaches its verdict through an INJECTED CALLABLE, bypassing service authority — so it must be
+  strengthened onto the authority path rather than merely kept green.
+⛔ AND ITS "COULD NOT DETERMINE" SECTION IS NON-EMPTY, which is what I asked for: full-suite health (running
+  tests was prohibited), full-corpus parity beyond the pairs it did measure, actual browser fit of
+  three-code-point labels, and the historical identities of all seven F2b guards — it worked from current
+  executable paths instead of the ledger, which is the better source anyway.
+⚠ ONE LEAD I AM CARRYING RATHER THAN ACTING ON: three-code-point labels like `DZS` may need visual sizing
+  work, and NO CLIPPING DEFECT WAS MEASURED. ⛔ Do not widen production UI without evidence.
+```
