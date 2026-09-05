@@ -5378,3 +5378,108 @@ B16-B20 are OBSERVATION steps, and I marked the ones I verified by rendering so 
   catalogs' hyphenated forms (B18-2), the four residuals in README and the PRD (B20-1), and the PRD's
   stale `Updated:` date (B20-3). ⇒ Plus the three already open: B13-3, B10-3, B7-3.
 ```
+
+## 59. ⭐ HE CHOSE TO BUILD C1 — and measuring it first found that MOST OF IT ALREADY EXISTS
+
+```text
+prompt   ./23_planning_00.md   332 lines · session 23 · exchange 01 · E3 · PLANNER, COPY-PASTE
+⛔ I STOP AT THE FILE. `00_handout.md` §10: "C1 planning — PLANNER WORKER, Native planning mode: required,
+  COPY-PASTE. You stop at the file. He delivers it, possibly to a different model." ⇒ NO SUBAGENT DISPATCH.
+  ⭐ AND THE REASON IS THE TIER, NOT MY CONVENIENCE: C1 is E3 and its implementation needs FRESH
+    INDEPENDENT ACCEPTANCE THAT CANNOT BE MY SUBAGENT (`AP.md:1395-1405`). Routing the plan through my own
+    subagent would contaminate the chain before it started.
+```
+
+### 59.1 ⭐ THE MEASUREMENT THAT CHANGES THE SHAPE OF C1 — the handout describes work already done
+
+```text
+The handout's C1 entry reads as one enormous slice: "All seven F2b guards removed TOGETHER with
+state_schema_version 4, BoardCell[][] on the wire, localStorage v4, board/rack/blank/draw rendering,
+evaluate_scoring_move re-pointed at WordAuthority, _word_passes_dictionary deleted."
+✔ I MEASURED EVERY CLAUSE OF THAT SENTENCE. Most of it landed in eras 11-12:
+     wire schema 4          BOTH SIDES. backend `WIRE_STATE_SCHEMA_VERSION = 4` at services.py:321 and
+                            the identical constant in frontend types.ts, with `isSupportedStateSchemaVersion`
+                            refusing anything else. ⭐ So the "backend v4 while frontend reads v3" hazard
+                            the handout cites as the reason the guards must come out TOGETHER IS ALREADY
+                            DISCHARGED — which may mean C1 can be two slices after all.
+     BoardCell[][]          `type BoardCell = { token: string; blank_as: string | null } | null`, shipped
+     persistence            `board_state` and `bag_tiles` are JSONFields; the `blanks` column is GONE
+     migration 0008         EXISTS, WITH the mandatory refusal guard — `refuse_if_game_state_present`
+                            raises naming `purge_legacy_game_state`, on forward AND reverse
+     uii-01-F06 · F07       both corrected; `slot0_wins_starting_draw` IS wired into `_perform_starting_draw`
+     WordAuthority          148 lines, `route` · `accepts_formed_word` · `is_lexical_word` · `has_prefix`
+     evaluate_scoring_move  ALREADY accepts `authority: WordAuthority | None = None`
+     the seven guards       ⛔ I COULD FIND NONE SURVIVING. Length comparisons and `[A-Z]`-class
+                            assumptions across gamecore/*.py and game/*.py: ZERO hits.
+     multigraph proof       `tests/test_atomic_token_persistence.py` drives REAL `CS` and `SZ` through
+                            services — P3 one cell one bag entry · P4 a blank realized as multi-codepoint
+                            keeps blank identity and scores ZERO · P5 bag counts tiles not codepoints ·
+                            P7/P8 lossless wire projection · F1 TWO tokens cross losslessly · F4/F5 the
+                            placement and exchange predicates
+⇒ ⛔ WHAT ACTUALLY REMAINS IS THREE THINGS, and I put them in the prompt as claims to be REFUTED:
+     R1  `Cell` storage is NOT inverted — board.py:13-32 still stores `letter`/`is_blank` with `token`,
+         `blank_as`, `realized_token` as derived @property. Its own comment promises the inversion.
+     R2  TWO AUTHORITY PATHS COEXIST. All FIVE production `evaluate_scoring_move` call sites pass the
+         `is_word` callable and NOT ONE passes `authority=`: services.py:866 · services.py:1653 ·
+         diagnostics.py:476 · move_search.py:373 · move_search.py:585
+     R3  `_word_passes_dictionary` still exists at services.py:209, called from services.py:131,
+         diagnostics.py:136 and diagnostics.py:352.
+⭐ SO THE CAMPAIGN HAS CARRIED C1 AS AN ENORMOUS UNBUILT CAPABILITY FOR TWO ERAS WHEN IT IS THREE ITEMS,
+  and I only know that because the Cooperator's choice forced me to measure it instead of quoting it.
+  ⇒ Recorded as R-W: A CAPABILITY DESCRIPTION AGES. Re-measure a scope statement before planning against
+    it, especially one inherited across a supersession.
+```
+
+### 59.2 ⭐ THE REAL RISK IS NOT SIZE, IT IS VERDICT EQUIVALENCE
+
+```text
+⛔ R2 IS THE DANGEROUS ONE AND IT IS DANGEROUS IN A WAY NO GATE CATCHES: collapsing two word-authority
+  paths into one changes WHAT THE PRODUCT CONSIDERS A LEGAL WORD, in twelve languages, silently.
+     `_word_passes_dictionary(contains, word, two_letter_allowlist=...)`  takes a STRING
+     `WordAuthority.accepts_formed_word(word: WordFound)`                 considers PHYSICAL TILE LENGTH
+  ⇒ A Slovak two-tile word, or a physically-two-lexically-three word, may route differently. `route` and
+    the 103-entry `slovak_two_tile_words.txt` exist precisely because that distinction is real.
+⇒ ⭐ AND THE TRAP I WROTE INTO THE PROMPT EXPLICITLY: A TEST THAT PASSES AFTER THE CHANGE PROVES NOTHING,
+  because the old path is gone and there is nothing left to compare against. ⇒ The planner must propose a
+  MECHANISM — a differential run of both paths over a corpus BEFORE the deletion is one option — and
+  justify it. That is the single most important thing the plan owes.
+⚠ AND ONE SCOPE JUDGEMENT I DELEGATED RATHER THAN DECIDED: `build_ai_state_dict` is recorded as "still
+  lossy for multi-code-point cells; that is F3's, not F2b's". ⛔ IF IT IS STILL LOSSY, can C1 honestly be
+  called "end to end" while the AI's view of the board loses a multigraph tile? ⇒ The planner decides and
+  says so. It is a judgement about the meaning of the capability, and a planner is the right owner.
+```
+
+### 59.3 🐞 apfieldcheck REJECTED MY FIRST DRAFT ON FIVE FIELDS — the planning vocabulary is not free-form
+
+```text
+⛔ FIVE DEFECTS, all mine, all in coordinate fields I wrote from intuition rather than from the enum:
+     Planning layer                        `single-layer`  → `implementation-planning`
+     Planning cycle                        `1`             → `initial`
+     Maximum plan-only cycles              `2`             → `1`
+     Plan disposition                      `report-only`   → `approval-gated`
+     Implementation in same Worker session `forbidden`     → `prohibited`
+⇒ ⭐ FOUR OF THE FIVE ARE CASES WHERE I WROTE A SYNONYM OF THE RIGHT IDEA. `report-only` and
+  `approval-gated` mean nearly the same thing to a reader and NOT AT ALL the same thing to the protocol;
+  `forbidden` and `prohibited` are the same English word twice. ⇒ A CLOSED ENUM DOES NOT ACCEPT A SYNONYM,
+  and this is the whole reason `apfieldcheck.py` exists and why I run it on every prompt.
+⚠ AND ONE WARNING I AM PASSING TO HIM RATHER THAN SUPPRESSING: `Native planning mode: required` means the
+  prompt MUST NOT BE PASTED unless his client has that mode enabled (`PROMPT_CONTRACTS.md:695-698`). If it
+  does not, I must reissue the whole prompt as `not-used` with explicit prompt-level read-only planning
+  authority. ⛔ That is his fact to supply, not mine to assume — so the delivery question goes to him with
+  the file.
+```
+
+### 59.4 What the plan is required to produce, and what C1 will NOT deliver
+
+```text
+EIGHT PARTS: a confirm-or-refute table over §3 with commands and output · the slice decomposition with the
+"together" question answered now that the v3/v4 hazard is discharged · per-slice allowlist, tier and gates ·
+⭐ THE VERDICT-EQUIVALENCE ARGUMENT for R2 · whether inherited conditions 9 and 10 are ALREADY satisfied by
+the interpunct and CS/SZ tests · what C1 does NOT unlock · the INDEPENDENT-ACCEPTANCE SCRIPT an E3 acceptor
+can run without asking the planner · and what it could not determine.
+⛔ AND THE ONE THING THE PROMPT INSISTS THE PLAN SAY PLAINLY: LANDING C1 MAKES NEITHER HUNGARIAN NOR
+  CROATIAN PLAYABLE. Both still need a tile distribution sourced, and Hungarian needs a lexicon its
+  expander cannot produce — `unmunch` cannot expand `hu_HU` and Spylls remains an unverified candidate.
+  ⭐ A reader who is told "C1 unlocks hu and hr" and then gets no new language has been misled by us, not
+    by the work.
+```
