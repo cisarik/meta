@@ -5198,3 +5198,108 @@ DERIVED: `variant_store.py` composes it from `language` plus `variant_name`.
 ⚠ Hungarian's `staged` is confirmed genuine, not stale: `frontend/public/hu.png` exists and `hu` is
   asserted to be REJECTED by `isLocale`. ⇒ It is the orphan flag, and `staged` is the honest word for it.
 ```
+
+## 57. ⭐ CONDITION 10 DONE — and verifying the other conditions CHANGED THE RECORD TWICE
+
+```text
+Meta 3cceac4  99_closure.md (new, 240 lines) · PROJECT_CONTEXT.md · DEFECT_LEDGER.md
+⛔ THE FILE IS TITLED closure-READINESS AND SAYS `Logical-whole closure: NOT-CLOSED` IN ITS SECOND LINE.
+  Writing a 99_closure.md that declared closure would have been the exact failure `00_handout.md:654-658`
+  warns about — "a failure that looks like a success", and he is presenting this at a job interview.
+⭐ AND THE DECISION THAT MATTERED WAS TO MEASURE CONDITIONS 1, 5, 6, 7, 9 BEFORE WRITING RATHER THAN AFTER.
+  Two of the five came back different from what I would have written from memory.
+```
+
+### 57.1 ⛔ CONDITION 1 IS NOT SATISFIABLE, and that is a finding rather than a failure to finish
+
+```text
+Condition 1 allows exactly TWO outcomes per capability: LANDED WITH TESTS, or RECORDED NOT-NEEDED WITH THE
+MEASUREMENT SHOWING NO TARGET LANGUAGE REQUIRES IT.
+⛔ C1 IS NEITHER, AND CANNOT BE MADE EITHER WITHOUT BUILDING IT: the handout's own §4.1 names Hungarian and
+  Croatian (DŽ LJ NJ) as requiring it. ⇒ A capability a target language requires cannot be dispositioned
+  not-needed. ⭐ SO THE CONDITION HAS NO LEGAL VALUE FOR C1, and the honest record says so instead of
+  inventing a third outcome.
+✔ MEASURED, all five, and the spread surprised me:
+   C4 ⭐ IS THE ONE CLEAN ROW, and it is clean in the SECOND way. `variant_store.py:137`
+      `lexical_contribution` returns its token with the docstring "Identity extension point". The handout
+      said "BUILD NOTHING for it, because no language on his list needs it." ⇒ That is condition 1's second
+      outcome, correctly and deliberately reached. ⚠ I EXPECTED ZERO CLEAN ROWS. There is one.
+   C5 PARTIAL, and closer than I thought: `variant_name` exists, `display_label` composes from it, and it
+      DOES have tests now — 11 `display_label` lines in `test_variant_invariants.py`, including `g27c`
+      asserting a DECLARED `display_label` is forbidden because it is derived. ⛔ But zero of twelve
+      manifests declare `variant_name`, so line `:111`'s composed branch is never exercised by a shipped
+      variant. ⇒ Tested, not exercised. A distinction worth keeping.
+   C1 PARTIAL FOUNDATION: `WIRE_STATE_SCHEMA_VERSION = 4` at `game/services.py:321`, `WordAuthority`
+      exists and `for_variant` is exercised. ⛔ `_word_passes_dictionary` STILL HAS 55 OCCURRENCES where
+      the handout requires it DELETED with `evaluate_scoring_move` re-pointed and all seven F2b guards out
+      TOGETHER. ⇒ Half-done, and `DEFECT_LEDGER.md:806-826` is why half-done is forbidden here.
+   C2 ABSENT — `blank_target` has ZERO hits in `gamecore/` and `game/`.
+   C3 ABSENT AS A FIELD, ⭐ AND SOLVED A DIFFERENT WAY ON PURPOSE: every diacritic decision for the eight
+      new languages was solved IN THE LEXICON at build time — the ledger's `none*` / `none**` / `none***`
+      footnotes. ⇒ A DEFENSIBLE RE-DISPOSITION for the twelve shipped languages, and it does NOT cover
+      Turkish I/İ. ⚠ Recording it as "absent" alone would have understated what the campaign actually did.
+```
+
+### 57.2 ⭐ CONDITION 6 NEEDED A CAREFUL MEASUREMENT BECAUSE A NAIVE GREP SAYS THE OPPOSITE
+
+```text
+"no language-slug branch anywhere in gamecore/ or game/" — my first grep returned 21 STRING LITERALS naming
+a language, which reads like 21 violations.
+✔ MEASURED, classified one by one: every single one is either the DEFAULT slug
+  (`_DEFAULT_VARIANT_SLUG = "english"`, `variant_slug` field defaults, `state.py` fallbacks) or a TEST
+  FIXTURE inside `validate_lexicons`'s per-variant membership probe — a data table of known-good words per
+  lexicon, which is the OPPOSITE of a behavioural branch.
+⇒ ⛔ NOT ONE `if slug == "..."` controls game logic. `gamecore/` has ZERO.
+⭐ AND THIS IS WHY THE CONDITION IS WORTH ITS WORDING: a slug literal is not a slug BRANCH, and a checker
+  that counted literals would report a false violation every time a new variant shipped its probe words.
+  ⇒ Recorded in the closure record as the classification, not as the raw count.
+```
+
+### 57.3 ⚠ TWO OF THE TWELVE INHERITED CONDITIONS ARE INTERESTING RATHER THAN ROUTINE
+
+```text
+INHERITED 12  "if Hungarian is playable, the fifth interface locale ships with exact key-set and
+  interpolation parity and a sourced plural function." ⇒ Hungarian is NOT playable, so the antecedent is
+  false — but the campaign shipped EIGHT further locales instead of a fifth, and honoured the parity
+  requirement for every one of them via `AC-EXHAUST` over twelve plus twelve CLDR plural helpers.
+  ⭐ SO THE CONDITION IS SUPERSEDED IN SUBSTANCE, OVER-DELIVERED ON ITS REAL REQUIREMENT, AND UNMET ON ITS
+    LITERAL ONE. All three at once, which is why it gets a sentence rather than a tick.
+INHERITED 17  "an `unavailable` variant is UNSELECTABLE at the three server sites, proved against a REAL
+  unavailable variant rather than a synthetic one." ⛔ IT IS NOW UNPROVABLE BECAUSE THE CAMPAIGN SUCCEEDED:
+  all twelve shipped variants report `playable`, so no real `unavailable` variant exists to prove it
+  against. ⭐ A CONDITION MADE UNPROVABLE BY SUCCESS IS NOT A SATISFIED CONDITION, and saying so is the
+  whole point of writing these records honestly.
+✔ AND ONE OWED ARTIFACT PAIR VERIFIED PRESENT RATHER THAN ASSUMED: `11/01-.../98_supersession.md` and
+  `11/02-.../98_supersession.md` both exist. 12/00 owed them and the restoration review claimed they were
+  written; I checked.
+```
+
+### 57.4 🐞 PROJECT_CONTEXT.md WAS STALE FOR TWO WHOLE ERAS
+
+```text
+⛔ Its header said "Two logical wholes are OPEN" and named `10/00`, `11/01`, `11/02`, `11/00` as the
+  execution order. MEASURED: `grep -c '12/00'` = 0 and `grep -c '13/00'` = 0 in a 1308-line file that every
+  Orchestrator handout references as shared project truth.
+⇒ ⭐ SO THE FILE WHOSE ENTIRE PURPOSE IS "state project truth ONCE so copies do not drift" HAD ITSELF
+  DRIFTED PAST TWO ERAS. It now carries the real disposition of all six wholes and the twelve-variant,
+  twelve-locale state with the four residuals attached.
+⚠ AND I KEPT THE ERA-11 VISEGRÁD PARAGRAPH BENEATH THE CORRECTION rather than deleting it, because its
+  Hungarian analysis — `unmunch` cannot expand `hu_HU` because Magyar Ispell alias-compresses it, Spylls is
+  a candidate and not verified — IS STILL THE LIVE ANALYSIS. ⭐ Deleting a stale-looking paragraph that
+  contains the only record of a live technical finding is how findings get lost.
+```
+
+### 57.5 What is left, and it is three things
+
+```text
+⛔ CONDITION 8  the deferred acceptance batch, B5-B15, delivered ONCE — and it is HIS act, by his own
+   autonomy grant. B13-3, B10-3, B7-3 already await him.
+⛔ CONDITION 1  build C1 (planner → implementation → FRESH INDEPENDENT acceptance that is NOT my subagent)
+   or obtain an explicit Cooperator re-disposition of condition 1 itself. ⛔ NO THIRD ROUTE.
+⛔ CONDITION 9  becomes live at full strength the moment C1 lands.
+⇒ AND THE REAL WORK BEYOND CLOSURE, which is neither code nor law: six of the seven licence-clean rows
+  need a TILE DISTRIBUTION sourced from a language authority.
+⭐ THE NUMBER TO PRESENT: twelve playable board languages with twelve interface locales · seven more
+  licence-clean and waiting on data · five blocked with named, evidenced causes · all twenty-four
+  dispositioned. A success at twelve, not a failure at twenty-four.
+```
