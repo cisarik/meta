@@ -369,11 +369,15 @@ blockers               C1 not landed · distribution UNSOURCED · the lexicon ex
 ## 06 · German — ⭐ PLAYABLE, landed 2026-09-03 at `0deac4a`
 
 ```text
+language / variant     German. No `variant_name` declared, so display_label == "German".
 gameplay status        PLAYABLE. The eighth variant.
-UI-localization        not-started as a LOCALE, and its NAME is now translated. MEASURED at cfd1215:
-                       a VARIANT_NAME_KEYS entry plus game.lexicon.<id>, so the picker, the queue
-                       label and a rejected word all name this language in en/sk/cs/pl. ⛔ Still no
-                       LOCALES entry and no message catalog, so the CHROME is English.
+UI-localization        SHIPPED. MEASURED at 96fbd48: `de` is in LOCALES, translate.ts wires
+                       messages.de.ts, and the picker offers the endonym. The catalog carries all
+                       304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
+                       ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
+                       REVIEWED_LOCALES = en sk cs pl, and `de` is covered STRUCTURALLY instead
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
+                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
 dictionary status      MEASURED ok. german.txt 709 844 words / 10 079 942 B, duplicates 0,
                        non_nfc 0. LICENCE `GPL-2.0-only OR GPL-3.0-only` — upstream grants
                        "GNU GPL, Version 2 oder 3", a choice between exactly those two, so the
@@ -428,6 +432,7 @@ blockers               none for gameplay. Compounding is a quality limitation, n
 ## 07 · French — ⛔ BLOCKED: the licence and distribution are fine, the EXPANDER is not
 
 ```text
+language / variant     French. No manifest — BLOCKED before one could be written.
 gameplay status        not-started. BLOCKED, and it is a new blocker class.
 UI-localization        not-started.
 dictionary status      ⛔ SOURCE AND LICENCE ARE BOTH FINE. fr_FR ships fr.dic / fr.aff from
@@ -476,13 +481,15 @@ blockers               ⛔ the expander cannot produce a usable French word list
 ## 08 · Italian — ⭐ PLAYABLE, landed 2026-09-03 at `dab6d0d`
 
 ```text
+language / variant     Italian. No `variant_name` declared, so display_label == "Italian".
 gameplay status        PLAYABLE. The sixth variant.
-UI-localization        not-started as a LOCALE, and its NAME is now translated. MEASURED at cfd1215:
-                       GameLanguagePanel.tsx VARIANT_NAME_KEYS has this slug, so the Settings picker
-                       and the human-queue label (play/page.tsx:69) show a translated exonym in
-                       en/sk/cs/pl instead of the server display_name; game.lexicon.<id> names this
-                       lexicon on a rejected word. ⛔ There is still no `it` entry in LOCALES and no
-                       messages.it.ts, so the CHROME is English. That catalog is the open work.
+UI-localization        SHIPPED. MEASURED at 96fbd48: `it` is in LOCALES, translate.ts wires
+                       messages.it.ts, and the picker offers the endonym. The catalog carries all
+                       304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
+                       ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
+                       REVIEWED_LOCALES = en sk cs pl, and `it` is covered STRUCTURALLY instead
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
+                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
 dictionary status      MEASURED ok. italian.txt 3 128 429 words / 46 670 737 B, duplicates 0,
                        non_nfc 0. LICENCE GPL-3.0-only, and -only rather than -or-later
                        deliberately: the grant reads "version 3, as published by the Free
@@ -515,13 +522,15 @@ blockers               none for gameplay.
 ## 11 · Dutch — ⭐ PLAYABLE, landed 2026-09-03 at `dab6d0d`
 
 ```text
+language / variant     Dutch. No `variant_name` declared, so display_label == "Dutch".
 gameplay status        PLAYABLE. The seventh variant.
-UI-localization        not-started as a LOCALE, and its NAME is now translated. MEASURED at cfd1215:
-                       GameLanguagePanel.tsx VARIANT_NAME_KEYS has this slug, so the Settings picker
-                       and the human-queue label (play/page.tsx:69) show a translated exonym in
-                       en/sk/cs/pl instead of the server display_name; game.lexicon.<id> names this
-                       lexicon on a rejected word. ⛔ There is still no `nl` entry in LOCALES and no
-                       messages.nl.ts, so the CHROME is English. That catalog is the open work.
+UI-localization        SHIPPED. MEASURED at 96fbd48: `nl` is in LOCALES, translate.ts wires
+                       messages.nl.ts, and the picker offers the endonym. The catalog carries all
+                       304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
+                       ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
+                       REVIEWED_LOCALES = en sk cs pl, and `nl` is covered STRUCTURALLY instead
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
+                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
 dictionary status      MEASURED ok. dutch.txt 1 293 086 words / 16 525 202 B, duplicates 0,
                        non_nfc 0. LICENCE ⭐ THE FIRST DUAL LICENCE IN THIS REPOSITORY:
                        `BSD-3-Clause OR CC-BY-3.0`, offered by OpenTaal "at the discretion of
@@ -592,6 +601,8 @@ for them.
 ## 09 · Spanish
 
 ```text
+language / variant     Spanish. No manifest. ⚠ Upstream ships 23 REGIONAL pairs (es_AR…es_VE); which ruleset
+                       a `spanish` variant would declare is undecided.
 gameplay status        not-started.
 UI-localization        not-started.
 dictionary status      UNSOURCED. No probe run.
@@ -613,11 +624,16 @@ blockers               distribution UNSOURCED · which ruleset ships is undecide
 ## 10 · Portuguese — ⭐ PLAYABLE, landed 2026-09-03 at `1eed5ed`
 
 ```text
+language / variant     Portuguese. No `variant_name` declared, so display_label == "Portuguese".
+                       ⚠ European orthography, from the pt_PT pair rather than pt_BR.
 gameplay status        PLAYABLE. The ninth variant, and the one scheduled to PROVE something.
-UI-localization        not-started as a LOCALE, and its NAME is now translated. MEASURED at cfd1215:
-                       a VARIANT_NAME_KEYS entry plus game.lexicon.<id>, so the picker, the queue
-                       label and a rejected word all name this language in en/sk/cs/pl. ⛔ Still no
-                       LOCALES entry and no message catalog, so the CHROME is English.
+UI-localization        SHIPPED. MEASURED at 96fbd48: `pt` is in LOCALES, translate.ts wires
+                       messages.pt.ts, and the picker offers the endonym. The catalog carries all
+                       304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
+                       ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
+                       REVIEWED_LOCALES = en sk cs pl, and `pt` is covered STRUCTURALLY instead
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
+                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
 dictionary status      MEASURED ok. portuguese.txt 4 119 831 words / 63 137 733 B — the LARGEST
                        asset in the repository, above czech.txt's 54 MB. Duplicates 0,
                        non_nfc 0. --check IDENTICAL on both artifacts.
@@ -673,11 +689,15 @@ blockers               none for gameplay. ⚠ 63 MB will draw a GitHub large-fil
 ## 12 · Danish — ⭐ PLAYABLE, landed 2026-09-03 at `51e08fe`
 
 ```text
+language / variant     Danish. No `variant_name` declared, so display_label == "Danish".
 gameplay status        PLAYABLE. The tenth variant.
-UI-localization        not-started as a LOCALE, and its NAME is now translated. MEASURED at cfd1215:
-                       a VARIANT_NAME_KEYS entry plus game.lexicon.<id>, so the picker, the queue
-                       label and a rejected word all name this language in en/sk/cs/pl. ⛔ Still no
-                       LOCALES entry and no message catalog, so the CHROME is English.
+UI-localization        SHIPPED. MEASURED at 96fbd48: `da` is in LOCALES, translate.ts wires
+                       messages.da.ts, and the picker offers the endonym. The catalog carries all
+                       304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
+                       ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
+                       REVIEWED_LOCALES = en sk cs pl, and `da` is covered STRUCTURALLY instead
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
+                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
 dictionary status      MEASURED ok. danish.txt 317 167 words / 4 195 410 B, duplicates 0,
                        non_nfc 0. --check IDENTICAL on both artifacts.
                        ⭐ THE STRONGEST LICENCE EVIDENCE IN THE REPOSITORY. README_da_DK.txt
@@ -728,11 +748,15 @@ blockers               none for gameplay.
 ## 13 · Swedish — ⭐ PLAYABLE, landed 2026-09-03 at `8a50ded`
 
 ```text
+language / variant     Swedish. No `variant_name` declared, so display_label == "Swedish".
 gameplay status        PLAYABLE. The eleventh variant.
-UI-localization        not-started as a LOCALE, and its NAME is now translated. MEASURED at cfd1215:
-                       a VARIANT_NAME_KEYS entry plus game.lexicon.<id>, so the picker, the queue
-                       label and a rejected word all name this language in en/sk/cs/pl. ⛔ Still no
-                       LOCALES entry and no message catalog, so the CHROME is English.
+UI-localization        SHIPPED. MEASURED at 96fbd48: `sv` is in LOCALES, translate.ts wires
+                       messages.sv.ts, and the picker offers the endonym. The catalog carries all
+                       304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
+                       ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
+                       REVIEWED_LOCALES = en sk cs pl, and `sv` is covered STRUCTURALLY instead
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
+                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
 dictionary status      MEASURED ok. swedish.txt 822 919 words / 10 835 202 B, duplicates 0,
                        non_nfc 0, ZERO undecodable lines. --check IDENTICAL.
                        ⭐ THE CLEANEST SINGLE GRANT OF ANY LANGUAGE HERE. LICENSE_en_US.txt:
@@ -771,6 +795,8 @@ blockers               none for gameplay.
 ## 14 · Norwegian — ⛔ BLOCKED: no explicit licence grant for the word list
 
 ```text
+language / variant     Norwegian. No manifest — BLOCKED. ⚠ Bokmål vs Nynorsk would be a genuine
+                       `variant_name` case, the first on this list, if the licence ever cleared.
 gameplay status        not-started. BLOCKED, and it is a FOURTH distinct blocker class.
 UI-localization        not-started.
 dictionary status      ⛔ THE ASSET EXISTS AND IS GOOD. `no/` ships BOTH written standards at the
@@ -822,6 +848,7 @@ blockers               ⛔ no explicit upstream licence grant for the word list.
 ## 15 · Finnish
 
 ```text
+language / variant     Finnish. No manifest — BLOCKED.
 gameplay status        not-started.
 UI-localization        not-started.
 dictionary status      UNSOURCED, and ⚠ THIS IS THE ROW TO WATCH. Finnish is agglutinative
@@ -842,11 +869,15 @@ blockers               distribution UNSOURCED · expansion size UNMEASURED and p
 ## 16 · Icelandic — ⭐ PLAYABLE, landed 2026-09-03 at `8a50ded`. NO RULE AT ALL.
 
 ```text
+language / variant     Icelandic. No `variant_name` declared, so display_label == "Icelandic".
 gameplay status        PLAYABLE. The twelfth variant.
-UI-localization        not-started as a LOCALE, and its NAME is now translated. MEASURED at cfd1215:
-                       a VARIANT_NAME_KEYS entry plus game.lexicon.<id>, so the picker, the queue
-                       label and a rejected word all name this language in en/sk/cs/pl. ⛔ Still no
-                       LOCALES entry and no message catalog, so the CHROME is English.
+UI-localization        SHIPPED. MEASURED at 96fbd48: `is` is in LOCALES, translate.ts wires
+                       messages.is.ts, and the picker offers the endonym. The catalog carries all
+                       304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
+                       ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
+                       REVIEWED_LOCALES = en sk cs pl, and `is` is covered STRUCTURALLY instead
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
+                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
 dictionary status      MEASURED ok. icelandic.txt 200 182 words / 2 537 966 B, duplicates 0,
                        non_nfc 0, ZERO undecodable lines. --check IDENTICAL.
                        ⛔ MIXED PROVENANCE, and the expression follows the MORE RESTRICTIVE
@@ -897,6 +928,7 @@ blockers               none for gameplay. ⚠ G7 (font glyph coverage for þ ð 
 ## 17 · Croatian
 
 ```text
+language / variant     Croatian. No manifest.
 gameplay status        not-started.
 UI-localization        not-started.
 dictionary status      UNSOURCED. No probe run.
@@ -913,6 +945,7 @@ blockers               distribution UNSOURCED · licence READ ok: GPL-2.0 OR LGP
 ## 18 · Slovenian
 
 ```text
+language / variant     Slovenian. No manifest.
 gameplay status        not-started.
 UI-localization        not-started.
 dictionary status      UNSOURCED. No probe run.
@@ -929,6 +962,7 @@ blockers               distribution UNSOURCED · licence READ ok: unversioned GN
 ## 19 · Turkish
 
 ```text
+language / variant     Turkish. No manifest.
 gameplay status        not-started.
 UI-localization        not-started.
 dictionary status      UNSOURCED. No probe run.
@@ -954,6 +988,7 @@ blockers               distribution UNSOURCED · licence READ ok: MPL-2.0 · C2 
 ## 20 · Greek
 
 ```text
+language / variant     Greek. No manifest.
 gameplay status        not-started.
 UI-localization        not-started.
 dictionary status      UNSOURCED. No probe run.
@@ -974,6 +1009,7 @@ blockers               distribution UNSOURCED · licence READ ok: MPL-1.1 OR GPL
 ## 21 · Bulgarian
 
 ```text
+language / variant     Bulgarian. No manifest — BLOCKED.
 gameplay status        not-started.
 UI-localization        not-started.
 dictionary status      UNSOURCED. No probe run.
@@ -988,6 +1024,7 @@ blockers               distribution UNSOURCED · ⛔ LICENCE READ AND ABSENT: ba
 ## 22 · Russian
 
 ```text
+language / variant     Russian. No manifest.
 gameplay status        not-started.
 UI-localization        not-started.
 dictionary status      UNSOURCED. No probe run. ⚠ Russian is highly inflected; an
@@ -1008,15 +1045,13 @@ language / variant     Afrikaans. No variant_name; display_label == "Afrikaans".
 gameplay status        PLAYABLE. The fifth variant. readiness=playable, six lexicon assets
                        audited 0 failed, and the public catalog now returns five rows in the
                        derived order english · afrikaans · czech · polish · slovak.
-UI-localization        not-started as a LOCALE, and its NAME is now translated. MEASURED at cfd1215:
-                       GameLanguagePanel.tsx VARIANT_NAME_KEYS has this slug, so the Settings picker
-                       and the human-queue label (play/page.tsx:69) show a translated exonym in
-                       en/sk/cs/pl instead of the server display_name; game.lexicon.<id> names this
-                       lexicon on a rejected word. ⛔ There is still no `af` entry in LOCALES and no
-                       messages.af.ts, so the CHROME is English. That catalog is the open work.
-                       ⚠ VARIANT_FLAG_SRC still has no `afrikaans` entry and flagSrc is omitted when
-                       absent — that is the decided posture, not a gap: the Cooperator declined
-                       hand-drawn national flags, so the picker ships names only.
+UI-localization        SHIPPED. MEASURED at 96fbd48: `af` is in LOCALES, translate.ts wires
+                       messages.af.ts, and the picker offers the endonym. The catalog carries all
+                       304 text + 20 fn keys, proven by mapped type plus AC-EXHAUST over twelve.
+                       ⚠ MACHINE-AUTHORED, no second-opinion review: exact wording is pinned only for
+                       REVIEWED_LOCALES = en sk cs pl, and `af` is covered STRUCTURALLY instead
+                       (AC-STRUCT-12, AC-FOLD-ASCII-12). ⚠ No flag PNG, so its picker row shows the
+                       endonym alone — deliberate, see settings/page.tsx LOCALE_FLAG_SRC.
 dictionary status      MEASURED ok. afrikaans.txt 148 267 words / 1 677 283 B, duplicates 0,
                        non_nfc 0. LICENCE: LGPL-2.1-only, stated in README_af_ZA.txt §5 which
                        embeds the full LGPL 2.1 text; the whole README ships as
@@ -1079,6 +1114,7 @@ blockers               none for gameplay. UI locale is optional later work.
 ## 24 · Malay — ⛔ BLOCKED on the lexicon, distribution sourced
 
 ```text
+language / variant     Malay. No manifest — BLOCKED.
 gameplay status        not-started. BLOCKED.
 UI-localization        not-started.
 dictionary status      ⛔ NO KNOWN LICENCE-CLEAN SOURCE. MEASURED: LibreOffice/dictionaries at

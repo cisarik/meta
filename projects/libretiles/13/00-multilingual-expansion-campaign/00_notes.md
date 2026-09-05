@@ -5137,3 +5137,64 @@ I predicted the LGPL's version clause would be §14, by analogy with GPLv2's §9
   deferred acceptance batch, ONCE, at the end) · condition 10 (99_closure.md, PROJECT_CONTEXT.md,
   DEFECT_LEDGER.md through the closing commit).
 ```
+
+## 56. ⭐ CLOSURE CONDITION 2 IS SATISFIED — all nine columns on all twenty-four rows
+
+```text
+`00_handout.md:435-441` names the nine columns exactly:
+   language / variant · gameplay status · UI-localization status · dictionary status ·
+   distribution source · special-rule requirements · architectural capability required ·
+   tests · blockers
+✔ MEASURED BEFORE: 6 of 24 rows had all nine. EIGHTEEN were missing column 1 — `language / variant`.
+✔ MEASURED AFTER: 24 of 24. Verified by parsing the file into per-language sections and testing each of
+  the nine labels as a line anchor, ⛔ not by reading down the document.
+⚠ AND THE PARSE HAD TO HANDLE A DUPLICATE: Dutch appears TWICE as a `## 11 ·` heading — once as the
+  PLAYABLE entry filed with Italian, once as a cross-reference stub. ⇒ 25 sections, 24 distinct row ids.
+  The parser keeps whichever copy has fewer missing columns, or the stub would have reported Dutch
+  incomplete forever. ⭐ THAT IS R-R AGAIN IN A NEW COSTUME: a count over sections is not a count over
+  rows until you say what a row IS.
+```
+
+### 56.1 ⭐ WHAT COLUMN 1 ACTUALLY HAD TO SAY, and why it was not filler
+
+```text
+The column looks trivial — "German." — but it is the `display_label` column, and `display_label` is
+DERIVED: `variant_store.py` composes it from `language` plus `variant_name`.
+✔ MEASURED across all twelve shipped manifests with the venv interpreter: `variant_name` is declared by
+  ZERO of twelve, so `display_label == language` for every shipped variant. ⇒ Every playable row's column 1
+  now records that fact rather than restating the language name.
+⭐ AND THE COLUMN EARNED ITS KEEP ON THREE ROWS WHERE THE ANSWER IS NOT TRIVIAL:
+   09 Spanish    upstream ships TWENTY-THREE regional pairs (es_AR…es_VE). ⛔ WHICH RULESET a `spanish`
+                 variant would declare is UNDECIDED, and that is a `variant_name` question, not a lexicon
+                 question. Column 1 is where it belongs and it was homeless before.
+   14 Norwegian  Bokmål vs Nynorsk would be the FIRST genuine `variant_name` case on the whole list if the
+                 licence ever cleared. ⇒ Recorded now, so a future scheduler does not rediscover it.
+   10 Portuguese EUROPEAN orthography, from the pt_PT pair rather than pt_BR — a distinction the slug
+                 `portuguese` hides completely.
+⇒ ⭐ SO THE "MISSING COLUMN" WAS HIDING THREE REAL DECISIONS. A closure condition that looked like
+  bookkeeping was not.
+```
+
+### 56.2 🐞 AND FILLING IT EXPOSED EIGHT STALE ROWS I HAD ALREADY MISSED TWICE
+
+```text
+⛔ ALL EIGHT newly-localized rows still said, in their detail section, "not-started as a LOCALE … ⛔ Still
+  no LOCALES entry and no message catalog, so the CHROME is English."
+⇒ THAT WAS FALSE FROM `96fbd48` ONWARD, and I had already touched the ledger TWICE since — once for the
+  scan table's UI column, once for the licence verdicts — WITHOUT NOTICING. The scan table said `shipped`
+  while the detail section eight hundred lines away said the chrome was English. ⭐ TWO PARTS OF ONE FILE
+  DISAGREEING, which is exactly the defect class §52.2's M1 and §53.5's D2 belong to, and this is the third
+  time this campaign it has been MY file rather than a Worker's.
+⇒ Each now records what is true AND what is still limited: `LOCALES` entry, wired `translate.ts`, all
+  304+20 keys proven by mapped type plus AC-EXHAUST — and MACHINE-AUTHORED with no second-opinion review,
+  covered structurally rather than by pinned wording, with no flag PNG by deliberate choice.
+🐞 THE REPLACEMENT ALSO FAILED ON THREE OF EIGHT AT FIRST: I matched the stale text as one verbatim block,
+  and Italian, Dutch and Afrikaans carry a LONGER variant of the same paragraph. ⇒ Fixed by replacing from
+  the anchor line to the end of the indented run, bottom-up so earlier line numbers stayed valid.
+  ⭐ FIFTH TIME THIS SESSION that an exact-shape assumption failed where a structural one worked.
+✔ RECONCILED ACROSS THE TWO HALVES OF THE FILE: scan table UI = shipped 12 · staged 1 · not-started 11;
+  detail sections = 8 new SHIPPED blocks + the 4 original = 12. ⭐ The halves now agree BY COUNT, which is
+  the check that would have caught this eight hundred lines earlier.
+⚠ Hungarian's `staged` is confirmed genuine, not stale: `frontend/public/hu.png` exists and `hu` is
+  asserted to be REJECTED by `isLocale`. ⇒ It is the orphan flag, and `staged` is the honest word for it.
+```
