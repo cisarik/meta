@@ -4128,3 +4128,155 @@ with wiring    🐞 THREE shape problems now: split `history.unknownDate` · del
         `history.outcome.unknown` · collapse `game.aiPlayedFor.before`/`.points` into one function key ·
         plus GLOSSARY's missing czech and polish rows.
 ```
+
+## 48. ⭐ CATALOG 7 OF 8 LANDED — Swedish, `fde3321` — and M1 is a self-contradiction inside one of my sections
+
+```text
+prompt   ./16_implementation_00.md   695 lines · session 16 · exchange 01 · E2 · Medium reasoning
+report   ./16_report_00.md           status PASS · +670/−0 · pushed · readback equal · porcelain clean
+commit   fde3321  feat(i18n) the Swedish interface catalog
+⇒ SEVEN OF EIGHT SHIP. de · pt · is · it · nl · da · sv. ONE REMAINS: af.
+⭐ Nine MEASURED and eight LEADs — the most thorough report of the campaign, and the first to define its
+  own label semantics at the top of the critique so neither list could be read as the other.
+```
+
+### 48.1 🐞 M1 — MY §5.3 CONTRADICTED ITSELF, AND CATALOG 2 WAS MORE CAREFUL THAN MY PROMPT
+
+```text
+MY SENTENCE ONE: "five of the six new catalogs used a period (de · nl · it · is · da)" ✔ CORRECT, and it
+  correctly excludes pt.
+MY SENTENCE TWO: "sk and pl use U+00A0, en uses a comma, and da/nl/de/it/is/pt use a period." ⛔ FALSE.
+✔ VERIFIED MYSELF across all ten shipped catalogs:
+     U+00A0 escape  sk · cs · pl · pt        (FOUR, not two)
+     period         de · is · it · nl · da   (five)
+     comma          en
+⭐ AND THE REASON IS TO CATALOG 2's CREDIT, not merely a slip of mine: `Intl.NumberFormat("pt")` yields
+  a PERIOD, because bare `pt` resolves to Brazilian conventions — while `Intl.NumberFormat("pt-PT")`
+  yields U+00A0. Catalog 2 is explicitly pt-PT by its own header and CHOSE BY LOCALE rather than by the
+  bare tag. ⇒ My generated evidence used the bare tag and was therefore right about `Intl` and wrong
+  about the shipped file. THE COMMAND WAS CORRECT AND THE QUESTION WAS WRONG.
+⛔ THAT IS A NEW FAILURE SHAPE AND IT SURVIVES §46.2's FIX. I changed the mechanism to "generate every
+  cross-catalog claim by command", and I did — but I ran `Intl.NumberFormat(<bare tag>)` instead of
+  reading the shipped file. ⇒ Recorded as R-P: WHEN A CLAIM IS ABOUT WHAT A FILE CONTAINS, READ THE
+  FILE. A library call that predicts what the file SHOULD contain is a different claim, and a locale tag
+  is exactly where the two diverge.
+```
+
+### 48.2 🐞 M4 — THE SIXTH DEFECT IN THE AUDIT FAMILY, AND THE SECOND I INTRODUCED MYSELF
+
+```text
+§5.7 item 2 told the Worker to grep its own file for `æ` and `ø` and expect ZERO — and §7.1 restated it,
+calling it "the one place a per-language grep IS appropriate".
+⛔ BUT §5.7 ALSO REQUIRES THE FILE TO RECORD WHICH DANISH FORMS IT DID NOT REUSE, and §4 makes the file
+  the canonical home of that decision. ⇒ Naming a Danish form requires typing `æ`/`ø`. The Worker's file
+  has FOURTEEN, every one inside a comment citing a form it deliberately did not use.
+⇒ ✔ The corrected form `grep -nE '^[^/]*(æ|ø|Æ|Ø)'` returns ZERO on its file, and the Worker proved the
+  real property two ways instead of editing the file — exactly what §7.1 rule 5 asks.
+⛔ AND THE PRECISE SELF-INDICTMENT: the five lines INSIDE §7.1's bash block all carry `^[^/]*`, which is
+  catalog 4's generalized fix. I then introduced a SIXTH check IN PROSE, twice, WITHOUT it — one section
+  after restating the rule that forbids exactly that.
+⇒ R-N's operational half (§45.1: "apply a derived rule to every sibling in the same breath") is not
+  enough. ⇒ EXTENDED: THE EXCLUSION IS A PROPERTY OF EVERY AUDIT CHECK IN THE PROMPT, INCLUDING THE ONES
+  THE PROSE INTRODUCES — not only the ones inside the code block. The code block is where I look; the
+  prose is where I forget.
+⚠ SIX DEFECTS, ONE FAMILY, FOUR LANGUAGES AND TWO OF MY OWN. That is the single most defect-dense
+  construct in the campaign, and it is a text search over a file of natural-language strings. The honest
+  conclusion for a future campaign is in §45.2: an audit that PARSES rather than greps.
+```
+
+### 48.3 The other seven MEASURED, verified, applied to catalog 8
+
+```text
+M2 ✔ "one of only two shipped catalogs whose separator matches yours" UNDERCOUNTS BY TWO — cs and pt
+   also ship U+00A0. Same root as M1.
+M3 ⭐ A SEVENTH PROSE SITE FOR A PROTECTED TOKEN, and my measured list of six has been wrong since
+   catalog 1. ✔ VERIFIED: `messages.en.ts:35` `meta.description` contains `chat` in prose. All ten
+   shipped catalogs keep the token there. ⇒ THE LIST IS SEVEN, and it matters far more for AFRIKAANS
+   than for Swedish, because the Afrikaans word differs from `chat` so the decision is OBSERVABLE.
+   Corrected for catalog 8.
+M5 ⚠ CATALOG 6's OWN NOTE TO CATALOG 7 OVERSTATED THE RELATIONSHIP: it said Swedish builds `brik`/`pose`
+   on "different stems". They are COGNATE PAIRS IN DIFFERENT SHAPES — Danish `-er`+`-ne` against Swedish
+   `-or`+`-na`. ⇒ The instruction was right and was followed; the reason under-warned. ⛔ AND IT MATTERS
+   MORE FOR CATALOG 8, because Afrikaans DESCENDS FROM Dutch — tighter than cognate.
+M6 ⛔ HALF WRONG, AND THIS IS THE SECOND WORKER MEASURED CLAIM I HAVE CORRECTED. It says `OUTCOME_META`
+   spans `:36-73` rather than my `:36-75`. ✔ MEASURED: the closing `};` is at `:75`. My range was right.
+   ⚠ Its `settings/page.tsx` half IS right: the three surface labels are at `:215-217` and the badge at
+     `:219-221`, so my `:218-220` described the badge and its wording implied the labels.
+M7 ⭐ AN OFF-BY-ONE IN THE SHIPPED CORPUS AND IN MY §5.6. ✔ VERIFIED: there is NO `game.lexicon.english`
+   at all — the English variant's lexicon_id is `collins2019` — so there are ELEVEN language rows, of
+   which afrikaans is the exception, leaving TEN adjectives. `messages.de.ts:274` says "Eleven rows take
+   the declined German language adjective. Afrikaans is the exception", which is internally inconsistent
+   by one; `messages.da.ts:419` says "Ten" and is right. And my §5.6 said "names all twelve".
+   ⇒ Corrected in catalog 8's prompt. ⛔ The German comment is a pre-existing one-word inaccuracy in a
+     shipped file; folding its repair into a future slice, not worth a commit of its own.
+M8 ✔ EVERY OTHER MEASURED CLAIM REPRODUCED — the plural tables, the fraction divergence (sv `other` at
+   0.5 against da's `one`), the U+00A0 codepoint, all twelve exonyms, the four cross-catalog length
+   tables, the GLOSSARY ten-row gap, the key counts, the source scan.
+M9 ✔ A PRECISION POINT: `locales.ts` ALREADY maps `ø → o`, so the queued fold repair is about `æ` on the
+   Danish side and `þ ð` on the Icelandic side — not `ø`. Catalog 6's own comment had this right and my
+   §8 wording was loose.
+```
+
+### 48.4 ⭐ The LEADs — and L5 is the one gap worth a prompt change for catalog 8
+
+```text
+⭐ L5 TAKEN, AND IT IS THE MOST USEFUL THING IN THE REPORT FOR THE LAST CATALOG. §4's byte-identity rule
+   covers identity with ENGLISH only. ✔ The Worker measured that 11 of its 296 values are byte-identical
+   to English (all commented) and **22 ARE BYTE-IDENTICAL TO DANISH**, every one independently correct
+   Swedish — `Konto`, `Profil`, `Resultat`, `Byt`, `Din tur`, `Partier`, `AI-dueller` and so on.
+   ⇒ Between near neighbours that is the EXPECTED outcome, not evidence of lifting. But AFRIKAANS
+     AGAINST DUTCH WILL PRODUCE FAR MORE THAN 22, and a reviewer diffing the two files has no mechanical
+     way to separate a correct coincidence from a lift.
+   ⇒ NEW [INVARIANT] RULE for catalog 8: REPORT THE BYTE-IDENTICAL-TO-NEIGHBOUR COUNT, and comment any
+     of them a reviewer would find surprising. That gives Afrikaans the same evidential footing against
+     Dutch that §4 gave Swedish against English.
+⭐ L6 TAKEN AND IT IS A MEASURED GIFT: `Intl.NumberFormat("af")` → `279 496` with **U+00A0**, while its
+   trap Dutch ships a PERIOD. ⇒ Afrikaans is in exactly the configuration Swedish was, and catalog 8
+   gets the warning in the same emphatic form with `pt` corrected out of the period list per M1.
+⭐ L7 TAKEN. §5.2's "report either answer per key" is the best instrument in the prompt and it has no
+   slot for a trap the prompt DID NOT LIST. Swedish's was `blank`, which is also an ordinary adjective
+   meaning glossy — not a gender trap, not a call-site trap, and it cost more authoring judgement than
+   any listed item. ⇒ One line added: "name any trap this section does not list that your language does
+   have." Afrikaans will have its own (its `g`/`gh` orthography, and homographs Dutch does not share).
+⭐ L8 TAKEN, and it is a real hole in my stage list. §7.2 says measure the vitest baseline BEFORE
+   creating the file; it never says RE-RUN THE GATES AFTER A POST-AUDIT EDIT. This Worker edited four
+   comment blocks after its first audit pass and re-ran everything; a literal reader could have gated
+   before its last edit. ⇒ One clause: "the four gates and the structural audit must both POST-DATE your
+   last edit."
+⚠ L1 — the `chat` decision is the one I am NOT overriding, and the reasoning is worth recording. Swedish
+   is the FIRST catalog where translating `chat` changes a byte (`chatt`), and the Worker translated all
+   six sites while explicitly inviting reversal. ⇒ I LET IT STAND: §6.4's own text classifies these as
+   PROSE and prescribes translation for prose, all six new catalogs already translate `model` from the
+   same D6 list, and no English `chat` identifier is exposed in the Swedish UI to match against. ⛔ AND
+   IT GOES TO THE COOPERATOR AS B13-3 rather than being settled by me, because it is six strings, it is
+   visible, and it is the first time the campaign has actually had to decide.
+⚠ L2 · L3 · L4 noted: `blank` is the term it would least defend, `Används`/`Uppdaterad` are convention
+  over rule, and it explicitly refuses to let its own "eight for eight" board-split tally be read as
+  evidence about the ninth language. ⭐ That last one is R-O internalized by a Worker without being told.
+```
+
+### 48.5 What Swedish added, and the queue
+
+```text
+· ⭐ ALL FOUR CALL SITES HARMLESS, answered on Swedish structure rather than by agreeing with Danish —
+  and it SHARPENED the mechanism: Swedish "never developed" West Germanic verb-final order, so the
+  division is NORTH vs WEST Germanic, not "Danish lost it and Swedish also lost it". Its perfect is
+  auxiliary + SUPINE + object, and the supine is not a participle at all, so `game.gaveUp` is absent
+  MORE strongly than for Danish.
+· TWO OF SIX SLOT FILLERS ARE PHRASES (`bricka vald` / `brickor valda`), because Swedish predicate
+  adjectives inflect for number — and it deliberately rejected the colon-label escape with Italian's
+  reasoning rather than copying Portuguese's.
+· `AI:n` with a COLON, the `TV:n`/`EU:s` convention — not Danish's apostrophe `AI'en`. Same suffixed
+  article, different orthographic rule, and it named the difference.
+· ⭐ THE FIRST CATALOG WHERE A PROTECTED-TOKEN DECISION CHANGES A BYTE: `modell` and `chatt` both differ
+  from the English token by one letter, so Swedish is where the question stopped being academic.
+· 22 values byte-identical to Danish, all independently correct — the worked near-neighbour example
+  catalog 8 needs.
+next    catalog 8 of 8: AFRIKAANS, session 17, baseline fde3321. ⛔ THE LAST ONE AND THE HARDEST TRAP:
+        Dutch is its near neighbour and it DESCENDS from it. Carries L5's neighbour byte-identity rule ·
+        L6's measured U+00A0 · L7's unlisted-trap slot · L8's post-edit gate clause · M3's seventh prose
+        site · M7's ten-adjectives correction · M1's corrected separator list · the `^[^/]*` exclusion on
+        EVERY check including prose ones · and ⭐ IT IS VERB-FINAL WEST GERMANIC, so BOTH call sites
+        should be expected to bite, pointed at Dutch's answers.
+then    the fold-repair slice (LIVE defect), then the wiring slice with THREE shape problems.
+```

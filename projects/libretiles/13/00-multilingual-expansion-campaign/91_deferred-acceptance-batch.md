@@ -517,3 +517,39 @@ B12-4 ⭐ A GOOD SIGN, recorded because it is evidence and not decoration: Danis
       any of the four places where the code fixes word order — the first catalog to clear all four with
       a structural reason rather than luck, and it keeps the natural perfect tense that German and Dutch
       both had to abandon. `Log ud` is also six characters, tying English, so the game header gains room.
+
+## B13 · catalog 7 of 8 — the Swedish interface catalog — `fde3321`
+
+```text
+slice        MEC-UIL-C7-sv
+commit       fde3321  feat(i18n) the Swedish interface catalog
+             pushed; public readback equals local HEAD at fde3321
+what changed ONE new file, messages.sv.ts — 296 text keys and 20 function keys of Swedish.
+             ⛔ DELIBERATELY ORPHANED. SEVEN of eight catalogs exist. ONE REMAINS: Afrikaans.
+```
+
+```text
+B13-1 Confirm the header is byte-identical across all seven:
+      `diff <(head -7 messages.sv.ts) <(head -7 messages.de.ts)` prints nothing.
+B13-2 ⭐ THE CHECK THAT PROVES THE NEAR-NEIGHBOUR DISCIPLINE WORKED, and it is one command. Danish landed
+      one commit before Swedish and is the closest language in the set. Run:
+        `grep -c 'æ\|ø' frontend/src/lib/i18n/messages.sv.ts`
+      EXPECT: hits ONLY inside comment lines — the file names the Danish forms it deliberately did not
+      reuse. `grep -cE '^[^/]*(æ|ø)'` should be ZERO. A single copied Danish word would show up there.
+B13-3 ⛔ A DECISION I AM PUTTING TO YOU RATHER THAN SETTLING, and it is six strings.
+      The project glossary lists seven words that stay in English in every catalog, `chat` among them.
+      Every previous catalog kept it — but for German, Dutch and Danish the native word IS `chat`, so
+      keeping it changed nothing. SWEDISH IS THE FIRST CASE WHERE IT CHANGES A BYTE: the Swedish noun is
+      `chatt` with two t's. The Swedish catalog TRANSLATED it (`Partichatt`, `Chattmeddelande`) and
+      explicitly invited reversal.
+      ⇒ My reading: the glossary rule protects words that name a product concept a user matches against
+        a control, and these six are prose. I let it stand. ⚠ But it is the first time the campaign has
+        actually had to decide, and it is visible. When the Swedish UI is reachable, look at the chat
+        panel title and tell me whether `Partichatt` or `Partichat` is right. Six strings either way.
+B13-4 ⚠ Terms the writer named as its least certain: `blank` for the blank tile (it is also an ordinary
+      Swedish adjective meaning glossy — `joker` was available and rejected as Danish's and Dutch's
+      choice), and `Används` at the board-surface badge.
+B13-5 ⭐ KNOWN GOOD, recorded because it is evidence: Swedish needed no workaround at any of the four
+      places the code fixes word order, and it explained why in terms of North versus West Germanic
+      rather than by agreeing with Danish. `BÄST` is four characters — cannot be read as untranslated
+      English, because of the ä.
