@@ -129,7 +129,7 @@ ledger opened with.
 15  Finnish       BLOCKED      not-started ⛔ NO SOURCE          in-compil. C3?        no
 16  Icelandic     PLAYABLE     shipped     MEASURED ok CC-BY-SA sourced    NONE ⭐     yes
 17  Croatian      not-started  not-started af pair GPL2|LGPL2.1|MPL1.1 in-comp. C1    no
-18  Slovenian     BLOCKED      not-started af pair ⚠ LGPL/GPL NO VERSION in-comp. C1? no
+18  Slovenian     not-started  not-started af pair LGPL|GPL any-ver §13/§9 in-comp. C1? no
 19  Turkish       not-started  not-started af pair 36 MB MPL-2.0 in-comp. C2 C3       no
 20  Greek         not-started  not-started af 10MB MPL1.1|GPL2+|LGPL2.1+ in-comp. C1  no
 21  Bulgarian     BLOCKED      not-started ⛔ COPYING, NO GRANT  in-comp. C1           no
@@ -147,13 +147,18 @@ lexicon source exists but the EXPANDER cannot render it  1 / 24   French — see
 lexicon exists but carries NO EXPLICIT LICENCE GRANT     2 / 24   Norwegian row 14 · ⭐NEW Bulgarian
    row 21 — bg_BG/ ships bare GPLv2 COPYING text and NOT ONE statement scoping the spelling
    dictionary; its only two READMEs license the HYPHENATION and THESAURUS packages instead
-lexicon grant names a copyleft licence with NO VERSION    1 / 24   ⚠NEW Slovenian row 18 — "covered by
-   the GNU/LGPL and GNU/GPL License", no version, plus a SUN election clause that is a downstream
-   distributor's choice rather than the holders' grant. ⛔ COOPERATOR RULING, not an engineering call.
-licence-clean and awaiting DISTRIBUTION + capability      6 / 24   Hungarian · Spanish · Croatian ·
-   Turkish · Greek · Russian. ⭐ Five of the six say `distribution UNSOURCED` or `in-compil.`, so the
-   remaining bottleneck is TILE DISTRIBUTION and capability C1 — NOT licences.
-⇒ 12 playable + 6 licence-clean-with-named-blockers + 6 blocked-with-named-cause = 24. Every row is
+⭐ THE UNVERSIONED-GRANT QUESTION DISSOLVED rather than being ruled on. Slovenian row 18 says
+   "covered by the GNU/LGPL and GNU/GPL License" with no version. ⇒ GPLv2 §9 and LGPL-2.1 §13 BOTH
+   contain a clause for exactly that case: "If the Program does not specify a version number of this
+   License, you may choose any version ever published by the Free Software Foundation." The resolution
+   is INTERNAL TO THE NAMED LICENCE, so it is evidence rather than judgement, and Sun's election clause
+   is revealed as Sun exercising that same choice for its own distribution — confirmatory, not a grant.
+   ⛔ THIS DOES NOT RESCUE BULGARIAN: §9 and §13 operate only once you know SOME version of the licence
+   applies to the material. Bulgarian has no sentence applying any licence to the word list at all.
+licence-clean and awaiting DISTRIBUTION + capability      7 / 24   Hungarian · Spanish · Croatian ·
+   Slovenian · Turkish · Greek · Russian. ⭐ Six of the seven say `distribution UNSOURCED` or
+   `in-compil.`, so the remaining bottleneck is TILE DISTRIBUTION and capability C1 — NOT licences.
+⇒ 12 playable + 7 licence-clean-with-named-blockers + 5 blocked-with-named-cause = 24. Every row is
   now dispositioned, which is what closure condition 4 asks for.
 `in-compil.` = present in the Wikipedia Official-editions compilation, table not yet extracted
 `none*`      = needed a DIACRITIC FOLD, solved in the LEXICON at build time rather than by a
@@ -916,7 +921,9 @@ special-rule reqs      LEAD: Č Š Ž are distinct single letters; whether any d
                        is part of the probe. It may need nothing beyond today's foundation.
 capability required    C1 pending measurement; possibly none.
 tests                  none.
-blockers               distribution UNSOURCED · ⛔ LICENCE READ AND INDETERMINATE: unversioned GNU/LGPL+GNU/GPL grant.
+blockers               distribution UNSOURCED · licence READ ok: unversioned GNU/LGPL + GNU/GPL grant,
+                       RESOLVED BY THE LICENCES' OWN TEXT — GPLv2 §9 and LGPL-2.1 §13 both state that
+                       where no version is specified the licensee may choose any version ever published.
 ```
 
 ## 19 · Turkish

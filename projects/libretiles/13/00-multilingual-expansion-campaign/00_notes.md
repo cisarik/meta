@@ -5061,3 +5061,79 @@ BLOCKED 4, NOT 6 — French, Norwegian, Slovenian, Bulgarian. Finnish and Malay 
   buckets, eight empty directories — so the reconciliation is what caught all three.
 ⇒ R-U: WHEN A COUNT COMES OUT IMPOSSIBLE, SUSPECT THE ACCESSOR BEFORE THE DATA.
 ```
+
+## 55. ⭐ THE SLOVENIAN QUESTION DISSOLVED — the licence answers it itself
+
+```text
+He answered A: the Slovenian ruling. ⛔ AND I DID NOT NEED HIS RULING AFTER ALL, because I had not
+exhausted the evidence before escalating. §54.4 framed it as a legal question about whose election binds a
+third party. ⭐ IT IS NOT A LEGAL QUESTION. IT IS A CLAUSE I HAD NOT READ.
+✔ MEASURED, from the repository's OWN copies of the licence texts at the pinned commit:
+   GPLv2 §9, verbatim  (bg_BG/COPYING, 17 979 B)
+     "If the Program does not specify a version number of this License, you may choose any version ever
+      published by the Free Software Foundation."
+   LGPL-2.1 §13, verbatim  (es/LGPLv2.1.txt, 26 530 B)
+     "If the Library does not specify a license version number, you may choose any version ever published
+      by the Free Software Foundation."
+⇒ ⭐ BOTH LICENCES THE SLOVENIAN GRANT NAMES CONTAIN A CLAUSE FOR PRECISELY THE UNVERSIONED CASE. The
+  resolution is INTERNAL TO THE NAMED LICENCE. That makes it EVIDENCE, not judgement — which is the
+  distinction §54.4 and the prompt's §5 were actually protecting. I was not forbidden to find a clause; I
+  was forbidden to reason from silence. ⛔ There is no silence here.
+⇒ AND IT REFRAMES THE SUN CLAUSE ENTIRELY: Sun electing LGPLv2.1 "where a choice of which version of the
+  LGPL is applied is otherwise unspecified" is SUN EXERCISING EXACTLY THE CHOICE §13 GRANTS. It is
+  confirmatory evidence that the choice exists, not the grant we were missing. ⭐ I had it backwards.
+⇒ DISPOSITION CHANGED: Slovenian row 18 BLOCKED → licence-clean, awaiting distribution and capability.
+✔ AND I EXHAUSTED THE REST OF sl_SI BEFORE CONCLUDING: description.xml 200 (names the package, no licence
+  element) · dictionaries.xcu 200 (zero matches for licen|GPL|copyright) · sl_SI.aff first 1 201 B, 206
+  (`SET ISO8859-2`, `TRY …`, affix rules, NO banner) · package-description.txt 200 (version strings only).
+  ⇒ The README grant is the only grant, and §9/§13 are what make it determinate.
+```
+
+### 55.1 ⛔ AND IT DOES NOT RESCUE BULGARIAN — the distinction is now sharp
+
+```text
+⚠ THE OBVIOUS NEXT THOUGHT IS WRONG AND I AM WRITING IT DOWN SO NOBODY HAS IT LATER: §9 and §13 do not
+  help Bulgarian. They operate only once you know that SOME version of that licence applies to the
+  material. They answer "which version?", never "does any licence apply at all?".
+⇒ SLOVENIAN has a sentence applying a named licence TO THE SPELLING DICTIONARY and omits the version ⇒ the
+  licence itself supplies the missing version.
+⇒ BULGARIAN has NO SENTENCE APPLYING ANY LICENCE TO THE WORD LIST. A bare `COPYING` file is licence TEXT
+  with no grant, exactly as `tr_TR/LICENSE` is MPL-2.0 TEXT while `tr_TR/README.txt` carries Turkish's
+  actual grant. ⭐ Turkish is the control case that proves text and grant are different artifacts.
+⇒ Bulgarian stays BLOCKED, in the Norwegian class, and the reason is now stated in a form that cannot be
+  confused with Slovenian's.
+```
+
+### 55.2 🐞 A FOURTH POSITIONAL SLIP, and this one I caught before it printed anything wrong
+
+```text
+I predicted the LGPL's version clause would be §14, by analogy with GPLv2's §9 numbering. ⛔ IT IS §13 —
+`awk` on `/^  14\./` returned NOTHING, and §14 is the unrelated
+"if you wish to incorporate parts of the Library into other free programs" clause.
+⇒ Located it by GREPPING ITS DISTINCTIVE WORDS — "any version ever published" — which found line 422 in one
+  step. ⭐ FOURTH TIME THIS SESSION that addressing data by expected POSITION failed and addressing it by
+  CONTENT worked: §53.8's fixed-offset substr · §54.1's guessed filenames · §54.6's awk `$2` · this.
+⇒ R-U held: the impossible result — a licence section that does not exist — was the tell.
+```
+
+### 55.3 The state of the campaign, counted from the file
+
+```text
+✔ 12 playable, all twelve with an interface locale
+✔ 7 licence-clean and awaiting distribution + capability:
+     Hungarian · Spanish · Croatian · Slovenian · Turkish · Greek · Russian
+✔ 5 BLOCKED with a named cause, and every cause is now stated in a form a reader can act on:
+     07 French     the expander cannot render the pair
+     14 Norwegian  no explicit licence grant
+     15 Finnish    no licence-clean source
+     21 Bulgarian  licence TEXT present, NO GRANT naming the word list  ⭐NEW this session
+     24 Malay      no licence-clean source
+⇒ 12 + 7 + 5 = 24, counted by word match on the GP field. ⭐ CLOSURE CONDITION 4 IS SATISFIED: every
+  language that cannot be implemented is a recorded blocker naming the exact missing thing.
+⇒ ⭐ AND THE REMAINING BOTTLENECK IS NOW UNAMBIGUOUS AND IT IS NOT LEGAL: six of the seven clean rows say
+  `distribution UNSOURCED` or `in-compil.`. The tile distribution is the one input no upstream dictionary
+  supplies, and C1 — multigraph tiles — gates Hungarian and Croatian regardless.
+⛔ STILL OPEN FOR CAMPAIGN CLOSURE: condition 2 (all nine columns on all 24 rows) · condition 8 (the
+  deferred acceptance batch, ONCE, at the end) · condition 10 (99_closure.md, PROJECT_CONTEXT.md,
+  DEFECT_LEDGER.md through the closing commit).
+```
