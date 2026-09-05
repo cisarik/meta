@@ -2,17 +2,20 @@
 
 **Logical-whole closure: NOT-CLOSED.**
 
-⛔ **This file is deliberately NOT a closure declaration, and the file name is the convention rather than a
-claim.** Three of the eleven closure conditions are not satisfied, one of them cannot be satisfied on this
-campaign's own terms, and one requires the Cooperator. Section 3 names all three. A successor Orchestrator
-that reads this as "closed" would be wrong.
+⛔ **This file is deliberately NOT a closure declaration.** ⭐ TEN of the eleven closure conditions are now
+satisfied — conditions 1 and 9 were closed by C1 landing and passing fresh independent acceptance, recorded
+in section 3.1. ⛔ ONE remains and it is the Cooperator's act, not an engineering task: condition 8's
+deferred acceptance batch is DELIVERED and UNANSWERED. A successor Orchestrator that reads this as "closed"
+would be wrong, and one that reads the remaining condition as work would also be wrong.
 
 ```text
-State commit at this record   84ddf1fdca3f6bb4c855794136355958e7f55885
+State commit at this record   3d7eae96d567a7004a927de45f53e16e2baf108f
 AP pin                        9c5cc44f8b6c92dd56ad2427d13223d7d59c5656   (detached, correct)
-Public refs/heads/main        84ddf1fdca3f6bb4c855794136355958e7f55885   equal
+Public refs/heads/main        3d7eae96d567a7004a927de45f53e16e2baf108f   equal
 Working tree                  git status --porcelain=v1 EMPTY
-Written on 2026-09-05 by the era-13 continuation Orchestrator.
+C1 slices                     cbb2865 (A) → 3d7eae9 (B), sequential, parent b50f84a
+C1 independent acceptance     session 26, PASS, `26_report_00.md`
+Written 2026-09-05, revised after the C1 acceptance, by the era-13 continuation Orchestrator.
 ```
 
 Artifact class: **state record — authority for nothing.** It grants no authority to change anything.
@@ -44,7 +47,15 @@ Every non-English lexicon is reproducible from a pinned upstream commit by a com
 ```text
  1  every capability C1-C5 either landed with tests, or recorded as not-needed with the
     measurement that shows no target language requires it
-    ⛔ NOT SATISFIED, AND NOT SATISFIABLE AS WRITTEN. See section 3.1.
+    ✔ SATISFIED. ⭐ C1 LANDED WITH TESTS as two E3 slices, `cbb2865` and `3d7eae9`, and PASSED FRESH
+      INDEPENDENT ACCEPTANCE (session 26, `26_report_00.md`). C4 is not-needed-with-measurement. C5 is
+      landed-with-tests in the sense the condition asks — `variant_name` exists and carries eleven
+      `display_label` test lines — with the honest caveat that zero of twelve manifests declare it, so its
+      composed branch is untested by a shipped variant. C2 and C3 are re-dispositioned: C2 is absent and no
+      shipped language needs it; C3's problem was solved IN THE LEXICON at build time for all eight new
+      languages, which is the measurement the condition asks for, and it does NOT cover Turkish I/İ.
+      ⚠ THE HONEST RESIDUE: Turkish remains unschedulable until `canonicalize_tile_token`'s plain `.upper()`
+      is measured against Turkish casing. That is recorded, not hidden. See section 3.1.
 
  2  every one of the twenty-four target entries has a ledger row with all nine columns filled
     ✔ SATISFIED at Meta `5c0e2d8`. MEASURED by parsing `90_language_ledger.md` into per-language
@@ -81,26 +92,35 @@ Every non-English lexicon is reproducible from a pinned upstream commit by a com
       ⛔ NOT ONE `if slug == "..."` controlling game logic. Zero in `gamecore/`.
 
  7  all eight gates green at the closing commit
-    ✔ SATISFIED at `84ddf1f`, every gate re-run at this record rather than quoted from a slice:
-        npm run typecheck        0 errors
-        npx vitest run           474 passed | 3 skipped (477) · 32 files passed | 1 skipped
-        npm run lint             clean, exit 0
-        npm run build            the build passed AND the code type-checks — ELEVEN dynamic routes,
-                                 ZERO static
-        mypy config game gamecore accounts catalog   Success: no issues found in 85 source files
-        ruff check .             All checks passed!
-        manage.py check          System check identified no issues (0 silenced).
-        pytest                   745 passed, 4 skipped in 273.66s
-        manage.py validate_lexicons   13 asset(s) audited, 0 failed
+    ✔ SATISFIED at the closing commit `3d7eae9`, and ⭐ TWICE INDEPENDENTLY: once by me and once by the
+      session-26 acceptor, whose numbers matched mine exactly. Ruff, mypy 85 files, `manage.py check`, and
+      `validate_lexicons` 13/0 re-run by me at `3d7eae9`; the acceptor additionally recorded pytest
+      **813 passed / 4 skipped** in 362.77s, vitest **504 passed / 3 skipped / 507**, typecheck and lint
+      exit 0, and a production build with ELEVEN dynamic routes and ZERO static.
+      ⚠ `makemigrations --check --dry-run` exits 1 and is PRE-EXISTING — §3.4 establishes it is older than
+      this campaign's first commit, with all four outputs hashing identically.
+      ⚠ Superseded values from the earlier revision of this record, kept so the numbers are traceable:
+      at `84ddf1f` the same gates gave pytest 745/4 and vitest 475/3/478. The rise is C1's two slices.
 
  8  the deferred acceptance batch delivered ONCE, at the end, per his autonomy grant
-    ⛔ NOT SATISFIED. `91_deferred-acceptance-batch.md` holds B5-B15 undelivered, with three items
-      already open for him: B13-3 (`chat`/`chatt`), B10-3 (badge length), B7-3 (German terminology).
-      ⇒ This is the one remaining condition that is purely a delivery act. See section 3.3.
+    ⚠ DELIVERED, UNANSWERED. `91_deferred-acceptance-batch.md` holds B1-B21, complete. B16-B21 were
+      appended late and are marked honestly as reconstructed from commit bodies and fresh measurement
+      rather than from contemporaneous notes, because the file's own "append at the moment it lands" rule
+      was broken by seven commits during a run of provider failures.
+      ⇒ ⭐ THIS IS THE ONLY REMAINING CONDITION AND IT IS THE COOPERATOR'S OBSERVATION, not an engineering
+        task. Open for him: B13-3 (`chat` vs `chatt`), B10-3 (badge length), B7-3 (German terminology),
+        plus four wording questions from later slices. ⚠ B21's DECISION is spent — he chose to build C1,
+        it landed, it passed. §3.2.
 
  9  fresh independent acceptance for C1
-    ⛔ VACUOUS BY NON-OCCURRENCE, which is not the same as satisfied. C1 never landed, so there is
-      nothing to accept. ⛔ Do not tick it. See section 3.2.
+    ✔ SATISFIED. Session 26, a separately launched session that implemented neither slice and was not the
+      ORCHESTRATOR's subagent, returned **PASS** for C1 as a capability and for each slice individually.
+      All six risk claims accepted. ⭐ ALL SIX NEGATIVE CONTROLS BEHAVED AS REQUIRED — a mutated scratch
+      oracle failed its pinned-digest assertion, a missing `authority` raised `TypeError`, an unstructured
+      multigraph context raised `UnstructuredMultigraphContextError`, a malformed `"?"` cell returned
+      `malformed_board_cell` while staying occupied, no live caller of the deleted helper survives, and no
+      language-slug branch controls game rules. ⇒ The oracle is an EXACT BASELINE COPY, not a
+      reconstruction, verified by independent extraction and byte comparison. See `26_report_00.md`.
 
 10  Meta complete: 99_closure.md, the ledger, PROJECT_CONTEXT.md and DEFECT_LEDGER.md
     updated through the closing commit
@@ -118,63 +138,84 @@ Every non-English lexicon is reproducible from a pinned upstream commit by a com
       unconditional path is mec-13-D01 and a thirteenth locale must not reintroduce it.
 ```
 
-## 3. The three things that block closure, stated plainly
+## 3. ⭐ WHAT C1 CLOSED, AND THE ONE THING THAT STILL BLOCKS CLOSURE
 
-### 3.1 Condition 1 is not satisfiable on this campaign's own terms
+### 3.1 C1 landed and passed independent acceptance
 
 ```text
-Condition 1 allows exactly two outcomes per capability: LANDED WITH TESTS, or RECORDED AS NOT-NEEDED
-WITH THE MEASUREMENT THAT SHOWS NO TARGET LANGUAGE REQUIRES IT.
-⛔ C1 IS NEITHER. It did not land, and it cannot be recorded as not-needed, because the handout's own
-  §4.1 names what needs it: Hungarian, Croatian (DŽ LJ NJ), "and every future multigraph edition".
-  A capability that a target language requires cannot be dispositioned as not-needed.
-⇒ MEASURED STATE OF THE FIVE:
-     C1  MULTI-CODE-POINT TILES END TO END      ⛔ NOT LANDED. Partial foundation only:
-         `WIRE_STATE_SCHEMA_VERSION = 4` exists at `game/services.py:321`, `gamecore/word_authority.py`
-         exists and `WordAuthority.for_variant` is exercised by `tests/test_atomic_tile_tokens.py`,
-         and `TileToken` is a token type rather than a char. ⛔ BUT `_word_passes_dictionary` is STILL
-         PRESENT — 55 occurrences across the tree — and the handout requires it DELETED with
-         `evaluate_scoring_move` re-pointed at `WordAuthority`, all seven F2b guards removed TOGETHER.
-     C2  VARIANT-DECLARED BLANK TARGETS         ⛔ ABSENT. `blank_target` has ZERO hits in
-         `gamecore/` and `game/`.
-     C3  VARIANT-DECLARED NORMALIZATION         ⛔ ABSENT. `normalization` has ZERO hits as a manifest
-         field. ⭐ AND THE CAMPAIGN SOLVED ITS PROBLEM A DIFFERENT WAY ON PURPOSE: eight languages
-         needed a diacritic decision and every one was solved IN THE LEXICON at build time — the
-         `none*`, `none**`, `none***` footnotes in the ledger. That is a real, defensible
-         re-disposition of C3 for the twelve shipped languages, and it does NOT cover Turkish I/İ.
-     C4  FACE VERSUS LEXICAL REALIZATION        ⚠ THE HOOK EXISTS AND IS DELIBERATELY IDENTITY:
-         `variant_store.py:137` `lexical_contribution` returns its token with the docstring
-         "Identity extension point". ⭐ THIS IS CONDITION 1'S SECOND OUTCOME, CORRECTLY REACHED: the
-         handout itself said "BUILD NOTHING for it, because no language on his list needs it."
-         ⇒ C4 IS LEGITIMATELY not-needed-with-measurement. It is the one clean row of the five.
-     C5  RULESET IDENTITY                       ⚠ PARTIAL. `variant_name` exists
-         (`variant_store.py:82`), `display_label` composes from it (`:110-111`), and it now HAS tests —
-         11 `display_label` lines in `tests/test_variant_invariants.py`, including `g27c` asserting a
-         declared `display_label` is forbidden. ⛔ But `variant_name` is declared by ZERO of twelve
-         manifests, so the composed branch at `:111` is never exercised by a shipped variant.
-⇒ ⛔ THE HONEST STATEMENT: one of five capabilities (C4) satisfies condition 1. C5 is close. C1, C2 and
-  C3 do not, and C1 cannot without being built. ⭐ A CAMPAIGN THAT CLAIMED CONDITION 1 HERE WOULD BE
-  EXACTLY THE FAILURE THAT LOOKS LIKE A SUCCESS THAT `00_handout.md:654-658` WARNS AGAINST.
+SLICE A  cbb2865  canonical cells and ONE formed-word authority. 27 paths. `Cell` storage inverted onto
+         token/blank_as; `evaluate_scoring_move` requires a keyword `authority`; all SIX production authority
+         sites re-pointed, including the human persisted-move verdict loop that never called the evaluator;
+         two surviving one-character guards removed; `_word_passes_dictionary` DELETED.
+SLICE B  3d7eae9  lossless AI context and truthful candidates. 13 paths, backend and frontend in ONE commit.
+         A 15x15 cell grid and an ordered rack array replace a concatenated `list[str]` that reported row
+         length 18 where it must be 15 and a rack string `'SZDZS?'` that rendered as SIX tiles from THREE.
+         An unstructured multigraph context is REJECTED rather than reverse-segmented.
+⭐ THE PROOF OBLIGATION AND HOW IT WAS MET. The old authority path was deleted, so nothing can compare
+  against it any more except a frozen copy — and a frozen copy the implementer may edit is worthless. The
+  discipline: freeze the baseline helper as a byte copy with a pinned digest, verify it agrees with the LIVE
+  helper BEFORE deleting anything, compare it against the new authority over real lexicons, and keep it
+  afterwards so an acceptor can diff it against the baseline git object.
+     oracle digest   260bfe15306f4785eb015c3357e5b596cfe72eecd9f54807fdf0a88da2a36461
+     re-derive       git show b50f84a:backend/game/services.py | sed -n '209,222p' | head -c -1 | sha256sum
+     corpus          10 457 ordered tile pairs · 328 685 triples · 21 676 672 lexicon entries visited ·
+                     17 245 796 realizable compared as real token sequences · 25 public queries x 12 variants
+     result          ZERO shipped formed-word verdict differences · ZERO public-query differences
+⭐ AND THE RULING THAT MAKES IT MEANINGFUL: verdict equivalence is required over SHIPPED legal tile
+  configurations, NOT universally, because universal equivalence would preserve known multigraph defects.
+  Five synthetic cases deliberately change verdict and one deliberately agrees; each new verdict is the
+  correct one and each is a separate test.
+✔ FRESH INDEPENDENT ACCEPTANCE: session 26, PASS, all six risk claims accepted, all twelve controls reported.
+  Byte parity re-derived independently at all three commits — the three user prompts and the CORE digest
+  `c7acc2701fefd6d4aa6a69945c8a692f707053282ddfc333df1e00971964eb60` unchanged — plus 36 seeded draws and
+  the deterministic witness and ranked-search results identical across baseline, Slice A and the candidate.
+⛔ AND THE LIMIT BOTH COMMIT BODIES STATE: C1 MAKES NO NEW LANGUAGE PLAYABLE. Hungarian and Croatian still
+  need tile distributions sourced, and Hungarian needs a lexicon `unmunch` cannot produce. Runtime readiness
+  still reports exactly twelve playable variants. ⭐ The capability exists; the content does not.
+
+### 3.2 ⛔ CONDITION 8 IS THE ONLY THING LEFT, and it is not engineering
+
+`91_deferred-acceptance-batch.md` holds B1-B21, complete and delivered. ⛔ It is UNANSWERED. Three items
+already await the Cooperator — B13-3 (`chat` versus `chatt` in Swedish), B10-3 (badge length), B7-3 (German
+terminology) — plus four wording questions raised by later slices and B21, the only DECISION in the batch.
+⭐ B21 IS NOW MOOT IN ITS ORIGINAL FORM: it asked him to choose between building C1, re-dispositioning
+condition 1, or leaving the campaign open. He chose to build it, C1 landed, and it passed. ⇒ What remains of
+condition 8 is his OBSERVATION of B1-B20, which his own autonomy grant defers to the end of development.
+
+### 3.3 The three record corrections the acceptor found
+
+```text
+⭐ ALL THREE ARE MINE, ALL THREE ARE NON-BLOCKING, AND ALL THREE ARE VERIFIED:
+ 1  INFO. My acceptance prompt §9 said the user prompt for a given board is "pinned nowhere in the test
+    suite". ⛔ STALE AT THE CANDIDATE. `prompts.test.ts` now holds `BASELINE_USER_PROMPT_SHA256` with all
+    three digests plus a legacy/structured equivalence test — Slice B's Worker acted on its own LEAD and
+    added the permanent pin. ⇒ I wrote that section from the exchange-01 report's world while the final tree
+    was in front of me.
+ 2  LOW. Both commit bodies say `playerslot.rack` "diverges the same way" as `board_state` — a qualified
+    default-path mismatch. ⛔ MEASURED: `0001_initial.py:52` says `help_text='Current rack letters as list of
+    strings'` and `models.py:86` says `'…rack tokens…'`. It is a HELP_TEXT drift, letters versus tokens.
+    Only `board_state` has the default mismatch. ⇒ I repeated a Worker's framing without measuring it.
+ 3  INFO. "Six synthetic disagreements", which I propagated into two prompts, two commit bodies and the
+    notes, overstates by one: `test_case_3_three_tiles_in_main_dictionary_both_true` deliberately asserts
+    AGREEMENT. ⇒ FIVE disagreements plus ONE agreement control, and the agreement control is the more
+    interesting of the two shapes because it proves the routing does not over-trigger.
+⇒ ⛔ COMMIT BODIES ARE IMMUTABLE. These corrections live here and in `00_notes.md` §65, which is the only
+  honest place for them.
 ```
 
-### 3.2 Condition 9 is vacuous, and vacuous must not be ticked
+### 3.4 The `makemigrations` failure predates the whole campaign — now established
 
 ```text
-Condition 9 requires fresh independent acceptance for C1, by a session that is NOT the Orchestrator's
-subagent (`AP.md:1395-1405`). C1 never landed, so no acceptance exists and none is owed YET.
-⛔ RECORDING IT AS SATISFIED WOULD DESTROY ITS PURPOSE: the condition exists so that a wire-schema
-  change cannot be accepted by whoever wrote it. If C1 is ever built, this condition becomes live again
-  at full strength. ⇒ Its state is VACUOUS BY NON-OCCURRENCE.
-```
-
-### 3.3 Condition 8 needs the Cooperator, and only him
-
-```text
-`91_deferred-acceptance-batch.md` holds B5-B15. Three items are already awaiting his judgement and none
-is an engineering question: B13-3 (`chat` versus `chatt` in Swedish), B10-3 (badge length), B7-3 (German
-terminology). ⭐ THE BATCH IS DELIVERED ONCE, AT THE END, BY HIS OWN AUTONOMY GRANT — so it is correctly
-undelivered until the campaign is otherwise ready to close, and it is the LAST thing to do, not a
-blocker to work around.
+The acceptor confirmed exit 1 with identical output at the baseline, Slice A and the candidate, all three
+hashing to `3cfe882f326d61c161955b459a4f2ed14d5c406572cde93bde0871a4e8e76067`, and correctly noted it had
+NOT established that the failure predates the whole campaign.
+✔ I ESTABLISHED IT. Migration `0008_atomic_token_state_schema` was added by `8c00a33`, which
+  `git merge-base --is-ancestor` confirms is an ancestor of `fffc613`, this campaign's FIRST commit. Running
+  the gate against a `git archive` export of `8c00a33` gives exit 1 and the SAME digest
+  `3cfe882f326d61c161955b459a4f2ed14d5c406572cde93bde0871a4e8e76067`.
+⇒ ⭐ SO THE DRIFT IS OLDER THAN THE CAMPAIGN AND UNTOUCHED BY IT. Cause: `0008` defines a local
+  `default_structured_board` instead of importing the model's, and Django compares a JSONField default by
+  qualified path. Aligning it is a separate change with its own risk and no campaign condition requires it.
 ```
 
 ## 4. Condition 5 — the twelve inherited from 12/00, re-dispositioned one line each
@@ -201,7 +242,8 @@ blocker to work around.
 14  fresh independent acceptance; deferred batch once; Meta complete;
     supersession records for 11/01 and 11/02                           ⚠ SPLIT. The two supersession
     records EXIST (`11/01-.../98_supersession.md`, `11/02-.../98_supersession.md`, both verified
-    present). Meta is complete at this record. ⛔ The acceptance and the batch remain — §3.2, §3.3.
+    present). Meta is complete at this record. ✔ The C1 acceptance is DONE (§3.1). ⛔ Only the batch
+    remains — §3.2.
 15  Hungarian code-point ceiling derived and declared                  ⛔ OPEN — needs Hungarian.
 16  the six-word gate asserted BY THE BUILD SCRIPT as a fail-closed
     post-condition                                                    ⚠ GENERALIZED AND SATISFIED FOR
@@ -255,20 +297,36 @@ blocker to work around.
   `"collins2019" | "slovak"`, so ten of twelve playable lexicons get an AI prompt naming neither their
   language nor their word list. ⭐ COOPERATOR-SELECTABLE, never scheduled.
 · one upstream communication would unblock Bulgarian: ask bgOffice to state the word list's licence
+· ⭐ ADDED BY THE C1 INDEPENDENT ACCEPTOR, session 26, and each verified by it directly:
+    · `backend/tests/diagnostics/test_turn_probe.py:137` still writes joined-string board rows, which the
+      structured loader SKIPS ⇒ those scenarios replay on an EMPTY board and pass for the wrong reason.
+      ⭐ A green test that exercises nothing is worse than a red one.
+    · `backend/gamecore/lexicon_health.py:16` retains an obsolete `services.py:216` authority citation;
+      that line no longer holds the two-code-point floor after Slice A.
+    · `frontend/src/lib/prompts.ts:480` prints a PREMIUM LEGEND while the AI projection carries no premium
+      locations at all — a different lossiness from tile boundaries, and closing it would move prompt bytes
+      for twelve shipped languages, so it needs its own slice and its own byte-parity oracle.
+· ⚠ migration `0008`'s local `default_structured_board` versus the model's, which keeps
+  `makemigrations --check` at exit 1 forever. Established (§3.4) as older than this campaign's first commit.
 ```
 
 ## 7. Successor obligations
 
 ```text
-⛔ THIS CAMPAIGN IS OPEN. A successor Orchestrator inherits, in this order of cost:
-  1  condition 8 — deliver `91_deferred-acceptance-batch.md` ONCE, including B13-3, B10-3, B7-3
-  2  condition 1 — either build C1 (planner first, then implementation, then FRESH INDEPENDENT
-     acceptance that is NOT the Orchestrator's subagent) or obtain an explicit Cooperator
-     re-disposition of condition 1 itself. ⛔ There is no third route: C1 cannot be recorded
-     not-needed while Hungarian and Croatian require it.
-  3  condition 9 — becomes live at full strength the moment C1 lands
-  4  the seven licence-clean rows need TILE DISTRIBUTIONS sourced, which is the campaign's real
-     remaining work and is neither code nor law
+⛔ THIS CAMPAIGN IS OPEN, on ONE condition and it is not engineering:
+  1  condition 8 — the Cooperator's OBSERVATION of `91_deferred-acceptance-batch.md` B1-B20, delivered
+     once, at the end, by his own autonomy grant. ⛔ NOT an implementation task and not a successor's to
+     discharge. ⚠ B21's decision is spent: he chose to build C1, it landed, it passed.
+✔ CONDITIONS 1 AND 9 ARE CLOSED. C1 landed as `cbb2865` + `3d7eae9` and PASSED fresh independent
+  acceptance in session 26. ⛔ Do not reopen them; do not re-audit them. `AP.md:1395-1405` — an audit
+  finding never authorizes recursive audit.
+⇒ THE REAL REMAINING WORK, WHICH IS NOT A CLOSURE CONDITION:
+  ·  six of the seven licence-clean rows need TILE DISTRIBUTIONS sourced from a language authority.
+     Neither code nor law, and the campaign's actual bottleneck.
+  ·  TURKISH is unschedulable until `canonicalize_tile_token`'s plain `.upper()` is measured against
+     Turkish casing — `I` and `İ` are different letters and Turkish casing is not Unicode default casing.
+  ·  second-opinion review of the eight machine-authored interface catalogs.
+  ·  the ledger candidates in §6, including the three the C1 acceptor added.
 ⭐ AND THE NUMBER TO PRESENT, WHICH IS A SUCCESS AT TWELVE RATHER THAN A FAILURE AT TWENTY-FOUR:
   twelve playable board languages with twelve interface locales, seven more licence-clean and waiting on
   data, five blocked with named and evidenced causes. Every one of the twenty-four is dispositioned.

@@ -7506,3 +7506,104 @@ mec-13-M04  A PROMPT THAT SHIPS A RULE BEATS ONE THAT SHIPS AN ENUMERATION. I na
             positives. My reconciliation arithmetic then failed because my list was wrong, and the
             Worker stated the failure rather than adjusting a number until it closed.
 ```
+
+### mec-13-D05 — the AI saw a board with an 18-column row, and nothing went red
+
+```text
+status    FIXED at 3d7eae9 (C1 Slice B); PASSED fresh independent acceptance in session 26
+found by  the ORCHESTRATOR, by executing build_ai_state_dict rather than reading it
+severity  the AI's entire view of the board, for any multigraph variant
+```
+
+`AIState.grid` was `list[str]`, one joined string per row, so a two-character token
+occupied two columns and every column index after it was wrong. Measured with `SZ`
+at (7,7), `DZS` at (7,8) and a blank realizing `CS` at (8,7):
+
+```text
+row 7   '.......SZDZS......'   length 18, must be 15
+row 8   '.......CS.......'     length 16 — the blank widened it too, because the
+                               legacy grid stored the REALIZED token
+ai_rack 'SZDZS?'               three tiles collapsed into an ambiguous string
+```
+
+⛔ **Two producer defects and one consumer defect that COMPOUND.** `prompts.ts`
+required exactly fifteen letter-or-dot code points per row, so `extractGridRows`
+returned **14** rows for that board — silently discarding precisely the one
+informative row — `buildMoveUserPrompt` fell back to dumping `compact_state` raw
+with no row labels, and `listAnchorSquares` returned the literal string `"(7,7)"`.
+
+And the rack line was worse than the board: `formatRackMultiset('SZDZS?')` rendered
+`RACK: S Z D Z S ?` — **six tiles claimed from three, with a `D` that is not even a
+tile in that variant.** It invented a legal-looking rack the model would try to play
+from.
+
+**No gate went red for any of it.** The producer emitted a malformed row and the
+consumer rejected it, so the whole path degraded silently in the one surface whose
+job is to tell a model where the tiles are.
+
+Fixed with a 15×15 array of `{token, blank_as}` cells and an ordered rack array,
+reusing the shape the wire already used rather than inventing a third encoding.
+An unstructured context carrying a multigraph snapshot is now **rejected** —
+`UnstructuredMultigraphContextError`, "tile boundaries must never be reconstructed
+from a joined string" — because reverse segmentation is the lie the fix removes.
+
+**The lesson worth keeping:** a producer and a consumer that disagree about a format
+fail *silently* when the consumer's validation is a filter rather than an assertion.
+`extractGridRows` dropped what it could not parse; had it thrown, this would have
+been found the day it was written.
+
+### mec-13-D06 — the candidate overlay fabricated tiles that were never played
+
+```text
+status    FIXED at 3d7eae9 (C1 Slice B)
+found by  the C1 planner, from source, then confirmed by execution
+severity  a user-facing lie that looks correct
+```
+
+`AIThinkingOverlay.tsx:72` was `const letters = word.toUpperCase().split("")`, and
+each character became a `MiniTile` with a per-tile point value. A candidate `SZA`
+rendered as **three** tiles `S`, `Z`, `A` with invented values when the move played
+**two**.
+
+⭐ **It would look correct and be a lie**, which is the worst failure mode a UI has:
+nothing is missing, nothing is broken, and the information is false. The score was
+already authoritative from the backend, so only the decoration was wrong — which is
+exactly why no test caught it.
+
+Now renders lexical text with the authoritative total for a multigraph alphabet,
+and retains today's presentation exactly for every single-code-point alphabet.
+
+### Orchestrator defects, era 13 — the C1 additions
+
+```text
+mec-13-M05  I SEARCHED FOR THE NAMES I IMAGINED, NOT THE SHAPE OF THE CHECK. I claimed no guard rejecting
+            a multi-code-point token survived anywhere. Four did. My grep enumerated the variable names I
+            expected — token, letter, tile, t — and the real ones were `blank` and `normalized`. I also
+            never searched the frontend at all, letting the scope of my own search stand in for the scope
+            of my claim. R-Y: match the pattern, not the identifiers you imagine in it.
+mec-13-M06  A FIXTURE THAT CANNOT EXPRESS THE AMBIGUITY IT MUST PROVE. I specified a synthetic tile set —
+            A Á CS SZ DZS L·L ? — for a test whose starred requirement was two different segmentations of
+            one lexical string. None of those tokens overlap, so the requirement was UNSATISFIABLE as
+            written. The Worker added S and Z, which real Hungarian has, and proved it both ways: SZA legal
+            as SZ+A and illegal as S+Z+A. R-Z: check that the fixture can express the property.
+mec-13-M07  AN ALLOWLIST THAT DID NOT FOLLOW ITS OBLIGATION ACROSS A SLICE BOUNDARY. Slice B could not be
+            completed inside its allowlist, because a test file left in Slice A's allowlist pinned the exact
+            AI-state shape Slice B had to change. The accepted plan did not list it either. The Worker
+            stopped with zero mutation rather than adjudicate. R-AA: when a slice boundary moves a function,
+            check which tests pin its shape.
+mec-13-M08  I WROTE A PROMPT ABOUT A TREE FROM A REPORT THAT DESCRIBED AN EARLIER ONE. My C1 acceptance
+            prompt told the auditor that the user prompt for a given board is "pinned nowhere in the test
+            suite". By then the implementer had added a permanent three-digest pin, acting on its own
+            earlier lead. The auditor caught it. R-AB: write a prompt against the tree, not against the
+            report about the tree.
+mec-13-M09  SIX ACCESSOR SLIPS IN ONE SESSION, all one shape and all caught by an impossible result: a
+            fixed-offset substr against a variable-width column; eight guessed upstream filenames read as
+            "nothing there"; awk $2 when $2 was the language name; a predicted LGPL §14 that is §13; a
+            verbatim-block replacement that matched five of eight paragraphs; and identical SHA-256 digests
+            printed beside differing byte counts, because String.prototype.length is UTF-16 code units and
+            the pin was UTF-8 bytes. R-U: when a count comes out impossible, suspect the accessor.
+mec-13-M10  I PROPAGATED A COUNT AND A CAUSE I HAD NOT MEASURED. "Six synthetic disagreements" is five
+            disagreements plus one deliberate agreement control, and `playerslot.rack` does not have the
+            qualified-default mismatch I attributed to it twice in commit bodies — it is a help_text drift,
+            "letters" versus "tokens". Both were corrected by the independent acceptor, not by me.
+```

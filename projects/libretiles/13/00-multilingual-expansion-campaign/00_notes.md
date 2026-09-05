@@ -6011,3 +6011,98 @@ REJECT ⇒ ONE BOUNDED CORRECTION returns to the implementing side, ⛔ not to t
 ⚠ AND THE HONEST HEADLINE IS UNCHANGED BY C1 EITHER WAY: it makes NO new language playable. The capability
   exists; the content does not.
 ```
+
+## 65. ⭐ C1 PASSED FRESH INDEPENDENT ACCEPTANCE — and the acceptor corrected THREE of my records
+
+```text
+report   ./26_report_00.md   session 26 · exchange 01 · VERDICT PASS · C1 as a capability AND each slice
+         Acceptance independence: required-fresh-independent · Report justification: final-acceptance
+⇒ ⭐ CLOSURE CONDITIONS 1 AND 9 ARE SATISFIED. Ten of eleven now hold. ⛔ ONE REMAINS and it is not
+  engineering: condition 8's batch is DELIVERED and UNANSWERED, which is his observation to give.
+```
+
+### 65.1 ⭐ THE NEGATIVE CONTROLS ALL BEHAVED, WHICH IS THE ONLY REASON THIS PASS MEANS ANYTHING
+
+```text
+I built the matrix because ten steps of "confirm X" can all pass by reading files that say the right thing.
+✔ ALL SIX NEGATIVE CONTROLS FAILED AS REQUIRED:
+   N1 ⭐ A MUTATED SCRATCH ORACLE FAILED ITS PINNED-DIGEST ASSERTION. That is the single result the whole
+      audit turns on: the oracle is genuinely pinned, so parity is not circular.
+   N2 a `Cell` with `token="?"` and `blank_as=None` returned `malformed_board_cell` AND STAYED OCCUPIED —
+      it did not silently become a playable hole.
+   N3 a missing keyword-only `authority` raised `TypeError`. The callable fallback is genuinely gone.
+   N4 an unstructured multigraph context raised `UnstructuredMultigraphContextError`, code
+      `unstructured_multigraph_context`. The old lie is unreachable.
+   N5 no live caller of the deleted helper; remaining mentions are documentation and the oracle itself.
+   N6 no language-slug branch controlling game rules — ⭐ AND IT CLASSIFIED rather than counted, exactly as
+      the prompt demanded, separating defaults, diagnostic fixture identifiers and lexicon probe tables.
+✔ AND IT WENT BEYOND THE SCRIPT: it re-derived byte parity at ALL THREE COMMITS rather than two, and added
+  36 seeded draws plus the deterministic witness and ranked-search results — witness `AT`, score 4, three
+  nodes; ranked 2 408 nodes, top score 66 — identical at baseline, Slice A and the candidate.
+⚠ ONE HONEST EVIDENCE GAP, DECLARED RATHER THAN PAPERED OVER: "No browser visual or interaction check was
+  performed." It used the authorized harness/SSR alternative. ⭐ That is precisely what the prompt said to do
+  and precisely how to say it.
+```
+
+### 65.2 🐞 THREE RECORD CORRECTIONS, ALL MINE, ALL VERIFIED BY ME AFTERWARDS
+
+```text
+F1 INFO ⛔ MY ACCEPTANCE PROMPT §9 SAID THE USER PROMPTS ARE "PINNED NOWHERE IN THE TEST SUITE". FALSE at
+   the candidate. ✔ VERIFIED: `prompts.test.ts` holds `BASELINE_USER_PROMPT_SHA256` with all three digests
+   plus a legacy/structured equivalence test. ⇒ Slice B's Worker acted on its OWN exchange-01 LEAD 2 — "a
+   promising cheap guard… converts byte parity from a one-off manual diff into a permanent gate" — and built
+   it. ⭐ I WROTE THAT SECTION FROM THE EXCHANGE-01 REPORT'S WORLD WHILE THE FINAL TREE WAS IN FRONT OF ME.
+   ⇒ R-AB: A PROMPT WRITTEN ABOUT A TREE MUST BE WRITTEN AGAINST THAT TREE, not against the report that
+     described an earlier one. Every other section of that prompt I re-derived; this one I recalled.
+F2 LOW  ⛔ BOTH COMMIT BODIES SAY `playerslot.rack` "diverges the same way" as `board_state`. ✔ MEASURED
+   AFTERWARDS: `0001_initial.py:52` has `help_text='Current rack letters as list of strings'` and
+   `models.py:86` has `'…rack tokens…'`. IT IS A HELP_TEXT DRIFT, letters versus tokens. ⇒ ONLY
+   `board_state` has the qualified-default mismatch. I repeated the Slice A Worker's framing without
+   measuring it, and then repeated it again in the Slice B body.
+F3 INFO ⛔ "SIX SYNTHETIC DISAGREEMENTS" OVERSTATES BY ONE, and I propagated it into two prompts, two commit
+   bodies and these notes. ✔ VERIFIED: `test_case_3_three_tiles_in_main_dictionary_both_true` deliberately
+   asserts AGREEMENT. ⇒ FIVE disagreements plus ONE AGREEMENT CONTROL — and the agreement control is the
+   more interesting shape, because it proves the physical-count routing does not OVER-trigger.
+⛔ COMMIT BODIES ARE IMMUTABLE. All three corrections live in `99_closure.md` §3.3 and here. ⭐ That is the
+  honest place: rewriting history to hide a wrong sentence in a commit body would be worse than the sentence.
+```
+
+### 65.3 ⭐ IT DECLINED TO INHERIT MY PRE-EXISTING-FAILURE CLAIM — and I finished the job it started
+
+```text
+On `makemigrations --check` it wrote: "This predates BOTH C1 SLICES; I DID NOT ESTABLISH THAT IT PREDATES THE
+WHOLE CAMPAIGN." ⭐ EXACTLY RIGHT. It proved what it measured and refused to extend it, which is what I told
+it to do — "a pre-existing failure I assert is exactly the kind of thing an audit should refuse to inherit."
+✔ SO I ESTABLISHED THE REST MYSELF: migration `0008` was added by `8c00a33`; `git merge-base --is-ancestor`
+  confirms `8c00a33` is an ancestor of `fffc613`, this campaign's FIRST commit; and running the gate against
+  a `git archive` export of `8c00a33` gives exit 1 with digest
+  `3cfe882f326d61c161955b459a4f2ed14d5c406572cde93bde0871a4e8e76067` — ⭐ THE SAME DIGEST the acceptor
+  measured at all three C1 commits. ⇒ FOUR commits, one digest, spanning from before the campaign to its end.
+⭐ AND I USED A SYNTHETIC KEY THIS TIME rather than copying `backend/.env` into /tmp, which is what I did the
+  first time and had to clean up. ⇒ The lesson from §62.5 applied on its first opportunity.
+```
+
+### 65.4 The record is now consistent, and what is left
+
+```text
+`99_closure.md` rewritten: header says TEN of eleven satisfied · conditions 1 and 9 flipped to ✔ with the
+evidence · condition 7 re-stated at the CLOSING commit `3d7eae9` and noted as verified TWICE INDEPENDENTLY,
+with the superseded `84ddf1f` numbers kept so the rise is traceable · condition 8 restated as
+DELIVERED-UNANSWERED rather than not-satisfied · a new §3 covering what C1 closed, the three record
+corrections, and §3.4 the makemigrations provenance · §6 gains the acceptor's three ledger candidates ·
+§7's successor obligations rewritten from four items to ONE, with "⛔ do not reopen conditions 1 and 9".
+⛔ FIFTY-NINE SUPERSEDED LINES DELETED, not left to contradict the new ones. ⭐ The failure mode I have hit
+  three times this campaign is TWO PARTS OF ONE FILE DISAGREEING; leaving the old §3.1-3.3 in place under a
+  renumbered heading would have been the fourth.
+⇒ WHAT IS ACTUALLY LEFT, and none of it is a closure condition except the first:
+   ⛔ condition 8 — his observation of B1-B20
+   ·  six of seven licence-clean rows need a TILE DISTRIBUTION sourced from a language authority
+   ·  TURKISH is unschedulable until `canonicalize_tile_token`'s plain `.upper()` is measured against
+      Turkish casing — `I` and `İ` are different letters
+   ·  second-opinion review of the eight machine-authored catalogs
+   ·  the ledger candidates, now including the acceptor's three
+⭐ THE NUMBER TO PRESENT, UNCHANGED BY C1: twelve playable board languages, all twelve with an interface
+  locale · seven licence-clean and waiting on data · five blocked with named, evidenced causes · all
+  twenty-four dispositioned · and C1 built in two E3 slices with byte-proved preservation for all twelve and
+  an independent PASS. ⛔ C1 made no new language playable, and both commit bodies say so.
+```
