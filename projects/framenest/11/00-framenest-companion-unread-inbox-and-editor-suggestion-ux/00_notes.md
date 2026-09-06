@@ -72,7 +72,13 @@ acceptance evidence, subject to current-code diagnosis:
    items, including remove/re-add. **NUC Slice 1 T1–T3 PASS (2026-08-29).**
 2. Regression: animated preview restarts instead of pause/resume; video resumes
    but flashes black on open; video hover cursor refinement requested.
-   **Open — Slice 2. Not in the Slice 1 batch.**
+   **Open — Slice 2.** Cooperator re-observed 2026-09-04 on live Gallery:
+   GIF click always flashes black; MP4 / YouTube-download video flashes only
+   on first open, then pause/resume plays without a further flash; GIF
+   pause/resume does not. Follow-up 2026-09-04: GIF always returns to the
+   start; play→pause click felt like MP4. Matches compact-card split: video
+   keeps the `<video>` element and `currentTime`; GIF teardown has no frame
+   position.
 3. Honest failure UX: provider invalid-response failures need retryability and
    actionable in-modal status, with visible progress while analysis runs.
    **NUC Slice 1 T6–T9 PASS for in-modal progress/failure/retry UX.
@@ -95,6 +101,14 @@ acceptance evidence, subject to current-code diagnosis:
    **Open — Slices 4–5. D11-01 already chose ordinary notification after
    successful admin-run generic analysis of attributed media; proposals stay
    non-executing. Not in this batch.**
+7. GIF on compact cards always restarts from the beginning after pause;
+   play→pause click felt like MP4. **Open — Slice 2.**
+8. Closing Edit jumps Gallery scroll to the top (`loadCatalog()` rebuild).
+   **Open — later; not Slice 2.**
+9. Card overlay chrome: thicker colored borders as identity; solid black
+   hover; Edit default icon green; Open original no longer a green-fill
+   outlier. **Open — later; Cooperator visual-defect unfreeze pending
+   confirmation of the restatement.**
 
 Open historical question OQ-1 remains non-blocking: whether workstation-pull
 provisioning exists on the NUC for the two named runbook passages. Do not touch
@@ -362,3 +376,72 @@ from `454f181`. Slice 1 remains closed unless a later FAIL names a concrete
 defect. Next legal Worker, after explicit Cooperator selection of Slice 2,
 is one High-reasoning read-only Planner archived as `02_planning_00.md` +
 `02_report_00.md`.
+
+## Restoration Gates — Slice 2 Agent Orchestrator — 2026-09-04
+
+Handout `00_handout_agent_slice2.md` treated as RF-19 seed. Cooperator pointed
+this session at `meta/projects/framenest/11/*` and reported a successful
+private `~/global_sudo.fish` run (`GLOBAL_SUDO_READY`, `SSH_BATCH_READY`,
+`SUDO_BATCH_READY`). That is Cooperator-owned NUC capability context for a
+later privileged Worker, not Slice 2 planning authority and not a NUC
+release refresh. No Worker dispatched. No FrameNest Git, NUC wrapper,
+provider, browser, or implementation mutation.
+
+| Gate | Directly observed result | Status |
+| --- | --- | --- |
+| FrameNest branch / HEAD | `feat/x-meme-browser-companion` / `a4193d4f520a30aafa333987f2e6b846a5425d27` | PASS |
+| Origin branch equality | `origin/feat/x-meme-browser-companion` = `a4193d4f520a30aafa333987f2e6b846a5425d27` | PASS |
+| Origin main equality | `origin/main` = `a4193d4f520a30aafa333987f2e6b846a5425d27` (local tracking and `git ls-remote origin`) | PASS |
+| FrameNest porcelain | empty | PASS |
+| Product freeze ancestor | not re-checked this open; previously ancestor of this same HEAD | inherited |
+| `.ap` gitlink / checkout | both `7ef45da756ed3cc14808e89bf25d0a9f9aba5d26`; submodule clean | PASS |
+| AP doctor | PASS; `OK resolved governing variant: stable` | PASS |
+| NAC ledger | sole entry `consumer-declared-execution-and-capability-route-binding`, `accepted`, `retain-active`, last revalidated against `7ef45da` | PASS |
+| NUC runtime | not directly reverified; last Cooperator-reported G0 remains `a4193d4` / Alembic `0033`. Sudo timestamp reported ready this session | OPEN EVIDENCE |
+
+Wait for explicit Cooperator selection of Slice 2 before dispatching the
+read-only High Planner. `~/global_sudo.fish` is not a substitute for that
+selection. After any later privileged Worker, Cooperator runs `sudo -K`.
+
+## Cooperator selection — Slice 2, slow co-walk — 2026-09-04
+
+Michal selected Slice 2 and asked to proceed only with him, slowly, in the
+smallest possible steps, after more than a week away. That outranks the
+handout's immediate Planner dispatch. Planner Worker remains deferred until
+he asks to start planning. No implementation, Git, NUC wrapper, or provider
+work in this step.
+
+## Gallery re-entry observation — 2026-09-04
+
+Michal opened Gallery and restated Slice 2 from the live cards: GIF always
+black-flashes on click; MP4 / YouTube download flashes once then pause/play
+is stable; GIF is not. Recorded into confirmed-refinement 2. Next micro-step
+is one GIF pause look (static thumbnail vs frozen last frame), still no
+Planner.
+
+## Further Gallery observations — 2026-09-04
+
+Still no implementation. Michal played with Gallery and added:
+
+7. **GIF restart:** always returns to the beginning. Play→pause interaction
+   felt like MP4. Slice 2 remainder.
+8. **Edit close loses scroll:** scrolled to bottom, open Edit on a meme,
+   close → Gallery is at the top again. Mechanism: `closeMetadataWorkspaceWithContext`
+   defaults `reloadCatalog: true` and `loadCatalog()` replaces all cards.
+   Concrete defect; not Slice 2 playback. Needs an explicit later grant
+   (preserve scroll / skip reload when nothing saved).
+9. **Card overlay chrome:** Cooperator calls current overlay a visual
+   catastrophe and wants the MVP freeze lifted for this defect. Proposed
+   unification (pending his confirmation of this restatement): same circle
+   size; identity by **thicker border color only**; rest fill unified dark,
+   not the current pale-green translucent default on Open original.
+   - 🧠 top-right: thicker border in brain-emoji pink; emoji stays the
+     brain, including hover.
+   - Edit bottom-left: thicker **white** border; default icon **green**
+     (today's hover/accent green); hover solid black fill, **white** icon.
+   - Open original bottom-right: thicker **green** border; hover same as
+     Edit hover (solid black, white icon).
+   - All hovers: solid black, no transparency (today's analyze hover is
+     translucent blue; Open original hover is translucent green glow).
+   Attach (companion) not discussed. Not Slice 2. Not authorized to
+   implement until he confirms this reading and selects a chrome slice.
