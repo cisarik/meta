@@ -94,22 +94,37 @@ Whole 14 initialized on 2026-09-07 following the successful closure of `admin-pr
   3. Update `test_declared_vowels_change_leave_quality_slovak_stays_on_default` in `backend/tests/test_atomic_tile_tokens.py` to test the new leave equity mechanism (`searcher._calculate_leave_equity([])` or `leave_equity_cp`), proving that declared variant vowels are respected and alter leave equity compared to variants without declared vowels.
   4. Issue reissued implementation prompt `05_implementation_00.md` for Worker Session 05.
 
-
-
-
 ---
 
-## §2 Session 01 Evaluation & Plan Acceptance (2026-09-07)
+## §6 Slice 2 Acceptance & Readback (2026-09-07)
 
-- Received `01_report_00.md` from Worker Session 01 (`AIOS-SLICE-1-PLAN`).
-- Findings & Evaluation:
-  * Full 12-variant inventory (D1) verified against `backend/assets/variants/*.json` and `backend/assets/dicts/`.
-  * All 10 new native MovePromptSpec exemplars (D2) and shed tiles (D3) verified: words exist in target lexicons, scores match `premiums.json` DW center opening and unattached-first/pivot pattern.
-  * JudgePromptSpec (D4) eliminates false Collins claims for all 10 non-English variants.
-  * Dispatch architecture (D5) uses prototype-safe `ReadonlyMap` resolving `lexicon_id` first, then `variant`, with fallback to `englishMoveSpec`.
-  * `CORE_SHA256` (`c7acc2701fefd6d4aa6a69945c8a692f707053282ddfc333df1e00971964eb60`) remains unchanged and pinned because `moveSystemPromptFor` template and `englishMoveSpec` are byte-identical.
-  * Discovered adjacent defect: `frontend/src/app/api/ai/move/route.ts:1401-1406` had hardcoded "plausible English candidates" in `validateMove` tool description. Included in Slice 1 fix.
-  * Plan accepted in full. Evidence tier: E1.
-  * Implementation grant will target Worker Session 02 in a fresh Worker session (`Native planning mode: not-used`).
+- Received `05_report_00.md` from Worker Session 05 (`AIOS-S2-RACK-EQUITY-REISSUE`).
+- Mutation & Verification:
+  * Commit: `68afb6df92fccb2996ae83f1a444e4ada7396d10`
+  * Pre-push check passed against `843251db8da0aee878c3462b14cfe8e73528b399`.
+  * Post-push readback confirmed: `origin/main == HEAD == 68afb6df92fccb2996ae83f1a444e4ada7396d10`.
+  * 16 files modified (+3374 / -2796 lines).
+  * Major Deliverables Landed:
+    - `backend/gamecore/leave_equity.py`: Pure-Python integer-centipoint Rack Equity & Leave Valuation engine.
+    - `backend/gamecore/move_search.py`: Utility-based ranking (`total_score * 100 + leave_equity_cp`), `leave_value` renamed to `leave_equity_cp`, per-searcher profile resolution, memo cache.
+    - `backend/game/position_sets.py`: Cooperator-authorized fix preventing `TileBag.__post_init__` from refilling an explicitly empty snapshot bag.
+    - Regenerated diagnostic position set `english-aaac5c27.json` and updated 4 test files pinning its digest.
+    - New tests: `test_leave_equity.py` (12 tests) and `test_slovak_strength.py`.
+  * Empirical Performance Improvements (Proven):
+    - English 100-game acceptance: Total spread increased by **+3,075 points** (from +44,320 to **+47,395**, average spread **+473.95**, 100/0/0 W/D/L).
+    - English default 4-game: Average spread increased from +471.75 to **+479.00**.
+    - Slovak full ranked self-play (node-bound 20k, seeds 0–4):
+      * Pre-change: 3/5 finished with `BAG_EMPTY_AND_PLAYER_OUT` (seeds 3 and 4 stalled on `SIX_CONSECUTIVE_ZERO_SCORES` with 6 and 7 passes).
+      * Post-change: **5/5 (100%)** finished with `BAG_EMPTY_AND_PLAYER_OUT` with zero pass stalls!
+      * Seed 3: went from SIX_ZERO (353:581, 6 passes) to **OUT (504:493, 0 passes)**.
+      * Seed 4: went from SIX_ZERO (547:339, 7 passes) to **OUT (552:363, 0 passes)**.
+    - Slovak ranked vs witness: 4/0/0 with spreads +503, +329, +526, +346.
+  * Quality gates:
+    - Backend: `mypy` clean (100 source files), `ruff` clean, `pytest` clean across all suites including parity oracle.
+    - Frontend: `typecheck` clean, `lint` clean, `prompts.test.ts` (99 passed).
+- Cooperator Decision Recorded:
+  * Cooperator explicitly authorized real provider API calls (including NVIDIA NIM) as needed for development until quota limits are hit.
+- **Slice 2 (Rack Equity & Leave Valuation in Move Search) is ACCEPTED.**
+
 
 
