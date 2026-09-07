@@ -126,5 +126,21 @@ Whole 14 initialized on 2026-09-07 following the successful closure of `admin-pr
   * Cooperator explicitly authorized real provider API calls (including NVIDIA NIM) as needed for development until quota limits are hit.
 - **Slice 2 (Rack Equity & Leave Valuation in Move Search) is ACCEPTED.**
 
+---
+
+## §7 Session 06 Evaluation & Plan Acceptance (2026-09-07)
+
+- Received `06_report_00.md` from Worker Session 06 (`AIOS-SLICE-3-PLAN`).
+- Findings & Evaluation:
+  * Theoretical and architectural design for Pre-Endgame Tracking (`backend/gamecore/tile_tracking.py`) and Exact Endgame Minimax Solver (`backend/gamecore/endgame.py`).
+  * Terminal swing valuation modeled rigorously: immediate out = $\text{my\_score} + 2 \times \text{opponent\_leftover}$; 2-ply out and deadlock terminal spread accurately account for `apply_final_scoring` transfers.
+  * Discovered critical live defect: in `frontend/src/app/api/ai/move/route.ts:494`, the SSE move route re-sorted backend candidate recommendations by immediate raw score, which would undo strategic endgame choices. Added route and its test to allowlist to respect the late-game strategy marker.
+  * Search bounding: 1,250 ms budget, 10,000 minimax state expansions, 25,000 placements cap, 4,096 transposition table entries.
+  * Realistic protocol-grounded acceptance: recognizes that rare legal deadlocks exist in Scrabble; maintains 100% `BAG_EMPTY_AND_PLAYER_OUT` as our empirical acceptance target on benchmark seeds without faking legality.
+  * Execution command discipline: reinforced RF-16 requirement: always use `env -u APPIMAGE -u ARGV0 -u APPDIR .venv/bin/` from `backend/`; never `PYTHON_DOTENV_DISABLED=1` and never `poetry run`.
+  * Plan accepted in full. Evidence tier: E2 (cross-cutting reversible).
+  * Implementation grant will target Worker Session 07 in a fresh Worker session (`Native planning mode: not-used`).
+
+
 
 
