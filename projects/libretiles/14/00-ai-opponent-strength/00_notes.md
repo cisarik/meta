@@ -80,6 +80,21 @@ Whole 14 initialized on 2026-09-07 following the successful closure of `admin-pr
 - Plan accepted in full. Evidence tier: E2 (cross-cutting reversible).
 - Implementation grant will target Worker Session 04 in a fresh Worker session (`Native planning mode: not-used`).
 
+---
+
+## §5 Session 04 BLOCKED Evaluation & Prompt Reissue Resolution (2026-09-07)
+
+- Received `04_report_00.md` with status `BLOCKED` (`implementation-BLOCKED`).
+- Blocker analysis:
+  * Worker stopped lawfully prior to any mutation upon discovering that deleting `_RankedSearcher._leave_components` from `backend/gamecore/move_search.py` would cause an `AttributeError` in `backend/tests/test_atomic_tile_tokens.py` (line 647: `test_declared_vowels_change_leave_quality_slovak_stays_on_default`), which was not included in the path allowlist.
+  * Zero mutation occurred. Repository remains clean at `843251db8da0aee878c3462b14cfe8e73528b399`. Pre-mutation baselines were successfully captured.
+- Orchestrator Resolution:
+  1. Add `backend/tests/test_atomic_tile_tokens.py` to the path allowlist.
+  2. In `backend/gamecore/leave_equity.py`, ensure `profile_for_variant(variant, tile_points)` explicitly respects `getattr(variant, "vowels", None)` when present on the variant object.
+  3. Update `test_declared_vowels_change_leave_quality_slovak_stays_on_default` in `backend/tests/test_atomic_tile_tokens.py` to test the new leave equity mechanism (`searcher._calculate_leave_equity([])` or `leave_equity_cp`), proving that declared variant vowels are respected and alter leave equity compared to variants without declared vowels.
+  4. Issue reissued implementation prompt `05_implementation_00.md` for Worker Session 05.
+
+
 
 
 ---
