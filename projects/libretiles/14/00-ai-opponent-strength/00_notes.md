@@ -62,6 +62,25 @@ Whole 14 initialized on 2026-09-07 following the successful closure of `admin-pr
     - Backend: `mypy` clean (99 source files), `ruff` clean, `pytest tests/test_strength_benchmark.py tests/test_slovak_full_game.py` (9 passed, 2 skipped in 43.95s).
 - **Slice 1 (Variant-Aware Prompt Specs & Defect H1 Fix) is ACCEPTED.**
 
+---
+
+## §4 Session 03 Evaluation & Plan Acceptance (2026-09-07)
+
+- Received `03_report_00.md` from Worker Session 03 (`AIOS-SLICE-2-PLAN`).
+- Findings & Evaluation:
+  * Formulated utility function: $\text{Utility}(m) = 100 \cdot \text{total\_score}(m) + \text{leave\_equity\_cp}(L(m))$.
+  * Integer centipoints (fixed-point ×100, no floats, byte-for-byte deterministic). Clamped to $[-3000, +6000]$.
+  * Endgame mode ($bag\_count == 0$): $E_{\text{endgame}}(L) = -100 \cdot \sum \text{face\_points}(t)$ to minimize leftover penalties.
+  * Curated base tile equity tables for English and Slovak, plus fallback derived profile for all other 10 variants.
+  * Vowel-consonant balance table `BALANCE_CP[n][v]` based on non-blank leave size (0-6) and vowel count. Blanks act as wildcards halving penalties.
+  * Duplicate tile penalties and synergy pair bonuses (e.g. English Q+U, Slovak O+V, S+T, N+I, etc.).
+  * Architectural clean-up: New module `backend/gamecore/leave_equity.py`. In `move_search.py`, `leave_value` renamed to `leave_equity_cp: int`. Old `_leave_components` and defective `_vowel_set` deleted. Per-searcher memo cache `_leave_cache` added.
+  * Crucial discovery: `test_slovak_full_game.py` uses `POLICY_WITNESS` (first witness), not ranked search; thus, a dedicated `backend/tests/test_slovak_strength.py` will be created to measure Slovak ranked strength and clog elimination.
+  * Blast radius identified: `backend/assets/diagnostics/position_sets/english-f5ae61b4.json` records ranked traces and must be regenerated via `manage.py generate_position_set --variant-slug english`, updating the 4 test files that pin its digest.
+- Plan accepted in full. Evidence tier: E2 (cross-cutting reversible).
+- Implementation grant will target Worker Session 04 in a fresh Worker session (`Native planning mode: not-used`).
+
+
 
 ---
 
