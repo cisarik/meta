@@ -46,6 +46,25 @@ Whole 14 initialized on 2026-09-07 following the successful closure of `admin-pr
 
 ---
 
+## §3 Slice 1 Acceptance & Readback (2026-09-07)
+
+- Received `02_report_00.md` from Worker Session 02 (`AIOS-S1-PROMPT-SPECS`).
+- Mutation & Verification:
+  * Commit: `843251db8da0aee878c3462b14cfe8e73528b399`
+  * Pre-push check passed against `151e833dd0e78ced075101864cb5f45ee521bebc`.
+  * Post-push readback confirmed: `origin/main == HEAD == 843251db8da0aee878c3462b14cfe8e73528b399`.
+  * Files modified:
+    - `frontend/src/lib/prompts.ts`: Added native MovePromptSpec and JudgePromptSpec for all 10 un-spec'd variants, prototype-safe `Map`-backed dispatch for `movePromptSpecFromContext` and `judgePromptSpecFromBody` resolving `lexicon_id` first, then `variant`, with fallback to English. Unchanged template keeps `CORE_SHA256` (`c7acc2701fefd6d4aa6a69945c8a692f707053282ddfc333df1e00971964eb60`) byte-identical.
+    - `frontend/src/lib/prompts.test.ts`: Added 54 new assertions covering all 12 move cores, all 12 judge cores, and dispatch lookups/fallbacks. All 99 tests pass.
+    - `frontend/src/app/api/ai/move/route.ts`: Fixed hardcoded English string in `validateMove` description.
+  * Quality gates:
+    - Frontend: `prompts.test.ts` (99 passed), `move/route.test.ts` + `judge/route.test.ts` (83 passed), `ai-turn-simulation.test.ts` (5 passed), `typecheck` clean, `lint` clean.
+    - Backend: `mypy` clean (99 source files), `ruff` clean, `pytest tests/test_strength_benchmark.py tests/test_slovak_full_game.py` (9 passed, 2 skipped in 43.95s).
+- **Slice 1 (Variant-Aware Prompt Specs & Defect H1 Fix) is ACCEPTED.**
+
+
+---
+
 ## §2 Session 01 Evaluation & Plan Acceptance (2026-09-07)
 
 - Received `01_report_00.md` from Worker Session 01 (`AIOS-SLICE-1-PLAN`).
