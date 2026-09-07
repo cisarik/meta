@@ -20,3 +20,43 @@ Whole 14 initialized on 2026-09-07 following the successful closure of `admin-pr
   2. Ensure self-play games reliably finish with `BAG_EMPTY_AND_PLAYER_OUT`, completely eliminating dead-rack pass stalls.
   3. Maintain a rock-solid, model-neutral game engine foundation.
   4. Complete the critical readiness gate required prior to VPS deployment.
+
+---
+
+## §1 Stage 1 Baseline Verification (2026-09-07)
+
+- Verified repository state:
+  * HEAD: `151e833dd0e78ced075101864cb5f45ee521bebc` == `origin/main`. Working tree clean.
+  * Pinned AP submodule commit: `9c5cc44f8b6c92dd56ad2427d13223d7d59c5656`.
+- Baseline test execution:
+  * `backend/tests/test_strength_benchmark.py` & `backend/tests/test_slovak_full_game.py`:
+    - `strength-default` (English ranked vs first-witness, seeds 300, 301 across slots 0 and 1):
+      * Seed 300, slot 0: spread +420, `BAG_EMPTY_AND_PLAYER_OUT`, max plies = 35.
+      * Seed 300, slot 1: spread +505, `BAG_EMPTY_AND_PLAYER_OUT`, max plies = 35.
+      * Seed 301, slot 0: spread +461, `BAG_EMPTY_AND_PLAYER_OUT`, max plies = 35.
+      * Seed 301, slot 1: spread +501, `BAG_EMPTY_AND_PLAYER_OUT`, max plies = 35.
+      * Total spread = +1887, average spread = +471.75.
+    - `slovak-full-game` (Slovak witness-first self-play, seed 0):
+      * Terminated at ply 55 with reason `SIX_CONSECUTIVE_ZERO_SCORES` (stall due to dead-rack pass streak).
+      * Final scores: P0 = 303, P1 = 243; leftover points: P0 = 5, P1 = 27.
+      * Confirms the core diagnosis: Slovak self-play under greedy/first-witness search stalls out on consonant/diacritic clogs rather than reaching `BAG_EMPTY_AND_PLAYER_OUT`.
+  * Gates:
+    - Backend: mypy clean (99 source files), ruff clean.
+    - Frontend: `npm run typecheck` clean, `npm run lint` clean, vitest 37 passed test files (555 passed, 3 skipped).
+
+---
+
+## §2 Session 01 Evaluation & Plan Acceptance (2026-09-07)
+
+- Received `01_report_00.md` from Worker Session 01 (`AIOS-SLICE-1-PLAN`).
+- Findings & Evaluation:
+  * Full 12-variant inventory (D1) verified against `backend/assets/variants/*.json` and `backend/assets/dicts/`.
+  * All 10 new native MovePromptSpec exemplars (D2) and shed tiles (D3) verified: words exist in target lexicons, scores match `premiums.json` DW center opening and unattached-first/pivot pattern.
+  * JudgePromptSpec (D4) eliminates false Collins claims for all 10 non-English variants.
+  * Dispatch architecture (D5) uses prototype-safe `ReadonlyMap` resolving `lexicon_id` first, then `variant`, with fallback to `englishMoveSpec`.
+  * `CORE_SHA256` (`c7acc2701fefd6d4aa6a69945c8a692f707053282ddfc333df1e00971964eb60`) remains unchanged and pinned because `moveSystemPromptFor` template and `englishMoveSpec` are byte-identical.
+  * Discovered adjacent defect: `frontend/src/app/api/ai/move/route.ts:1401-1406` had hardcoded "plausible English candidates" in `validateMove` tool description. Included in Slice 1 fix.
+  * Plan accepted in full. Evidence tier: E1.
+  * Implementation grant will target Worker Session 02 in a fresh Worker session (`Native planning mode: not-used`).
+
+
