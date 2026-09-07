@@ -20,15 +20,12 @@ positives, all residuals dispositioned with sign-off where required.
 ```text
 09/00 backend-security-hardening   CLOSED    19cfec9 · 99_closure.md
 10/00 ui-internationalization      CLOSED    47ed8bf · 99_closure.md
+11/00 admin-provider-model-console CLOSED    151e833 · 11/00-.../99_closure.md
 11/01 multilingual-tile-token-foundation   SUPERSEDED   11/01-.../98_supersession.md
 11/02 czech-polish-hungarian-variant-activation SUPERSEDED  11/02-.../98_supersession.md
 12/00 multilingual-expansion       SUPERSEDED   12/00-.../98_supersession.md
-13/00 multilingual-expansion-campaign  ⭐ THE ACTIVE WHOLE. UI localization COMPLETE (twelve locales) and
-                                   capability C1 COMPLETE — multi-code-point tiles atomic end to end,
-                                   cbb2865 + 3d7eae9, PASSED fresh independent acceptance in session 26.
-                                   ⛔ NOT CLOSED: ten of eleven conditions hold; the eleventh is the
-                                   Cooperator's observation of the deferred acceptance batch, which is
-                                   delivered and unanswered. See its 99_closure.md.
+13/00 multilingual-expansion-campaign  CLOSED    3d7eae9 · 13/00-.../99_closure.md
+14/00 ai-opponent-strength         ⭐ THE ACTIVE WHOLE. Unlocked by 11/00 closure.
 ```
 
 ⇒ The 10/00 opening Cooperator decisions are in section 13; the 11/01 alphabet data is in section 14. Both
