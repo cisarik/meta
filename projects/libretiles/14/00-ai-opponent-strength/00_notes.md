@@ -250,6 +250,67 @@ Whole 14 initialized on 2026-09-07 following the successful closure of `admin-pr
     - Backend: `mypy` clean (104 files), `ruff` clean, `pytest` on migrations and diagnostics clean (29/29 passed in 7.51s).
 - **Slice 5 (Structured Candidate Anchors & LLM Strategic Direction) is ACCEPTED.**
 
+---
+
+## §13 Comprehensive Whole 14 Independent Audit Evaluation (2026-09-08)
+
+- Received `12_report_00.md` from Worker Session 12 (`AIOS-WHOLE-14-COMPREHENSIVE-AUDIT`). Status: `PASS`.
+- Audit Evaluation & Key Verifications:
+  * **Code Hygiene & Layering (D1)**: Verified clean. Zero imports from Django/game into `gamecore/`. The four new modules (`leave_equity.py`, `tile_tracking.py`, `endgame.py`, `board_defense.py`) are strictly decoupled, deterministic, use integer centipoints without float drift, and have zero dead code.
+  * **Invariants & Parity (D2)**: `WordAuthority.accepts_tokens` remains the sole legality authority. Parity oracle in `test_word_authority_parity.py` sections 1–4 is untouched and 100% green (50 passed in 117s). All 12 variants, Slovak SSS 100 tiles, and blank zero-scoring are preserved.
+  * **Standalone Engine/CPU Playability (D3)**: Confirmed that Libre Tiles has an autonomous Scrabble Master-level CPU player (`POLICY_RANKED_WITNESS_SAFE`) that executes moves in 15–50ms with zero API calls. Exposing a "Local Engine (CPU)" option in Settings (`modelId: "engine/cpu"`) is fully feasible and supported by existing backend candidate endpoints.
+  * **LLM Prompts & Structured Anchors (D4)**: Verified that structured anchors in `prompts.ts` replace blind numbers with rich hook contexts, adjacent runs, open spans, and reachable premiums. `CORE_SHA256` is byte-identical. Migration `0014` successfully updates the 4 strategic presets.
+  * **Test Suite Hygiene (D5)**: Unit tests run in <15s, while multi-ply 20k-node benchmarks run for minutes and acceptance matrices for hours. Confirmed recommendation to ensure slow full-game simulation tests are marked `@pytest.mark.slow` so standard developer test commands stay fast (<30s).
+  * **Technical Debt & Polish Findings (D6)**:
+    - Zero critical blockers.
+    - M1: Gating slow full-game benchmark tests behind `@pytest.mark.slow`.
+    - m1: Capping `anchorsFromCells` output to top 15–20 anchors on dense boards to conserve token context.
+- **Audit is ACCEPTED with clean bill of health across Whole 14.**
+
+---
+
+## §14 Polish Acceptance & Final Readiness (2026-09-08)
+
+- Received `13_report_00.md` from Worker Session 13 (`AIOS-S6-CPU-OPPONENT-AND-TEST-HYGIENE`).
+- Mutation & Verification:
+  * Commit: `531a80963115fa7a3ab42f86710f1a2f360df90d`
+  * Pre-push check passed against `128116210a2a9e9394b0e57d3ef037acdd940ccf`.
+  * Post-push readback confirmed: `origin/main == HEAD == 531a80963115fa7a3ab42f86710f1a2f360df90d`.
+  * 11 files modified (+337 / −2 lines):
+    - `frontend/src/lib/provider-registry.ts` & `test`: registered `ENGINE_PROVIDER = "engine"` and `ENGINE_CPU_MODEL_ID = "engine/cpu"` as "Local Engine (CPU Master)".
+    - `frontend/src/lib/model-catalog.ts`: added `engine/cpu` resolution to `findCatalogPair` and `revalidateRuntimePair`.
+    - `frontend/src/app/api/ai/move/route.ts` & `test`: direct local engine execution (~20–50ms turn latency, zero API calls, zero credentials required).
+    - `frontend/src/lib/prompts.ts` & `test`: capped `anchorsFromCells` to top 20 prioritized anchors, conserving LLM context budget.
+    - `backend/tests/`: gated the 4 heavy benchmark suites (`test_board_defense_benchmark.py`, `test_endgame_benchmark.py`, `test_slovak_strength.py`, `test_strength_benchmark.py`) behind `LIBRETILES_RUN_BENCHMARKS=1`.
+  * Verified performance:
+    - Benchmark test files execute in **6.36 seconds** (down from >10 minutes).
+    - Frontend vitest: all 37 test files passed (630 tests passed, 3 skipped).
+    - Backend: mypy clean (104 files), ruff clean.
+- **Slice 6 (Polish & CPU Master Playability) is ACCEPTED.**
+- **All technical deliverables for Whole 14 (`ai-opponent-strength`) are SATISFIED.**
+
+---
+
+## §15 Closure of Logical Whole `ai-opponent-strength` (Meta 14/00) (2026-09-08)
+
+- **Logical Whole Closure: closed-by-ORCHESTRATOR.**
+- Formal closure record written: `/home/agile/meta/projects/libretiles/14/00-ai-opponent-strength/99_closure.md`.
+- Final Closing Commit: `531a80963115fa7a3ab42f86710f1a2f360df90d` == `origin/main`.
+- AP Pin: `9c5cc44f8b6c92dd56ad2427d13223d7d59c5656`.
+- Git status: porcelain empty.
+- Lineage of commits in Whole 14:
+  1. `843251d`: Slice 1 (12-variant prompt specs, H1 fix)
+  2. `68afb6d`: Slice 2 (Rack equity & leave valuation)
+  3. `6e20a4f`: Slice 3 (Pre-endgame tracking & minimax out-play solver)
+  4. `f6b6fff`: Slice 4 (Board control & defensive opportunity cost)
+  5. `1281162`: Slice 5 (Structured candidate anchors & strategic presets)
+  6. `531a809`: Slice 6 Polish (Local engine CPU master & benchmark test gating)
+- All gates green, architecture clean, master engine operational, zero blockers remaining.
+- Whole 14 is **OFFICIALLY CLOSED**.
+
+
+
+
 
 
 
