@@ -141,6 +141,118 @@ Whole 14 initialized on 2026-09-07 following the successful closure of `admin-pr
   * Plan accepted in full. Evidence tier: E2 (cross-cutting reversible).
   * Implementation grant will target Worker Session 07 in a fresh Worker session (`Native planning mode: not-used`).
 
+---
+
+## §8 Slice 3 Acceptance & Readback (2026-09-08)
+
+- Received `07_report_00.md` from Worker Session 07 (`AIOS-S3-ENDGAME-SOLVER`).
+- Mutation & Verification:
+  * Commit: `6e20a4f5e901ebbcd4354e77a3e103ff2bcdfa8b`
+  * Pre-push check passed against `68afb6df92fccb2996ae83f1a444e4ada7396d10`.
+  * Post-push readback confirmed: `origin/main == HEAD == 6e20a4f5e901ebbcd4354e77a3e103ff2bcdfa8b`.
+  * 19 files modified/created across backend gamecore, Django services, tests, and frontend SSE move route.
+  * Major Deliverables Landed:
+    - `backend/gamecore/tile_tracking.py`: Pure-Python public unseen-pool builder (`LateGameContext`) calculating unseen tiles without private information leakage, expanding into exact opponent rack when `bag == 0`.
+    - `backend/gamecore/endgame.py`: Iterative-deepening minimax solver with alpha-beta pruning and 4,096-entry transposition table, modeling terminal swings ($2 \times \text{opponent leftover}$). Bounded to 1,250 ms live budget and 10,000 state expansions.
+    - `backend/gamecore/leave_equity.py`: `pre_endgame_equity_cp` with transition burden and premium-exposure penalty.
+    - `frontend/src/app/api/ai/move/route.ts`: Preserves backend recommendation order when `strategy_mode` is present, preventing raw-score sorting from overriding multi-turn endgame out-play sequences.
+    - New test suites: `test_tile_tracking.py`, `test_endgame.py`, `test_pre_endgame.py`, `test_endgame_services.py`, `test_endgame_benchmark.py`.
+  * Empirical Performance Improvements (Proven):
+    - Paired A/B benchmark (100 seeds: 50 English + 50 Slovak):
+      * English 50: ranked-out increased from 49 to **50/50 (100% out-play completion)**.
+      * Slovak 50: spread increased by **+210 points**; ranked-out increased from 34 to **38/50**, bag-empty from 39 to 41/50.
+      * Slovak seed 1 converted from `SIX_CONSECUTIVE_ZERO_SCORES` to `BAG_EMPTY_AND_PLAYER_OUT` with +38 spread expansion.
+      * Combined 100 seeds: Total spread increased (+4 net), ranked-out increased from 83 to **88/100**, bag-empty from 88 to **91/100**.
+  * Quality gates:
+    - Backend: `mypy` clean (102 source files), `ruff` clean, `pytest` clean across all 1109 tests.
+    - Frontend: `typecheck` clean, `lint` clean, `vitest` (167 passed).
+- **Slice 3 (Pre-Endgame Tile Tracking & Exact Endgame Minimax Solver) is ACCEPTED.**
+
+---
+
+## §9 Session 08 Evaluation & Plan Acceptance (2026-09-08)
+
+- Received `08_report_00.md` from Worker Session 08 (`AIOS-SLICE-4-PLAN`).
+- Findings & Evaluation:
+  * Unified midgame board defense formula:
+    $\text{Utility}(m) = 100 \cdot \text{total\_score}(m) + \text{leave\_equity\_cp}(m) - D(m)$,
+    with $D(m) \in [-800, 3000]\text{ cp}$ (from $+8$ points denial/closure bonus to $-30$ points catastrophic premium exposure penalty).
+  * Fast anchor-based detection using flattened bitboards and access channels without recursive move generation.
+  * Score-differential posture: $\le -60$ (trailing comeback opening bonus), $-59\dots -30$, $-29\dots +29$ (neutral), $+30\dots +59$, and $\ge +60$ (lockdown with closure and denial bonuses).
+  * Pruning optimization: if $100 \cdot \text{score} + \text{leave} + 800 < \text{worst top\_k utility}$, skip defense evaluation.
+  * StrategyMode: adds `"board_control"`, recognized by frontend SSE route to preserve backend strategic order.
+  * Preserves historical position sets: explicitly sets `board_defense_enabled=False` during position set generation/replay, avoiding any asset regeneration.
+  * Path allowlist: 14 files (12 backend, 2 frontend).
+  * Plan accepted in full. Evidence tier: E2 (cross-cutting reversible).
+  * Implementation grant will target Worker Session 09 in a fresh Worker session (`Native planning mode: not-used`).
+
+---
+
+## §10 Session 09 Implementation Evaluation (2026-09-08)
+
+- Received `09_report_00.md` from Worker Session 09 (`AIOS-S4-BOARD-DEFENSE`). Status: `PARTIAL` / `implementation-PARTIAL`.
+- Direct Orchestrator readback (not Worker claim):
+  * `HEAD == origin/main == f6b6fff42736c5124b508fde319f8bf5ae96cfc3`
+  * Message: `feat(gamecore): implement board control and defensive opportunity cost`
+  * Working tree clean. AP pin unchanged: `9c5cc44f8b6c92dd56ad2427d13223d7d59c5656`.
+- Implementation landed (14 allowlisted files, +1511 / −21):
+  * `backend/gamecore/board_defense.py` — integer-centipoint midgame defense, bag > 7 only.
+  * Ranked search ranks by `evaluation_cp`; emits `strategy_mode: "board_control"`.
+  * Live probe enables defense with server-derived score differential.
+  * SSE route recognizes `"board_control"` and preserves backend order.
+  * Position sets remain frozen via explicit `board_defense_enabled=False`.
+- Default E2 gates (Worker-observed, not re-run at this evaluation):
+  * mypy 103 files clean; ruff clean.
+  * Full pytest: 1128 passed, 6 skipped.
+  * Frontend: typecheck clean, lint clean, vitest 74 passed (move route + turn simulation).
+- Compatibility deviation (lawful, allowlist-preserving):
+  * `board_control` is a **top-level** payload marker only; `search` keeps the five-key midgame shape so unlisted `test_api.py` stays green. Frontend reads top-level `strategy_mode`.
+- Opt-in D7: **not pytest-complete**.
+  * English 100 (seeds 300–349, both seats): paired spread **+494** (mean **+4.94**), WR 0.500=0.500, opponent PPT 37.15 → 35.57, 100/100 `BAG_EMPTY_AND_PLAYER_OUT`.
+  * Slovak: 6/20 pairs only (seeds 0–2); partial mean +47.83. Seeds 3–9 missing.
+  * `LIBRETILES_RUN_STRENGTH_ACCEPTANCE` 100-game (legacy, defense off) **never started**.
+- **Slice 4 implementation is ACCEPTED as landed product.** Residual measurement (Slovak D7 remainder + 100-game strength command) is **not** a revert trigger. Coefficients were not retuned.
+- Whole `ai-opponent-strength` remains **not-closed**. Next logical slice is not selected until the Cooperator picks the residual-measurement vs proceed-to-next-slice decision.
+
+---
+
+## §11 Session 10 Evaluation & Scope Guard for Slice 5 (2026-09-08)
+
+- Received `10_report_00.md` from Worker Session 10 (`AIOS-SLICE-5-PLAN`).
+- Scope Analysis & Orchestrator Decision:
+  * The Worker proposed an unauthorized scope expansion: rewriting the Zustand store from v6 to v7, removing user-facing settings (`aiTimeout`, `aiMaxSteps`), altering `AIThinkingOverlay`, and modifying 34+ frontend and documentation files.
+  * Per AP Core Mandates and protocol rules, the Orchestrator strictly **rejects** this frontend store/UI deletion. The user settings, thinking-time UI, and store schemas remain intact and supported.
+  * The implementation scope for Slice 5 is strictly bounded to the core objective:
+    1. `frontend/src/lib/prompts.ts`: Implement structured candidate anchors with rich hook context (adjacent letters/runs, directions, open spans, reachable premiums) in `buildMoveUserPrompt` to eliminate 2D spatial coordinate hallucination. Add coordinate guidance to `validateMove` description. Keep `CORE_SHA256` pinned and unchanged.
+    2. `backend/catalog/migrations/0014_strategic_seeded_prompts.py`: Hash-gated refresh of the 4 seeded `SEARCH_PROFILE` presets (`Initial`, `Fast Search`, `Short Hooks`, `Grandmaster`) adding CoT guidance for anchor selection, leave preservation, and score-differential posture.
+    3. Live Verification: Run live NVIDIA NIM AI turns via `manage.py diagnose_ai_play` under the Cooperator's standing API authorization to observe non-zero `provider_candidate` authoring.
+  * Path allowlist strictly bounded to ~8 files (prompts, migration, tests, diagnostic harness).
+  * Implementation grant will target Worker Session 11 in a fresh Worker session (`Native planning mode: not-used`).
+
+---
+
+## §12 Slice 5 Acceptance & Readback (2026-09-08)
+
+- Received `11_report_00.md` from Worker Session 11 (`AIOS-S5-ANCHORS-AND-STRATEGY`).
+- Mutation & Verification:
+  * Commit: `128116210a2a9e9394b0e57d3ef037acdd940ccf`
+  * Pre-push check passed against `f6b6fff42736c5124b508fde319f8bf5ae96cfc3`.
+  * Post-push readback confirmed: `origin/main == HEAD == 128116210a2a9e9394b0e57d3ef037acdd940ccf`.
+  * 9 files modified/created across frontend prompts/tests and backend catalog migrations/tests.
+  * Major Deliverables Landed:
+    - `frontend/src/lib/prompts.ts`: Implemented rich structured candidate anchors in `anchorsFromCells` (adjacent runs, open spans, perpendicular cross-check indicators, reachable TW/TL/DW premiums) and explicit coordinate mapping guidance (`COORDINATE MAPPING & RULES`) in `buildMoveUserPrompt`.
+    - `frontend/src/lib/prompts.baseline.fixture.ts`: Test-only frozen copy of baseline `buildMoveUserPrompt` from `f6b6fff` preserving historical `BASELINE_USER_PROMPT_SHA256` oracle.
+    - System prompt core digest `CORE_SHA256` (`c7acc2701fefd6d4aa6a69945c8a692f707053282ddfc333df1e00971964eb60`) verified byte-identical.
+    - `backend/catalog/migrations/0014_strategic_seeded_prompts.py`: Hash-gated reversible migration updating Initial, Fast Search, Short Hooks, and Grandmaster `SEARCH_PROFILE` presets.
+    - Live NIM verification executed: `manage.py diagnose_ai_play` ran live against `nvidia/nemotron-3-super-120b-a12b`, scoring 84 points on ply ("BACKARE") under single-call-in-flight concurrency.
+  * Quality gates:
+    - Frontend: `typecheck` clean, `lint` clean, `vitest` (117/117 passed).
+    - Backend: `mypy` clean (104 files), `ruff` clean, `pytest` on migrations and diagnostics clean (29/29 passed in 7.51s).
+- **Slice 5 (Structured Candidate Anchors & LLM Strategic Direction) is ACCEPTED.**
+
+
+
+
 
 
 
