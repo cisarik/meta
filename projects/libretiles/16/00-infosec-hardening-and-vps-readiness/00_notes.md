@@ -594,6 +594,38 @@ Plan review:
 
 Plan **accepted** for implementation. Session 11.
 
+---
+
+## §19 Slice 5 implementation accepted (session 11) — 2026-09-09
+
+```text
+HEAD / origin/main   33ffa150fa520118e67a6670422fe7fae1c98741
+Parent               2e034d85be72f34b1d967190aa0dd7b03a32dbc0
+AP gitlink           9c5cc44f8b6c92dd56ad2427d13223d7d59c5656
+porcelain            empty
+Six-path commit      feat(frontend): run production Next as a standalone server
+Isolated pytest      12 passed (Orchestrator re-run 0.10s)
+Independent R3       not-required (E2 / R1; no committed .next/; no authN/Z)
+Slice 5              accepted
+```
+
+Orchestrator checks that held: `output: "standalone"` + `allowedDevOrigins`; ExecStart env-prefix `HOSTNAME=127.0.0.1 PORT=3000` + `server.js`; no `0.0.0.0`; `public/.` and `.next/static/.` copies after build via `run_in_dir`; deferred-standalone test gone; nginx not in the commit; `$http_x_forwarded_proto` still forbidden in templates.
+
+Cosmetic: commit body `EnvironmentFileoverrides` (missing space). Not amended.
+
+---
+
+## §20 Whole 16 closed (2026-09-09)
+
+```text
+Logical-whole closure: closed-by-ORCHESTRATOR
+Closing commit:      33ffa150fa520118e67a6670422fe7fae1c98741
+Record:              99_closure.md
+```
+
+Successor work in notes §13 (1M-context audit prompt, then a fresh Agent Orchestrator prompt) is **not** this whole and is not started here.
+
+
 
 
 
