@@ -55,3 +55,22 @@ Independently verified by the Orchestrator against the live tree:
 ### Slice 2 outcome
 
 Status: PASS (implementation-PASS). Zero static-test edit needed (plan D6 proved correct — no test was bent to follow documentation). Pre-existing parity failure confirmed again as baseline-red after this slice (still not caused by Whole 17). Next: Slice 3 — documentation quality audit & logical-whole closure.
+
+---
+
+## Slice 3a — Fresh Independent Documentation-Truth Audit — ACCEPTED (2026-09-09)
+
+Fresh Worker session 05 (independent of all prior implementers) found, with exact code evidence:
+
+- **F-01** `docs/architecture.md:183` "capped at five distinct pairs" → code `ai-fallback.ts:17` `MAX_FALLBACK_ATTEMPTS = 3`.
+- **F-02** `docs/architecture.md:184` "five sequential attempts / 50 seconds" → `judge/route.ts:17,41` three attempts / 30 s.
+- **F-03** `docs/architecture.md:181` "fixed canonical order" → reviewed Admin ordering (`admin.py:294-305`).
+- **F-04** `docs/architecture.md:394` "fixed order" → seeded order, Admin-reviewable (widened hit beyond the Orchestrator's hypothesis).
+- **F-05** `docs/architecture.md:258` Tier 2 presented as live pipeline stage → planned, not implemented (PRD/AGENTS already correct).
+- Verified-correct (no action): F-06..F-22 cover fallback caps in README/AGENTS/CONTRIBUTING, judge numbers in AGENTS, defaults 120s/50 steps, probe timing numbers, "thirteen assets", eleven build scripts, toolchain versions, none-provider/locale counts, `.env.example` defaults, absence of 0.0.0.0/SOWPODS/bare DEBUG=true, and Vercel library/historical mentions.
+
+All five fixes are inside `docs/architecture.md`; no `NEEDS_ORCHESTRATOR_DECISION`; 10/10 static guards stay green; allowlist for the fix = `docs/architecture.md` only. Audit gate run: mypy clean (119 files), ruff clean, makemigrations "No changes detected", pytest (slow/internet/postgres deselected) 1227 passed + 1 pre-existing parity red + 27 deselected, frontend typecheck+lint exit 0.
+
+### Orchestrator defect recorded (D-11 shape)
+
+The `05_audit_00.md` prompt's Side-effect authority named the report destination `05_audit_00.md` instead of the D-17 convention `05_report_00.md`, so the Worker's atomic write overwrote the prompt file. The prompt is transient delivery evidence (acceptable loss); the report `05_report_00.md` is intact and governs. No recovery needed beyond this note.
