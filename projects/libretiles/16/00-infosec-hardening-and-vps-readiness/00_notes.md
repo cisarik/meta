@@ -433,4 +433,78 @@ Native planning mode: not-used
 Dispatch: Cooperator-manual
 ```
 
+---
+
+## §12 Slice 3 implementation review — session 07 `07_report_00.md` (2026-09-09)
+
+Worker status PASS, `implementation-PASS`. Commit `7ffe0dc4d81b37afb1c22b68b55e7330869c86ef` on `origin/main`. Porcelain empty. Diff is exactly the four allowlisted paths.
+
+Verified vs tree:
+
+| Contract | Verdict |
+|---|---|
+| CSRF from CORS + optional `DJANGO_CSRF_TRUSTED_ORIGINS` | holds |
+| Reject scheme/wildcard/path/userinfo/query/fragment; `urlsplit` ValueError → ImproperlyConfigured | holds |
+| Default CSRF in DEBUG=true is `http://localhost:3000` | holds (probe test) |
+| `SECURE_PROXY_SSL_HEADER` default None; `_env_flag` opt-in | holds |
+| Probe JSON: origin list + boolean; no header tuple / secrets | holds |
+| HSTS PRELOAD unset; W021 still asserted | holds |
+| Simulation 429 via patched `SimpleRateThrottle.THROTTLE_RATES`; 400,400,429; Retry-After digit | holds |
+| Unbound views: `throttle_scope is None` (one combined test) | holds |
+| Focused pytest >30s classified as probe-subprocess cost, not product regression | accepted |
+
+Independent R3: not-required (E2 / R1). Residual operational: proxy header is safe only off, or behind a stripping TLS proxy — that is Slice 4.
+
+```text
+Slice 3: accepted
+End commit: 7ffe0dc4d81b37afb1c22b68b55e7330869c86ef
+Logical-whole closure: not-closed
+Slice 4: not selected — Selection Echo pending
+```
+
+---
+
+## §13 Cooperator intent — post-whole 16 deep audit (recorded 2026-09-09)
+
+Not authority. Not a new logical whole. Not Slice 4/5 skip. Not mobile/UI.
+
+After **this** whole (`infosec-hardening-and-vps-readiness`) reaches Orchestrator closure, the then-current Orchestrator will write one professional audit prompt for a **fresh** Worker session aimed at an LLM with a ~1M-token context. That Auditor is **not** limited to INFOSEC.md R3:
+
+- Audit Orchestrator prompts, planner reports, implementation diffs, and residuals of whole 16 against the public GitHub tree.
+- Intuition and creativity allowed: gap-closing fixes, documentation clarity (README — logical, not encyclopedic), maintenance wholes (Django/Next currentness), and candidate next logical wholes.
+- Explicitly **out of that Auditor's mutation authority**, and out of the next selected whole until Michal selects them: rendered UI/UX polish, mobile/tablet pinch-zoom, and live device testing.
+- After the Auditor's report exists on disk, the Orchestrator writes an expert prompt for a **fresh Agent Orchestrator** that can sequence the next whole without reconstructing whole 16 from chat compaction.
+
+Documented residuals already in this whole's notes (carry into that audit; do not mix into Slice 4 unless the slice owns them):
+
+- IHR-S1-F01 simulation-pass `ai_metadata` write path (accepted-residual)
+- IHR-S2-R01 `game.0008` default-alias count guard
+- `SECURE_HSTS_PRELOAD` unset (Cooperator decision 5; W021)
+- Leftover `backend/billing/migrations/` orphan, not in INSTALLED_APPS
+- `DJANGO_SECURE_PROXY_SSL_HEADER` default false until Slice 4 proxy strips `X-Forwarded-Proto`
+
+---
+
+## §14 Slice 4 selected — planner issued (2026-09-09)
+
+Cooperator confirmation `ano` continues the already-echoed Slice 4 selection. It does not select Slice 5 and does not skip to the post-whole 1M audit.
+
+```text
+HEAD            7ffe0dc4d81b37afb1c22b68b55e7330869c86ef
+AP gitlink      9c5cc44f8b6c92dd56ad2427d13223d7d59c5656
+Slice 3         accepted at that SHA
+Slice 4         selected — session 08 planning (E0, read-only)
+Worker target   fresh-worker-session, Native planning mode: required
+Prompt          08_planning_00.md
+Report          08_report_00.md (Worker writes; Orchestrator reads from disk)
+```
+
+Orchestrator reconnaissance (hypothesis for the planner; D-13):
+
+- No `vps_preflight.sh` / `vps_deploy.sh` / systemd / nginx / `docs/vps_deployment_guide.md` in the tree.
+- Handout §5.3 `/api/`+`/admin/` → :8000 is stale: Next owns `/api/ai/*`, `/api/models`, `/api/prompts`, `/api/admin/simulate/<id>/turn`, and pages under `/admin`.
+- Django contrib `/admin/` and Next staff `/admin` collide on one public host; fail-closed unpublished Django admin on 443 unless the planner measures otherwise.
+- Slice 4 must overwrite `X-Forwarded-Proto` in nginx so Slice 3's `DJANGO_SECURE_PROXY_SSL_HEADER` opt-in is safe to enable in the runbook only after that proxy exists.
+- Slice 5 `output: "standalone"` stays deferred. No live VPS/SSH in the planning or later implementation grant unless the Cooperator names a host.
+
 
