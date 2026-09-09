@@ -625,6 +625,35 @@ Record:              99_closure.md
 
 Successor work in notes §13 (1M-context audit prompt, then a fresh Agent Orchestrator prompt) is **not** this whole and is not started here.
 
+---
+
+## §21 Post-closure session 12 issued (2026-09-09)
+
+Whole 16 remains CLOSED. This exchange does not reopen it and does not edit `99_closure.md`.
+
+Cooperator last communication of this Orchestrator session: `ano` to the post-whole ~1M audit; full trust to select the next logical whole; Howgh. He will not return here with `12_report_00.md`.
+
+```text
+Prompt           12_audit_00.md
+Worker           fresh-worker-session, Plan OFF, ~1M-context model preferred
+Profile          Fresh Independent Audit
+INFOSEC route    R4 (broad milestone) + product-horizon annex
+Independence     yes
+Libre Tiles git  read-only
+Field-check      exit 0
+```
+
+Two Meta writes authorized (Worker, atomic):
+
+1. `12_report_00.md` — independent audit vs public `33ffa15`
+2. `projects/libretiles/17/00-<selected-kebab>/00_handout.md` plus seed `00_notes.md`
+
+The successor Orchestrator handout is Deliverable B of this Auditor, not of the closing Orchestrator, because the Cooperator required it to be based on the audit and this session ends before that report exists. Writing the handout from compacted memory would be D-13.
+
+Parked until Michal later selects them: UI/UX polish, mobile/tablet pinch-zoom, live device testing. Not Meta 17.
+
+Dispatch: Cooperator pastes `12_audit_00.md` himself. This Orchestrator does not start the Worker.
+
 
 
 
