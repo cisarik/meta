@@ -74,3 +74,20 @@ All five fixes are inside `docs/architecture.md`; no `NEEDS_ORCHESTRATOR_DECISIO
 ### Orchestrator defect recorded (D-11 shape)
 
 The `05_audit_00.md` prompt's Side-effect authority named the report destination `05_audit_00.md` instead of the D-17 convention `05_report_00.md`, so the Worker's atomic write overwrote the prompt file. The prompt is transient delivery evidence (acceptable loss); the report `05_report_00.md` is intact and governs. No recovery needed beyond this note.
+
+---
+
+## Slice 3b — Architecture stale-claim fixes — ACCEPTED (2026-09-09)
+
+Fresh Worker session 06 applied the five audit D2 fixes verbatim and pushed `f6ec9bf`. Independently verified by the Orchestrator against the live tree:
+
+- **Commit** `f6ec9bf50e48c5b8ca97b840b019752e82b58cd6` on `origin/main`; HEAD identical; porcelain empty; readback holds.
+- **Diff scope** = exactly `docs/architecture.md` (5 insertions / 5 deletions, 5 hunks, mode unchanged).
+- **Five fixes**: F-01 fallback cap 5→3; F-02 judge 5 attempts/50s→3/30s; F-03 fixed canonical order→reviewed-Admin ordering; F-04 fixed order→seeded order reviewable; F-05 Tier 2 marked planned.
+- **Directed grep**: ZERO remaining "five distinct pairs"/"five sequential attempts"/"50 seconds overall"/"fixed canonical order"/"fixed order" across docs/architecture.md.
+- **Focused guards**: 10/10 pass (0.07s), independently re-run by Orchestrator.
+- **Standing gates** (worker-reported): mypy clean (119 files), ruff clean, makemigrations "No changes detected", pytest `-m "not internet and not postgres and not slow"` = 1 pre-existing parity red + 1227 passed + 1 skipped + 27 deselected (699s), frontend typecheck+lint exit 0.
+
+### Slice 3 outcome
+
+Status: PASS (implementation-PASS). The parity red test carries unchanged (pre-existing, owned by a future whole — NOT caused by Whole 17). All three slices landed: `b45149f` (Slice 1 binding/Vercel/guards) → `4a718b5` (Slice 2 README/PRD/CONTRIBUTING) → `f6ec9bf` (Slice 3 architecture five fixes). Logical-whole closure follows in `99_closure.md`.
