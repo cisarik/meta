@@ -578,5 +578,22 @@ Orchestrator reconnaissance (hypothesis for the planner; D-13):
 - systemd `EnvironmentFile` on `frontend/.env.local` must stay: standalone cwd will not load that file.
 - Handout “1 GB → 80 MB” is not a testable contract. No nginx rewrite. No live VPS.
 
+---
+
+## §18 Slice 5 planner review (session 10) — 2026-09-09
+
+`10_report_00.md` status **PARTIAL** only because Plan Mode blocked the Meta write. Cooperator archived the report. No report-rendering exchange.
+
+Plan review:
+
+- D2 `output: "standalone"` beside `allowedDevOrigins`; no `outputFileTracingRoot` — accepted (single frontend package.json).
+- D3 loopback via `/usr/bin/env HOSTNAME=127.0.0.1 PORT=3000` prefix **and** `Environment=` — accepted. systemd `EnvironmentFile=` overrides `Environment=`; Next standalone defaults HOSTNAME to `0.0.0.0`.
+- D4 copy `public/.` and `.next/static/.` after build; fail if `server.js` missing — accepted. Tracked `frontend/public/` includes locale PNGs and `drevo.jpeg`.
+- D6 flip deferred-standalone test; synthetic env-prefix regression without reading dotenv — accepted.
+- Planner R3 citation **amended**: implementation is R1; independent R3 not-required (no new dependency, no committed `.next/`, no authN/Z). Inline R1 must cover bind/env/copies/secrets.
+
+Plan **accepted** for implementation. Session 11.
+
+
 
 
