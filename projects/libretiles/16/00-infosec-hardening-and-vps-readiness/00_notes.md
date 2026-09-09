@@ -552,5 +552,31 @@ Carry residuals (do not mix into Slice 5 unless it owns them):
 - `AGENTS.md` still says frontend deploy on Vercel
 - README throttle-row prose still says `DEBUG=true` (the env-table key is already `DJANGO_DEBUG`)
 
+---
+
+## §17 Slice 5 selected — planner issued (2026-09-09)
+
+Cooperator confirmation `ano` selects Slice 5 only. It does not close the whole and does not start the post-whole 1M audit.
+
+```text
+HEAD            2e034d85be72f34b1d967190aa0dd7b03a32dbc0
+AP gitlink      9c5cc44f8b6c92dd56ad2427d13223d7d59c5656
+Slice 4         accepted at that SHA
+Slice 5         selected — session 10 planning (E0, read-only)
+Worker target   fresh-worker-session, Native planning mode: required
+Prompt          10_planning_00.md
+Report          10_report_00.md
+```
+
+Orchestrator reconnaissance (hypothesis for the planner; D-13):
+
+- `frontend/next.config.ts` has `allowedDevOrigins` only; no `output: "standalone"`.
+- Frontend unit still `next start --hostname 127.0.0.1 --port 3000`.
+- `test_next_standalone_output_remains_deferred` and the `next start` substring assertion must flip in this slice.
+- `vps_deploy.sh` builds but does not copy `public/` or `.next/static` into a standalone tree.
+- Standalone `server.js` must keep the Slice 4 loopback bind (`HOSTNAME=127.0.0.1`, not `0.0.0.0`).
+- systemd `EnvironmentFile` on `frontend/.env.local` must stay: standalone cwd will not load that file.
+- Handout “1 GB → 80 MB” is not a testable contract. No nginx rewrite. No live VPS.
+
 
 
