@@ -345,3 +345,62 @@ Disposable test database: libretiles_pytest
 Implementation session: 05 / exchange 01
 Native planning mode: not-used
 ```
+
+---
+
+## §9 Slice 2 implementation review — session 05 `05_report_00.md` (2026-09-09)
+
+Worker status PASS, `implementation-PASS`, English. Commit `15793bb08f132a1e86e20708d7fa88ae9156df6d` on `origin/main` (fast-forward from `a33433e`). Porcelain empty. Diff is exactly the six allowlisted paths.
+
+Orchestrator re-ran default focused pytest: 43 passed, 6 skipped (postgres-marked). Did not re-run live Postgres.
+
+Verified vs tree:
+
+| Contract | Verdict |
+|---|---|
+| postgresql `CONN_MAX_AGE` default 600, fail-closed on non-int/negative; `0` allowed | holds |
+| `CONN_HEALTH_CHECKS` via `_env_flag(..., default=True)` | holds |
+| SQLite `DATABASES` has no CONN_* keys | holds |
+| README / `.env.example` `sqlite3` | holds |
+| Disposable DB constant `libretiles_pytest`; `DB_NAME` ignored | holds |
+| Maintenance connect is `postgres`, not `libretiles` | holds |
+| Probe JSON omits NAME/USER/PASSWORD; extra_env passthrough | holds |
+| skip_locked static guard; live skip_locked via two connections | holds (raw SQL SKIP LOCKED + statement_timeout negative control) |
+| Module-scoped create/migrate/drop instead of per-test | accepted bounded adaptation (Django 5.2 alias validation) |
+| Docker started-and-stopped; no `down -v` | accepted as reported |
+
+Pre-existing (not Slice 2, not Slice 3): `game.0008_atomic_token_state_schema.refuse_if_game_state_present` counts on the default alias (`model.objects.count()`), not `schema_editor.connection.alias`. Latent trap for `migrate --database=<other>`. Recorded residual; do not mix into headers/throttles.
+
+```text
+Slice 2: accepted
+End commit: 15793bb08f132a1e86e20708d7fa88ae9156df6d
+Independent R3: not-required (E2 / R1; no authN/Z)
+IHR-S2-R01: 0008 default-alias guard — residual, out of this slice
+Logical-whole closure: not-closed
+Slice 3: not selected — Selection Echo pending
+```
+
+---
+
+## §10 Slice 3 selected — Cooperator `ano` (2026-09-09)
+
+Cooperator confirmed Selection Echo for Slice 3 and that the Orchestrator does **not** dispatch the Worker. Delivery is copy-paste of `06_planning_00.md` into a fresh session with native Plan mode ON. Report returns as `06_report_00.md`.
+
+```text
+Selected slice: 3
+Name: Production Settings & Security Headers Hardening
+Planner session: 06 / exchange 01
+Exact baseline: 15793bb08f132a1e86e20708d7fa88ae9156df6d
+Native planning mode: required
+Dispatch: Cooperator-manual (Orchestrator does not start the Worker)
+Active mutation: none until a later implementation grant
+```
+
+Orchestrator reconnaissance (hypothesis for the planner, D-13):
+
+- HTTPS flags (Secure cookies, SSL redirect, HSTS seconds + includeSubDomains, NOSNIFF, XFO) already landed and probed; PRELOAD deliberately unset (W021 asserted).
+- `CSRF_TRUSTED_ORIGINS` and `SECURE_PROXY_SSL_HEADER` absent from the tree.
+- Simulation create/step/action have throttle scopes; state GET and stop POST do not; admin list/replay/analytics have none.
+- `admin_simulation_*` rates exist; no 429 test found for them.
+- Handout §5.2 `SECURE_HSTS_PRELOAD = True` is stale (A5).
+
