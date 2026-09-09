@@ -218,3 +218,130 @@ Slice 2                   not selected
 ```
 
 Next exchange: session 03 / exchange 01, Fresh Independent Audit, `03_audit_00.md`.
+
+---
+
+## §4 Independent R3 audit — `03_report_00.md` (2026-09-09)
+
+Worker: session 03 / exchange 01. Claim: audit-task PASS, not-applicable phase result, zero blocking findings, HEAD unchanged.
+
+Gate (Worker-measured; Orchestrator confirmed HEAD/origin/pin still `a33433e` / `9c5cc44` / porcelain empty at review time): accepted as consistent with §3.1.
+
+RC1–RC10: Worker verdict `holds` with named tests. Orchestrator does not re-run the suite this pass (already green in §3.1). Treats RC table as independent evidence.
+
+### 4.1 Finding IHR-S1-F01 — Orchestrator re-measurement
+
+CONFIRMED established-static:
+
+- `SimulationActionSerializer.validate` routes `place` through `ApplyAIMoveSerializer` (sanitizes) and `exchange` through `ExchangeSerializer` (sanitizes).
+- `pass` is allowed to carry `ai_metadata` but is not passed through `AIPassSerializer` (the human AI-pass sanitizer in `game/serializers.py`).
+- `_submit_pass_locked` stores `_stored_ai_metadata(...)` as given.
+- Read paths still call `sanitize_ai_metadata` (`_move_payload`, replay).
+
+Severity low, staff-creator-only write, no cross-principal leak established. Auditor recommended residual acceptance OR a one-serializer correction + re-audit.
+
+### 4.2 What this audit does not select
+
+Slice 2 is named in the Worker's next-step. D-14: that does not select Slice 2. F01 disposition is the open Cooperator/Orchestrator residual decision.
+
+---
+
+## §5 Slice 1 acceptance — Cooperator chose A (2026-09-09)
+
+Cooperator reply `A` to the costed F01 choice. That selects residual acceptance of IHR-S1-F01. It does not select Slice 2.
+
+```text
+Residual-risk decision
+  Finding ID: IHR-S1-F01
+  Decision: accepted-residual
+  Severity: low
+  Approver: Cooperator (explicit A)
+  Regression test: not-applicable — no correction in this whole yet
+  Rationale: staff-creator write into own simulation only; all in-scope
+    read paths already sanitize; no cross-principal leak established;
+    correction-plus-re-audit cost is two Worker sessions for hygiene
+    parity, not a blocking hole.
+  Recorded in: this notes section
+```
+
+Slice 1 (`INFOSEC Audit & Hardening across Admin & Simulation Surfaces`) is **accepted** at commit `a33433efe0abec263bc1008d7db46d2b6d13d44f` with that residual.
+
+```text
+Logical-whole closure: not-closed
+Required preceding Slice 1 results: satisfied (implementation + independent R3)
+Cooperator-owned F01 decision: satisfied (A)
+Active mutation: none
+Slice 2: not selected — Selection Echo pending
+```
+
+---
+
+## §6 Slice 2 selected — Cooperator `ano` (2026-09-09)
+
+Cooperator reply `ano` to the Selection Echo for Slice 2. That continues the named slice; it does not select Slices 3–5 and does not reopen IHR-S1-F01.
+
+```text
+Selected slice: 2
+Name: Database Dialect Parity & PostgreSQL Verification
+Planner session: 04 / exchange 01
+Exact baseline: a33433efe0abec263bc1008d7db46d2b6d13d44f
+Native planning mode: required
+Active mutation: none until a later implementation grant
+```
+
+Orchestrator reconnaissance at that SHA (hypothesis for the planner, D-13 — not spec):
+
+- `DATABASES` has no `CONN_MAX_AGE` / `CONN_HEALTH_CHECKS`.
+- `analytics_expressions.py` is number helpers only; no `KeyTextTransform`.
+- `admin_views.py` does `Cast("public_id", CharField())` + hyphen `Replace` for hex search.
+- Handout migration list omits leftover `billing/migrations/` (0001, 0002). `billing` is not in `INSTALLED_APPS`.
+- No `*postgres*` test module. `skip_locked=True` is already vendor-gated in `services.py`.
+- Repo-root `docker-compose.yml` already has `postgres:16-alpine`.
+- README documents `DB_ENGINE` default as `sqlite`; `backend/.env.example` and settings default are `sqlite3`.
+
+---
+
+## §7 Slice 2 planner review — session 04 `04_report_00.md` (2026-09-09)
+
+Planner status PASS, English, D-17 disk write. Planning authority expired. Plan is advisory.
+
+Verified against tree at `a33433e` (claims, not copy-through):
+
+| Claim | Verdict |
+|---|---|
+| No `KeyTextTransform` anywhere | holds |
+| `analytics_expressions.py` is three numeric helpers | holds |
+| UUID search is one Cast+Replace in `admin_views.py`; existing test is compact hex only | holds (`test_admin_replay_api.py`) |
+| `CONN_MAX_AGE` / `CONN_HEALTH_CHECKS` absent | holds |
+| README `sqlite` vs settings/`sqlite3` | holds |
+| `billing` leftover, not in `INSTALLED_APPS` | holds (only `0001`/`0002`; no `__init__.py` on disk — planner overstated that file) |
+| `unique_unfinished_playground_simulation` untested by IntegrityError | holds |
+| `skip_locked` vendor-gated | holds in spirit; plan invented an `else: select_for_update()` branch. Actual code already calls `select_for_update()` then re-applies with `skip_locked=True` only when vendor is postgresql. |
+| Fast default pytest must stay SQLite | accepted (A7) |
+| E2 / R1 for implementation | accepted |
+| Handout §5.1 stale | accepted |
+
+Orchestrator constraints for the later implementation prompt (not a targeted planner revision):
+
+1. Never `migrate` or write the compose database named `libretiles`. Dedicated disposable name `libretiles_pytest` (create/drop around the opt-in fixture). Cooperator local data stays untouched.
+2. Reuse `_env_flag` for `DB_CONN_HEALTH_CHECKS`. Do not invent a second boolean parser.
+3. Settings probes extend `_PROBE_SOURCE` / `_run_settings_probe`. A `DB_ENGINE=postgresql` probe must still satisfy existing fail-closed settings (secret, and Redis URL when DEBUG is false). No `PYTHON_DOTENV_DISABLED=1`.
+4. `mypy` stays `config game gamecore accounts catalog` (AGENTS.md). Do not add `tests`.
+5. Do not mock `connection.vendor` through the whole `join_matchmaking` path. Vendor-branch assertion must stay narrow.
+6. `backend/billing/` stays untouched (A10). Billing deletion remains Cooperator-owned and is not this slice.
+
+Open Cooperator decision (one): Docker grant for session 05 — `docker compose up -d postgres` / `docker compose stop postgres` only. No `down -v`. No Redis container required for this slice.
+
+---
+
+## §8 Slice 2 docker grant — Cooperator chose A (2026-09-09)
+
+```text
+Docker grant: yes
+Allowed: docker compose up -d postgres (repo root); docker compose stop postgres
+  only if session 05 started the service
+Forbidden: down, -v, Redis service, sudo, migrate/write database name libretiles
+Disposable test database: libretiles_pytest
+Implementation session: 05 / exchange 01
+Native planning mode: not-used
+```
