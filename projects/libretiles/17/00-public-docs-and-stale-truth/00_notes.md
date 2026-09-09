@@ -37,3 +37,21 @@ Independently verified by the Orchestrator against the live tree (not merely rea
 ### Slice 1 outcome
 
 Status: PASS (implementation-PASS). Cooperator decision A (include both dev scripts) honoured via explicit exception. LAN tablet/phone consequence accepted. Next: Slice 2 — README streamlining.
+
+---
+
+## Slice 2 — README Streamlining & Architectural Clarity — ACCEPTED (2026-09-09)
+
+Independently verified by the Orchestrator against the live tree:
+
+- **Commit** `4a718b5bcf68daed4c0b7ab43ab3261bf026fb10` on `origin/main`; local HEAD identical; porcelain empty; readback holds.
+- **Diff scope** = exactly the 3 allowlisted paths (README.md, CONTRIBUTING.md, libretiles_PRD.md). No product code, no test-module mutation.
+- **README.md** = 198 lines (target 170–210, no filler). Single Quick Start with `### Local development` / `### Production (VPS)` separation; deep-dive cut-with-pointer.
+- **Content guards verified by Orchestrator**: 2× `manage.py runserver 127.0.0.1:8000` in README; 1× `DJANGO_DEBUG=true` boot anchor; ZERO `0.0.0.0:8000` and ZERO Vercel venue claims across the 3 files; `self-hosted VPS` present (README 1, CONTRIBUTING 1, PRD 3); `Vercel AI SDK` ×2 and Phase 7 line intact in PRD.
+- **Focused documentation tests**: 10/10 passed in 0.08s (8 deployment + 2 dictionary), independently re-run by Orchestrator.
+- **Standing gates** (worker-reported): mypy clean (119 files), ruff clean, makemigrations "No changes detected"; pytest `-m "not slow and not internet and not postgres"` = 1227 passed + 1 pre-existing parity failure (same as Slice 1, unchanged, out of scope), 27 deselected, 702s; frontend typecheck + lint exit 0.
+- **Product-truth alignment**: multiplayer now LIVE (not "v2 planned"); Python 3.12 / Node 24 prerequisites; Tier 2 as unplanned; Playwright/CI as planned; reviewed Admin activation ordering; PRD header date → September 9 2026.
+
+### Slice 2 outcome
+
+Status: PASS (implementation-PASS). Zero static-test edit needed (plan D6 proved correct — no test was bent to follow documentation). Pre-existing parity failure confirmed again as baseline-red after this slice (still not caused by Whole 17). Next: Slice 3 — documentation quality audit & logical-whole closure.
