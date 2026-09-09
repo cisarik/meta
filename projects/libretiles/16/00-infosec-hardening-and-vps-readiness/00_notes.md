@@ -404,3 +404,33 @@ Orchestrator reconnaissance (hypothesis for the planner, D-13):
 - `admin_simulation_*` rates exist; no 429 test found for them.
 - Handout §5.2 `SECURE_HSTS_PRELOAD = True` is stale (A5).
 
+---
+
+## §11 Slice 3 planner review — session 06 `06_report_00.md` (2026-09-09)
+
+Planner status PASS, English, D-17 disk write. Planning authority expired. Plan is advisory. Cooperator-owned decisions: none.
+
+Verified against tree at `15793bb`:
+
+| Claim | Verdict |
+|---|---|
+| HTTPS cookies / SSL redirect / HSTS seconds+includeSubDomains / NOSNIFF / XFO landed-tested | holds |
+| HSTS preload accepted-residual; W021 asserted | holds |
+| `CSRF_TRUSTED_ORIGINS` and `SECURE_PROXY_SSL_HEADER` absent | holds |
+| create/step/action scoped; state/stop/admin GET unbound | holds |
+| No `admin_simulation` 429 tests today | holds |
+| `SimpleRateThrottle.THROTTLE_RATES` is class-body from `api_settings` | holds (`throttling.py`) |
+| Env-gated proxy header (default off) | accepted (spoofing on unproxied process) |
+| Unbound GET/stop/admin as product-choice | accepted |
+| E2 / R1 (R2-shaped origin parse, no independent R3) | accepted |
+
+Orchestrator amendments for session 07 (not a targeted planner revision): O1 reject userinfo/query/fragment; O2 must patch THROTTLE_RATES; O3 no view-file edits; O4 3-request staff 429s; O5 exemption is `throttle_scope is None`, not a flood.
+
+```text
+Slice 3 plan: accepted with O1–O8
+Implementation session: 07 / exchange 01
+Native planning mode: not-used
+Dispatch: Cooperator-manual
+```
+
+
