@@ -365,6 +365,103 @@ OPEN-1  If the end-of-whole batch then FAILS on item 7 of 40, the correction
 
 ---
 
+## 5. Autonomous Worker Report Archiving — direct write to Meta eliminates the human courier
+
+```text
+STATUS   proposed, 2026-09-08, by the COOPERATOR during logical whole 15/00
+OWNER    COOPERATOR (protocol design is his, RF-01)
+```
+
+### 5.1 The idea, in his words and in one paragraph
+
+> *"PROSIM nech dalsi Workeri okrem Planner workera proste ZAPISUJU xx_report_xx.md AUTOMATICKY
+> aby som ja nemusel manualne vytvarat report subor a manualne robit copy->paste.. Toto uz ma nudi.
+> Proste ked Worker dokonci pracu chcem mat ja = Cooperator len priestor na brainstorming. Komentar.
+> Zasah ako teraz ze netreba zachovavat stare zaznamy o hrach.. Chcem aby si si ty potom sam uz vedel,
+> ze mas precitat dany xx_report_xx.md subor bez toho aby som ti to musel uvadzat. Proste posledny
+> subor v repe a format xx_report_xx.md je vzdy rovnaky. Nechapem preco by som mal stale robit
+> zbytocne ulohy."*
+
+In short: Workers receive explicit authority and instruction to write their terminal report directly
+to `/home/agile/meta/projects/<project>/<whole>/<ordinal>_report_<exchange>.md` before concluding.
+The Orchestrator autonomously identifies and reads the report from disk. The Cooperator is freed from
+mechanical copy-pasting, preserving his attention for high-value strategic intervention, direction, and
+brainstorming.
+
+### 5.2 Why this is essential for the future of AI-driven AP
+
+```text
+COST, stated first
+1  If a Worker hallucinated a corrupted report file or crashed mid-write, the Orchestrator could read
+   a partial report. (Mitigation: atomic file write or write-then-rename, plus checking the AP
+   compact core header before parsing).
+2  Requires granting filesystem write authority specifically targeting the external `/home/agile/meta`
+   directory, which crosses the boundary that Workers must mutate only allowlisted repository files.
+```
+
+```text
+BENEFIT
+1  Eliminates the single most exhausting friction point in human-orchestrated multi-agent development.
+2  Prevents clipboard truncation, accidental omission of lines, and human courier latency.
+3  Allows true asynchronous, punchy execution cycles where the human intervenes ONLY when decisions,
+   architectural trade-offs, or approvals are needed.
+```
+
+### 5.3 Concrete implementation in Worker prompts
+
+Add to the Worker Prompt Contract under Side-effect authority:
+
+```text
+Report delivery: direct-write to meta archive
+  Write your complete terminal report directly to:
+  `/home/agile/meta/projects/<project>/<whole>/<ordinal>_report_<exchange>.md`
+  using your file writing tool. Confirm the file was written cleanly.
+  Your final message in chat should be a concise 3-line notification with status and the report path.
+```
+
+---
+
+## 6. Clean Slate Protocol for Alpha/Prototyping Eras — Purge vs Forensic Migration
+
+```text
+STATUS   proposed, 2026-09-08, by the COOPERATOR during logical whole 15/00
+OWNER    COOPERATOR
+```
+
+### 6.1 The idea, in his words and in one paragraph
+
+> *"Planner Worker mimochodom riesil ako nachadzat s existujucimi datami v DB a teda co so starymi hrami,
+> pretoze nemaju ulozene data na replay v admin rozhrani. PROSIM JEDNODUCHO ZMAZAT VSETKY ZAZNAMY A HOTOVO
+> NETREBA ZIADNU MIGRACIU PROSTE NEPOTREBUJEME STARE HRY JEDNOZNACNE."*
+
+When extending application data models in development or prototyping phases, Planners default to
+designing complex forensic heuristics to reconstruct missing past data (e.g. attempting to simulate
+unrecorded draws from seeds, handling missing fields, building multi-tier fallback branches).
+Instead, AP should formalize a **Clean Slate Decision**: when existing database state has no business
+continuity requirement, explicitly authorize a purge of legacy records (`truncate` or `purge command`),
+drastically cutting planning overhead and keeping code 100% clean and free of legacy baggage.
+
+### 6.2 Comparison: Legacy Forensic Preservation vs Clean Slate
+
+| Aspect | Legacy Forensic Preservation | Clean Slate Protocol |
+|---|---|---|
+| **Planning Overhead** | Huge (500+ lines analyzing edge cases, missing draws, partial seeds) | Minimal (< 20 lines) |
+| **Code Complexity** | Complex conditional branches, fallback modes, guessing heuristics | Single authoritative schema, zero legacy branching |
+| **Bug Surface** | High (forensic reconstruction frequently diverges from truth) | Zero (all replay data is captured directly and losslessly) |
+| **Maintainability** | Permanent technical debt in services and serializers | Clean, idiomatic, future-proof code |
+
+### 6.3 Rule for AP Protocols
+
+```text
+In non-production / development phases:
+Before designing backward-compatibility heuristics for records that lack required new data,
+the Orchestrator / Planner must explicitly verify with the Cooperator:
+"Does historical data have durable value, or is a Clean Slate purge authorized?"
+If purge is authorized, delete legacy tables/rows and build solely against the authoritative clean schema.
+```
+
+---
+
 ## 4. Rejected and superseded, kept so they are not re-proposed
 
 ```text
