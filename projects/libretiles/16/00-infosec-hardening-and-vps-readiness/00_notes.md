@@ -525,4 +525,32 @@ Plan review (claims vs tree at `7ffe0dc`):
 
 Plan **accepted** for implementation (E2 / R1, no R3, no R5). Session 09. Residual: `AGENTS.md` still says frontend deploy on Vercel — out of Slice 4 allowlist.
 
+---
+
+## §16 Slice 4 implementation accepted (session 09) — 2026-09-09
+
+```text
+HEAD / origin/main   2e034d85be72f34b1d967190aa0dd7b03a32dbc0
+Parent               7ffe0dc4d81b37afb1c22b68b55e7330869c86ef
+AP gitlink           9c5cc44f8b6c92dd56ad2427d13223d7d59c5656
+porcelain            empty
+Nine-path commit     feat(ops): add VPS nginx, systemd, and deploy templates
+scripts mode         100755
+Isolated pytest      11 passed (Orchestrator re-run)
+Independent R3       not-required (E2 / R1 templates; no authN/Z mutation)
+Slice 4              accepted
+Logical-whole        not-closed
+Slice 5              not selected — Selection Echo pending
+```
+
+Orchestrator checks that held: Next/Django nginx split; no `^~ /api/admin/`; `$scheme` overwrite and no `$http_x_forwarded_proto`; loopback `:8001` / `:8443`; `BACKEND_URL=http://127.0.0.1:8001` in the runbook; `DJANGO_SECURE_PROXY_SSL_HEADER` enablement only after stripping nginx; units bind 127.0.0.1; deploy exits 2 without `--confirm-vps`; architecture Vercel **hosting** labels removed, AI SDK library name kept; no standalone output.
+
+Carry residuals (do not mix into Slice 5 unless it owns them):
+
+- Templates in git do not make proxy SSL safe until an operator installs the stripping nginx
+- IHR-S1-F01, IHR-S2-R01, HSTS W021, billing migration orphans
+- `AGENTS.md` still says frontend deploy on Vercel
+- README throttle-row prose still says `DEBUG=true` (the env-table key is already `DJANGO_DEBUG`)
+
+
 
