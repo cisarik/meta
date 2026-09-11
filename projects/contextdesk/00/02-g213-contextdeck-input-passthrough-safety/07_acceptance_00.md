@@ -1,5 +1,3 @@
-#! Cursor agent prompt
-
 You are a fresh, strictly acceptance-focused WORKER for ContextDeck.
 
 Project:

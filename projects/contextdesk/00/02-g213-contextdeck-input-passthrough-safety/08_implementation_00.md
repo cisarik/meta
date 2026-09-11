@@ -1,5 +1,3 @@
-#! Cursor agent prompt
-
 You are a fresh implementation WORKER for the ContextDeck project.
 
 Project:
