@@ -52,4 +52,12 @@ COOPERATOR decisions recorded for this whole:
 - The prompt was committed before dispatch under explicit COOPERATOR authority,
   as a recorded deviation from the default prompt-plus-report single commit.
 
-Logical-whole closure: not-closed.
+## Closure and Acceptance
+
+M1 `g213-contextdeck-mvp-context-lighting` is closed and accepted by the COOPERATOR IRL.
+All 5 physical lighting zones, native modes (Wave/Cycle/Breathing/Off/Direct),
+animation speed control, visual gradient generator, KWin event-driven context,
+desktop UI, and power actions are proven on real Logitech G213 hardware.
+Total twenty-one product commits on main. Zero input interception.
+
+Logical-whole closure: closed-accepted-irl.
