@@ -14,7 +14,7 @@ Reasoning recommendation: High, because this exchange changes the lighting contr
 Prior exchange in this logical whole: session 01 / exchange 01, implementation-PASS, commits `1b024e477fe43a048a2e0e0a3b58c3be95749a72` .. `d04b126761c8f3277dba74ca0541cc9b6ddaad75`. That work is **not accepted**; the COOPERATOR's IRL run produced the defects and product decisions below. Continuity anchor for evidence: archived at projects/contextdesk/00/01-g213-contextdeck-mvp-context-lighting/01_report_00.md.
 
 Implementation authority: explicit
-Exact baseline: 01d2f4aec597d667956cceb2586c6deb6282b538
+Exact baseline: 40aa09d8682dcf50cea2b2e6c6397f69544ab29e
 Changed-path allowlist: CMakeLists.txt ; cmake/ ; src/ ; ui/ ; kwin/ ; tests/unit/ ; docs/specification.md ; docs/operations.md ; docs/testing.md ; docs/hardware/
 Implementation boundaries: correct and extend the lighting vertical only — non-destructive device behavior, device-mode support, schema version 2 with migration, five-zone editing, presets, temporary override, restore-device-default, the zone-accent mechanism with an explicitly unverified control-to-zone map, the three named defect fixes, and the documentation that owns them. No input interception of any kind. No host policy mutation. No writes to the real keyboard.
 Independence required: no
@@ -96,7 +96,7 @@ Repository checkout topology: standalone checkout with a pinned `.ap/` submodule
 Working-copy topology: canonical-checkout, selected because main is clean and the work must build against the real host toolchain
 Repository identity: https://github.com/cisarik/contextdesk.git
 Expected branch: main
-Expected HEAD: 01d2f4aec597d667956cceb2586c6deb6282b538
+Expected HEAD: 40aa09d8682dcf50cea2b2e6c6397f69544ab29e
 Expected origin/main: ca3ac07c5fecfe3c983078e343ec6b3e02c75bea
 Local main is intentionally ahead of origin/main by ORCHESTRATOR-owned documentation commits. Accepted; do not push and do not treat it as drift.
 Working directory: /home/agile/Projects/contextdesk
