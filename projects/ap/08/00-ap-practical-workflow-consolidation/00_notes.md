@@ -28,3 +28,11 @@ The first fresh independent acceptance, 02_report_00.md, returned acceptance-PAS
 The Cooperator confirms removal of the misnamed duplicate 02_implementation_00.md. Its deletion is committed in 0574bd6826d78f368eb912bbd30c11309bcd7369; historical content remains available. This resolves the auditor's pending owner-disposition observation without rewriting its report.
 
 Manual delivery remains selected. Session 02, exchange 02 authorizes publication of the exact accepted AP commit to main and bounded trace preparation. It does not authorize source changes, consumer adoption, or closure. The publication result and subsequent ChatOrchestrator readback remain to be reconciled.
+
+## 2026-09-11 — Publication reconciliation and closure
+
+Author: ChatOrchestrator.
+
+Publication-PASS is accepted after direct public verification that AP main equals 0cf2cff483a36a4cc2254aa424a7c53bd57a97e9 with the accepted parent/tree and unchanged Meta README candidate. The archived 02_acceptance_01.md is the exact publication prompt for session 02, exchange 02; its historical filename does not change the phase.
+
+The logical whole is closed-by-ORCHESTRATOR. See 01_closure.md for accepted evidence, archival reconciliation, residual limits, and the two parked proposals. All issued Worker grants are expired; no active mutation remains in this whole. These notes are frozen after this entry.
