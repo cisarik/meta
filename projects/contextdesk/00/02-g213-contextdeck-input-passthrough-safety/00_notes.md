@@ -22,3 +22,11 @@ M2 focuses strictly on **input pass-through safety and zero-lockout crash recove
 - Bounded lease IPC with session app
 
 Logical-whole closure: not-closed.
+
+## Worker 14 reconciliation and Worker 15 routing — 2026-09-12
+
+Authored by the ContextDesk ChatOrchestrator; exact persistence delegated to Worker 15.
+
+Public META 5d4bcf9811974aa71e6d17acc3c2375a5015db40 contains the matching first-add prompt/report pair for 14/01. The issued prompt bytes match. Deployment-PASS is reconciled only for candidate cb72ae0388307b514182efc6936712e3da42cda4 installed while inactive, under AP pin 0cf2cff483a36a4cc2254aa424a7c53bd57a97e9. Owner install output corroborates installed hashes/state; further readback, 13/13 tests and backup cleanup are attributed Worker evidence. No physical G4 claim is accepted.
+
+Manual delivery and smaller coherent tasks remain selected. Worker 14 authority expired. Worker 15 receives a fresh independent, single-invocation physical pass-through/cutoff evidence slice, not a repeat of the broad primary audit. Its outcome is not yet known in this entry. Remaining G4 claims and canonical product-state documentation reconciliation stay open. The AP-update whole is separate and grants no ContextDesk mutation.
