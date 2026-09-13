@@ -226,4 +226,4 @@ Archival: wait-for-report
 
 Logical-whole closure: not-closed
 
-Authority for this Worker expires at this report.
+Authority for this Worker expires at this report..
