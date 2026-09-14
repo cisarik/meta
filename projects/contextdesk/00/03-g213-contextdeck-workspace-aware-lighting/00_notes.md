@@ -38,3 +38,36 @@ Canonical park wording carried forward:
 > open. M2 is parked with G3 host-mitigated on the authorized reference host;
 > the next bounded whole is M3 workspace-aware lighting.
 
+## Re-acceptance routing and acceptance reconciliation — 2026-09-14
+
+- Successor full ORCHESTRATOR bootstrap verified product `main`
+  `502ae75...`, AP pin `0cf2cff...` with `./.ap/ap doctor` PASS, and META
+  `main` `aa1c77a...`. Correction report `04_report_00.md` (SHA-256
+  `5881b59a...`) and correction prompt `04_correction_00.md` (SHA-256
+  `09365dae...`) match the fresh handout.
+- Explicit COOPERATOR decision: close the still-open M3 acceptance gate
+  **before** planning a successor whole. Selected routing: fresh independent
+  full A1–A8 re-acceptance of public correction candidate `502ae75...`,
+  Worker session `05`, exchange `01`, `fresh-worker-session`, Native planning
+  mode not-used, delivery manual.
+- Prepared prompt `05_acceptance_00.md` (SHA-256 `889efc6b...`), companion
+  `05_report_00.md`. The COOPERATOR archived the exact pair in one first-add
+  commit `4040c2e...` (parent `aa1c77a...`) changing only those two paths.
+- Session `05` returned `status: PASS`, `Phase-qualified result:
+  acceptance-PASS`; A1–A8 all PASS; leads L1 and L2 `disproved`.
+- ORCHESTRATOR reconciliation: product public `main` unchanged at
+  `502ae75...`; corrected ownership symbols present; named causal tests
+  present; independent external-directory rebuild and full registered CTest
+  **17/17 PASS** (66.97 s).
+- Result: M3 **code acceptance-PASS** on `502ae75...`. This is not physical
+  acceptance.
+- COOPERATOR decision: the physical five-zone IRL run of `docs/testing-m3.md`
+  is **deferred** to a later programming whole that also folds in
+  brainstorming and UI/UX polish, preferably carried by an image-capable
+  Orchestrator. M3 therefore remains **not closed**.
+- Next selected whole: `g213-contextdeck-workspace-session-manager` (M4),
+  trace `projects/contextdesk/00/04-g213-contextdeck-workspace-session-manager/`,
+  opening with a fresh Planner.
+- Active Worker: none. Active mutation: none. M2 remains parked; whole G4
+  remains open.
+
