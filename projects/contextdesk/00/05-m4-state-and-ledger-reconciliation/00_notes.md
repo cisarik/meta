@@ -41,3 +41,29 @@ Git, acceptance, publication, or closure authority.
 - Next exchange: Planner, Worker session `01`, exchange `01`,
   `fresh-worker-session`, Native planning mode required; prompt
   `01_planning_00.md`, report `01_report_00.md`.
+
+## Plan reconciliation — 2026-09-14
+
+- Planner prompt `01_planning_00.md` and terminal report `01_report_00.md`
+  (Worker session 01, exchange 01) are archived in the pair commit `597d576`.
+  The report was written in the same session after the COOPERATOR switched the
+  client out of native Plan Mode's read-only write control; the plan content was
+  preserved unchanged and the deviation is disclosed in the report.
+- ORCHESTRATOR reconciliation: the plan is ACCEPTED. Material findings were
+  independently re-verified (README/AGENTS contradiction, six ledger candidates,
+  ADR 0003 status, the typed desktop-id predicate, the M2/M3/M4 stale G4
+  remainder text), including the M2 record `27_report_00.md` corroboration for
+  the G4-remainder drift.
+- Ceiling decision: widened by two exact paths — `docs/adr/0001-...md` status
+  line and `docs/testing-m3.md` tense — because both are the same class of
+  verified stale state inside this whole's objective. The implementation
+  changed-path allowlist is therefore 14 paths.
+- Policy item: the `AGENTS.md`/`ROADMAP.md` access-profile wording stays
+  byte-identical in this implementation unless the COOPERATOR records explicit
+  confirmation; the open observation is recorded.
+- Next exchange: implementation, Worker session `01`, exchange `02`,
+  `current-worker-session` renewal, Native planning mode `not-used`; prompt
+  `01_implementation_01.md`, report `01_report_01.md`. One local commit and one
+  normal non-force product push are authorized; META Git remains COOPERATOR-owned.
+- Active Worker: the Planner session, renewed for implementation after manual
+  delivery. Active mutation: none.
