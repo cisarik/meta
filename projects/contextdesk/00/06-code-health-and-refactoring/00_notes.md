@@ -157,3 +157,66 @@ acceptance, publication, or closure authority.
 - Next exchange: targeted revision, Worker session `01`, exchange `03`, prompt
   `01_planning_02.md`, report `01_report_02.md`.
 - Active Worker: none before manual delivery. Active mutation: none.
+
+## Revision reconciliation and plan acceptance — 2026-09-14
+
+- Revision report `01_report_02.md` (Worker session `01`, exchange `03`,
+  SHA-256 `9ada854757a91979e4afcac9ca211ee3e859d0ee57b20f2a1a3baab99e0ffc45`)
+  reconciled: valid terminal report, status `PASS`, phase-qualified result
+  `not-applicable`; prompt readback verified
+  (`689ecf30c15dc770efdb7bac3b237b8273789b5bbbfb873f326214dfa29097d2`); no
+  product/AP/host/META Git mutation. The corrected S4 boundary was verified
+  against the candidate: pure parse = `ContextReceiver::onInventoryReport`
+  lines 557-614; sequence/heartbeat (551-556) and apply/policy (616-621) stay
+  in the receiver; the free function is introduced as
+  `std::optional<QVector<InventoryEntry>> parseInventoryPayload(const QString
+  &payloadJson)` with identical rejection log strings. The disclosed
+  `decodeSnapshot` range limitation (real end 771, frozen range ended 773) is
+  recorded and does not change the WorkspaceStateCodec decision.
+- ORCHESTRATOR decision: the plan is ACCEPTED as `01_report_01.md` corrected by
+  `01_report_02.md`. The planning budget is exhausted (initial cycle plus one
+  targeted revision). No further planning cycle applies.
+- Next exchange: implementation S1 (CMake unit-test helper), Worker session
+  `01`, exchange `04`, `current-worker-session`, Native planning mode
+  `not-used`; prompt `01_implementation_03.md` (SHA-256
+  `8317314ec5c2e73e6ed2003b10977b9855a108688ed30d3a4eedba62c83c900a`), report
+  `01_report_03.md`; one local product commit and one normal non-force push are
+  authorized with subject `Add contextdeck_add_unit_test CMake helper`;
+  `Archival: wait-for-report`.
+- META archival proposal (COOPERATOR action, when convenient): archive the
+  public-safe planning set `00_notes.md`, `01_planning_00.md`,
+  `01_completion_01.md`, `01_report_01.md`, `01_planning_02.md`,
+  `01_report_02.md`; do not commit `01_implementation_03.md` before
+  `01_report_03.md` exists (prompt/report first-add pairing); never commit
+  `01_report_00.md` (local path) and retire it after archival.
+- Active Worker: none before manual delivery. Active mutation: none.
+
+## S1 reconciliation — 2026-09-14
+
+- Report `01_report_03.md` (Worker session `01`, exchange `04`, SHA-256
+  `e3f6569efd6f0ab9191caa97b6f1e4a458e0cef94b4f9c60652c5da9dd7420c5`)
+  reconciled: implementation-PASS. Independently verified by the ORCHESTRATOR
+  against the public repository and the canonical checkout: direct public
+  `main` = `5b2b25bc64c86f1ea568d82b94da2b3271b10c85`, subject
+  `Add contextdeck_add_unit_test CMake helper`, parent `235d467...`, changed
+  paths exactly `CMakeLists.txt` and `cmake/contextdeck-tests.cmake`; full
+  registered suite 21/21 (69 s) from the exact candidate; helper content and
+  all 21 registrations reviewed; no test source, product source, or
+  documentation change.
+- Worker near-miss carried into S2 as a client note: the Worker client injects
+  bundled library paths that break distro cmake `CMAKE_ROOT`; resolved by a
+  cleaned distro `PATH`; no product change.
+- META privacy finding (discovered during this reconciliation): commit
+  `0327a30` included the invalid, never-a-report artifact `01_report_00.md`,
+  which contains a local machine path. It must not remain in the public live
+  tree. Recommended correction (COOPERATOR-owned): one forward removal commit;
+  history retains the bytes. A history rewrite is destructive, requires
+  explicit authority, and is not recommended.
+- Next exchange: implementation S2, Worker session `01`, exchange `05`,
+  `current-worker-session`, Native planning mode `not-used`; prompt
+  `01_implementation_04.md` (SHA-256
+  `40d7ab2cbba94e06e886390d7e85580056a4202b1e0cbfe5126056e9c65fa393`), report
+  `01_report_04.md`; one local product commit and one normal non-force push
+  with subject `Split ProfileStore codecs into src/core/persistence`;
+  `Archival: wait-for-report`.
+- Active Worker: none before manual delivery. Active mutation: none.
