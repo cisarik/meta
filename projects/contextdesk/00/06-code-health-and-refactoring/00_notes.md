@@ -220,3 +220,64 @@ acceptance, publication, or closure authority.
   with subject `Split ProfileStore codecs into src/core/persistence`;
   `Archival: wait-for-report`.
 - Active Worker: none before manual delivery. Active mutation: none.
+
+## S2 reconciliation — 2026-09-14
+
+- Report `01_report_04.md` (Worker session `01`, exchange `05`, SHA-256
+  `aa366032f90d5339796d1031312bca709190aedef2b072c5e3ae0288998b06e8`)
+  reconciled: implementation-PASS. Independently verified by the ORCHESTRATOR:
+  direct public `main` = `308aaa267e02c4ba77ddd9b8782a97482184e020`, subject
+  `Split ProfileStore codecs into src/core/persistence`, parent `5b2b25b...`,
+  14 changed paths exactly the allowlist (6 new codec units plus the slim
+  `Persistence.cpp` and the `contextdeck_core` source list), `Persistence.h`
+  diff empty; full registered suite 21/21 (69 s) from the exact candidate.
+  META S2 prompt/report pair committed together in `9d7a994`.
+- Worker near-miss disclosed: the first candidate compile failed on a
+  `QStringList` forward declaration and a missing `QJsonObject` include in the
+  slim IO unit; classified as include hygiene, repaired inside the allowlist,
+  then validated once; no semantic defect.
+- META privacy finding remains open: `01_report_00.md` (local path) is still in
+  the public live tree; the recommended forward removal is a COOPERATOR action
+  and has not been performed.
+- Next exchange: implementation S4 plus S6 (WorkspaceStateCodec /
+  InventoryPayload, then the shared FakeVirtualDesktopMap helper), Worker
+  session `01`, exchange `06`, `current-worker-session`, Native planning mode
+  `not-used`; prompt `01_implementation_05.md` (SHA-256
+  `08beaa1fdf393b014af27f90c4cc953bd2f2fcce40c30a4532a90ce9d4dbd4e1`), report
+  `01_report_05.md`; two local product commits and two normal non-force pushes
+  with subjects `Extract WorkspaceStateCodec and inventory payload parser` and
+  `Share FakeVirtualDesktopMap test helper`; `Archival: wait-for-report`.
+- Active Worker: none before manual delivery. Active mutation: none.
+
+## S4+S6 reconciliation and S3+S5 routing — 2026-09-14
+
+- Report `01_report_05.md` (Worker session `01`, exchange `06`, SHA-256
+  `adbc337fcb8bf126681bff29fdf0c29280547fdec074af4189bcaea2b1cd7d77`)
+  reconciled: implementation-PASS. Independently verified by the ORCHESTRATOR:
+  public `main` = `a130b06ec8641269c80bd755c0e5f6ee9c3dc048`, parents
+  `1e7e9d55c1743121411d825be18dc1bfd24e217b` and `308aaa2...`; both commit
+  ranges exactly their allowlists; `WorkspaceReceiver.h` and
+  `ContextReceiver.h` untouched; three new codec-focused slots in
+  `test_workspace_receiver`; full registered suite 21/21 (69 s) from the exact
+  candidate; `decodeWorkspaceSnapshot` and `parseInventoryPayload` shapes match
+  the accepted plan and correction.
+- Observation (non-blocking): commits `1e7e9d5` and `a130b06` carry a
+  `Co-authored-by: Cursor <cursoragent@cursor.com>` trailer while earlier
+  commits do not; tool attribution, not a rule violation, recorded for the
+  later documentation touch.
+- Routing decision: S3+S5 run in a genuinely fresh Worker session (`02/01`)
+  because it is the largest and riskiest slice (2285-line god object, 48
+  `Q_PROPERTY`/52 `Q_INVOKABLE` QML surface) and the current session has
+  already carried planning plus four implementation exchanges; the accepted
+  plan leaves this choice to the ORCHESTRATOR. The cumulative fresh acceptance
+  will then use session `03`.
+- Next exchange: implementation S3+S5, Worker session `02`, exchange `01`,
+  `fresh-worker-session`, Native planning mode `not-used`; prompt
+  `02_implementation_00.md` (SHA-256
+  `7d7ea0eaf0622a394b071692243c03cebd7e8290c7cd02971bc0a8d00b127f4b`), report
+  `02_report_00.md`; two local product commits and two normal non-force pushes
+  with subjects `Decompose AppController behind a stable QML facade` and
+  `Remove unused remappingState placeholder`; `Archival: wait-for-report`.
+- META privacy finding remains open: `01_report_00.md` (local path) is still in
+  the public live tree; forward removal remains a pending COOPERATOR action.
+- Active Worker: none before manual delivery. Active mutation: none.
