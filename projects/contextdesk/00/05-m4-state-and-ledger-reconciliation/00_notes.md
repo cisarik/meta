@@ -67,3 +67,54 @@ Git, acceptance, publication, or closure authority.
   normal non-force product push are authorized; META Git remains COOPERATOR-owned.
 - Active Worker: the Planner session, renewed for implementation after manual
   delivery. Active mutation: none.
+
+## Implementation reconciliation — 2026-09-14
+
+- Implementation prompt `01_implementation_01.md` (SHA-256
+  `bbb8b0d4bccbf557e8e6733351c00f0f5a15ca044eaf8cccdc76de8eb2deb004`) and
+  terminal report `01_report_01.md` (SHA-256
+  `ec0b38a1ac23ee969ebb3f35d706c08525e2804a5b1137cf8158c3ee16386595`) belong to
+  Worker session `01`, exchange `02`, `current-worker-session`, Native planning
+  mode `not-used`.
+- ORCHESTRATOR reconciliation: implementation-PASS accepted as evidence for a
+  fresh acceptance. Direct product readback: public `main` =
+  `235d467c752958694dad4be7bcc31e66406dbdcc`, parent = `2931588...`, subject
+  `Reconcile M4 state docs and dispose of carried ledger candidates`, 14 files
+  changed (+227/−128) equal to the granted 14-path allowlist; access-profile
+  lines byte-identical; predicate and causal regressions applied as planned.
+- Archival observation: the prompt was first-added as `f36bf9e` before the
+  report existed and the report separately as `77dff2a`, so the prompt and
+  report do not share one first-add commit. Both files are byte-correct and the
+  report was written before its own archival. Prospective correction: future
+  pairs use wait-for-report first-add. Recorded, not reopened.
+- Carried observations (non-blocking, outside the accepted sweep): the
+  `ROADMAP.md` M2-backlog sleep-hook bullet still says "Not autostart. Not live
+  suspend evidence." (a truthful limitation about tree content; optionally
+  reworded later), and `docs/testing-m2.md` still lists LED/all-control/live-
+  suspend/input-remapper as remaining G4 claims (explicitly outside the plan's
+  ceiling). Both are recorded for a later bounded documentation touch.
+- Next exchange: fresh independent acceptance, Worker session `02`, exchange
+  `01`, `fresh-worker-session`, Native planning mode `not-used`; prompt
+  `02_acceptance_00.md`, report `02_report_00.md`, candidate `235d467...`.
+- Active Worker: none before manual delivery of the acceptance prompt. Active
+  mutation: none.
+
+## Acceptance reconciliation and closure — 2026-09-14
+
+- Fresh independent acceptance: Worker session `02`, exchange `01`, report
+  `02_report_00.md` (SHA-256
+  `6e38aeed261103800556374e26ef0bcfb9cecc4a0dc4138580faf6df63705b06`), status
+  `PASS`, phase-qualified result `acceptance-PASS`; A1–A8 all PASS; both leads
+  confirmed; parent-overlay causality probe (2 failed on the un-fixed parent,
+  5 passed on the candidate); focused 4/4 and full registered 21/21 from a
+  detached clone; public product `main` equals candidate `235d467...`.
+- ORCHESTRATOR acceptance reconciliation: accepted. No correction, no named
+  missing-evidence probe, no scope escape, no hidden dependency or host action.
+- Closure evaluation: required preceding results, Cooperator-owned decisions,
+  residual-risk disposition, ledger reconciliation, and no-active-mutation
+  conditions satisfied. ORCHESTRATOR closure emitted in `01_closure.md`
+  (`Logical-whole closure: closed-by-ORCHESTRATOR`).
+- Carried forward: the two out-of-scope documentation observations, the
+  access-profile policy item, the transient current-whole wording, and the
+  standing M4/M3/M2/M5/deck/G6 boundaries. Notes are frozen at this closure.
+- Active Worker: none. Active mutation: none.
