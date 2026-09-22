@@ -275,3 +275,71 @@ family-testable behavior. Native share apps need that reachable surface first.
   positive/negative control matrix; INFOSEC R4 milestone audit; read-only plus
   synthetic probes; no corrections; expected report destination
   `07_report_00.md`.
+
+- **2026-09-22 — A1 acceptance-PASS, Orchestrator accepts.** Report
+  `07_report_00.md` (SHA-256
+  `deb2ffe259a6578c81095283514e0456c43d9a6a0d7e1bd81a5b49eeb3585737`)
+  independently accepts candidate `827dae85c2794914c3adcb467de9b21ee8998463`
+  (tree `8506c995`) with all eight fixed risk claims PASS, declared-route suite
+  1181 OK (no skips), synthetic probes, and an R4 coverage map. Re-verified by
+  the Orchestrator after the report: `main` = candidate, lab = `2727451` with
+  190 commits, `work/kronika-clean-start` = `b5b5f381`,
+  `public/kronika-initial` = candidate, no remotes, clean worktree, AP pin
+  intact. One finding:
+  - **A1-F01 (open, low, non-blocking):** stale file-upload wording — CLI
+    `ask` help/error strings still say upload arrives in a future slice, and
+    `contracts/http-api.v1.json` still lists a success status for
+    `GET /v1/files/{fid}`, while runtime returns 501 and the public docs state
+    unavailability. The accepted plan deliberately excluded upload-contract
+    cleanup from S2, so this is classified as a carried-forward low residual /
+    ledger candidate, not a defect of the accepted scope. Correction, if
+    wanted, would touch runtime-visible strings, a structural contract field,
+    and tests, so it needs a bounded correction plus full fresh re-acceptance.
+  - Observations: six pre-existing local `refs/codex/turn-diffs/checkpoints`
+    refs exist, are not remotes, and were not moved. Not part of this whole.
+  Publication decision pending with the Cooperator.
+
+- **2026-09-22 — Cooperator decision: correct A1-F01 first.** Michal selected
+  one bounded text/contract correction followed by a full fresh independent
+  re-acceptance; publication waits until after that.
+
+- **2026-09-22 — C1 grant written.** `08_implementation_00.md` (session 08 /
+  exchange 01, fresh-worker-session, Bounded Correction Worker, Native planning
+  mode not-used, Extra High, manual dispatch), SHA-256
+  `73dd678eb6faf418923e2791eaab04088027688fd96bcb600aa81b053e82469c`.
+  Baseline `827dae85` (tree `8506c995`), work branch `b5b5f381`. Scope:
+  canonical message `file upload is not available in this build` in
+  `src/kronika/cli.py`, `bridge/server.py`, `dom_engine.js`, `job_runner.js`,
+  and the `GET /v1/files/{fid}` entry of `contracts/http-api.v1.json`
+  (status `[401, 404, 501]`, error envelope); test updates in `test_client.py`,
+  `test_bridge_jobs.py`, `test_schemas.py`. Stage A commits
+  `fix(cli): describe file upload as unavailable` on the work branch; Stage B
+  rebuilds the parentless root from the corrected tree and moves `main` and
+  `public/kronika-initial` with old-value guards. Expected report destination
+  `08_report_00.md`.
+
+- **2026-09-22 — C1 BLOCKED, Orchestrator resolved the blocker.** Report
+  `08_report_00.md` (SHA-256
+  `22fe9c5dd1dcc3f468c32b85f110a516c4bc4ee2a345fb8c959c6f1d332a246b`):
+  status BLOCKED. The eight allowlisted edits are present but uncommitted;
+  Stage A commit and Stage B rebuild did not run. The declared full route
+  passed 1182 tests OK on the dirty tree, but the focused module list failed
+  four quiet-stderr tests because `logging.basicConfig` had not been installed
+  by `tests.unit.test_bridge_startup`. Re-verified read-only by the
+  Orchestrator: `git diff` contains exactly the eight allowlisted files with
+  the intended content; the focused command with
+  `tests.unit.test_bridge_startup` included first passes 348 tests OK;
+  `src/chatgpt_cli/` does not exist (the report's sentence about it is a
+  location error like the S3 report's; the corrected sentence is in
+  `src/kronika/cli.py`). Decision: the focused-command failure is a
+  pre-existing test-isolation ordering dependency, parked as an out-of-scope
+  observation; no isolation fix authorized.
+- **2026-09-22 — C1 completion grant (same session, exchange 02).**
+  `08_implementation_01.md` (session 08 / exchange 02, current-worker-session,
+  Bounded Correction Worker, Native planning mode not-used, Extra High, manual
+  dispatch), SHA-256
+  `7a2a97863200742507d559318e9eeb95cbe59da8337ac11ec5529ab9e6f70ce5`.
+  Continuity anchor `08_report_00.md`; authorizes Step 1 diff verification,
+  the corrected focused command, the full declared route, Stage A commit
+  `fix(cli): describe file upload as unavailable`, and Stage B root rebuild
+  with guarded ref moves. Expected report destination `08_report_01.md`.
