@@ -1,3 +1,15 @@
+# SUPERSEDED 2026-09-22
+
+This file asked for a Planner and an S1 identity rename. That work is done.
+Live restoration for the incoming Orchestrator:
+
+`/home/agile/meta/projects/kronika/00/00-kronika-public-identity-and-clean-start/01_handout.md`
+
+Do not re-plan. Do not re-issue session 01 or 02. Keep this file as
+historical evidence.
+
+---
+
 # Fresh Orchestrator handout — Kronika public identity and clean start
 
 You are a **fresh** terminal-capable Orchestrator for a new public product
