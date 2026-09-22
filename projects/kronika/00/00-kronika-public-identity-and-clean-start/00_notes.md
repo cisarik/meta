@@ -433,4 +433,9 @@ This correction does not reopen the whole and does not move any Kronika ref.
 opening handout of the successor whole, at
 `projects/kronika/00/01-kronika-tailnet-family-library/00_handout.md`.
 
-Publication of Kronika remains parked.
+- **2026-09-22 — Cooperator publication grant, executed.** P1 added
+  `origin` `https://github.com/cisarik/kronika.git` with push refspec
+  `refs/heads/main:refs/heads/main`. P2 pushed that refspec only.
+  Public readback and a fresh clone both show one parentless `main` at
+  `66c40d43c577276b0ad304a494fbbb1ffb6fc933`, tree `848f2474`.
+  `lab/cli-chatgpt-190` and `work/kronika-clean-start` were not pushed.
