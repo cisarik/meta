@@ -28,6 +28,43 @@ not publish Kronika and does not open `kronika-tailnet-family-library`.
 
 ## Session log
 
+- **2026-09-22 — Publication + minimal-kernel deployment grant issued.**
+  Cooperator authorized starting the live phase. Issued `03_deployment_00.md`
+  (session 03, exchange 01, `fresh-worker-session`, Bounded NUC Deployment,
+  High, report `03_report_00.md`). Scope: publish `main` by fast-forward to
+  `26d28b16c08a5e7e0179a32c16646bfdc1009c81` (the only Git write), then
+  `deploy/ubuntu/framenest-release` status → check → deploy, with the
+  documented exit-13 schema-jump annex if the catalog revision differs;
+  rollback target is the current NUC release from status; the page provider
+  stays unregistered and unselected. Cooperator preconditions: NUC sudo
+  timestamp outside the Worker and `FRAMENEST_NUC_SSH_*` exported into the
+  Worker environment.
+- **2026-09-22 — S2 accepted; live-phase decision pending.** S2 implementation
+  PASS (`02_report_01.md`, commit `26d28b16c08a5e7e0179a32c16646bfdc1009c81`)
+  reconciled by direct Orchestrator verification: 14 new files within the
+  allowlist, vendor tree, `pyproject.toml`, and `poetry.lock` unchanged, push
+  confirmed by `git ls-remote`, and the recorded gate re-run directly
+  (`45 passed in 1.92s`). No independent acceptance required by the adopted
+  plan. Next: Cooperator decision on starting the live phase — publish `main`
+  at `26d28b1` and deploy the minimal kernel to the NUC through
+  `deploy/ubuntu/framenest-release`, so the S3 locator probe can run against
+  the immutable release. The synthesized plan recorded deployment between S4
+  and S5, but its own reason (live probes run against the immutable release)
+  requires it before S3; raised for Cooperator decision.
+- **2026-09-22 — S1 accepted; S2 grant issued.** S1 implementation PASS
+  (`02_report_00.md`, commit `0fd21b989814b7c0b78d517996812750a823ff10`)
+  reconciled by direct Orchestrator verification: 43 changed files within the
+  allowlist, `poetry.lock` unchanged, vendor tree stripped with no forbidden
+  imports and upload still disabled, branch push confirmed by `git ls-remote`,
+  and the recorded gate re-run directly (`28 passed in 3.03s`). No independent
+  acceptance was required by the adopted plan. Issued S2 grant
+  `02_probe_tooling_01.md` (session 02, exchange 02, `current-worker-session`,
+  Medium, allowlist `src/framenest/infrastructure/ai/chatgpt_page/**` and
+  `tests/unit/infrastructure/ai/chatgpt_page/**`, one commit on
+  `feat/chatgpt-page-ask-kernel`, report `02_report_01.md`). Scope: offline
+  envelope encoder, deterministic ZIP packer, byte accounting and budget
+  profile contract, generated fixtures, sanitized receipts, cancellation.
+  Delivery: same Worker chat as S1, Plan Mode off.
 - **2026-09-22 — S1 fresh-session reissue.** Cooperator selected a genuinely
   fresh session for S1; the prepared current-session prompt
   `01_implementation_02.md` (session 01, exchange 03) produced no outcome, is
