@@ -5,8 +5,8 @@ logical whole. Orchestrator-owned after restore, append-only during the whole,
 frozen at closure. Non-authorizing. Public-safe by default. Michal owns any
 meta Git commit.
 
-Working identity (Cooperator-selected 2026-09-22, pending Planner lock of the
-exact slice boundary):
+Working identity (Cooperator-selected 2026-09-22; Planner-locked in
+`01_report_00.md`):
 
 ```text
 kronika-public-identity-and-clean-start
@@ -18,15 +18,16 @@ Trace:
 /home/agile/meta/projects/kronika/00/00-kronika-public-identity-and-clean-start/
 ```
 
-Handout: `00_handout.md` (2026-09-22). Live for the incoming fresh Orchestrator.
-Not Worker authority.
+Handout: `01_handout.md` (2026-09-22, after S1 PASS). Live for the incoming
+fresh Orchestrator. `00_handout.md` is historical Planner bootstrap.
 
 Lab checkout (not yet the public product repo):
 
 ```text
 /home/agile/Tools/cli_chatgpt
-branch main
-HEAD 2727451d2502925377637e19fa435917c970a996
+work/kronika-clean-start  1c8a659073368f26c289cbedf616a2dfed338b4b  # S1
+main                      2727451d2502925377637e19fa435917c970a996  # lab tip
+lab/cli-chatgpt-190       2727451d2502925377637e19fa435917c970a996  # 190 commits
 no Git remote
 AP pin 7478ddb07d2c3911f79e1aa1441f0115a31c45d8
 ```
@@ -80,8 +81,9 @@ AP pin 7478ddb07d2c3911f79e1aa1441f0115a31c45d8
     may conflict with ChatGPT terms; AS IS; no warranty; no affiliation with
     OpenAI. A disclaimer is not a ToS license.
 14. **External analytic trace:** this Meta project `kronika` is now in use.
-15. **First Worker of the incoming Orchestrator:** Planner, native plan mode,
-    this whole only.
+15. **First Worker of the incoming Orchestrator:** S2 implementation,
+    `03_implementation_00.md`, Plan Mode off, this whole only. The Planner
+    already ran (session 01). Do not re-plan.
 
 ## Recommended first product whole after this one (not authorized)
 
@@ -92,14 +94,37 @@ kronika-tailnet-family-library
 Family members open the library from phones over Tailscale. That is the first
 family-testable behavior. Native share apps need that reachable surface first.
 
+## Session log addendum
+
+- **2026-09-22 — Cooperator boot before S1.** Lab tip preserved as
+  `lab/cli-chatgpt-190` at `2727451d2502925377637e19fa435917c970a996`
+  (190 commits). Implementation branch `work/kronika-clean-start` created
+  from that tip. Local boot commit
+  `3c345cbd659ccb5817bb11cbc89d037798553ca8` adds MIT LICENSE, Kronika
+  AGENTS rules (CLI route still predecessor names until S1), and a
+  public-safe `.gitignore`. `main` remains at the lab tip. No remote, no
+  push. S1 Gate 1 branch creation is already done; the next implementation
+  grant starts from the boot commit and must not recreate those branches.
+  S1 prompt path: `02_implementation_00.md` (fresh Worker session 02 /
+  exchange 01). Session 01 remains planning only.
+
+- **2026-09-22 — S1 PASS.** Commit
+  `1c8a659073368f26c289cbedf616a2dfed338b4b` on `work/kronika-clean-start`
+  (`feat(identity): rename the application and state root to Kronika`).
+  Claimed suite: 1192 tests OK, 0 skips. `main` and `lab/cli-chatgpt-190`
+  unmoved at `2727451`. Report `02_report_00.md` SHA-256
+  `c91d0324b1b4d5b61cf9a3ae9dd510e96269b55c8947e699e7b023e7dbc11302`.
+  Successor restoration: `01_handout.md` (SHA-256
+  `0c6c024dbc4422c41a2ea78e071f9e6ddd2eb29f7e01cc8161212728ed4b0276`).
+  Next Worker is S2 as `03_implementation_00.md` (session 03), not a new
+  logical whole. `00_handout.md` is superseded (banner only; body kept as
+  history).
+
 ## Open gates for the incoming Orchestrator
 
-- Confirm `cisarik/kronika` is the GitHub identity once the empty repo exists.
-- Planner must bound: user-facing rename vs Python package `chatgpt_cli`
-  rename vs XDG state-dir break. Recommendation in the handout.
-- `docs/environment.md` contains a household ChatGPT project URL and local
-  paths; it must not ship as public professional documentation.
-- `docs/security.md` is an experiment ledger (~2000 lines); public
-  `SECURITY.md` must be short.
-- Publication push is Cooperator-owned even after the tree is clean.
+- Independently verify S1 at `1c8a659` before issuing S2.
+- Confirm `cisarik/kronika` is still empty of refs before any P1.
+- `docs/environment.md` must still not be opened; S4 deletes by path.
+- Publication push remains Cooperator-owned.
 - Do not implement Tailscale bind, native apps, or remote listen in this whole.
+- Do not re-plan. Do not treat S2 as logical whole 02.
