@@ -343,3 +343,94 @@ family-testable behavior. Native share apps need that reachable surface first.
   the corrected focused command, the full declared route, Stage A commit
   `fix(cli): describe file upload as unavailable`, and Stage B root rebuild
   with guarded ref moves. Expected report destination `08_report_01.md`.
+
+- **2026-09-22 — C1 completed and accepted after reconciliation.** Report
+  `08_report_01.md` (SHA-256
+  `79a5c03e12b85b4cd41c5dfe46ca5b427682f3f799c2ea7c4f2f574339ab5c1e`):
+  status PASS. Verified by the Orchestrator: work branch =
+  `30e02a327e63255e1a02ec8c0709c15b38988191` (subject
+  `fix(cli): describe file upload as unavailable`, tree `848f2474`); new
+  parentless root `main` = `public/kronika-initial` =
+  `66c40d43c577276b0ad304a494fbbb1ffb6fc933` with tree `848f2474`; lab =
+  `2727451` with 190 commits; no remotes; clean worktree; AP pin intact; lab
+  tip not an ancestor; old root `827dae85` retained in the reflog. The public
+  root message is exactly `feat(kronika): introduce the household research
+  library` with no trailer; the correction is present in `main`. The work
+  commit carries a hook-added `Co-authored-by: Cursor` trailer on the local
+  branch only; no product effect. Suite: 1182 OK declared route, 348 OK
+  corrected focused set, behavior checks green.
+
+- **2026-09-22 — A2 grant written (full fresh re-acceptance).**
+  `09_acceptance_00.md` (session 09 / exchange 01, fresh-worker-session, Fresh
+  Independent Re-Audit, Phase acceptance, Native planning mode not-used, Extra
+  High, manual dispatch, required-fresh-independent), SHA-256
+  `69a255de93aeb45f396effcdc54d812a87ee6733e6404f1401fb883d6bd92e51`.
+  Candidate `66c40d43` (tree `848f2474`); Acceptance and Correction Record
+  `Primary fresh acceptances used: 1`, `Automatic corrections used: 1`,
+  `Correction re-acceptance: full-fresh`; eight fixed risk claims; fixed
+  control matrix; correction-delta verification; INFOSEC R4 coverage; the
+  parked test-isolation observation to be reported honestly. Expected report
+  destination `09_report_00.md`.
+
+- **2026-09-22 — A2 acceptance-PASS, Orchestrator accepts.** Report
+  `09_report_00.md` (SHA-256
+  `daec731e81ea73918401b0d9d1d2cf75dd94dbb3a77e92b8fff208ad2f19b1c3`)
+  independently re-accepts candidate
+  `66c40d43c577276b0ad304a494fbbb1ffb6fc933` (tree `848f2474`) with all eight
+  fixed risk claims accepted, A1-F01 `verified-closed`, no new finding, suite
+  1182 OK plus focused 348 OK, synthetic probes and R4 coverage. Re-verified by
+  the Orchestrator after the report: `main` = candidate, lab = `2727451` with
+  190 commits, work = `30e02a3`, `public/kronika-initial` = candidate, no
+  remotes, clean worktree, AP pin intact, no ancestry. The acceptance budget is
+  exhausted (one primary + one correction re-acceptance).
+
+- **2026-09-22 — Cooperator decision: close the whole; publication parked.**
+  Michal instructed closure with details parked in the backlog. No `origin`,
+  no push; P1/P2/V1 remain separate Cooperator-owned grants against `66c40d43`.
+
+- **2026-09-22 — Successor handout and closeout written.**
+  `02_handout.md` (successor restoration for `kronika-tailnet-family-library`;
+  first Worker is its Planner, session 01, native planning mode required),
+  SHA-256
+  `58b67030107520efe190b881f22b51acf30d3196e7490e4c118dde69f029fd19`.
+  `10_closeout.md` (Orchestrator closure record), SHA-256
+  `ec65bde09d735a1a291b9f10a6eb4b8340adb5cf213b0117a304b39c47b40b79`.
+  Filename deviation recorded: the Cooperator explicitly requested
+  `10_closeout.md`; the Meta README's shared handout/closure sequence would
+  have placed the next artifact at `03`. The explicit request governs.
+
+## Closure (frozen)
+
+```text
+Logical whole identity: kronika-public-identity-and-clean-start
+Required preceding results: satisfied
+Cooperator-owned decisions: satisfied (publication parked)
+Residual-risk disposition: satisfied (A1-F01 verified-closed; remaining
+  observations parked, non-blocking, carried in 02_handout.md section 5)
+Upgrade-ledger reconciliation: complete (no upgrade ledger activated)
+Active mutation: none
+Closure actor: ORCHESTRATOR
+Logical-whole closure: closed-by-ORCHESTRATOR
+Closure signal: LOGICKY CELOK UZAVRETY
+```
+
+Final state at closure: `main` = `public/kronika-initial` =
+`66c40d43c577276b0ad304a494fbbb1ffb6fc933` (parentless, tree
+`848f247434deea4c217170c012612b39e41557f3`); `work/kronika-clean-start` =
+`30e02a327e63255e1a02ec8c0709c15b38988191`; `lab/cli-chatgpt-190` =
+`2727451d2502925377637e19fa435917c970a996` (190 commits); previous root
+`827dae85` superseded (reflog + Meta evidence); no remotes; clean worktree; AP
+pin `7478ddb07d2c3911f79e1aa1441f0115a31c45d8`; public repository empty of
+refs. Notes are frozen from this entry; the successor whole opens its own
+directory `projects/kronika/00/01-kronika-tailnet-family-library/` with its own
+`00_notes.md`.
+
+## Post-closure correction (Cooperator, 2026-09-22)
+
+This correction does not reopen the whole and does not move any Kronika ref.
+
+`02_handout.md` was stored in this closed directory. Its text is the
+opening handout of the successor whole, at
+`projects/kronika/00/01-kronika-tailnet-family-library/00_handout.md`.
+
+Publication of Kronika remains parked.
