@@ -188,3 +188,34 @@ family-testable behavior. Native share apps need that reachable surface first.
   content from that file was copied into any prompt, note, or repository
   artifact, and no private value was reproduced. All later scans exclude that
   path; the S3 grant names it as never-open and out of scope.
+
+- **2026-09-22 — S3 accepted after reconciliation.** Report `04_report_00.md`
+  (SHA-256 `23e485d43db33e97af7995debc7eff4200022941146ad71ba1eeff3b38ac30c0`)
+  matches the git result: HEAD `dc44cfd38093c118310ac032f5252ba29fad2f13`,
+  single parent `f253924`, tree `57943d9f6af0f5a9b2c16a57509ef24f52fe4c0e`,
+  subject `fix(headless): remove the parked engine integration`; 12 changed
+  paths (11 modified, 1 deletion), all inside the S3 allowlist; worktree clean;
+  no remotes; `main` and lab unmoved at `2727451` (190 commits). Independent
+  read-only checks: no `Obscura` token in `src/`, `extension/`, `scripts/`, or
+  `contracts/`; remaining tokens are the test's negative fixtures and the
+  historical records listed as S4-owned; `tools/` is gone; no
+  `HEADLESS_ENGINE_*`/`headless verify` references remain. Suite claim 1181
+  tests OK (S3 Worker, declared route); not re-run by the Orchestrator.
+  Report inaccuracy noted: the report's sweep section claims
+  `src/chatgpt_cli/` still contains predecessor handlers and pin constants;
+  that directory does not exist and no such references remain. The actual tree
+  is correct; the sentence is a report error, not a product defect.
+
+- **2026-09-22 — S4 grant written.** `05_implementation_00.md` (session 05 /
+  exchange 01, fresh-worker-session, Fresh Implementation Worker, Native
+  planning mode not-used, Extra High, manual dispatch), SHA-256
+  `c284dcdfd0eef37f9f007a19063d66da75acd72a0fe59ed75f2c53a519d410c7`.
+  Baseline `dc44cfd`; expected commit subject
+  `docs(kronika): prepare the public documentation and clean tree`; report
+  destination `05_report_00.md`. Scope: rewrite README/architecture/
+  headless-engine; add SECURITY/CONTRIBUTING/usage; delete security,
+  dev-setup, ROADMAP, human-steps, and environment.md (deletion-only, never
+  opened); narrow updates to protocol/adapter-pack/contract companions; refine
+  `.gitignore` (`obscura-profile/` removed, environment exclusion kept).
+  `docs/environment.md` never opened; private host value in human-steps not
+  copied.
