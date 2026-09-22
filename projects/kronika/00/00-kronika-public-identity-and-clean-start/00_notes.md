@@ -128,3 +128,32 @@ family-testable behavior. Native share apps need that reachable surface first.
 - Publication push remains Cooperator-owned.
 - Do not implement Tailscale bind, native apps, or remote listen in this whole.
 - Do not re-plan. Do not treat S2 as logical whole 02.
+
+## Session log addendum
+
+- **2026-09-22 — fresh Orchestrator restore (read-only).** Restored from
+  `01_handout.md` and independently re-measured §4: `pwd -P` =
+  `/home/agile/Tools/cli_chatgpt`; branch `work/kronika-clean-start`; HEAD =
+  `1c8a659073368f26c289cbedf616a2dfed338b4b` with parent
+  `3c345cbd659ccb5817bb11cbc89d037798553ca8`, tree
+  `38e7b7c0a090331ce6e0ea06139215d8d3644109`, subject
+  `feat(identity): rename the application and state root to Kronika`; `main` and
+  `lab/cli-chatgpt-190` = `2727451d2502925377637e19fa435917c970a996` (190
+  commits); no remotes; clean worktree; AP pin
+  `7478ddb07d2c3911f79e1aa1441f0115a31c45d8` in both gitlink and `.ap` HEAD;
+  `src/kronika` present, `src/chatgpt_cli` and `scripts/chatgpt-cli` absent;
+  `scripts/kronika` executable; `docs/environment.md` tracked but not opened;
+  `02_report_00.md` SHA-256
+  `c91d0324b1b4d5b61cf9a3ae9dd510e96269b55c8947e699e7b023e7dbc11302`;
+  `git ls-remote --heads https://github.com/cisarik/kronika.git` exited 0 with
+  empty ref output. S1 holds; no mutation performed.
+
+- **2026-09-22 — S2 grant written.** `03_implementation_00.md` (session 03 /
+  exchange 01, fresh-worker-session, Fresh Implementation Worker, Native
+  planning mode not-used, Extra High, manual dispatch), SHA-256
+  `653a54a9a260012e766abd0c697c99eccc44c782380c263e5abaf586340035a2`.
+  Baseline `1c8a659`; allowlist re-confirmed against existing paths at that
+  baseline; expected commit subject
+  `fix(cli): remove unimplemented recovery scaffolding`; report destination
+  `03_report_00.md`. Next: Cooperator dispatches to a genuinely fresh Agent
+  chat; Orchestrator reconciles the report against git before S3.
