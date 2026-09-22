@@ -219,3 +219,59 @@ family-testable behavior. Native share apps need that reachable surface first.
   `.gitignore` (`obscura-profile/` removed, environment exclusion kept).
   `docs/environment.md` never opened; private host value in human-steps not
   copied.
+
+- **2026-09-22 — S4 accepted after reconciliation.** Report `05_report_00.md`
+  (SHA-256 `d4040a1c73a86afff8538b6609a3c000ca6938a8cb5fb7a22faf8e29e8907109`)
+  matches the git result: HEAD `b5b5f3811f62d5c83dd411c627a1783fb1bd5d93`,
+  single parent `dc44cfd`, tree `8506c9955b448d913cafe03c08b0c3e5495f9952`,
+  subject `docs(kronika): prepare the public documentation and clean tree`;
+  20 changed paths (15 modified/added, 5 deletions), all inside the S4
+  allowlist; worktree clean; no remotes; `main` and lab unmoved at `2727451`
+  (190 commits). Independent checks: the five retired documents are absent;
+  `SECURITY.md`, `CONTRIBUTING.md`, `docs/usage.md` exist; `LICENSE` blob
+  unchanged; managed AP block byte-identical; `.gitmodules` and `.ap` gitlink
+  unchanged; only the intended `.gitignore` exclusion mentions
+  `environment.md`; privacy scan returns no filenames; no slice codes in the
+  rewritten docs; link check finds no missing repository paths; README follows
+  the locked order and labels Tailscale as planned; `runner.mjs run` is a real
+  mode. Report-format nits only: the phase-qualified field is descriptive
+  rather than `implementation-PASS`, and the result fields are absent. Not a
+  product defect.
+
+- **2026-09-22 — S5 grant written.** `06_implementation_00.md` (session 06 /
+  exchange 01, fresh-worker-session, Fresh Implementation Worker, Native
+  planning mode not-used, Extra High, manual dispatch), SHA-256
+  `f26f948cf1b2e4f2d8d24f5b1c0cc300eabb20757484635b27e27fa5c45ae2f2`.
+  Baseline/accepted clean `b5b5f381`, accepted tree `8506c995`; Git-only
+  `commit-tree` recipe with no `-p`, root message
+  `feat(kronika): introduce the household research library`, refs
+  `public/kronika-initial` and guarded `main` update; expected report
+  destination `06_report_00.md`. Public repo rechecked empty of refs at grant
+  time.
+
+- **2026-09-22 — S5 accepted after reconciliation.** Report `06_report_00.md`
+  (SHA-256 `7c0a4a437e6873d1ec8281ce0e9b8e9c3a80c099d146c8647a42271140c5810b`)
+  matches the git result: local `main` =
+  `827dae85c2794914c3adcb467de9b21ee8998463`, parentless, tree
+  `8506c9955b448d913cafe03c08b0c3e5495f9952` (equal to the accepted S4 tree),
+  subject `feat(kronika): introduce the household research library`, author and
+  committer `Michal Cisárik <cisarik@users.noreply.github.com>`;
+  `public/kronika-initial` = same root; `lab/cli-chatgpt-190` = `2727451` with
+  190 commits; `work/kronika-clean-start` = `b5b5f381`; no remotes; clean
+  worktree; AP pin `7478ddb` in gitlink and `.ap`; lab tip is not an ancestor
+  of `main` (exit 1). Privacy manifest: 132 tracked paths; all required
+  absences hold. The public-safety scan's matches are all synthetic
+  `chatgpt.com/g/g-p-...` fixtures; the shared contract/unit-test example URL
+  remains a review lead for A1 (generated fixture, not printed).
+  Old-name hits are preserved identifiers, frozen manager v3–v5 text, and
+  legacy-state tests only. No push, no remote.
+
+- **2026-09-22 — A1 grant written.** `07_acceptance_00.md` (session 07 /
+  exchange 01, fresh-worker-session, Fresh Independent Audit, Phase acceptance,
+  Native planning mode not-used, Extra High, manual dispatch, independence
+  required-fresh-independent), SHA-256
+  `99208aef476cb352e336173ff983135c4797516ab3fa820d4cf68c57187a508f`.
+  Candidate `827dae85` (tree `8506c995`); eight fixed risk claims; fixed
+  positive/negative control matrix; INFOSEC R4 milestone audit; read-only plus
+  synthetic probes; no corrections; expected report destination
+  `07_report_00.md`.
