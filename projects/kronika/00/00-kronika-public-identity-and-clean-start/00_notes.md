@@ -157,3 +157,34 @@ family-testable behavior. Native share apps need that reachable surface first.
   `fix(cli): remove unimplemented recovery scaffolding`; report destination
   `03_report_00.md`. Next: Cooperator dispatches to a genuinely fresh Agent
   chat; Orchestrator reconciles the report against git before S3.
+
+- **2026-09-22 — S2 accepted after reconciliation.** Report `03_report_00.md`
+  (SHA-256 `34e2fe8134857061e6e95859f711d8720d80fc3c18e3ba77914c0cc6a8bc162f`)
+  matches the git result: HEAD `f25392472d043d753a3844c3a9a6321ae5cf09a5`,
+  single parent `1c8a659`, tree `209bb1c2d7769f1139f589779539955ba21d556f`,
+  subject `fix(cli): remove unimplemented recovery scaffolding`; 17 changed
+  paths, all inside the S2 allowlist (14 modified, 3 deletions); worktree clean;
+  no remotes; `main` and lab unmoved at `2727451` (190 commits). Independent
+  read-only spot checks: `kronika 0.1.0`; `doctor`/`rollback` exit 2 with
+  invalid-choice usage; `startup_diagnostics`, the `/v1/files/{fid}` 501
+  branch, unknown-path 404, and the author `"recovery"` contract fields all
+  present. Suite claim 1187 tests OK (S2 Worker, declared route); not re-run by
+  the Orchestrator. S4-owned doc residuals were listed by the S2 report
+  (README, security, ROADMAP, architecture identity wording).
+
+- **2026-09-22 — S3 grant written.** `04_implementation_00.md` (session 04 /
+  exchange 01, fresh-worker-session, Fresh Implementation Worker, Native
+  planning mode not-used, Extra High, manual dispatch), SHA-256
+  `00d6110e1b8a9f521b9f8e749b9c38cc77da910917e43dea29b92e10f0f669ce`.
+  Baseline `f253924`; allowlist re-confirmed at that baseline; expected commit
+  subject `fix(headless): remove the parked engine integration`; report
+  destination `04_report_00.md`. Docs scope: current Obscura claims corrected;
+  historical records and `docs/ROADMAP.md` reported as S4-owned;
+  `docs/environment.md` excluded and not opened.
+
+- **2026-09-22 — Orchestrator near-miss (recorded).** During S3
+  reconnaissance a read-only `grep` over `docs/` unintentionally matched
+  `docs/environment.md` and surfaced some of its lines in the tool output. No
+  content from that file was copied into any prompt, note, or repository
+  artifact, and no private value was reproduced. All later scans exclude that
+  path; the S3 grant names it as never-open and out of scope.
