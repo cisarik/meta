@@ -28,6 +28,34 @@ not publish Kronika and does not open `kronika-tailnet-family-library`.
 
 ## Session log
 
+- **2026-09-22 — S3 preflight PARTIAL accepted; Node bootstrap decision
+  pending.** `04_report_00.md` (session 04, exchange 01) stopped correctly at
+  stage 2: the NUC's plain `node` resolves to `/usr/bin/node` `v18.19.1`,
+  below the Node 22 planned baseline, and `typeof WebSocket` is `undefined`
+  while the copied CDP client requires the global `WebSocket`. No state
+  directory, profile, browser action, or credential contact occurred; terminal
+  `sudo -K` released. Repository, release, and NUC `current` remain at
+  `26d28b1`. Cooperator decision pending: authorize one bounded Node >= 22
+  bootstrap on the NUC (recommended: pinned official Node.js v22.x LTS
+  tarball, checksum-verified, under `/opt/framenest/tooling/node/`, plus a
+  `/usr/local/bin/node` symlink so plain `node` resolves for the service
+  account), then re-run the S3 preflight from stage 2.
+- **2026-09-22 — Deployment accepted; S3 locator-probe grant issued.** The
+  deployment report `03_report_00.md` (session 03, exchange 01) is
+  `deployment-PASS`: public `main` and live NUC `current` both equal
+  `26d28b16c08a5e7e0179a32c16646bfdc1009c81`, service active, schema `0033`,
+  backup ready, vendored kernel present, rollback target
+  `/opt/framenest/releases/a4193d4f…`, `sudo -K` released. Public `main` was
+  independently re-read by the Orchestrator. The Worker observed that public and
+  local `main` were already published before its stage 2 ran (local reflog
+  fast-forward at 21:55:21); the Orchestrator did not perform that push and
+  will confirm the actor with the Cooperator. Issued `04_locator_probe_00.md`
+  (session 04, exchange 01, `fresh-worker-session`, Fresh Evidence Probe,
+  Phase Preflight, High, report `04_report_00.md`): NUC page-runtime preflight
+  (Node baseline, Chromium candidate, release entry point, installed pack
+  SHA-256), bounded state-dir setup, first household login through the deployed
+  wizard with the Cooperator completing the login, sanitized composer/login-wall
+  evidence, cleanup. No ask, no upload, no service start.
 - **2026-09-22 — Publication + minimal-kernel deployment grant issued.**
   Cooperator authorized starting the live phase. Issued `03_deployment_00.md`
   (session 03, exchange 01, `fresh-worker-session`, Bounded NUC Deployment,
