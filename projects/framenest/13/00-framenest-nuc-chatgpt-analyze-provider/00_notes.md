@@ -28,6 +28,127 @@ not publish Kronika and does not open `kronika-tailnet-family-library`.
 
 ## Session log
 
+- **2026-09-23 — FrameNest parked; NUC findings handed to the Kronika whole.**
+  The Cooperator parked FrameNest and will continue the Kronika project on the
+  NUC. This Orchestrator updated the successor Kronika handout
+  `/home/agile/meta/projects/kronika/00/01-kronika-tailnet-family-library/00_handout.md`
+  (2026-09-23 version) with the full NUC inventory and browser/Cloudflare
+  findings, the Cooperator's NUC refocus (one persistent browser, shared
+  household "temp" account, admin-handled challenges, a loopback endpoint
+  FrameNest can later call), and the Planner brief. Current FrameNest state:
+  `main` and live NUC `current` both `26d28b1`; S1+S2 delivered and accepted;
+  S3 live locator probe blocked by Cloudflare; NUC tooling (Node 22.23.2,
+  Chrome for Testing 154.0.8037.57, AppArmor profile, Xvfb/x11vnc/noVNC
+  packages) installed; two browser profiles flagged (`chromium-profile`,
+  `chromium-profile-flagged-20260923`); all transient view/probe units stopped
+  and all helper scripts and the wizard-URL file removed. No active mutation.
+  A future FrameNest Orchestrator resumes when Kronika exposes an endpoint
+  FrameNest can call; do not disturb the deployed FrameNest service, and read
+  the Kronika handout and trace only.
+- **2026-09-23 — Step 3 login attempt: Cloudflare hit the auth flow.**
+  The kernel login probe ran headed on `:99` with a fresh profile (old profile
+  parked as `chromium-profile-flagged-20260923`) and the Cooperator logged in
+  through the noVNC view. The probe finished (`ok: true`, 108 s) but the page
+  ended at `/api/auth/error` with title `Just a moment...`, composer absent —
+  i.e. Cloudflare interposed during the auth flow and the login errored. A
+  subsequent manual relaunch (no CDP) of that same fresh profile also shows
+  `Just a moment...`, so the profile is now challenged, like the old one.
+  Contrast: unauthenticated fresh profiles pass both with and without CDP
+  (tests D2/E). Working hypothesis: Cloudflare challenges the sensitive auth
+  flow and/or the combination of an authenticated profile with automation
+  signals; repeated restarts appear to deepen the flag. Cooperator observation
+  of the login flow was requested before choosing the next step.
+- **2026-09-23 — Step 2 result: fresh profile passes, old profile flagged.**
+  Fresh-profile tests (no CDP, and separately with CDP, no login, `chatgpt.com`)
+  both loaded the normal `ChatGPT: Chat, Work, Create...` page within 30 s and
+  stayed normal at 90 s, while the old logged-in profile is challenged in every
+  launch style. CDP alone is therefore not the trigger, and the environment
+  (same exit node, relay subnet, Chrome for Testing, AppArmor profile) is
+  healthy; the old profile carries a flagged state, most likely from the rapid
+  repeated restarts during the probe attempts. Next proposed step: park the old
+  profile, run the kernel login probe headed on `:99` with a fresh profile, the
+  Cooperator logs in interactively, the finisher posts `/done` when the
+  composer appears, and the locator metrics are captured in the same browser
+  instance without a restart. View units remain up.
+- **2026-09-23 — Network and session diagnostics for the challenge.**
+  Read-only inventory: the NUC and the dev host already select the same tailnet
+  exit node `cz-prg-wg-101.mullvad.ts.net` (online); the PC's local Mullvad app
+  is disconnected, so both egress via `tailscale0`. Egress IPv4 is stable but
+  differs per client inside the same relay subnet (`146.70.129.101` NUC vs
+  `146.70.129.111` PC), i.e. the exit node NATs each client to a different
+  address and identical public IP is not guaranteed by selecting the same exit
+  node. Plain `curl` receives `403 cf-mitigated: challenge` from chatgpt.com on
+  both machines (expected for non-browsers). Browser tests on the NUC: the
+  logged-in profile is challenged in every launch style (CDP with and without
+  `--password-store=basic`, CDP with the root URL, plain no-CDP, and a repeat),
+  while the first manual launch passed before the repeated restarts; a
+  fresh-profile no-login test was inconclusive (`Untitled` after 25 s).
+  Interpretation: the challenge is most likely browser/session-level risk
+  (repeated rapid restarts, automation/CDP signals) rather than the exit node,
+  with possible contribution from the exit node being briefly offline during
+  the Cooperator's network work. View units were stopped again after the test.
+  Next proposed step: a longer fresh-profile test with explanations.
+- **2026-09-23 — Login works; Cloudflare challenge blocks the kernel path.**
+  The Cooperator completed the manual ChatGPT login in the visible NUC
+  browser; the profile is authenticated (window title `ChatGPT`). After that,
+  every further launch hit Cloudflare's `Just a moment...` interstitial:
+  driver-style CDP with and without `--password-store=basic`, CDP with the root
+  URL, and a plain no-CDP relaunch with the exact earlier-success flags — all
+  stuck, so the current challenge is IP/risk-driven, not launch-flag-driven,
+  and it does not resolve unattended. The vendored stealth option
+  (`--disable-blink-features=AutomationControlled` + UA) is unusable with
+  Chrome for Testing because `parseChromiumMajorVersion` expects
+  `Chromium|Chrome <digits>` while CfT prints `Google Chrome for Testing …`
+  (`E_DRIVER_VERSION`). All transient view/probe/test units were stopped and
+  every helper script and the wizard-URL file were removed; nothing durable
+  beyond the installed tooling, the AppArmor profile and the logged-in profile
+  remains. Cooperator direction recorded: FrameNest and Kronika stay completely
+  separate; the ChatGPT module keeps the same core (FrameNest uses no web
+  search or deep research); no fork and no large modularity in FrameNest; the
+  NUC is a development tool where data loss is acceptable and family use is far
+  away; the NUC should later share the same Mullvad exit node and tailnet
+  position as the PC (same IP), and an admin may occasionally need to solve a
+  challenge or re-login interactively — the VNC/noVNC view plus the wizard is
+  the admin tool for that. The Cooperator also reported having locked himself
+  out of the NUC while working on the exit-node setup; current Orchestrator SSH
+  access works.
+- **2026-09-23 — NUC visible-browser login staged.** Under the Cooperator's
+  direct-ops authorization: installed Google Chrome for Testing 154.0.8037.57
+  (official Google CfT build, SHA-256 `ceee2972…`, extracted to
+  `/opt/framenest/tooling/chrome-for-testing/154.0.8037.57/`, sandbox helper
+  setuid root, symlink `/usr/bin/chromium` — the distro Chromium is snap-only
+  and cannot serve the `framenest` service account); added the scoped AppArmor
+  profile `/etc/apparmor.d/framenest-chrome` (userns for the CfT binary path
+  only) to satisfy Ubuntu 24.04's unprivileged-userns restriction; installed
+  and started transient units `framenest-xvfb` (:99, 1280x800, `-ac`),
+  `framenest-x11vnc` (127.0.0.1:5901, `-localhost -nopw`), `framenest-novnc`
+  (websockify 127.0.0.1:6080 -> 5901) and `framenest-vnc-browser` (headed CfT
+  as framenest, profile `/var/lib/framenest/chatgpt-page/chromium-profile`,
+  `--password-store=basic`, `https://chatgpt.com/`). The Cooperator logs in
+  through the loopback noVNC view over his own SSH tunnel; the wizard path and
+  the no-live-profile-copy boundary are preserved. Next after the login: stop
+  the browser unit, run the kernel login/metrics check with the same profile,
+  capture the locator evidence, then tear the view units down.
+- **2026-09-23 — Node bootstrap done; Chromium blocker; profile decision open.**
+  Under the Cooperator's 2026-09-23 explicit direct-ops authorization ("read
+  write aj cez ssh … takéto triviálne veci rieš ty"), the Orchestrator installed
+  pinned Node.js v22.23.2 on the NUC: official nodejs.org tarball, SHA-256
+  verified (`d60acfe0…`), extracted to
+  `/opt/framenest/tooling/node/node-v22.23.2-linux-x64`, symlinked
+  `/usr/local/bin/node`; verified as the service account: plain `node` resolves,
+  `v22.23.2`, `typeof WebSocket` = `function`. Rollback: remove the symlink and
+  the tooling directory. Also created the planned kernel state directories
+  `/var/lib/framenest/chatgpt-page` (0700) and `/run/framenest/chatgpt-page`
+  (0750), owner `framenest:framenest`. Chromium finding: the host has only snap
+  Chromium (`/usr/bin/chromium-browser` is the snap launcher); snap Chromium
+  cannot serve the `framenest` service account (passwd home `/nonexistent`,
+  profile outside `$HOME`, cgroup warning), so an unconfined Chromium-family
+  browser is required. Planned ops route: pinned Chrome for Testing
+  `154.0.8037.57` under `/opt/framenest/tooling/` plus a `/usr/bin/chromium`
+  symlink. Open Cooperator decision: the NUC Chromium profile — the Cooperator
+  asked for "the profile I have here on the PC"; the handout forbids reading or
+  copying live browser profiles and Linux keyring encryption makes a copy
+  unreliable, so the recommended path remains the NUC wizard login.
 - **2026-09-22 — S3 preflight PARTIAL accepted; Node bootstrap decision
   pending.** `04_report_00.md` (session 04, exchange 01) stopped correctly at
   stage 2: the NUC's plain `node` resolves to `/usr/bin/node` `v18.19.1`,
