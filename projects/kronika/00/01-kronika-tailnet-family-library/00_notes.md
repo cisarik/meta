@@ -72,3 +72,19 @@ Its `02_handout.md` is the misplaced historical copy. The live text is
   `3714540b7532b1a52118225b2bb09f3b8ca5ea6516af307f1e3dc4bf265ce957`.
   Next: Cooperator opens a fresh Agent chat with native Plan Mode ON and pastes
   the prompt; the report destination `01_report_00.md` is currently absent.
+
+## Supersession (2026-09-23, Cooperator)
+
+- **Materially changed objective.** The Cooperator supplied "Jedna Kronika na
+  základe existujúceho FrameNestu" (stored here as `01_plan_sk.md`): one
+  Kronika on the existing FrameNest base, capture module from the closed
+  `cli_chatgpt`/Kronika code, no new repository. This replaces this whole's
+  premise (two separate products; FrameNest parked and untouched; product work
+  in `/home/agile/Tools/cli_chatgpt`).
+- **Consequence.** This whole is superseded without implementation and
+  without the closure signal. The Planner grant `01_planning_00.md` was never
+  dispatched (report `01_report_00.md` absent); it must not be dispatched.
+  No ref moved; no repository changed.
+- **Successor whole.** `kronika-one-product`, trace
+  `/home/agile/meta/projects/kronika/00/02-kronika-one-product/`; the
+  direction is stored there byte-identical.
