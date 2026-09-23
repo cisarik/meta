@@ -173,3 +173,29 @@ handout; a later read-only preflight re-verifies them before any host mutation.
   Scope: create `feat/kronika-one-product` from `26d28b16`, one documentation
   commit on the exact S0 allowlist, `./.ap/ap project check` gate, no tests,
   no push. Report destination `01_report_01.md` (absent).
+
+- **2026-09-23 — S0 accepted; S1 grant issued.** S0 report `01_report_01.md`
+  (SHA-256 `aba700c3bac8b55260cb1c2851644f52f0624869ca05f64a7c700affc000f5b0`,
+  status PASS, implementation-PASS, coordinates 01/02) reconciled: branch
+  `feat/kronika-one-product` has exactly one commit
+  `93e7742d56d46d4725d4561bd8751b15e55e5eb5` (parent `26d28b16`, tree
+  `b357c765f8ca03c03cbbe0b087b98b6aa14a75e9`, subject
+  `docs(kronika): record one-product architecture and private records`);
+  `git diff --name-status` is exactly the eleven allowed paths (ten modified
+  plus ADR-0082 added); worktree clean; managed AP block byte-identical; AP
+  pin `7478ddb0` unchanged; `main`/`origin/main` unmoved at `26d28b16`; no
+  remote branch pushed. ADR-0082 and the AGENTS.md additions reviewed; content
+  matches the locked direction and marks S0 as documentation-only. S0 accepted
+  (Orchestrator review; Cooperator confirmed the direction by continuing).
+
+- **2026-09-23 — S1 implementation grant issued.**
+  `01_implementation_02.md` (session 01 / exchange 03,
+  current-worker-session, Implementation Worker, native planning mode
+  not-used, manual Cooperator delivery, High — packaging/resource named
+  risk), SHA-256
+  `263b9f17ee42cd168d7921a2fd2cf0e93a4a232809fc2ce9401999653ac34d42`.
+  Scope: relocate the 32 vendor files to `src/kronika_capture`, update
+  imports/resource lookup/packaging/entry points/tests, add
+  `docs/provenance/kronika-capture.json`, retire `vendor/kronika-ask/**` after
+  verification, one commit, no push. Report destination `01_report_02.md`
+  (absent).
