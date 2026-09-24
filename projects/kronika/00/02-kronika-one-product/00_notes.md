@@ -199,3 +199,39 @@ handout; a later read-only preflight re-verifies them before any host mutation.
   `docs/provenance/kronika-capture.json`, retire `vendor/kronika-ask/**` after
   verification, one commit, no push. Report destination `01_report_02.md`
   (absent).
+
+- **2026-09-23 — S1 accepted; S2 grant issued.** S1 report `01_report_02.md`
+  (SHA-256 `25af6bd7dc5d4065b6149509bc779f17e66faac6130feb095732d44683fbd5c9`,
+  status PASS, implementation-PASS, coordinates 01/03) reconciled: branch
+  `feat/kronika-one-product` has exactly one new commit
+  `96ef426f7026c818f5e75733e8f8dfc5ac2321d1` (parent `93e7742`, tree
+  `570e99abb77b062b7a3ac3c6f7f9f0be5d74dda3`, subject
+  `feat(capture): relocate kernel into kronika_capture`); the rename-aware diff
+  is 32 relocations `vendor/kronika-ask/src/kronika` -> `src/kronika_capture`,
+  plus `pyproject.toml`, 12 test files, new
+  `docs/provenance/kronika-capture.json`, deleted vendor manifest and the two
+  vendor-path scaffolding files; `vendor/` holds no tracked file;
+  `src/kronika_capture` has 32 files; both entry points resolve to
+  `kronika_capture.cli:main`; no old-namespace or code-level vendor reference
+  remains; worktree clean; AP pin unchanged; `main`/`origin/main` unmoved at
+  `26d28b16`; no push. Focused-route claims (32 Python tests, 3 Node tests,
+  wheel inventory including the isolated wheel import) are Worker evidence, not
+  independently re-run; S1 acceptance is E2 non-independent per the plan.
+  S1 accepted; evidence before S2 satisfied (one executable implementation,
+  complete provenance, focused results).
+
+- **2026-09-23 — S2 implementation grant issued.**
+  `01_implementation_03.md` (session 01 / exchange 04,
+  current-worker-session, Implementation Worker, native planning mode
+  not-used, manual Cooperator delivery, High — submission-barrier named
+  risk), SHA-256
+  `de6874cd08e9210cfed62b8c672fc2c200c187f7eb84e6ac0d7f9ad1fc883ae8`.
+  Scope: durable journal behind `JobManager`, submission barrier
+  (`send_intent_persisted` before any click), removal of the second-click
+  retry, bridge-restart reconnection without browser shutdown, persistent
+  single browser with the 300 s restart brake, `needs_admin`/resume/readiness,
+  status and cancel endpoints, idempotent `request_id`, 24 h/256 journal
+  bounds, typed errors; one commit, no push. Evidence before S3: a separate
+  fresh independent targeted review (session 02) proving single launch,
+  reconnect, pause/resume, timer separation and no automatic resend. Report
+  destination `01_report_03.md` (absent).
