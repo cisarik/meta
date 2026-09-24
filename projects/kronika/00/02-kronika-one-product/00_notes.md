@@ -235,3 +235,31 @@ handout; a later read-only preflight re-verifies them before any host mutation.
   fresh independent targeted review (session 02) proving single launch,
   reconnect, pause/resume, timer separation and no automatic resend. Report
   destination `01_report_03.md` (absent).
+
+- **2026-09-24 — S2 implementation report reconciled; S2 acceptance grant
+  issued.** S2 report `01_report_03.md` (SHA-256
+  `f2cc872d8d56357162212441ff0871469bdb44fcc568754ec207aabcfad9b9fb`, status
+  PASS, implementation-PASS, coordinates 01/04) reconciled: commit
+  `5259b89a9af993e94f00c03e7962681c8ba152a4` (parent `96ef426`, tree
+  `97fac132581632305d4e86fdbdeca11118b83e75`, subject
+  `feat(capture): persist submission barriers and browser lifecycle`); diff is
+  exactly the 20 allowed paths (17 modified, 3 added: `bridge/journal.py`,
+  `tests/capture_lifecycle.test.js`,
+  `tests/unit/chatgpt_page/test_capture_journal.py`); the journal uses stdlib
+  SQLite with 0700/0600 and `synchronous=FULL`; the packaging test now expects
+  33 capture files while provenance stays exactly 32 upstream-relocated files;
+  protected paths and AP pin unchanged; worktree clean; `main`/`origin/main`
+  unmoved at `26d28b16`; no push. Focused-route claims (62 Python, 28 Node) are
+  Worker evidence; the plan requires a fresh independent review before S2
+  acceptance, so no acceptance verdict is recorded yet.
+
+- **2026-09-24 — S2 acceptance grant issued.** `02_acceptance_00.md` (session
+  02 / exchange 01, fresh-worker-session, Fresh Independent Audit, phase
+  acceptance, native planning mode not-used, manual Cooperator delivery, High,
+  required-fresh-independent), SHA-256
+  `e27ff9d9a3cd34fdb561f4e93a406674bdb18b4cf34f34d508ebbb3b5093561e`.
+  Candidate `5259b89a…`; eight fixed risk claims; fixed positive/negative
+  control matrix including adversarial double-send, journal, wire-auth,
+  privacy and launch-brake probes under one declared temporary root. Report
+  destination `02_report_00.md` (absent). Next: Cooperator opens a NEW Agent
+  chat (fresh session 02) and pastes the prompt.
