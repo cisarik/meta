@@ -907,3 +907,859 @@ handout; a later read-only preflight re-verifies them before any host mutation.
   the successor Orchestrator leads; this session stops issuing grants. The
   whole remains open; S3 host bring-up, Cooperator login, explicit resume,
   activation and one synthetic ask are the immediate next work.
+
+- **2026-09-25 — S3 deploy+D1 grant reconciled (deployment-PASS); D2 block
+  issued.** `18_deployment_00.md` (session 18 / exchange 01,
+  fresh-worker-session, Bounded NUC Deployment, native planning mode not-used,
+  manual Cooperator delivery, High), SHA-256
+  `19b387268b5cd4af1efa38471acfae450f06354dee4a698fea6545b52d9fa15`.
+  Report `18_report_00.md` (SHA-256
+  `a8bf2bca7f1d04fa85a6e9ef48026b3a50b72aacce41736b39558fa31f094a45`, status
+  PASS, deployment-PASS, coordinates 18/01) reconciled: helper `status`,
+  `check`, `deploy` exited 0; `public_main` and `web_release` `e408bb5`,
+  capture release unchanged `94e605c`; post-deploy `/opt/framenest/current` =
+  `e408bb5`, `capture-current` = `94e605c`, `.framenest-release-sha` matches,
+  `framenest.service` active. D1 read-only: Xvfb/bridge/runner active,
+  NRestarts 0; installed unit directives match the `e408bb5` sources; zero
+  chrome/chromium processes (0 browser roots); bridge status
+  `browser_unavailable` / `E_BROWSER_UNAVAILABLE`, zero jobs, opaque
+  intervention id `dc3fc192-…`, `client_connected` true, `browser_session`
+  `2bb2c1ac-…`; Xauthority readable, X99 socket present, `/usr/bin/chromium`
+  resolves to Chrome for Testing 154.0.8037.57, userns knob 1; port 8765
+  loopback-only, 5900/6080/6099 closed. Orchestrator re-verified local HEAD,
+  `main`, `origin/main` and public `main` at `e408bb5`, worktree clean.
+  Deployment accepted (non-independent); S3 remains open. LEDGER candidate
+  (non-authorizing): non-capture listeners 53809/50216 were not identified;
+  outside the capture boundary. Next: D2 Cooperator-executed blocks (stop only
+  the runner; confirm no browser process; inspect external brake metadata),
+  then D3. No `sudo -K` in any grant.
+
+- **2026-09-25 — D2/D3 host diagnostic executed and classified; S3 stops for an
+  evidence-based correction plan.** D2a: runner stopped cleanly
+  (`Result=success`, `ExecMainStatus=15`), zero chrome/chromium processes.
+  D2b: external brake metadata directory present, `lock` absent,
+  `last-start.json` valid, `remaining_ms` 0 — no mutation needed, no `rmdir`.
+  D3a first attempt aborted fail-closed before any mutation because
+  `.framenest-release-sha` is root-only; only the precondition read was
+  adapted to `sudo -n cat`. D3a-R2: temporary
+  `/run/systemd/system/kronika-capture-runner.service.d/90-s3-recovery.conf`
+  (ExecStart pinned to the `e408bb5` release tree) written, `daemon-reload`,
+  single runner start. D3b (read-only): runner active from the corrected tree
+  (`NRestarts=0`, `ExecMainStatus=0`); zero chrome/chromium; bridge status
+  `browser_unavailable` with a new `browser_session` `1eb21d68-…` and the
+  unchanged intervention id; the journal emitted exactly one C1 record:
+  `capture_startup {"outcome":"failed","stage":"endpoint","reason":
+  "process_exited","exit_code":21,"stderr_classification":"profile_in_use",
+  "endpoint_seen":false,"endpoint_budget_exhausted":false,
+  "cleanup_failed":false}`. Classification: Chromium refused the profile as
+  in use (ProcessSingleton wording) while no Chromium process exists. Per the
+  accepted plan this is the profile-in-use branch: stop, no profile
+  inspection, no profile-internal lock removal, C3 not selected; the single
+  diagnostic browser spawn is spent. D3c cleanup: runner stopped, override
+  removed, `daemon-reload`, effective `ExecStart` resolves through
+  `capture-current` again, override absent; Xvfb and bridge active; web
+  pointer `e408bb5`, capture pointer `94e605c`; no outstanding mutation; no
+  `sudo -K` in any block. Privacy note: one `ss -ltn` paste included
+  non-loopback listener addresses; the values are not recorded and later reads
+  use filtered/classified output. Next: fresh Planner (session 19) for the
+  lawful correction of the profile-in-use condition; S3 remains open.
+
+- **2026-09-25 — Profile-in-use recovery plan reconciled (PARTIAL, accepted as
+  the basis for one evidence grant); P0/P1 evidence grant issued.**
+  `19_planning_00.md` (session 19 / exchange 01, fresh-worker-session, Planner,
+  native planning mode required, manual Cooperator delivery, Extra High),
+  SHA-256 `bfdedcede698d9b9b7162d342b762a6774fc836559aa32b00c59b12c908b5830`.
+  Report `19_report_00.md` (SHA-256
+  `c87f854a6aaf44b551230ffb20c734c2702b27f68681ab08e7ccc4844cbe5f78`, status
+  PARTIAL, coordinates 19/01) was session-delivered and persisted by the
+  Cooperator from the session output. Plan accepted: the recorded class
+  conflates the two ProcessSingleton wordings, no cause is established, and
+  the single next evidence step is P0 (read-only service/process preflight by
+  a fresh Worker through the gate) plus P1 (one Cooperator-executed synthetic
+  filesystem/socket probe under the runner's copied restrictions), with zero
+  browser starts; correction branches A–E stay conditional and no profile
+  action is authorized. Grant issued: `20_preflight_00.md` (session 20 /
+  exchange 01, fresh-worker-session, Fresh Evidence Probe, phase preflight,
+  native planning mode not-used, manual Cooperator delivery, High), SHA-256
+  `93bf395587c3f826af58b420d4070532a3b7649c771da38b39a5d82756f2762a`.
+  Adaptations to the standing directive: no `sudo -K` anywhere (Cooperator
+  releases manually) and the exact report write at `20_report_00.md` is
+  authorized. Report destination absent. S3 remains open.
+
+- **2026-09-25 — P0/P1 prerequisite probe reconciled (PASS); Cooperator
+  profile decision requested.** `20_report_00.md` (SHA-256
+  `f336b668dda83d782a1119a03c55d4eb41cad94e684b51f3ec910c57fdce1b7b`, status
+  PASS, coordinates 20/01) reconciled: Step 0 gate and repository baseline
+  unchanged; P0 runner `inactive`, Xvfb/bridge `active`, zero browser
+  processes, unit restrictions matching the `e408bb5` source; P1 (single
+  Cooperator-executed `kronika-s3-singleton-probe.service` invocation) all
+  preflight booleans true (binary path, temp environment, profile directory
+  owner/mode 0700/access, synthetic roots absent); primitive results: `/tmp`
+  mkdir refused `EROFS`; `runtime` and `state` roots mkdir+file+symlink+socket
+  `ok`; all cleanups `removed`; `probe_transport=completed`. Decision-table
+  row: temporary storage remains a supported candidate but C3 is NOT selected
+  (the original Chromium operation and path are unproven); profile-root
+  metadata is satisfied; profile-specific state and Chromium-specific behavior
+  remain unresolved. No correction selected, no browser start, no outstanding
+  mutation, no `sudo -K`. Orchestrator decision request to the Cooperator:
+  fresh-profile option per accepted plan branch C (opaque retention of the
+  never-logged-in profile at `profile.s3-pre-recovery` plus a new empty 0700
+  profile) followed by one separately authorized corrected bootstrap start;
+  alternatives: preserve-and-stop with no start, or a C1 wording-refinement
+  cycle before any start. S3 remains open.
+
+- **2026-09-25 — Corrected bootstrap on a fresh profile failed identically;
+  policy evidence exhausted; instrumented-launch decision requested.**
+  Cooperator profile block completed cleanly (`preconditions_ok`,
+  `retained_ok`, `fresh_created_ok`, `verify_ok`): `profile` renamed to
+  `profile.s3-pre-recovery` (opaque, never inspected), new empty `profile`
+  0700 owned by `kronika-capture`. The single corrected bootstrap start
+  (override `ExecStart` pinned to the `e408bb5` release) then failed exactly
+  as before: one C1 record `stage=endpoint`, `reason=process_exited`,
+  `exit_code=21`, `stderr_classification=profile_in_use`,
+  `endpoint_seen=false`; zero Chromium processes. Stale-profile-artifact
+  hypothesis ruled out. Cleanup completed (runner stopped, override removed,
+  `daemon-reload`); external brake lock absent, `last-start.json` valid with
+  the interval consumed; web pointer `e408bb5`, capture pointer `94e605c`;
+  no outstanding mutation. Read-only policy evidence: no kernel
+  AppArmor/audit denials in the attempt window; auditd inactive; loaded
+  AppArmor profiles include `chrome` (attachment `/opt/google/chrome/chrome`,
+  `flags=(unconfined)`) and `framenest-chrome` (attachment
+  `/opt/framenest/tooling/chrome-for-testing/**/chrome`,
+  `flags=(unconfined)`, sole rule `userns,`) — the chrome binary is
+  effectively unconfined and the userns grant is the profile's only purpose,
+  so AppArmor is not the cause. `/etc/kronika-capture/capture.env` carries
+  only `KRONIKA_CHROMIUM_PATH`; the unit environment sets no TMPDIR or
+  XDG_RUNTIME_DIR. Public reference confirms the generic ProcessSingleton
+  line is always preceded by a specific operation+errno line that C1
+  discards. Cooperator route decision requested: one bounded instrumented
+  synthetic launch (alternate temporary profile under the capture account and
+  the copied unit restrictions, bounded sanitized stderr classification)
+  versus staying launch-free. S3 remains open.
+
+- **2026-09-25 — Root cause bound: Chromium singleton socket directory
+  creation fails on read-only general `/tmp`; C3 selected.** The single
+  instrumented synthetic launch (alternate temporary profile under the
+  capture account and the copied runner restrictions) reproduced the startup
+  failure and produced the specific failing line:
+  `[ERROR:chrome/browser/process_singleton_posix.cc:1043] Failed to create
+  socket directory.` followed by the generic ProcessSingleton abort; exit 21;
+  no probe processes remained; both temporary objects removed
+  (`cleanup_ok`). Public Chromium source confirms the singleton socket
+  directory is created with `ScopedTempDir::CreateUniqueTempDir()` in the
+  temp directory (`$TMPDIR`, else `/tmp`), precisely because some
+  filesystems cannot host Unix sockets; the runner's `ProtectSystem=strict`
+  allowlist does not include general `/tmp`, and the P1 probe independently
+  showed `/tmp` mkdir `EROFS`. The capture profile is not the failing object
+  (fresh profile and profile symlink creation both fine; the profile only
+  receives the socket symlink and cookies). The C3 trigger is now
+  established by direct evidence. The probe touched no capture state and
+  left no outstanding mutation. Next: C3 implementation grant (runner unit
+  `Environment=TMPDIR=/run/kronika-capture/tmp` plus `ExecStartPre` creating
+  the runtime temp dir, contract test and deployment doc), then full-fresh
+  acceptance, publication, deployment and one corrected bootstrap start.
+  S3 remains open.
+
+- **2026-09-25 — C3 implementation grant issued.**
+  `21_implementation_00.md` (session 21 / exchange 01, fresh-worker-session,
+  Fresh Implementation Worker, phase implementation, native planning mode
+  not-used, manual Cooperator delivery, High), SHA-256
+  `bb4b7ba5f567d4886274911b289da1283d3a7573e1f6f59eeb2643d6acdf7d37`.
+  Exact allowlist: `deploy/systemd/kronika-capture-runner.service`,
+  `tests/contract/test_kronika_capture_services.py`,
+  `docs/UBUNTU_NUC_DEPLOYMENT.md`; exact unit change
+  `Environment=TMPDIR=/run/kronika-capture/tmp` plus the `ExecStartPre`
+  third path `/run/kronika-capture/tmp`; contract regression that fails on
+  the baseline; one commit, no push; declared route `./.ap/ap project check`
+  and `test-focus` with the baseline `e408bb5`; no host contact. Report
+  destination `21_report_00.md` (absent). Next after a PASS: full-fresh
+  independent acceptance (session 22), publication, deployment, unit
+  reinstall and one corrected bootstrap start.
+
+- **2026-09-25 — C3 implementation PASS reconciled; full-fresh acceptance
+  issued.** `21_report_00.md` (SHA-256
+  `0ca3905c31384d34f85819c43118450248c867d5a66bddb554d52dae58665503`,
+  status PASS, implementation-PASS, coordinates 21/01) reconciled: commit
+  `fd277a9a64a6965df76127dbec5b1735d2fb3cdd` (parent `e408bb5`, tree
+  `3b9014956a3bc738a209af51034fcac58ef5c498`, subject
+  `fix(capture): point the capture runner temporary directory at its runtime
+  dir`); the delta is exactly the three allowlisted paths; the new regression
+  failed on the baseline unit (1 failed, 130 passed) and passes on the
+  candidate (131 passed); `./.ap/ap project check` PASS; worktree clean; AP
+  pin unchanged; local `main`/`origin/main` and current public `main` still
+  `e408bb5`; no push. Acceptance grant `22_acceptance_00.md` (session 22 /
+  exchange 01, fresh-worker-session, Fresh Independent Re-Audit, phase
+  acceptance, native planning mode not-used, manual Cooperator delivery,
+  High, required-fresh-independent), SHA-256
+  `8571698829a394189d51f27db21d024923e29783243ad538f40df31053db4131`;
+  candidate `fd277a9`; six fixed claims, fixed positive/negative controls,
+  one declared temporary root; no host contact. Report destination
+  `22_report_00.md` (absent).
+
+- **2026-09-25 — C3 acceptance PASS reconciled; publication grant issued.**
+  `22_report_00.md` (SHA-256
+  `e5c7e2004bd81eb92571a662376309788d0a796678602c7a769bb469a941ded9`,
+  status PASS, acceptance-PASS, coordinates 22/01, candidate `fd277a9`)
+  independently established all six fixed claims with the declared route
+  (`ap project check` PASS, `131 passed`; `node --test` 52/52), baseline
+  causality via `git show`, exact three-path containment, clean worktree, AP
+  pin unchanged, no push, no findings. Residual risks recorded: synthetic
+  tests do not prove host Chromium startup; the installed
+  `/etc/kronika-capture/capture.env` was not read and an installed `TMPDIR`
+  assignment would override the unit value (deployment-time read-only check
+  remains). Publication grant `23_publication_00.md` (session 23 / exchange
+  01, fresh-worker-session, Bounded Publication Worker, phase publication,
+  native planning mode not-used, manual Cooperator delivery, High), SHA-256
+  `927df11abe1f4581e384000a7c45b599ac5589c1ef725e124f76780ec100522a`;
+  exact authority: publish `fd277a9a64a6965df76127dbec5b1735d2fb3cdd` to
+  `refs/heads/main:refs/heads/main` of `cisarik/framenest` by guarded
+  fast-forward and non-force push, direct public readback, unchanged other
+  heads. Report destination `23_report_00.md` (absent). Next after
+  publication: deployment of `fd277a9`, runner unit reinstall, read-only
+  installed `capture.env` TMPDIR check, and the single corrected bootstrap
+  start.
+
+- **2026-09-25 — C3 publication PASS reconciled; deploy + corrected-start
+  grant issued.** `23_report_00.md` (SHA-256
+  `9fed7f7baa0e7bb4d45169dc0326b298d34845fe1d0c0eda6be57af97004d632`,
+  publication-PASS, coordinates 23/01) reconciled and independently
+  re-verified by the Orchestrator with direct `git ls-remote`: public
+  `refs/heads/main` of `cisarik/framenest` = `fd277a9`; other heads unchanged
+  (`feat/chatgpt-page-ask-kernel` `26d28b16`, `feat/x-meme-browser-companion`
+  `7ff6546f`); local `main` = `origin/main` = `fd277a9`; working branch
+  `feat/kronika-one-product` clean at `fd277a9`; AP pin `7478ddb0` unchanged;
+  no force. Deployment+start grant `24_deployment_00.md` (session 24 /
+  exchange 01, fresh-worker-session, Bounded NUC Deployment, phase
+  deployment, native planning mode not-used, manual Cooperator delivery,
+  High), SHA-256 `8c0027259d79e4ecc1238e51eb52fa61a7c9fcba612bbe1ebfd0b92b12e9a37b`:
+  helper deploy of `fd277a9`, install the corrected runner unit from the
+  deployed tree, read-only installed `capture.env` TMPDIR check, brake
+  metadata check, then exactly one Cooperator-executed corrected bootstrap
+  start (override `ExecStart` pinned to the `fd277a9` release tree) and
+  read-only classification; stop before view/login/resume/activation/ask.
+  Report destination `24_report_00.md` (absent).
+
+- **2026-09-26 — C3 deployment and corrected start: SUCCESS (deployment-PASS,
+  classification Started).** `24_report_00.md` (SHA-256
+  `2ae45f1550a63333a602489f162b948ba9d880d1415523089e75297b1654347a`,
+  status PASS, deployment-PASS, coordinates 24/01) reconciled: helper
+  `status`, `check`, `deploy` exited 0 with `public_main` and `web_release`
+  `fd277a9`, capture release unchanged `94e605c`; corrected runner unit
+  installed (`Environment=TMPDIR=/run/kronika-capture/tmp`, `ExecStartPre`
+  with `/run/kronika-capture/tmp`, mode 0700); installed
+  `/etc/kronika-capture/capture.env` has no `TMPDIR` assignment (grep exit
+  1); external brake lock absent, `last-start.json` valid and expired (age
+  7,636,445 ms); the single Cooperator start block completed
+  (`subshell_exit=0`); Stage 6: runner active, NRestarts 0, and the first
+  successful Chromium start — C1
+  `capture_startup {"outcome":"started","stage":"complete","reason":"none",
+  "endpoint_seen":true,...}`; 13 chrome processes with one root (pid 149158,
+  ppid 149147); bridge status readiness `needs_admin`, reason
+  `E_COMPOSER_NOT_FOUND`, intervention id `dc3fc192-…`, browser_session
+  `78a90b17-…`, client_connected true, zero jobs; port 8765 loopback-only;
+  browser and the temporary override kept in place. LEAD recorded: whether
+  `E_COMPOSER_NOT_FOUND` is the login wall or another page state is unseen;
+  the Cooperator view resolves it. Next: H2 Cooperator view and interactive
+  login through the loopback tunnel.
+
+- **2026-09-26 — COOPERATOR DECISION: park S3 at the login boundary.**
+  H2 login remained blocked by a repeating Cloudflare challenge (~10
+  attempts; Cooperator observation that Chrome for Testing may be flagged).
+  Offered routes: (1) cooldown plus one careful retry; (2) a bounded planner
+  for a browser/approach change (host inventory: Google Chrome absent, snap
+  Chromium 153 stable present, CfT 154 is the configured binary); (3) park
+  S3 at the login boundary. The Cooperator chose 3. Parking state: runner
+  active from the accepted `fd277a9` release tree under the temporary
+  recovery override; one root Chromium running with readiness `needs_admin`
+  (reason `E_COMPOSER_NOT_FOUND`); zero jobs; Xvfb and bridge active;
+  capture pointer still `94e605c`; view units stopped/expired and loopback
+  view ports closed; no job, no journal change, no correction. The whole
+  remains open and paused; S4 waits for S3 completion per `01_report_00.md`
+  ("Evidence before S4"). Resume point: Cooperator login through the
+  loopback view on the parked browser, then the explicit null-job resume,
+  `activate-capture --release fd277a9… --yes`, H5 verification and one
+  synthetic ask. A fresh-Orchestrator restoration handout can be produced
+  when the Cooperator wants to resume.
+
+- **2026-09-26 — Parking state finalized (S3 open, whole paused).** Final
+  read-only confirmation: view and vnc units inactive and already unloaded
+  by the manager (`reset-failed` returned "not loaded"; no failed flag, no
+  listeners on 5900/6080); runner, Xvfb and bridge active; one root Chromium
+  with 13 processes; port 8765 loopback-only; web pointer `fd277a9`,
+  capture pointer `94e605c`; the temporary recovery override remains in
+  place for the eventual activation step. The journal shows the view stop
+  was a normal `signal 15` stop in which x11vnc exited
+  `status=2/INVALIDARGUMENT` and systemd briefly recorded `failed`; nothing
+  remains. LEDGER candidate (non-authorizing): the vnc unit's normal SIGTERM
+  stop yields exit status 2, which systemd marks as failure; a future
+  view-unit contract could declare a success exit status. S3 remains open at
+  the H2 login boundary; the whole is paused with no active Worker and no
+  outstanding mutation beyond the intended recovery override and the parked
+  browser.
+
+- **2026-09-26 — COOPERATOR DIRECTION CHANGE: modular search/deep-research
+  provider; capture becomes one parked module.** New direction: Kronika keeps
+  MEME and Movie and adds Search and Research, but search/deep research comes
+  through a modular provider abstraction rather than the capture modes;
+  chatgpt.com capture remains as one currently parked module; the Search
+  module is to be an agent with a web search tool available; the goal remains
+  transforming FrameNest into Kronika. This supersedes the S4 route of
+  `01_report_00.md` (restore capture modes) and changes the role of the
+  parked S3/S5 capture foundation. It does not change the whole identity
+  (one Kronika on the FrameNest base) or the preserved decisions (Timeline,
+  Gallery, existing records, private-by-default family sharing, no old-DB
+  import, NUC dev/test, no mass rename, S10 public rename). The conflict with
+  durable documentation is identified; a bounded documentation update
+  belongs to the superseding plan. Material Cooperator decisions needed
+  before planning: the first provider/agent substrate and its external
+  call/credential/cost posture, and the provider-neutral record, error and
+  budget contract. No host action; S3 remains parked at the H2 login
+  boundary.
+
+- **2026-09-26 — COOPERATOR DECISION: first provider class is an external
+  agent with a web search tool.** Chosen from the four options: (1) external
+  provider/agent with web search tool, (2) self-hosted, (3) hybrid, (4)
+  ChatGPT capture as the first provider. The modular abstraction stays
+  provider-neutral; the concrete provider, its credentials, cost cap and
+  privacy posture remain a Cooperator selection inside the planning. Planner
+  grant issued: `25_planning_00.md` (session 25 / exchange 01,
+  fresh-worker-session, Planner, native planning mode required, manual
+  Cooperator delivery, Extra High), SHA-256
+  `f1104c75d650e12a46bb0769ae6885a05ebb3148d207288a7b73d1332e307f44`:
+  design the modular search/deep-research provider architecture, the record
+  and rendering integration, the provider-boundary security/privacy
+  requirements, the revised S4–S10 slice order replacing the capture-mode
+  S4 route, the durable documentation update, and a concrete provider
+  recommendation package for Cooperator selection. Planning only; no
+  implementation, no host contact, no provider calls. Report destination
+  `25_report_00.md` (absent).
+
+- **2026-09-26 — Modular-provider plan reconciled and accepted; S4-D
+  documentation grant issued.** `25_report_00.md` (SHA-256
+  `84504ae1fb42ee67500e3a5038ff2a21a4c0d8993f34af41497fec9b6eb39a2a`,
+  status PASS, coordinates 25/01, session-delivered in chat and then
+  persisted to the trace by the Cooperator) reconciled and spot-checked
+  read-only by the Orchestrator: baseline `fd277a9` clean, local
+  `main`/`origin/main` and public `refs/heads/main` = `fd277a9`, AP pin
+  unchanged; no ADR-0083 exists; migration head `0033`; the named AI
+  registry/configuration/credentials/transport files and application ports
+  exist; `AGENTS.md:248` still carries the old administrator-private-content
+  denial (superseded below). New Cooperator decisions recorded by the plan
+  (current strategic authority, superseding conflicting earlier
+  assumptions): question/answer history retained including complete Research
+  reports; authenticated administrators may read all product records
+  including private and unfinished work; shared-page publication is
+  administrator-approved and owners do not publish directly; Timeline shows
+  only approved records with personal history as a separate view; the shared
+  page is household-only and internet publication stays disabled; native
+  Deep Research executes at the provider with FrameNest supervising; the
+  first provider is the OpenAI Responses API with fixed model
+  `gpt-5.5-2026-04-23` and no automatic fallback; application thresholds
+  Search USD 0.50, Research USD 5, daily USD 10, monthly USD 30 plus a
+  provider monthly hard limit of USD 30 with accepted delayed enforcement;
+  standard provider retention accepted (ZDR not required). The plan
+  supersedes the capture-mode S4 route and re-sequences S4-D → S4-A → S6 →
+  S4-B → S7-P → S8 → S9 → S10 while parking the remaining S3 host
+  completion, capture-mode restoration, S5 ZIP activation and S7-C capture
+  integration. Plan accepted. S4-D implementation grant issued:
+  `26_implementation_00.md` (session 26 / exchange 01, fresh-worker-session,
+  Fresh Implementation Worker, phase implementation, native planning mode
+  not-used, manual Cooperator delivery, High), SHA-256
+  `f7f2cd715e548e07859f9fbf83cabd8a109c9d143c21a5f27eb1aad624e05678`:
+  twelve-path documentation-only allowlist including new
+  `docs/adr/0083-modular-research-providers-and-administrator-curated-timeline.md`,
+  required contradiction search, declared route, one commit
+  `docs(kronika): define modular research and administrator-curated timeline`,
+  no push. Report destination `26_report_00.md` (absent). Capture host
+  remains parked; no host action.
+
+- **2026-09-26 — S4-D accepted (Orchestrator direct review); S4-A grant
+  issued.** `26_report_00.md` (SHA-256
+  `ea4bb1256289d3505c4213c3768afb03fb1f5453ad1c3523dd1d6cb2a7d7b16a`,
+  status PASS, implementation-PASS, coordinates 26/01) reconciled: commit
+  `72009c3b525b6a46e87223cb9a143b5079d89cbf` (parent `fd277a9`, tree
+  `ba4b9290f0c986ac9cec6c3acec49ba747bf9b70`, subject
+  `docs(kronika): define modular research and administrator-curated
+  timeline`); exactly the twelve allowlisted paths; route PASS (19 contract
+  tests); AP pin, managed block and upgrade-ledger blob unchanged; no push.
+  Orchestrator direct documentation review (full AGENTS.md diff, ADR-0083
+  head, ADR-0082 partial-supersession section) found the recorded decisions
+  faithful and internally consistent. S4-D accepted (E1/R0, documentation
+  slice; no independent acceptance required). S4-A implementation grant
+  issued: `27_implementation_00.md` (session 27 / exchange 01,
+  fresh-worker-session, Fresh Implementation Worker, phase implementation,
+  native planning mode not-used, manual Cooperator delivery, High),
+  SHA-256
+  `45f779dadf48b0fbc7fe81db7506ee40693ed4a15efa725c319cd6c24c7ed267`:
+  eight-path allowlist (domain research values, application ports, AI
+  configuration v3 plus research configuration, research registry, three
+  test files), v1/v2 backward compatibility, deterministic fake provider,
+  disabled by default, no real adapter, network or credentials; one commit
+  `feat(kronika): add provider-neutral research contracts and configuration`;
+  no push. Report destination `27_report_00.md` (absent). Publication of the
+  accepted chain stays a separate later grant.
+
+- **2026-09-26 — S4-A implementation PASS reconciled; bounded correction
+  issued.** `27_report_00.md` (SHA-256
+  `52f77574b97a7bf9761d9874b9c675250dd51bfc76a218f1d51ebdf04076c90a`,
+  status PASS, implementation-PASS, coordinates 27/01) reconciled: commit
+  `75e9b07b2bf2269568382e28d40a8d2ff8d4bc28` (parent `72009c3`, tree
+  `9f52d90790e4c1d0b37a6594d9c13071fa94a007`, subject
+  `feat(kronika): add provider-neutral research contracts and
+  configuration`); exactly the eight allowlisted paths; route 399 passed; AP
+  pin, managed block and upgrade ledger unchanged; no push. The MEASURED
+  finding is accepted as one concrete defect inside the row: the AI CLI
+  writers rebuild `AiServerConfig` without `research`
+  (`src/framenest/adapters/cli/ai.py`, four constructors around lines
+  342/375/449/518), so a later media CLI save drops a stored research
+  section; the administrator API already preserves it. Correction grant
+  issued: `28_correction_00.md` (session 28 / exchange 01,
+  fresh-worker-session, Bounded Correction Worker, phase correction, native
+  planning mode not-used, manual Cooperator delivery, Medium), SHA-256
+  `759a90c936809e5a72bdb3369761fc1ae3de9980d6426e4973349af4ccbc8a63`:
+  two-path allowlist (`src/framenest/adapters/cli/ai.py`,
+  `tests/unit/adapters/cli/test_ai_cli.py`), carry `existing.research` in all
+  four constructors, focused regression, one commit
+  `fix(kronika): preserve research configuration in AI CLI writers`, no push.
+  Report destination `28_report_00.md` (absent). After the correction: one
+  focused independent acceptance of the corrected S4-A candidate, then S6.
+
+- **2026-09-26 — S4-A correction PASS reconciled; focused acceptance issued.**
+  `28_report_00.md` (SHA-256
+  `c1408b13a63fec91daa42126b7fdd3505d5317a4fbb392df727f492dd3f035a3`, status
+  PASS, implementation-PASS, coordinates 28/01) reconciled: commit
+  `40e51cb2d061ead96850c9c94aa59de54d5e1310` (parent `75e9b07`, tree
+  `ec3c6c9db49ede4bfcd3616263b388bb26451834`, subject
+  `fix(kronika): preserve research configuration in AI CLI writers`); the two
+  allowlisted paths; regression failed before the fix and passed after (424
+  passed); AP pin and ledger blobs unchanged; no push. Orchestrator
+  re-verified the row candidate: HEAD `40e51cb2`, clean, row diff against
+  `72009c3` is exactly ten paths, AP pin unchanged, public `main` still
+  `fd277a9`. Note: the commit body carries a `Co-authored-by: Cursor` trailer
+  from the client commit path (cosmetic; accepted, no rewrite). Acceptance
+  grant issued: `29_acceptance_00.md` (session 29 / exchange 01,
+  fresh-worker-session, Fresh Independent Audit, phase acceptance, native
+  planning mode not-used, manual Cooperator delivery, High,
+  required-fresh-independent), SHA-256
+  `cdce228f9a6019ca14af78aaacdc6b3b294509d242b13db98cd5ba611b8dc3e6`;
+  candidate `40e51cb2`; seven fixed claims; declared route and synthetic
+  temporary-root controls; no host or provider contact. Report destination
+  `29_report_00.md` (absent). After acceptance: S6 (records, access and
+  approval) and publication of the accepted chain as separate grants.
+
+- **2026-09-26 — S4-A focused acceptance PASS; publication grant issued.**
+  `29_report_00.md` (SHA-256
+  `6d46816b2718361a33b98007bb5e31919b22a251665b434982df66860152b140`,
+  status PASS, acceptance-PASS, coordinates 29/01, candidate `40e51cb2`)
+  independently established all seven fixed claims with the declared route
+  (451 passed) and synthetic temporary-root controls, including that the
+  parent CLI writers drop a present research section while the candidate
+  preserves it; no findings; clean candidate and temporary-root cleanup. The
+  Orchestrator re-verified the chain: `fd277a9` is an ancestor of
+  `40e51cb2`; the delta over public `main` is 22 paths, 3277 insertions, 341
+  deletions. Publication grant issued: `30_publication_00.md` (session 30 /
+  exchange 01, fresh-worker-session, Bounded Publication Worker, phase
+  publication, native planning mode not-used, manual Cooperator delivery,
+  High), SHA-256
+  `39a0ff366acff94d63dd744d9862393b671273f45166fa92b445a6b0faae0126`:
+  publish `40e51cb2d061ead96850c9c94aa59de54d5e1310` to
+  `refs/heads/main:refs/heads/main` of `cisarik/framenest` by guarded
+  fast-forward and non-force push with direct public readback and unchanged
+  other heads.   Report destination `30_report_00.md` (absent). Capture host
+  remains parked; next after publication: S6 (records, access and approval).
+
+- **2026-09-26 — S4-D/A chain published; S6 execution-planning grant issued.**
+  `30_report_00.md` (SHA-256
+  `825d86a81aaffc3e4fa939912c898e8abb10e9eaa2698e172a1134adae9d2a33`,
+  publication-PASS, coordinates 30/01) reconciled and independently
+  re-verified by the Orchestrator with direct `git ls-remote`: public
+  `refs/heads/main` of `cisarik/framenest` =
+  `40e51cb2d061ead96850c9c94aa59de54d5e1310`; other heads unchanged
+  (`feat/chatgpt-page-ask-kernel` `26d28b16`, `feat/x-meme-browser-companion`
+  `7ff6546f`); local `main` = `origin/main` = `40e51cb2`; working branch
+  clean; AP pin unchanged; no force. Because S6 is the fail-closed
+  authorization slice whose seam change can ripple across every
+  app-constructing contract test (currently a permissive `policy is None`
+  branch), a bounded Planner grant was issued before implementation:
+  `31_planning_00.md` (session 31 / exchange 01, fresh-worker-session,
+  Planner, native planning mode required, manual Cooperator delivery, High),
+  SHA-256
+  `c30010e29034a9d60396cb955db1f08890f5a2b13435b48cde6fbb001b2e3197`:
+  produce the exact S6 file allowlist, migration `0034` design, centralized
+  owner/admin/household policy and fail-closed seam strategy with the
+  complete affected-test inventory, approval/history foundations with
+  S7-P/S8 boundaries, the access-inventory artifact design, the E3/R3 test
+  matrix and acceptance route, and the exact next implementation grant.
+  Planning only; no implementation, host or provider action. Report
+  destination `31_report_00.md` (absent).
+
+- **2026-09-26 — S6 plan reconciled (PARTIAL); single targeted revision
+  issued.** `31_report_00.md` (SHA-256
+  `993c73e22862c70754039aab0031f2f29c5cab0d4c0f0ab689390c16b4679f9a`, status
+  PARTIAL, coordinates 31/01, written with private mode 0600) delivered a
+  repository-grounded S6 design: migration 0034 (`kronika_documents` +
+  `kronika_records`) with invariants, indexes and a guarded downgrade; pure
+  domain/access values and application ports/service placement; the
+  owner/admin/household caller matrix; the fail-closed audience-seam change
+  and SQL-before-count filtering; approval/withdrawal/concurrency semantics;
+  private-history and admin-inventory foundations with S7-P/S8 boundaries;
+  the access-inventory artifact design with route seeds; candidate file
+  sets N/P/T/H including the verified direct-seam test ripple (17 test files)
+  and the migration-head ripple (21 test files); an E3/R3 test matrix and
+  route; and a deliberately withheld draft grant. It left three material
+  mappings open (G1 upload/acquisition authorization and indirect test
+  fallout; G2 approved-projection integration across live readers/writers and
+  removal; G3 private live DB/WAL/SHM boundary) and explicitly warned that a
+  helper-only patch cannot establish accepted all-route authorization.
+  Orchestrator disposition: the mapped content is accepted as the basis; the
+  single authorized planning revision (basis `newly-identified-material-risk`,
+  the G1–G3 gaps) was issued to close those mappings and produce one complete
+  exact allowlist with an issuable next grant. Revision grant:
+  `32_planning_00.md` (session 32 / exchange 01, fresh-worker-session,
+  Planner, native planning mode required, manual Cooperator delivery, High),
+  SHA-256
+  `6e5e7e3bcbdc38520ecc2b0f1b36358ac0a301d3c87c6b6225403c6473822ddd`;
+  a remaining open mapping returns `Escalation disposition:
+  NEEDS_ORCHESTRATOR_DECISION`. Report destination `32_report_00.md` (absent).
+  Note: the prior Planner's client mode was switched to Default mid-session
+  by a developer instruction; the work stayed planning-only and wrote only
+  its report.
+
+- **2026-09-26 — S6 revision delivered as a Slovak plan artifact; standard
+  report-completion exchange issued.** `32_report_00.md` (SHA-256
+  `ff5dd6551e9568707520fa31ff1bf671f37076d3c43946bf3d7bbc9db8f7ef39`,
+  184 lines) arrived as a client-native plan artifact in Slovak without the
+  standard Worker report form (no `### Report for ORCHESTRATOR_CHAT` header,
+  coordinates, compact core or critique) and references a private client
+  attachment path. Content reviewed by the Orchestrator: it closes the three
+  open mappings — G1 (explicit local-owner identity via
+  `FRAMENEST_LOCAL_OWNER_LOGIN` restricted to loopback/operator-UDS with
+  configured mapping, upload/YouTube/X/operator/proposal closures, internal
+  recovery provenance, corrected real acquisition route names), G2 (three
+  relational approved-projection tables plus a typed read scope
+  `deny|current|approved|legacy`, surface behavior matrix, conditional
+  version bumps on bound records, legacy publish/unpublish and media-removal
+  refusals that preserve approval), G3 (private catalog creation/open helper
+  with 0700/0600, symlink/hardlink refusal, WAL/SHM/journal verification,
+  lazy engine, migration/backup/development coverage, guarded downgrade) —
+  and extends the catalogue with exact additional production and test paths
+  plus the implementation order, mandatory scenarios and the declared test
+  route. Orchestrator disposition: the plan content is accepted as the
+  revision basis; its form is nonconformant, so a bounded
+  report-completion exchange was issued under the Planner-Artifact Report
+  Completion Repair route to render the standard English report without
+  reopening the plan. Completion grant: `33_planning_00.md` (session 33 /
+  exchange 01, fresh-worker-session, Planner report completion, native
+  planning mode not-used, manual Cooperator delivery, Medium), SHA-256
+  `efb43fbe3a24786d60db09311aca2b310d6ad673dc4217a78f41b62bc17dacc7`:
+  render the frozen plan in the standard report form, verify the merged
+  allowlist read-only against the baseline, and recommend the issuable S6
+  implementation grant. Report destination `33_report_00.md` (absent).
+
+- **2026-09-26 — S6 report-completion rendered and verified; S6 plan closed;
+  Orchestrator rotation.** `33_report_00.md` (SHA-256
+  `17ec937fa78ae67cfd6f416aaccfeac3aed01cd455334aeeb8db8fbaa88d9d9c`, status
+  PARTIAL solely because the client Plan mode blocked the Worker's file
+  write; the Cooperator persisted the complete chat report to the trace, so
+  the pair is complete) rendered the frozen S6 revision plan in English and
+  verified the complete merged allowlist read-only: 176 unique paths (153
+  existing, 23 proposed new), no missing, duplicate, outside-repository or
+  ambiguous path. It carries the closed G1/G2/G3 mappings, the implementation
+  order, the mandatory scenarios, the declared focused route (the 96
+  enumerated test files) followed by one broad suite run, the E3/R3
+  acceptance route, and the recommended S6 implementation grant. The
+  Orchestrator accepts the plan as complete and issuable. Because this
+  Orchestrator session's context is very long, the Orchestrator rotates at
+  this coherent planning boundary: `02_handout.md` prepares a fresh
+  Orchestrator to re-verify state read-only, issue the S6 implementation
+  grant to the next fresh Worker session (34), run the separate fresh E3/R3
+  authorization acceptance, then continue S4-B → S7-P → S8 → S9 → S10 with
+  the capture module parked. The whole remains open; the parked capture host
+  is unchanged (runner active from the `fd277a9` release under the recovery
+  override, one Chromium at `needs_admin`, view closed).
+
+- **2026-09-26 — Fresh Orchestrator restored (`02_handout.md`); S6
+  implementation grant issued to session 34.** Read-only restoration
+  re-verified every claimed state: FrameNest `feat/kronika-one-product` HEAD
+  `40e51cb2d061ead96850c9c94aa59de54d5e1310` (parent `75e9b07b…`, tree
+  `ec3c6c9…`, subject `fix(kronika): preserve research configuration in AI
+  CLI writers`), clean index/worktree, local `main` = `origin/main` =
+  `40e51cb2…`; AP pin `7478ddb07d2c3911f79e1aa1441f0115a31c45d8` (gitlink and
+  `.ap` HEAD); migration head `0033` with `0034` free; ADR-0083 present;
+  archive checkout `main` = `66c40d43…` clean with the same pin. Direct
+  `git ls-remote` confirmed public `cisarik/framenest` `refs/heads/main` =
+  `40e51cb2…` (other heads unchanged `26d28b16`, `7ff6546f`) and
+  `cisarik/kronika` `main` = `66c40d43…`. The parked NUC capture host was not
+  re-measured because no host step is planned in S6. The merged S6 allowlist
+  was re-verified read-only against the baseline: 176 unique paths (153
+  existing, 23 new-file absent), 96 focused test files, no duplicates or
+  outside-repository paths. The accepted S6 plan (`31`/`32`/`33`) is complete
+  and issuable. Issued the single S6 implementation grant
+  `34_implementation_00.md` (session 34 / exchange 01, fresh-worker-session,
+  Fresh Implementation Worker, native planning mode not-used, manual
+  Cooperator delivery, High, independence no), SHA-256
+  `6e84ee390888d98302e9ce31a3cca8a5c7ac393faf4b7856b56cf6137f797f78`: records
+  and immutable Q/A documents, closed G1/G2/G3, the exact 176-path allowlist,
+  the 96-file focused list plus one broad suite run on the declared AP route,
+  mandatory scenarios and the executable inventory, one local commit
+  `feat(kronika): add private records and administrator approval`, no push.
+  Report destination `34_report_00.md` (absent at issuance). The delivery
+  instruction requires a write-capable client mode (Plan mode OFF) because the
+  session-33 Plan restriction blocked report persistence. After a PASS report:
+  a separate fresh independent E3/R3 authorization review of the exact
+  candidate SHA; then S4-B -> S7-P -> S8 -> S9 -> S10 with the capture module
+  parked.
+
+- **2026-09-26 — S6 implementation PARTIAL reconciled; completion grant issued
+  (session 34 / exchange 02).** `34_report_00.md` (SHA-256
+  `1e68d1bc96770cb1dd311265093ef3e25adb6d274f924e60f1b1a8bcb28a00de`, status
+  PARTIAL, coordinates 34/01) passed Step 0 and produced an uncommitted
+  dirty-worktree partial S6: 81 allowlisted paths (66 modified, 15 new),
+  including migration 0034, records domain/service/repository, record-first
+  audience policy, typed catalog scope, approved projection, private-state
+  helper and local identity; missing 7 tests plus the access-inventory
+  document; unfinished YouTube/X/workspace/analysis-proposal closures; an
+  unclassified public-composition `GET /api/media` 500 (`PUBLIC_READ_FAILED`),
+  a `KeyError: display_title` overlay failure, and a stale failing
+  unit/contract run; no stage, commit, push or host action. Orchestrator
+  verified read-only that the worktree set matches the report exactly and every
+  path is inside the 176-path allowlist; classification
+  `accepted-continuation` (preserved; no reset/clean). Issued the completion
+  grant `34_implementation_01.md` (session 34 / exchange 02,
+  current-worker-session, Implementation Worker, native planning mode
+  not-used, manual Cooperator delivery, High, independence no), SHA-256
+  `fb512a3eec09f1b634dfa64319199089529d2d0517daa6f00fb1e35573496689`:
+  re-gate the preserved worktree, finish the G1 closures and remaining
+  failures inside the unchanged allowlist, create the 8 missing paths including
+  `docs/KRONIKA_ACCESS_INVENTORY.md`, complete the mandatory-scenario evidence,
+  run the focused 96-file list and one broad suite on the declared route, then
+  create one local commit `feat(kronika): add private records and administrator
+  approval`; no push. Report destination `34_report_01.md` (absent at
+  issuance). Routing recommendation was current-session 34 (retained
+  repository understanding; same healthy whole; independence not required);
+  the Cooperator may override to a fresh session. After a PASS report: the
+  separate fresh independent E3/R3 authorization review of the exact candidate
+  SHA.
+
+- **2026-09-27 — S6 second PARTIAL reconciled; final completion grant issued
+  (session 34 / exchange 03); pre-existing debt parked.** `34_report_01.md`
+  (SHA-256 `345885401742d6dfd57e0dfe0794b7423f2da56f01f008f947034670531c0771`,
+  status PARTIAL, coordinates 34/02) finished the slice to 104 allowlisted
+  paths (81 modified, 23 untracked, including the eight paths missing after
+  exchange 01 and `docs/KRONIKA_ACCESS_INVENTORY.md`); the focused 96-file
+  list exited 0 (1003 passed, 5 skipped, 257.38 s) and the broad suite exited
+  1 with 4 failed, 3830 passed, 8 skipped (558.45 s); no commit or push. The
+  four failures are two pre-existing clusters outside the allowlist, verified
+  read-only by the Orchestrator: the stale `.venv` lacking the declared
+  `framenest-chatgpt-page` console script, and the three operator SSH-gate
+  parameters failing because `FRAMENEST_NUC_SSH_TARGET`/`USER`/`IDENTITY` are
+  exported in the ambient environment (names only; values not read). The
+  Orchestrator parked both clusters as non-authorizing debt and ledger
+  candidates: refresh `.venv` from `pyproject.toml`, and harden the gate test
+  against ambient environment defaults. Residual S6 gaps: inventory
+  truthfulness (generic audience-policy test IDs reused per route; operator
+  YouTube claim rows mislabelled identity-not-required) and missing
+  mandatory-scenario coverage (HTTP+SQL caller matrix, identity forgery/audit,
+  denial-before-open, indirect disclosure, projection stability, transaction
+  races, bound-removal receipt, backup/restore). The Orchestrator verified the
+  104-path worktree set matches the report exactly and stays inside the
+  176-path allowlist; classification `accepted-continuation` (preserved).
+  Issued the final completion grant `34_implementation_02.md` (session 34 /
+  exchange 03, current-worker-session, Implementation Worker, native planning
+  mode not-used, manual Cooperator delivery, High, independence no), SHA-256
+  `b49a3b5ccd7b3c95e63f7775efd1e3995ebd6336f30a5383a073cdb8b04bd1ab`:
+  truthful inventory, the listed mandatory-scenario evidence, focused list
+  exit 0 and broad suite with only the four parked failures, then one local
+  commit `feat(kronika): add private records and administrator approval`; no
+  push. Report destination `34_report_02.md` (absent at issuance). If this
+  exchange ends PARTIAL/BLOCKED on a materially unchanged residual blocker,
+  the report must carry the repeated-blocker escalation capsule; a third
+  equivalent cycle needs new mutation, evidence, risk or a changed objective.
+
+- **2026-09-27 — S6 third PARTIAL reconciled; bounded correction issued
+  (session 34 / exchange 04) with a two-path allowlist extension.**
+  `34_report_02.md` (SHA-256
+  `32085919615377c244071c9dfd0c0ec603c2d1028801071a4564b01c3e0f5ca7`, status
+  PARTIAL, coordinates 34/03) completed the residual S6 items: the inventory
+  is now truthful (94 rows: 71 content, 23 exclusion; zero generic
+  audience-policy test IDs; operator YouTube rows state configured local
+  identity, `youtube.acquire` and "loopback alone is insufficient"), and the
+  missing mandatory-scenario coverage now exists (caller matrix, identity
+  audit, denial-before-open, indirect disclosure, projection stability,
+  transaction races, bound removal, backup/restore). Focused 96-file list
+  exit 0 (1156 passed, 5 skipped, 264.07 s). Broad suite exit 1 with 5
+  failures: the four parked pre-existing cases plus one new S6 regression,
+  `tests/contract/test_youtube_fake_demo.py::test_youtube_fake_demo_runs_the_real_loopback_cli_to_acceptance`
+  (completed process exit 1; assertion at `tests/support/youtube_fake_demo.py:705`).
+  Orchestrator read-only diagnosis confirmed the cause: the exchange-03
+  operator closure requires a verified `youtube.acquire` identity
+  (`_acquisition_identity`), while the demo's minimal app installs only the
+  operator router and never installs the production `LocalIdentityMiddleware`
+  / `configured_local_identity` path, so the real loopback CLI is refused.
+  The 108-path worktree was verified entirely inside the original 176-path
+  allowlist; classification `accepted-continuation` (preserved). The two
+  implicated files are outside the original allowlist; the Orchestrator
+  authorized the smallest coherent correction with an explicit effective
+  allowlist of the 176 paths plus exactly
+  `tests/support/youtube_fake_demo.py` and
+  `tests/contract/test_youtube_fake_demo.py`. The correction must use the real
+  configured-local-identity mechanism, must not weaken the operator identity
+  gate or the demo assertions, and must not change production code. Correction
+  grant `34_implementation_03.md` (session 34 / exchange 04,
+  current-worker-session, Bounded Correction Worker, phase correction, native
+  planning mode not-used, manual Cooperator delivery, Medium, independence
+  no), SHA-256
+  `6dcaa31ac414427ab32dd3bc1a4baf49578d7c33dd21440ccef2d2894b750c74`:
+  narrow demo reproduction, gate tests unchanged and green, focused 96-file
+  list exit 0, broad suite with only the four parked failures, then one local
+  commit `feat(kronika): add private records and administrator approval`; no
+  push. Report destination `34_report_03.md` (absent at issuance).
+
+- **2026-09-27 — S6 fourth PARTIAL reconciled; second bounded correction issued
+  (session 34 / exchange 05).** `34_report_03.md` (SHA-256
+  `ed3925a198fcbb4df84e7663dde954a17deb2cbe53fd8b8fa4b595b7eaa4f019`, status
+  PARTIAL, coordinates 34/04) installed the real configured-local-owner path
+  in the demo harness (`FrameNestSettings` with an admin `identity_map`,
+  `configured_local_identity`, `LocalIdentityMiddleware`; no direct
+  `SCOPE_IDENTITY` seeding, no production edit), fixing the operator 401 and
+  restoring the first ingest and same-video reuse. The narrow demo run then
+  exposed a new production side effect: the manual byte duplicate is cataloged
+  `"new"` instead of `"reused"` because
+  `YouTubeAcquisitionCoordinator._handoff`
+  (`src/framenest/application/youtube_acquisition.py:1189-1195`) selects
+  EXPLICIT only when `created_by_login_key is None`; a verified login — now
+  passed by the S6 operator route — selects SILENT_KEEP_SEPARATE. That
+  contradicts the accepted design ("administrators retain explicit
+  resolution"; the upload API derives it from `upload.manage` and `ROLE_ADMIN`
+  includes that capability), and the Worker correctly stopped because the fix
+  is a production change outside the exchange-04 grant. The 109-path worktree
+  stayed inside the effective allowlist; classification `accepted-continuation`
+  (preserved). Issued the second and final bounded correction grant
+  `34_implementation_04.md` (session 34 / exchange 05, current-worker-session,
+  Bounded Correction Worker, phase correction, native planning mode not-used,
+  manual Cooperator delivery, Medium, independence no), SHA-256
+  `84701c980d300914a6504e57764d2ffa795b703eddf204cdd7f950dc9f541914`: make
+  the YouTube handoff select EXPLICIT for an administrator login
+  (`upload.manage`) while ordinary requesters stay SILENT, wired from
+  `application.py` and the demo harness; do not change the identity requirement
+  or the X handoff; add one causal regression distinguishing the two paths;
+  then the narrow demo, gate tests, focused 96 exit 0 and the broad suite with
+  only the four parked failures; one local commit
+  `feat(kronika): add private records and administrator approval`; no push.
+  Effective allowlist unchanged (176 paths plus the two demo paths). Report
+  destination `34_report_04.md` (absent at issuance). If this exchange ends
+  PARTIAL/BLOCKED on a materially unchanged residual blocker, the escalation
+  capsule is mandatory and further equivalent cycles stop.
+
+- **2026-09-27 — S6 candidate committed (Implementation PASS); Cooperator
+  endgame directive; independent E3/R3 acceptance issued.** `34_report_04.md`
+  (SHA-256
+  `463ff0a8b95b446f888ee037f259f5e8704a23a5217e3f1fa698173bce46d3dd`, status
+  PASS, coordinates 34/05) closed the operator duplicate-resolution correction:
+  the handoff and byte-duplicate resolver now keep `EXPLICIT` for a creator
+  login carrying `upload.manage` (new predicate `mapped_role_has_capability`,
+  wired from `create_app` and the demo harness), ordinary requesters stay
+  `SILENT_KEEP_SEPARATE`, a new regression test covers it, and the demo passes.
+  One local commit
+  `38e7beeb3921d7c0fd8e717e480754fbd18130c9` (parent `40e51cb2…`, tree
+  `d6d5d314…`, subject `feat(kronika): add private records and administrator
+  approval`, 109 changed paths); Orchestrator verified read-only that all 109
+  are inside the effective allowlist (176 + the two demo paths), the worktree
+  is clean, `main`/`origin/main` remain `40e51cb2…`, and the broad suite fails
+  only the four parked pre-existing cases. **Cooperator endgame directive
+  (2026-09-27):** finish what can be finished; no more full-suite runs at every
+  mini-step/fix (targeted validation only) for the remaining Workers; prepare
+  a real handout whose finish state must have the complete latest code both in
+  GitHub and on the NUC; the Cooperator switches development from the PC to
+  the MacBook, the PC stays in the office, the NUC moves with him and will be
+  plugged into a new network (NUC Ethernet, MacBook WiFi) where Tailscale
+  should work; no file may be lost; the fresh-Orchestrator handout must make
+  this migration painless (including carrying list and the NUC release
+  runbook). Planned finishing sequence: independent E3/R3 acceptance → separate
+  Cooperator publication grant to `cisarik/framenest` main → NUC latest-code
+  step (remote routine release update if reachable now, otherwise a ready
+  runbook in the handout) → `03_handout.md` with a development-environment
+  migration section for the MacBook. Issued the acceptance grant
+  `35_acceptance_00.md` (session 35 / exchange 01, fresh-worker-session, Fresh
+  Independent Audit, phase acceptance, native planning mode not-used, manual
+  Cooperator delivery, High, required-fresh-independent), SHA-256
+  `816172ff9a43292a24930c3fb256a77cb18596368e5534b5aebb0cf4442203c3`:
+  seven fixed claims (records/migration, fail-closed authorization, approval
+  and projections, G1 closures, private state, public exclusion, inventory and
+  containment), a bounded security subset instead of the full suite, one
+  synthetic `/tmp` probe root, INFOSEC R3 activated. Report destination
+  `35_report_00.md` (absent at issuance). The four parked pre-existing
+  failures stay disposed and unrepaired.
+
+- **2026-09-27 — S6 acceptance PARTIAL (blocking finding S6-A35-F01); PC→MacBook
+  endgame actions issued (36 transport, 37 NUC accepted release, 03 handout).**
+  `35_report_00.md` (SHA-256
+  `08df6f51828b494e67f2a688fde4518c658a7440b16887298fc0be1924d59acb`, status
+  PARTIAL, coordinates 35/01) — fresh independent E3/R3 audit of `38e7bee…`:
+  claims 1, 2, 4, 5, 6, 7 established (records/migration, fail-closed denial
+  and separation, G1 closures, private state, public exclusion,
+  inventory/containment; 273 focused tests exit 0; R3 probes). Claim 3
+  (approved projections on HTTP) is NOT established: finding S6-A35-F01
+  (high, correction-required) — after approval of A, `GET /api/media/{id}`
+  and `/metadata` return the working state B to an ordinary household member,
+  the detail discloses a post-approval location id, content returns 409
+  rather than 404 for it, and gallery membership requires a stray legacy
+  publication row. S6-A35-F02 was a rejected false positive. Publication is
+  not the next step; a bounded correction and a fresh re-audit are. Cooperator
+  directive "NUC teraz": because the routine helper requires public main ==
+  release and local HEAD == release, the unaccepted S6 candidate cannot be
+  published to main or deployed; the latest accepted published code remains
+  `40e51cb2…`. Issued the S6 candidate transport grant
+  `36_publication_00.md` (session 36 / exchange 01, fresh-worker-session,
+  Bounded Publication Worker, phase publication, native planning mode
+  not-used, manual Cooperator delivery, Medium, independence no), SHA-256
+  `c59faf6ec8de618fd1fcbd486d6e92a1e9c4343fbcc63aacde3ae8e3ae6f26eb`: push
+  exactly `refs/heads/feat/kronika-one-product` at `38e7bee…` non-force with
+  direct readback; `main` unchanged; report `36_report_00.md`. Issued the NUC
+  accepted-release grant `37_deployment_00.md` (session 37 / exchange 01,
+  fresh-worker-session, Bounded NUC Deployment, phase deployment, native
+  planning mode not-used, manual Cooperator delivery, High, independence no),
+  SHA-256
+  `44eabc3509959b3efc29ea21661450cc61ad0a6ec77889e45df6338e1cad1046`:
+  temporary detached checkout of `40e51cb2…`, canonical `framenest-release`
+  `status`/`check`/`deploy`, return checkout to `feat/kronika-one-product`,
+  read-only as-left state capture; capture stays parked; no DB reset; report
+  `37_report_00.md`. Wrote the fresh-Orchestrator migration handout
+  `03_handout.md` (SHA-256
+  `72982c5070e268f559019b1fcaf9a45f51c8ebe5906c62017546c811f5392c84`): S6
+  finding and correction direction, remaining slices, PC→MacBook carry list
+  (the trace is REQUIRED), MacBook setup, NUC-on-new-network runbook, updated
+  STOP rules and the binding testing-economy directive. The Cooperator must
+  carry/archive the trace so the MacBook can continue.
+
+- **2026-09-27 — Candidate transport and NUC accepted release both PASS; the
+  PC/move endgame is ready.** `36_report_00.md` (SHA-256
+  `a55324c60ce0c789773ca62541b3396100901345e1ee4e16676d8f2e81e8caa6`, status
+  PASS, publication-PASS, coordinates 36/01): non-force push created public
+  `refs/heads/feat/kronika-one-product` = `38e7bee…`; `main` and the two other
+  heads unchanged; Orchestrator re-verified with direct `git ls-remote`:
+  `main` `40e51cb2…`, branch `38e7bee…`, other heads unchanged; local branch
+  clean at `38e7bee…`, `main`/`origin/main` `40e51cb2…`. `37_report_00.md`
+  (SHA-256
+  `230c7981f690a9d1c95fa8b4c75526dc520d9b60c0763d010b13884dd20109a3`, status
+  PASS, deployment-PASS, coordinates 37/01): the canonical helper deployed
+  `40e51cb2…` as the web release (pointer and `.framenest-release-sha` match;
+  database revision was 0033 pre-deploy; no migration continuation), capture
+  release still `94e605c…`; checkout returned to `feat/kronika-one-product` at
+  `38e7bee…` clean. As-left NUC state: capture runner active with
+  `NRestarts=0`, readiness `browser_unavailable` (`E_BROWSER_UNAVAILABLE`),
+  `client_connected` true, jobs 0/0, zero `chrome`/`chromium` — the earlier
+  `needs_admin` plus one Chromium claim is superseded as-left and requires no
+  action while capture stays parked; `framenest.service` active; `tailscaled`
+  active and enabled; listeners 8765/53 loopback-only and 22/443/631/50216/
+  53809 non-loopback (outside the capture boundary). Orchestrator
+  reconciliation: the capture readiness change is a parked-state observation,
+  not a failure; no worker mutation follows. The Worker left the NUC sudo
+  timestamp in place; the Cooperator releases it manually. The handout
+  `03_handout.md` was updated with the verified GitHub and NUC state and the
+  next fresh session ordinal 38. Remaining before power-off: the Cooperator
+  archives/copies the trace (the MacBook cannot continue without it), then the
+  NUC and the PC may be powered off; development resumes on the MacBook by
+  pasting the `03_handout.md` seed into a fresh Orchestrator chat, which issues
+  the S6-A35-F01 bounded correction grant (targeted tests only, then a fresh
+  E3/R3 re-audit and a separate publication grant).
