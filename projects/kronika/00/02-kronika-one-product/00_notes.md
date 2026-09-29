@@ -2431,3 +2431,32 @@ handout; a later read-only preflight re-verifies them before any host mutation.
   `646e96d69a25be4c09ac2d9ec0dc576e2cda07ca973ad8e3246ae65c832daf95`
   (supersedes the pre-audit draft `f9738379…`). The whole remains open;
   capture stays parked; next per `ROADMAP.md` is S8 via the Planner grant.
+
+- **2026-09-29 — Fresh Orchestrator restored (`04_handout.md`); S8 Planner
+  grant issued (session 52 / exchange 01).** Read-only restoration re-verified
+  every claimed state: local `feat/kronika-one-product` at
+  `ade1169b4ba079bb1df540a929572ca58e777d16` (tree
+  `f266df7205ddea5b83de7e6cd8313512ce70bcb1`, parent `7be040e…`, clean), AP
+  gitlink and `.ap` HEAD `73e20ef80b88700d5fcbc397cd8edd4fc425869f`, `.venv`
+  from uv CPython 3.13.14 created by Homebrew Poetry 2.5.1; direct
+  `git ls-remote` confirmed public `main` = `feat/kronika-one-product` =
+  `ade1169…` and the other two heads unchanged; `04_handout.md` SHA-256
+  `646e96d…` matches. NUC verification through the worker gate: `--probe`
+  `ssh-agent: ready`; `/opt/framenest/current` ->
+  `/opt/framenest/releases/ade1169…`; `framenest.service` active;
+  `/var/lib/framenest` mode `700`; host unit carries exactly one
+  `StateDirectoryMode=0700`; `tailscaled` active. The parked capture state was
+  deliberately not re-read (STOP rules); the predecessor's capture evidence
+  stands. Issued the S8 Planner grant `52_planning_00.md` (session 52 /
+  exchange 01, fresh-worker-session, Planner, native planning mode required,
+  manual Cooperator delivery, Extra High), SHA-256
+  `fb3033406c6d38871332e2b8a45764adfc5117aeb5f97cc292ce6dffa950533d`:
+  produce the frozen S8 unified Kronika UI/UX plan on the `ade1169…` baseline
+  (exact allowlist; page/route and API mapping; component and state design;
+  disabled/error UX; accessibility and responsive baseline; test matrix with a
+  thin UI regression harness; acceptance route; recommended first
+  implementation grant; open Cooperator language/branding questions). Report
+  destination `52_report_00.md` (absent at issuance). Next: the Cooperator
+  dispatches the prompt into a fresh Agent chat with native Plan mode ON; the
+  report is reconciled and the plan frozen, then bounded S8 implementation
+  grants follow.
