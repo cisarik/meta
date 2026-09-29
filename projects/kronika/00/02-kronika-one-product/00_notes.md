@@ -1763,3 +1763,671 @@ handout; a later read-only preflight re-verifies them before any host mutation.
   pasting the `03_handout.md` seed into a fresh Orchestrator chat, which issues
   the S6-A35-F01 bounded correction grant (targeted tests only, then a fresh
   E3/R3 re-audit and a separate publication grant).
+
+- **2026-09-28 — Fresh Orchestrator restored on the MacBook (`03_handout.md`);
+  environment completed; NUC SSH restored; S6-A35-F01 correction grant issued
+  (session 38 / exchange 01).** Read-only re-verification on the MacBook:
+  FrameNest `main` `40e51cb2…` clean; direct `git ls-remote` on
+  `cisarik/framenest`: `refs/heads/main` `40e51cb2…`, `refs/heads/feat/kronika-one-product`
+  `38e7bee…`, `refs/heads/feat/chatgpt-page-ask-kernel` `26d28b16…`,
+  `refs/heads/feat/x-meme-browser-companion` `7ff6546f…`; trace complete
+  (107 files, `00_notes.md`..`37_report_00.md`; reports 35/36/37 match the
+  SHA-256 values recorded here). Migration gaps found and closed: `.ap` was
+  uninitialized (initialized at the pin `7478ddb0…`; `.ap` HEAD equals the
+  gitlink), canonical `.venv` was absent (created via `./framenest setup`,
+  CPython 3.13.14), and the feature branch was not present locally (fetched;
+  `feat/kronika-one-product` checked out at `38e7bee…`, clean). MacBook-to-NUC
+  SSH was locked out: the `~/.ssh/config` alias pointed at the stale office LAN
+  address (updated to the MagicDNS FQDN) and the passphrase-protected MacBook
+  key `id_ed25519_framenest_nuc` was not authorized on the NUC (added via the
+  physical console; agent-loaded). `ssh framenest-nuc true` returns NUC-OK.
+  No host state was mutated; no `private/**` was read; no values recorded.
+  Issued the bounded S6-A35-F01 correction grant `38_correction_00.md`
+  (session 38 / exchange 01, fresh-worker-session, Bounded Correction Worker,
+  phase correction, native planning mode not-used, manual Cooperator delivery,
+  High, independence no), SHA-256
+  `f5c3af564f74a7e8df9c99783e4cadaf841e8d19ccb6788e7a478213df62e199`:
+  approved-decision household reads (detail, metadata, list membership and
+  filters, content/download, analysis, cover, preview) serve only the approved
+  projection, its approved locations and its cover digest; gallery membership
+  without a legacy publication row; the exact required regression; targeted
+  tests only; one local commit `fix(kronika): serve approved projections on
+  household reads`; no push. Report destination `38_report_00.md` (absent at
+  issuance). After a PASS report: a separate fresh independent E3/R3 re-audit
+  of the corrected exact SHA, then a separate Cooperator publication grant,
+  then the NUC release update, then S4-B -> S7-P -> S8 -> S9 -> S10.
+
+- **2026-09-28 — S6 correction exchange 38/01 BLOCKED by a macOS AP-tooling
+  defect; AP portability-update decision requested.** Report `38_report_00.md`
+  (SHA-256 `86a0eda29de487ace60c40c8282fde2f4c2d489c829859648307b64686f738e1`)
+  saved; no edits, no commit; branch remains `38e7bee…` with a clean tree; the
+  four parked failures were not run. Root cause (Orchestrator-reproduced): the
+  pinned `.ap/ap` counts NUL-separated values with bare
+  `awk 'BEGIN { RS="\0" }'` (`ap` line 710) inside its sanitized stage
+  (`PATH=/usr/bin:/bin`); macOS BSD awk does not support a NUL record
+  separator, so the count is 1 while the newline-separated count is 2, and both
+  `ap project check` and `ap exec` exit 1 with
+  `operation.runtime-info.argv values must not contain newlines`. The pin
+  `7478ddb0…` is the current `cisarik/ap` main head; no newer upstream fix
+  exists. Orchestrator prepared and verified (on a copy outside the
+  repository) a one-line portable fix
+  (`tr -cd '\000' | wc -c | tr -d ' '`): the patched tool passes
+  `project check` and `ap exec runtime-info` (exact-source provenance
+  `.venv/bin/python`, `src/framenest/__init__.py`). No repository, submodule,
+  AP or remote mutation was performed; the temporary AP clone lives outside
+  the repository. Decision requested from the Cooperator: AP
+  portability-update task (recommended) versus per-grant deviation.
+
+- **2026-09-28 — COOPERATOR DECISION: AP portability update; executed and
+  adopted; session 38/01 BLOCKED pair acknowledged; correction renewed as
+  38/02.** With the Cooperator's explicit grant, the one-line portable fix
+  (`project_count_key` no longer counts with `awk RS="\0"`; it now uses
+  `tr -cd '\000' | wc -c | tr -dc '0-9'`) was committed as
+  `73e20ef80b88700d5fcbc397cd8edd4fc425869f` (parent `7478ddb0…`, subject
+  `fix: count project argv values portably on BSD awk`) and pushed non-force to
+  `cisarik/ap` `refs/heads/main` with direct readback. This repository adopted
+  the new pin: `./.ap/ap update --check`/`update --apply`, `doctor --candidate`,
+  staged `.ap`, strict `doctor` PASS, and one local commit
+  `5843486ddeae13ec5b331f102c5cb595bfa6e386` (parent `38e7bee…`, subject
+  `chore: adopt AP pin 73e20ef…`) carrying the gitlink plus a new
+  `docs/AP_UPGRADE_OBSERVATIONS.md` entry (state `implemented`, evidence class
+  `worker-observed`, closure `remove-from-active-ledger`). Canonical route
+  re-verified on the MacBook: `project check`, `runtime-info` (exact-source
+  `.venv`) and focused tests exit 0; no product source changed. Exchange 38/01
+  (`38_correction_00.md` SHA-256 `f5c3af…` / `38_report_00.md` SHA-256
+  `86a0eda2…`, both committed in Meta) is acknowledged as a terminal BLOCKED
+  on the now-resolved tooling defect. During renewal preparation the
+  predecessor prompt's working copy was accidentally overwritten and restored
+  byte-identically from Git (no loss). Issued the renewal
+  `38_correction_01.md` (session 38 / exchange 02, current-worker-session,
+  Bounded Correction Worker, phase correction, native planning mode not-used,
+  manual Cooperator delivery, High, independence no), SHA-256
+  `e0700e05ff624d0118215c5ef9f800d6d4a0ac1013664459e32903296c9b2cf8`:
+  predecessor R1–R10 remain binding with baseline
+  `5843486ddeae13ec5b331f102c5cb595bfa6e386` and AP pin
+  `73e20ef80b88700d5fcbc397cd8edd4fc425869f`; one predecessor allowlist path
+  (`src/framenest/application/ports/media_cover_repository.py`, not in the
+  176-path effective union) is explicitly excluded; one local commit
+  `fix(kronika): serve approved projections on household reads`; no push.
+  Report destination `38_report_01.md` (absent at issuance). Coordination
+  note: two Orchestrator sessions had been restored from the same handout; the
+  Cooperator continues with this one, and the superseded session stops
+  granting.
+
+- **2026-09-28 — S6-A35-F01 correction exchange 38/02 PASS; independent E3/R3
+  re-audit issued (session 39).** `38_report_01.md` (SHA-256
+  `1218e2213901e3259cdebc31eafe99241668b143d4e850bf9f8aaadb16eba57f`, status
+  PASS, implementation-PASS, coordinates 38/02) reconciled and re-verified
+  read-only by the Orchestrator: commit
+  `0d0d8c88bf88bf8454751a0205bc8652374796c2` (parent
+  `5843486ddeae13ec5b331f102c5cb595bfa6e386`, tree
+  `96adead05beb58f2e282ff77b9e6d29bff2c8298`, subject
+  `fix(kronika): serve approved projections on household reads`); 14 changed
+  paths, every one inside the effective allowlist, no protected path touched;
+  clean worktree; branch ahead of origin by the pin bump and the correction
+  only; no push. Regression Red/Green: the new household test failed on the
+  unfixed baseline (`display_title` `TitleB`) and passes after the fix;
+  targeted 15-file set `281 passed`; the four parked failures were not run.
+  R2–R8 implemented (R6 cover bytes and R8 gallery preview not dynamically
+  exercised — recorded as the named missing evidence); the R7 LEAD was
+  reproduced: household `ai-suggestions` returned only the approved
+  `SnapshotTitle` after the working analysis changed. Issued the fresh
+  independent E3/R3 re-audit grant `39_acceptance_00.md` (session 39 /
+  exchange 01, fresh-worker-session, Fresh Independent Audit, phase acceptance,
+  native planning mode not-used, manual Cooperator delivery, High,
+  required-fresh-independent), SHA-256
+  `860c22a90704cda00589b5cd49677e9b7c66a9184d9bc52ff637213280ca52f8`:
+  eight fixed claims (candidate containment and diff leak hunt; dynamic
+  S6-A35-F01 disproof; R5 semantics; approved cover bytes/ETag with no
+  fallback; R7 analysis LEAD; gallery-preview denial; non-weakening and
+  unchanged behavior; inventory stability), the declared focused subset and
+  synthetic probe root `/tmp/kronika-one-product-s6-reaudit`, candidate
+  `0d0d8c8…`, targeted only, no full suite. Report destination
+  `39_report_00.md` (absent at issuance). After a PASS: a separate Cooperator
+  publication grant for the accepted corrected candidate, then the NUC release
+  update, then S4-B -> S7-P -> S8 -> S9 -> S10.
+
+- **2026-09-28 — S6-A35-F01 re-audit PASS; S6 correction accepted; publication
+  grant issued (session 40).** `39_report_00.md` (SHA-256
+  `62122e5347d914434a1c394e15682cb95031dce774ebd8df6cbcd6b9e8acb133`, status
+  PASS, acceptance-PASS, coordinates 39/01) reconciled and re-verified
+  read-only: independent fresh re-audit of
+  `0d0d8c88bf88bf8454751a0205bc8652374796c2` established all eight fixed
+  claims; finding S6-A35-F01 is `verified-closed` (household detail/metadata
+  serve `TitleA`/`general`; no post-approval location id; content/download and
+  gallery preview of the new location return the unknown-location `404` before
+  any open; gallery membership without a publication row; approved cover bytes
+  and ETag dynamically demonstrated with no fallback; the R7 LEAD
+  `SnapshotTitle`-only result; non-weakening and inventory stability
+  established). Focused subset `281 passed`, one synthetic probe passed under
+  `/tmp/kronika-one-product-s6-reaudit` and was removed; candidate unchanged;
+  declared route PASS. Orchestrator acceptance: the corrected S6 candidate is
+  accepted (`acceptance-PASS`); acceptance budget for this correction consumed
+  (one primary fresh acceptance). Issued the publication grant
+  `40_publication_00.md` (session 40 / exchange 01, fresh-worker-session,
+  Bounded Publication Worker, phase publication, native planning mode
+  not-used, manual Cooperator delivery, High, independence no), SHA-256
+  `618a94df1264b8c1144252a61190faaa1c3f63aaa6edeb6021c18b503bc073a8`:
+  publish exactly `0d0d8c88bf88bf8454751a0205bc8652374796c2` to
+  `refs/heads/main` of `https://github.com/cisarik/framenest.git` by guarded
+  fast-forward, non-force, single refspec, with direct readback; the feature
+  branch remote stays `38e7bee…`; no deployment, no closure. Report destination
+  `40_report_00.md` (absent at issuance). After a PASS: the NUC routine release
+  update to `0d0d8c8…` (separate Cooperator grant; precondition: the three
+  `FRAMENEST_NUC_SSH_*` names exported in the MacBook environment), then
+  S4-B -> S7-P -> S8 -> S9 -> S10.
+
+- **2026-09-28 — S6 publication PASS; public main now `0d0d8c8`; NUC release
+  update grant issued (session 41).** `40_report_00.md` (SHA-256
+  `fdf511be0cb11c6b424fc765dd148fd6545ed8d3873b0f780a984a1a60f2d379`, status
+  PASS, publication-PASS, coordinates 40/01) reconciled and independently
+  re-verified by the Orchestrator with direct `git ls-remote`: public
+  `refs/heads/main` of `cisarik/framenest` =
+  `0d0d8c88bf88bf8454751a0205bc8652374796c2` (fast-forward from `40e51cb2…`);
+  the feature branch remote remains `38e7bee…` and the two other heads are
+  unchanged (`26d28b16…`, `7ff6546f…`); local branch `feat/kronika-one-product`
+  clean at `0d0d8c8…`; AP pin `73e20ef…`; no feature-branch push, no force, no
+  deployment. The accepted S6 chain (records, AP pin bump, S6-A35-F01
+  correction) is public on main. Issued the NUC routine release update grant
+  `41_deployment_00.md` (session 41 / exchange 01, fresh-worker-session,
+  Bounded NUC Deployment, phase deployment, native planning mode not-used,
+  manual Cooperator delivery, High, independence no), SHA-256
+  `2b999d7f8d16436bb5f05769e6dc224d9037157924ba10abc40451215f59f089`: one
+  exact temporary detached checkout of `0d0d8c8…`, canonical
+  `framenest-release` `status`/`check`/`deploy` (expected migration
+  continuation `0033` -> `0034`), return checkout to
+  `feat/kronika-one-product`, read-only as-left capture; capture stays parked
+  (pointer `94e605c…`); no DB reset; no `sudo -v`/`-K` by the Worker.
+  Report destination `41_report_00.md` (absent at issuance). Cooperator
+  preconditions before dispatch: export the three `FRAMENEST_NUC_SSH_*` names
+  in the launch environment and establish the NUC sudo timestamp outside the
+  Worker (release manually afterwards). After a PASS: S4-B -> S7-P -> S8 ->
+  S9 -> S10.
+
+- **2026-09-28 — NUC release update exchange 41/01 BLOCKED: macOS worker-gate
+  agent-discovery gap; decision requested.** `41_report_00.md` (SHA-256
+  `3a3c2b5d3092d4ac0b9d3026112b42281502045bfd63e27e24c7392864d46cda`, status
+  BLOCKED, coordinates 41/01) stopped at Step 0 before any SSH, checkout,
+  deploy or host contact: the three `FRAMENEST_NUC_SSH_*` names were set, but
+  `scripts/operator/network/framenest_nuc_worker_gate.fish --probe` printed
+  `ssh-agent: absent` and exited 1; `sudo -n true` was not reached and no
+  `sudo -v`/`-K` was run. Orchestrator read-only root cause: the MacBook has
+  no `gpgconf` anywhere (no GnuPG installation; a stale
+  `~/.gnupg/S.gpg-agent.ssh` socket exists with no `gpg-agent` process), so
+  `_attach_agent` cannot discover an agent on the gate's trusted path
+  `/usr/sbin:/usr/bin:/sbin:/bin`. The working route is the native macOS
+  launchd `ssh-agent` (`/usr/bin/ssh-agent -l`, one loaded key) exposed via the
+  ambient `SSH_AUTH_SOCK`; the Cooperator's direct `ssh framenest-nuc true`
+  succeeds through it, but the gate deliberately reconstructs the socket via
+  `gpgconf` and fails closed. The repository gate and public refs matched; the
+  feature branch stayed clean at `0d0d8c8…`; release `0d0d8c8…` is not
+  deployed. Decision requested: a bounded Darwin agent-discovery correction in
+  the gate (recommended; strict validation of the launchd socket plus contract
+  tests, then a renewed deployment grant) versus an interim Cooperator-executed
+  deployment on the unchanged route. S4-B native provider runtime stays after a
+  deployment PASS.
+
+- **2026-09-28 — COOPERATOR DECISION: fix the worker gate for macOS; bounded
+  correction issued (session 42).** Chosen route A. Orchestrator read-only
+  diagnosis confirmed: the MacBook has no `gpgconf` (no GnuPG installation; the
+  `~/.gnupg/S.gpg-agent.ssh` socket is stale, no `gpg-agent` process), while
+  the native launchd `ssh-agent` holds the NUC key and the ambient
+  `SSH_AUTH_SOCK` is a user-owned Unix socket under
+  `/private/var/run/com.apple.launchd.…`. Issued the bounded correction
+  `42_correction_00.md` (session 42 / exchange 01, fresh-worker-session,
+  Bounded Correction Worker, phase correction, native planning mode not-used,
+  manual Cooperator delivery, High, independence no), SHA-256
+  `8e76c56f8a7271a7e3a3cd14c017ccca74deda6f4c635077a0db4f36cd2cca52`:
+  Darwin-only validated fallback in `_attach_agent` (trusted `gpgconf` first;
+  else absolute socket, no `..`, `test -S`, owner match, realpath under
+  `/private/var/run/com.apple.launchd.`, `ssh-add -l` liveness 0/1 accepted);
+  Linux and gpgconf behavior byte-compatible; no socket/identity printing;
+  no other validation weakened; new causal test fails first; the parked
+  ambient `FRAMENEST_NUC_SSH_*` test interference hardened in the same file
+  (test isolation only); allowlist: the gate, the gate test file, the operator
+  network contract, the network README and the worker execution contract, only
+  as needed; one local commit
+  `fix(operator): discover the macOS launchd ssh agent in the worker gate`;
+  no push. Report destination `42_report_00.md` (absent at issuance). After a
+  PASS: a separate fresh focused re-audit of the corrected exact SHA, then
+  publication, then the renewed NUC deployment grant (which must target the
+  new published main including the gate fix), then S4-B.
+
+- **2026-09-28 — Worker-gate correction 42/01 PASS; focused re-audit issued
+  (session 43).** `42_report_00.md` (SHA-256
+  `45335efdc59516455b90e69f6fc187e2433773f3adefb36c3a2610bd045d975a`, status
+  PASS, implementation-PASS, coordinates 42/01) reconciled and re-verified
+  read-only by the Orchestrator: commit
+  `665a565bc1279690ce8dacade37103fa3e0aaddc` (parent `0d0d8c8…`, tree
+  `043b811cf82b54cff05026a90b3b15ee46609475`, subject
+  `fix(operator): discover the macOS launchd ssh agent in the worker gate`);
+  exactly the five allowlisted paths changed; clean; branch three commits ahead
+  of the public feature branch; nothing pushed; AP pin unchanged. Red
+  `3 failed, 57 passed` on the unfixed gate; green `60 passed`; the causal
+  Darwin tests fail-first; `test_ssh_gate_rejects_missing_required_values`
+  now clears the four `FRAMENEST_NUC_SSH_*` names for the invoked gate process
+  (test isolation only), removing the parked ambient-default interference for
+  this file. Issued the focused independent re-audit `43_acceptance_00.md`
+  (session 43 / exchange 01, fresh-worker-session, Fresh Independent Audit,
+  phase acceptance, native planning mode not-used, manual Cooperator delivery,
+  High, required-fresh-independent), SHA-256
+  `f2d6e3930c391293480026863b2c48e11ce04dccbfb49bf081814723b525ff6d`:
+  six fixed claims (identity/containment and leak hunt; discovery order and
+  Darwin trust rule read from the source; the live production `--probe`
+  end-to-end missing evidence; negative production probes with a synthetic
+  invalid socket and unset `SSH_AUTH_SOCK`; the targeted contract suite
+  `60 passed`; non-weakening and doc truthfulness), candidate `665a565…`,
+  declared route plus direct gate probes under
+  `/tmp/kronika-one-product-gate-reaudit`, no NUC contact, no full suite.
+  Report destination `43_report_00.md` (absent at issuance). After a PASS: a
+  separate Cooperator publication grant to main, then the renewed NUC
+  deployment grant targeting the new published main (including the gate fix),
+  then S4-B.
+
+- **2026-09-28 — Worker-gate re-audit 43/01 acceptance-PASS; F01 correction
+  issued (session 44).** `43_report_00.md` (SHA-256
+  `704ba0dba6c0cb7b3b085f8ad73320e4093f33a75761722df90bb60599840f74`, status
+  PASS, acceptance-PASS, coordinates 43/01) reconciled and re-verified
+  read-only: independent focused re-audit of `665a565…` established all six
+  claims — identity/containment and leak hunt clean; the gpgconf-first order
+  and the Darwin trust rule verified from the source; the **live production
+  probe** printed exactly `ssh-agent: ready` exit 0 (the exchange-41 failure is
+  `verified-closed`); synthetic regular-file and unset probes printed exactly
+  `ssh-agent: absent` exit 1 with no echo; the targeted contract file `60
+  passed`; non-weakening and docs truthful. One open low-severity finding F01
+  (`Final-symlink ownership check lags test -S`): the Darwin ownership
+  comparison uses `stat -f %u` without following a final symlink while
+  `test -S` follows it; recorded `correction-required` with the Orchestrator as
+  approver; the live socket's final component is not a symlink, so the accepted
+  claims hold and F01 is non-blocking to acceptance. Orchestrator decision:
+  correct F01 before publication because the fix is mechanical and the gate is
+  about to become the operational NUC route. Issued the bounded correction
+  `44_correction_00.md` (session 44 / exchange 01, fresh-worker-session,
+  Bounded Correction Worker, phase correction, native planning mode not-used,
+  manual Cooperator delivery, High, independence no), SHA-256
+  `951e2598b8b6e3acf1122c5e734187a2d3f51809c9ab84f2d4e33b3fba9c3a8f`:
+  ownership comparison follows the final symlink (`stat -L -f %u` or
+  equivalent), all other checks and the `--probe` contract unchanged, one
+  causal regression that fails on the parent, allowlist exactly the gate and
+  its contract test file, one local commit
+  `fix(operator): follow symlinks in the gate agent ownership check`, no push.
+  Report destination `44_report_00.md` (absent at issuance). After a PASS: a
+  separate fresh scoped re-audit of the corrected exact SHA, then the
+  Cooperator publication grant to main, then the renewed NUC deployment grant,
+  then S4-B.
+
+- **2026-09-28 — F01 correction 44/01 PASS; scoped re-audit issued
+  (session 45).** `44_report_00.md` (SHA-256
+  `9e36d8950b2c369422e820ca99253a072a7949dde384694f69d5a2adce2241c3`, status
+  PASS, implementation-PASS, coordinates 44/01) reconciled and re-verified
+  read-only by the Orchestrator: commit
+  `89a402981a9eac83646199c77984c3fc21c0744d` (parent `665a565…`, tree
+  `27cf6ba02e9c08f27151976aa2b259bea0d60dcb`, subject
+  `fix(operator): follow symlinks in the gate agent ownership check`); exactly
+  the two allowlisted paths (gate + contract test file), +34/−1; the ownership
+  line changed from `$stat_bin -f %u "$sock"` to
+  `$stat_bin -L -f %u "$sock"`; Red `1 failed, 60 passed`, Green `61 passed`;
+  clean worktree; no push; AP pin unchanged. Issued the scoped independent
+  re-audit `45_acceptance_00.md` (session 45 / exchange 01,
+  fresh-worker-session, Fresh Independent Audit, phase acceptance, native
+  planning mode not-used, manual Cooperator delivery, High,
+  required-fresh-independent), SHA-256
+  `d6effda79a359e41a379bd92d828a56cd0d2c5b70a4eb9ef5ef7263f29d405a2`:
+  five fixed claims (identity/containment; F01 closed with parent/candidate
+  causal comparison; no other behavior change; targeted suite
+  `61 passed`; live production probe non-regression `ssh-agent: ready` plus one
+  synthetic regular-file negative), candidate `89a4029…`, probe root
+  `/tmp/kronika-one-product-gate-f01-reaudit`, no NUC contact. Report
+  destination `45_report_00.md` (absent at issuance). After a PASS: the
+  Cooperator publication grant to main (feature tip `89a4029…`), then the
+  renewed NUC deployment grant on that published main, then S4-B.
+
+- **2026-09-28 — COOPERATOR DIRECTIVE: autonomous Orchestrator execution from
+  this point (dispatch loop ended).** The Cooperator replaced manual
+  fresh-Worker dispatch for the remaining steps of this whole with autonomous
+  Orchestrator execution ("odteraz vykonaj sám, čo si chcela od Workera").
+  Consequences recorded truthfully: acceptance and audit reports produced from
+  here on are non-independent and say so; the trace keeps the normal filenames
+  and coordinates; the standing security boundaries (no `private/**`, no
+  provider contact without authority, no credentials handling, no `sudo -v` or
+  `sudo -K` by the executor, sanitized reporting) remain in force; the NUC
+  sudo timestamp remains Cooperator-established and manually released.
+
+- **2026-09-28 — F01 scoped re-audit executed (45/01); PUBLICATION pending.**
+  Executed by the Orchestrator under the autonomy directive.
+  `45_report_00.md` records `acceptance-PASS` (non-independent) for
+  `89a402981a9eac83646199c77984c3fc21c0744d`: identity and the two-path delta
+  verified; the parent lacks `-L` while the candidate has `stat -L -f %u`; the
+  regression test exists; `ap project check` PASS; targeted contract file
+  `61 passed`; direct production probe `ssh-agent: ready` exit 0; synthetic
+  regular-file and unset probes `ssh-agent: absent` exit 1 with no echo; probe
+  root removed; leak hunt clean. F01 `verified-closed`. No new finding.
+  Next: publish `89a4029…` to `refs/heads/main` (non-force fast-forward) with
+  direct readback, then the NUC routine release update to the new main.
+
+- **2026-09-29 — Publication of `89a4029…` executed; NUC routine update to
+  `89a4029…` attempted, hit a private-catalog mode conflict, recovered per the
+  documented schema-jump annex; deployment PASS; host unit fix `3f5dc5c…`
+  published.** Execution was autonomous per the Cooperator directive.
+  Publication: public `main` fast-forwarded `0d0d8c8… -> 89a4029…` (non-force,
+  readback verified). NUC routine update: the first `deploy --yes` stopped at
+  exit 20 after atomically publishing the target tree, because the same-schema
+  DB gate (`framenest-db status` on the target, S6 code) failed closed: the
+  accepted S6 private-catalog rule requires the database parent directory to be
+  exactly `0700`, but the NUC's `/var/lib/framenest` was `0755`. A `chmod 700`
+  alone was not durable: the unit's `StateDirectory=framenest` used systemd's
+  default mode, so every service (re)start reset the directory to `0755`; a
+  first cutover attempt failed at pre-restart readiness and the previous
+  release's restart loop (schema ahead) left `framenest.service` in
+  `activating/auto-restart` until stopped. Repository fix: unit source gained
+  `StateDirectoryMode=0700` with a contract assertion
+  (`tests/contract/test_fedora_systemd_service.py`), committed as
+  `3f5dc5c469e19802aa3411988aa022b158de2ab6` and published to `main`
+  (`89a4029… -> 3f5dc5c…`, non-force, readback). Host fix: the unit was
+  installed on the NUC and hash-verified byte-identical to the repository
+  source; `daemon-reload`; state directory `0700`; migration executed from the
+  target tree (`0034 at_head`); cutover via the documented
+  `framenest-release rollback --release 89a4029… --yes` exited 0. Final state:
+  web release `89a4029…`, capture `94e605c…` unchanged and parked
+  (`browser_unavailable`, jobs 0/0), service active, `database_revision` `0034`,
+  backup readiness `ready`, state dir `700`. Trace pair:
+  `46_deployment_00.md` + `46_report_00.md`. Deviations: two tightening host
+  mutations required by the accepted S6 policy (state-dir mode, unit install);
+  brief service downtime during the schema-ahead window; no listener capture
+  (address hygiene); non-independent execution. Sudo timestamp consumed; the
+  Cooperator releases it manually. Next: S4-B native provider runtime per
+  `25_report_00.md` and `ROADMAP.md`.
+
+- **2026-09-29 — S4-B implementation plan frozen (47/01); implementation
+  begins next.** Orchestrator-authored under autonomy mode:
+  `47_planning_00.md` + `47_report_00.md` fix the scope (provider runtime only;
+  no HTTP/rendering/UI), migration `0035` design (`research_requests`, the
+  single-row `research_active_slot`, `research_operations`, and
+  `research_budget_holds`; populated-downgrade refusal; no backfill), the exact
+  twenty-path allowlist, the module placement (`application/research.py`
+  coordinator, two SQLite repositories, `infrastructure/ai/openai_responses.py`
+  against an injectable transport, inert composition wiring, credential
+  drop-in `deploy/systemd/framenest-research-credential.conf`, deployment-doc
+  paragraph), the test matrix (coordinator units with fake ports, adapter
+  contract against a fake transport, `0034`->`0035` migration integration,
+  repository/budget atomicity, disabled-startup), and the validation route
+  with baseline `3f5dc5c…`. Basis read-only: `25_report_00.md` sections 2–4 and
+  the existing S4-A surface (`domain/research.py`, `application/ports/research.py`,
+  `research_registry.py`, `research_configuration.py`, the provider contract
+  test). Planned implementation order: (1) migration `0035` + schema mirror +
+  migration tests; (2) repositories + tests; (3) coordinator + tests;
+  (4) adapter + tests; (5) composition, credential source, docs; then targeted
+  validation. Any allowlist expansion returns to the trace before the edit.
+
+- **2026-09-29 — S4-B implementation step (1) complete: migration `0035` +
+  schema mirror + migration tests (commit `df44c2d`); allowlist amendment 1.**
+  Executed autonomously. `0035_research_requests_and_accounting.py` creates
+  `research_requests`, the single-row `research_active_slot`,
+  `research_operations` and `research_budget_holds` with bounded checks,
+  named constraints/indexes, FK to `kronika_records`, unique
+  `(owner_login_key, client_request_id)`, and an empty-table refusal on
+  downgrade (atomic: a refused downgrade leaves the database at `0035`).
+  `catalog_schema.py` mirrors the four tables. New
+  `tests/integration/persistence/test_research_requests_migration.py` covers
+  head `0035`, empty upgrade/downgrade/re-upgrade, populated refusal with row
+  retention, malformed-row checks, operation/budget constraints and the
+  single-row slot. Migration-head ripple: current-head assertions advanced to
+  `0035` in 20 additional test files (allowlist amendment 1 recorded in
+  `47_planning_00.md`; historical targets untouched); the S6
+  populated-downgrade assertion now expects `0035` because the refusal
+  rolls back the whole chain, and the upload-session table union gained the
+  four tables. Targeted affected set: `198 passed`; the only failure is
+  pre-existing macOS debt — `tests/integration/test_process_sigterm_lifecycle.py`
+  hardcodes `/home/agile/Projects/framenest/.venv/bin/python` and fails before
+  any assertion (ledger candidate, not repaired; the file's head assertion was
+  nevertheless advanced correctly). Next: step (2) repositories (`research
+  request` + `budget ledger`) with their tests.
+
+- **2026-09-29 — S4-B implementation step (2) complete: runtime repositories
+  (commit `5417fb8`).** Executed autonomously. `application/ports/research.py`
+  gained `ResearchRequestRow` (domain record + storage-only fields),
+  `ResearchStoreError` (stable `ResearchErrorCode`) and the
+  `ResearchRuntimeRepository` protocol (get/find-by-client/admit/save/active
+  slot). `SqliteResearchRequestRepository` admits atomically under
+  `BEGIN IMMEDIATE`: duplicate `(owner, client)` with the same fingerprint
+  returns the existing row, a different fingerprint raises
+  `E_IDEMPOTENCY_CONFLICT`, a held slot raises `E_BUSY`, the full allowance is
+  reserved, and the request row + hold + slot update commit as one unit;
+  `save` persists lifecycle/cleanup/accounting/handle/checkpoint fields and
+  releases the slot on any terminal state. `SqliteResearchBudgetLedger`
+  implements reserve/reconcile/consumed over UTC day/month keys; reconciled
+  usage replaces the reservation, unknown usage consumes it (never zero), and
+  a refusal rolls the whole admission back. Migration `0035` gained five
+  profile-snapshot columns (`tool_allowlist_json`, `background`,
+  `prompt_max_utf8_bytes`, `answer_max_utf8_bytes`, `citation_count_max`) so a
+  stored row reconstructs the exact `ServerSelectedProfile` and
+  `ApprovedResourceLimits`; the schema mirror and the migration test helper
+  were updated accordingly. New repository test file with seven cases
+  (roundtrip, idempotency/conflict, busy/slot release, budget refusal
+  rollback, reconcile freeing budget, unknown accounting, checkpoint/handle
+  saves). Targeted affected set: `210 passed`. Next: step (3) the research
+  coordinator in `application/research.py` with fake-port unit tests.
+
+- **2026-09-29 — S4-B implementation step (3) complete: the research
+  coordinator (commit `a9ec1f1`).** Executed autonomously. `application/research.py`
+  implements `ResearchCoordinator` over the injected ports: admission
+  (selection snapshot via `select`, content fingerprint over owner/kind/prompt
+  and the accepted policy, duplicate client key returns the existing request,
+  different fingerprint → `E_IDEMPOTENCY_CONFLICT`, full reservation +
+  request + slot in one atomic admission); submission persists a durable
+  `SUBMITTING` marker **before** the network call, maps PENDING/RUNNING to
+  RUNNING with the opaque handle, and maps a transport exception or UNCERTAIN
+  to terminal `SUBMISSION_UNKNOWN` (`recover()` does the same for a crash
+  mid-submit — never resubmits blindly); polling validates COMPLETE evidence,
+  persists a normalized checkpoint and reaches `SAVED` through the
+  `ResultCompletion` port, with a checkpoint-based completion retry while a
+  failure keeps `VALIDATING`; cancellation acknowledges locally before the
+  remote call, confirms `CANCELLED`, and a cancellation committed before
+  result-save prevents finalization; the deadline produces terminal `TIMEOUT`
+  with a best-effort remote cancel; `release_remote_pending()` deletes remote
+  responses for terminal rows with a handle via the new repository
+  `list_cleanup_pending`; every terminal transition reconciles the budget hold
+  (reconciled usage from the price schedule or conservative UNKNOWN).
+  `ResearchSelectionSnapshot` (now with the daily/monthly budgets) and
+  `ResearchSelectionError` moved to `application/ports/research.py`; the
+  registry re-exports them and fills the budgets, so the coordinator never
+  imports infrastructure. New coordinator tests: nine cases with a fake
+  provider and fake completion over the real SQLite stores; regression set
+  `138 passed`. Deferred within S4-B and recorded: per-attempt
+  `research_operations` rows (table exists; writes arrive with the runtime
+  wiring/S7-P accounting) and binding `record_id` from the completion port
+  (S7-P). Next: step (4) the OpenAI Responses adapter against an injectable
+  transport with fake-transport tests.
+
+- **2026-09-29 — S4-B implementation step (4) complete: the OpenAI Responses
+  adapter (commit `34cb2f5`).** Executed autonomously.
+  `infrastructure/ai/openai_responses.py` implements the `ResearchProvider`
+  port over an injectable bounded-JSON transport seam
+  (`ResearchJsonTransport`): `describe()` is network-free (registry
+  descriptor); `submit` builds a bounded, server-selected-only body (model,
+  input, web_search tool, `tool_choice=required`,
+  `parallel_tool_calls=false`, `max_tool_calls`, `max_output_tokens`,
+  `reasoning.effort`, `background`, `store`) with a request bound from the
+  approved prompt limit, maps 200/201/202 + `id` to a RUNNING observation
+  with an opaque handle, and a missing credential to
+  `E_NOT_CONFIGURED` without any network call; `poll` maps
+  queued/in_progress to RUNNING, completed to a parsed `ResearchAnswer`
+  (output text, url-citation annotations, web-search-call count, usage
+  details) gated by `completion_error` (refusal → REFUSED, missing web search
+  → `E_NO_WEB_EVIDENCE`, incomplete → `E_INCOMPLETE_RESULT`), and maps
+  transport failures and 404 to `E_PROVIDER_UNAVAILABLE`/`E_RESULT_EXPIRED`;
+  `cancel` posts to `/cancel` and confirms CANCELLED; `release_remote`
+  deletes the response and treats a missing one as already deleted. Errors
+  carry stable codes only — no provider bodies, credentials or reasoning text.
+  `transport.py` gained `delete_json`. The coordinator now maps
+  `E_INCOMPLETE_RESULT` failures to the `INCOMPLETE` lifecycle state. New
+  adapter tests with a fake transport (body shape, credential absence,
+  completion parsing, evidence gating, error mapping, cancel/release
+  outcomes); AI unit suite `373 passed`; focused set `62 passed`. Next:
+  step (5) inert composition wiring, the credential deployment source and the
+  deployment-doc paragraph.
+
+- **2026-09-29 — S4-B implementation COMPLETE (step 5, commit `0a7d3f0`);
+  chain `df44c2d..0a7d3f0`.** Executed autonomously.
+  `build_research_runtime` in `application.py` builds the coordinator only
+  when the non-secret AI configuration enables research; construction is
+  network-free; `recover()` is guarded so an older catalogue never blocks
+  startup; the runtime is attached as `app.state.research_runtime`. The
+  credential deployment source `deploy/systemd/framenest-research-credential.conf`
+  was added and named in the deployment doc sentence. Contract composition
+  tests were appended to the allowlisted provider-contract file; final S4-B
+  validation batch `168 passed`. Trace pair: `48_implementation_00.md` +
+  `48_report_00.md`. S4-B delivers: migration `0035` (+ schema mirror), ports
+  runtime row + selection snapshot/error, request/slot repository, budget
+  ledger, coordinator, OpenAI Responses adapter over an injectable transport,
+  inert composition and the credential source. Recorded deferrals: per-attempt
+  `research_operations` rows, `record_id` binding and the atomic Q/A save
+  (S7-P completion port; completed results wait in `VALIDATING`), HTTP/UI
+  (S7-P/S8), live provider calls and credentials (separate authority),
+  operator overshoot block. Public `main` is still `3f5dc5c…`; the S4-B chain
+  is unpublished; the NUC runs the `89a4029…` release. Next per `ROADMAP.md`:
+  S7-P (common completion and rendering), then S8, S9, S10; publication and
+  independent acceptance of the S4-B chain are separate Cooperator decisions.
+
+- **2026-09-29 — S7-P implementation progress: WP1 + WP2 (commits `8a277a3`,
+  `f1ec367`).** Executed autonomously. WP1: capabilities `research.run`
+  (user+admin) and `records.approve` (admin) in `domain/identity_access.py`;
+  new `application/document_rendering.py` renders the bounded Markdown subset
+  to escaped HTML (raw HTML escaped, safe URL schemes only, no dependency);
+  eight rendering tests and capability membership assertions. WP2:
+  `SqliteResearchResultCompletion` in `record_repository.py` creates the
+  document, the common record (server-derived owner, kind search/research,
+  private) and the `research_requests.record_id` binding in one immediate
+  transaction, idempotent on exact replay; the composition now wires it
+  instead of the placeholder; the coordinator reloads the row after a
+  successful receipt so the terminal save cannot clobber the binding.
+  Allowlist amendment 1 for S7-P: `public_published_application.py` carries
+  the `REQUIRED_PUBLIC_SCHEMA_REVISION` (`0034` -> `0035`), a missed ripple
+  from the S4-B migration step, fixed in `f1ec367`. Validation: rendering +
+  capability `35 passed`; completion + coordinator + authorization +
+  public-uds `42 passed`. Next: WP3 research request APIs.
+
+- **2026-09-29 — S7-P WP3 complete: research request APIs (commit `c0a5288`).**
+  Executed autonomously. `adapters/api/research_api.py` exposes
+  `GET /api/research/capabilities` (selection, limits, retention notice; no
+  live probe; disabled-safe), `POST /api/research-requests` (202 + nudge),
+  `GET /api/research-requests` (own history, paged),
+  `GET /api/research-requests/{id}` (owner or admin, with progress nudge),
+  `POST /api/research-requests/{id}/cancel` (owner or admin) and
+  `GET /api/admin/research-requests`; missing identity 401, capability 403,
+  foreign/nonexistent indistinguishable 404, typed `ResearchStoreError`
+  mapping (503/409/429/422/500), and `E_DISABLED` refusal when the runtime is
+  absent while history reads still work. Repository list/count methods added.
+  Two defects found and fixed en route: the coordinator's default
+  `new_operation_id` produced a UUID that the schema rejects (now
+  `op-<32 hex>`), and the capabilities payload used the wrong settings field
+  name. Tests `tests/contract/test_research_requests_api.py` (6 cases,
+  synthetic alice/bob/ada, disabled runtime, idempotency, cancel); focused
+  set `34 passed`. Next: WP4 records APIs + access inventory.
+
+- **2026-09-29 — S7-P implementation COMPLETE (WP4 + composition + inventory;
+  commit `74f2a40`); chain `8a277a3..74f2a40`.** Executed autonomously.
+  `records_api.py` exposes `GET /api/my/records`, `/api/timeline`,
+  `/api/records/{id}`, `/api/records/{id}/render` (escaped HTML with
+  `nosniff` and a restrictive CSP), `/api/admin/records` and
+  `POST /api/admin/records/{id}/approval` (approve/withdraw with expected
+  version; `reject` refused 422 because no rejected state exists — recorded
+  for S8/S9). Twelve new route policies in `tailscale_ingress.py`; both new
+  routers registered in `create_app` over the owned engine; the executable
+  access inventory regenerated for schema head `0035` with per-route positive
+  and negative behavioral tests. Behavioral evidence: owner detail/render,
+  household approved projection + Timeline after administrator approval,
+  stale-version conflict, user approval denial, anonymous denial, injection
+  safety. Final S7-P batch `307 passed`. Trace pair:
+  `50_implementation_00.md` + `50_report_00.md`. Recorded deferrals:
+  `consent_version` validated but not stored; lists summary-only; research
+  progress nudged synchronously (no background loop; runtime disabled by
+  default, no live calls). Public `main` remains `3f5dc5c…`; the S4-B and
+  S7-P chains are unpublished. Next per `ROADMAP.md`: S8 product UI
+  (Timeline landing, personal history, Search/Research forms, administrator
+  review); publication, independent acceptance and S9 remain separate
+  Cooperator decisions.
+
+- **2026-09-29 — FULL PUBLICATION + independent audit issued + restoration
+  handout written (Cooperator directive).** Directed by the Cooperator
+  ("publikuj všetko nepublikované sám, potom vydaj prompt pre nezávislý audit,
+  potom handout pre fresh Orchestratora; daj maximum"). Publication: non-force
+  fast-forwards with direct readback — public `main` `3f5dc5c… -> 74f2a40…`
+  and public `feat/kronika-one-product` `38e7bee… -> 74f2a40…`; the two other
+  heads unchanged (`26d28b16…`, `7ff6546f…`). Public `main` now carries the
+  full accepted S6 chain, the AP pin bump, the worker-gate Darwin fix and its
+  F01 correction, the systemd/state-directory correction, S4-B and S7-P.
+  Issued the fresh independent E3/R3 audit `51_acceptance_00.md` (session 51 /
+  exchange 01, fresh-worker-session, Fresh Independent Audit, phase
+  acceptance, native planning mode not-used, manual Cooperator delivery,
+  Extra High, required-fresh-independent), SHA-256
+  `78b8a24489ade6917aec5ebbd8ed7f2715c9502a75666b3de91171c375619d9a`: eleven fixed claims over the ten-commit delta
+  `89a4029..74f2a40` (containment and inert-by-default posture; migration
+  `0035` integrity and ripple; repository/budget atomicity; coordinator
+  lifecycle; adapter boundary; atomic completion and binding; authorized HTTP
+  surfaces; rendering/capabilities safety; route-policy and inventory
+  completeness; systemd correction; non-regression), the declared focused
+  subset and synthetic probe root
+  `/tmp/kronika-one-product-verify-74f2a40`, no NUC contact, no live provider
+  calls. Report destination `51_report_00.md` (absent at issuance). Wrote the
+  fresh-Orchestrator restoration handout `04_handout.md` (SHA-256
+  `f97383797c1748a677b3c55e1dc7f3c510d0f421cea508908d93631940ba4b65`) covering the verified state, the audit reconciliation
+  step, S8 scope and UI constraints, S9/S10 and parked items, the NUC release
+  runbook with the private-catalog lesson, environment debts, working-mode
+  guidance, ledger candidates, STOP rules and the paste seed. Sessions 01-51
+  are used; the next genuinely fresh session ordinal is 52. The whole remains
+  open; capture stays parked.
+
+- **2026-09-29 — audit reconciliation, F01 fix, macOS portability fix, final
+  publication and NUC update to main (Cooperator directive).** Directed by
+  the Cooperator ("prečítaj si report, čo vieš oprav sám; ďalšie audity už
+  nerob; finálny handout pre fresh Orchestratora, ktorý začne Plánovačom v
+  natívnom plánovacom móde"). `51_report_00.md` accepted as PASS: eleven fixed
+  claims established over `89a4029..74f2a40` (340 focused tests green;
+  synthetic probes; no NUC contact; no live provider calls), one open low
+  finding F01 (unbounded blockquote recursion in `render_markdown`), F02
+  considered and rejected, plus two recorded limitations (living docs still
+  naming schema head `0034`; a 38-char tree-string transcription defect in
+  the audit prompt itself). Dispositions executed by the Orchestrator:
+  - `8e5c374` bounded quote nesting in the safe document renderer (depth cap,
+    regression test; rendering set 13 passed).
+  - `7be040e` aligned README/PRODUCT/SPEC/SECURITY/ROADMAP and their two
+    locking tests to schema head `0035`, made
+    `docs/WORKER_EXECUTION_CONTRACT.md` and its test host-agnostic
+    (`<physical-repository-root>`), and updated the AP-upgrade ledger test to
+    expect the two recorded entries.
+  - `ade1169` resolved 60/62 macOS environment failures: Homebrew fallbacks
+    for ffmpeg/ffprobe (media tools), node (capture CLI), fish (AI deployment
+    helper) and a shared `tests/support/tooling.py` for node/fish/poetry
+    spawns; Darwin `killpg` EPERM handled in the media process runner and its
+    test cleanup; AP pin test realigned to `73e20ef…`; the AP envelope macOS
+    key `__CF_USER_TEXT_ENCODING` allowed; capability ripple `research.run`.
+  Broad suite on the final candidate: `4080 passed, 1 failed, 9 skipped`
+  (8m47s); the single failure is the macOS-only YouTube fake-demo stall
+  (`handed_off`/`publish_pending` then `YOUTUBE_WAIT_TIMEOUT` after the CLI's
+  20 s wait; the manual-upload path passes) recorded as a bounded diagnostic
+  lead for the successor; the 9 skips are opt-in gates (real media tools,
+  real Poetry on PATH, live NVIDIA smoke). Publication: non-force
+  fast-forwards with direct readback, public `main` `74f2a40… -> ade1169…`
+  and public `feat/kronika-one-product` `74f2a40… -> ade1169…` (tree
+  `f266df7205ddea5b83de7e6cd8313512ce70bcb1`); the two other heads unchanged
+  (`26d28b16…`, `7ff6546f…`). NUC routine update to `ade1169…` through the
+  documented schema-jump continuation: `deploy --yes` stopped with
+  `migration-required` (exit 13; live DB `0034`, target head `0035`), the
+  annex then verified the target tree, removed only the three lock artifacts
+  plus the empty lock directory, migrated from the target tree
+  (`0035 at_head`) and cut over via `rollback --release … --yes`; final NUC
+  state: web release `ade1169…` (equals public main), database `0035`,
+  `framenest.service` active, `/var/lib/framenest` `700`, capture release
+  `94e605c…` unchanged and parked (`browser_unavailable`, 0 jobs, 0
+  chrome/chromium, NRestarts=0), `tailscaled` active. The MacBook checkout
+  returned to `feat/kronika-one-product` at `ade1169…`, clean.
+  `04_handout.md` rewritten for the successor: final refs and the full
+  thirteen-commit ledger, the audit result and F01 disposition, a
+  **Planner-first protocol** (next action is an S8 Planner grant with native
+  plan mode REQUIRED, fresh Worker session 52), detailed S8 UI/UX planning
+  inputs over the existing shell and APIs, NUC worked example, remaining
+  single test debt, ledger candidates and STOP rules; new SHA-256
+  `646e96d69a25be4c09ac2d9ec0dc576e2cda07ca973ad8e3246ae65c832daf95`
+  (supersedes the pre-audit draft `f9738379…`). The whole remains open;
+  capture stays parked; next per `ROADMAP.md` is S8 via the Planner grant.
