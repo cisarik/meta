@@ -2493,3 +2493,228 @@ handout; a later read-only preflight re-verifies them before any host mutation.
   dispatches the prompt into a fresh Agent chat with native Plan mode OFF;
   then the fresh independent audit of the exact candidate, publication, NUC
   refresh and Michal's rendered acceptance.
+
+- **2026-09-29 — S8 implementation PASS reconciled; independent audit grant
+  issued (session 54 / exchange 01).** `53_report_00.md` (persisted by the
+  Cooperator) reconciled and re-verified read-only: commit
+  `7f7aae9012d35671b062c8731e9009169501d4d0` (parent `ade1169…`, tree
+  `17a559dff621882ac561a9901d20fe5b824508c4`, subject
+  `feat(kronika): add unified timeline history and review UI`); delta exactly
+  the 20 allowlisted paths (19 modified plus new `tests/kronika_ui.test.js`,
+  +3311/-40); no `ROUTE_POLICIES` change; worktree clean; AP pin `73e20ef…`
+  unchanged; public `main` and the feature branch remain `ade1169…` (candidate
+  local-only; re-checked by the Orchestrator via `git ls-remote`). Spot checks
+  confirmed the additive loopback identity echo in `application.py`, the
+  summary/filter changes in `records_api.py`, and that the inventory diff is
+  the single Timeline projection sentence. Implementation evidence
+  non-independent per the grant: reported 416 focused Python passed; 540 JS
+  tests with 5 gated skips. Issued the fresh independent audit grant
+  `54_acceptance_00.md` (session 54 / exchange 01, fresh-worker-session, Fresh
+  Independent Audit, native planning mode not-used, manual Cooperator delivery,
+  Extra High, required-fresh-independent), SHA-256
+  `8eebde50818855d35d79c8791987b6ea6b9af6164a73348d73dc647233f31884`:
+  candidate `7f7aae9`, twelve fixed claims C1–C12 (containment and leak hunt;
+  summary projection; Timeline approved-only for every caller; filter
+  validation and query correctness; local identity echo; shell routing and
+  state isolation; submission idempotency; polling and cancellation; rendering
+  isolation; approval flow; route policies and inventory; non-regression), R3
+  with authorization and rendering specializations, the declared focused
+  Python route and a bounded JS acceptance set, one synthetic probe root
+  `/tmp/kronika-one-product-s8-audit`, no correction authority. Report
+  destination `54_report_00.md` (absent at issuance). Next: reconcile the
+  audit; then publication, NUC refresh and Michal's rendered acceptance per the
+  frozen plan's section 8.
+
+- **2026-09-29 — S8 audit PARTIAL reconciled (one medium blocking finding F01);
+  bounded correction issued (session 53 / exchange 02).** `54_report_00.md`
+  (SHA-256 not separately recorded; persisted by the Cooperator) reconciled:
+  candidate `7f7aae9…` identity and containment match; C1–C6 and C8–C12
+  established (summary projection; Timeline approved-only for every caller;
+  filter validation; local identity echo; shell routing and state isolation;
+  polling and cancellation; rendering isolation; approval flow; route policies
+  and inventory; non-regression — independent focused Python `416 passed` and
+  bounded JS `148 passed`, `0` failed); C7 is partial. Finding
+  `KRONIKA-ONE-PRODUCT-S8-AUDIT-F01` (medium, reproduced-dynamic, blocking):
+  after a lost POST plus reload, the recovery path restores the stored
+  `client_request_id` but the next submit recomputes nothing against the stored
+  SHA-256 fingerprint, so re-entering the same question mints a new id and
+  server idempotency does not cover the first admission — a possible second
+  provider admission and budget use. The audit made no candidate edit; probe
+  root `/tmp/kronika-one-product-s8-audit` removed; public refs still
+  `ade1169…`. Orchestrator disposition: correction-required; one smallest
+  coherent correction authorized, no self-certification, full fresh re-audit
+  after the runtime-behavior change. Issued the bounded correction
+  `53_correction_01.md` (session 53 / exchange 02, current-worker-session,
+  Bounded Correction Worker, native planning mode not-used, manual Cooperator
+  delivery, High), SHA-256
+  `6853a7df005bdbd45d8fd95c6d98e0cf23b43cfce5094b8ba4cac3c7ce430386`: the
+  two-path allowlist (`app.js`, `tests/kronika_ui.test.js`), fingerprint-match
+  reuse with fail-closed minting, the two-context shared-storage Red/Green
+  regression, bounded JS validation and one local commit
+  `fix(kronika): reuse the frozen request id across reload recovery`; no push.
+  Report destination `53_report_01.md` (absent at issuance). Next: dispatch to
+  the existing session-53 chat with Plan mode OFF; then the fresh independent
+  re-audit of the corrected candidate (session 55).
+
+- **2026-09-29 — F01 correction PASS reconciled; fresh independent re-audit
+  issued (session 55 / exchange 01).** `53_report_01.md` reconciled and
+  re-verified read-only: commit
+  `ef9920333013f3f70bf5e3443be2e51814f6b9c3` (parent `7f7aae9…`, tree
+  `e4338c2f31e8aff2829351ec107e2d75a165a473`, subject
+  `fix(kronika): reuse the frozen request id across reload recovery`); the
+  correction commit changes exactly the two allowlisted paths (`app.js`,
+  `tests/kronika_ui.test.js`, +99/-10); `kronikaFreezeAttempt` is now async and
+  reuses the stored `client_request_id` only when the recomputed SHA-256
+  fingerprint (login, kind, exact prompt, consent version) is non-empty and
+  equal — otherwise it mints a new id; `kronikaSubmitQuestion` awaits it;
+  the existing same-page retry test is untouched. Worker evidence: Red on the
+  parent (new regression 1 failed), Green `12 passed`, bounded JS run
+  `76 passed`; no Python change. Worktree clean at `ef99203…` (two commits
+  ahead); public `main` and feature branch still `ade1169…`; AP pin unchanged.
+  Issued the full fresh independent re-audit `55_acceptance_00.md` (session 55
+  / exchange 01, fresh-worker-session, Fresh Independent Re-Audit, native
+  planning mode not-used, manual Cooperator delivery, Extra High), SHA-256
+  `f35e745b7a09d10d8587540de8baf1f6e6677eb556b073391643d719788021f1`:
+  candidate `ef99203…`; C1–C12 re-established on the corrected candidate plus
+  explicit `KRONIKA-ONE-PRODUCT-S8-AUDIT-F01` closure with the auditor's own
+  two-context synthetic probe; correction containment; the declared focused
+  Python route and bounded JS set; one synthetic root
+  `/tmp/kronika-one-product-s8-reaudit`; no correction authority. Report
+  destination `55_report_00.md` (absent at issuance). Next: reconcile the
+  re-audit; then publication, NUC refresh and Michal's rendered acceptance.
+
+- **2026-09-30 — S8 re-audit acceptance-PASS reconciled; S8 accepted; a
+  feature-branch push observed and classified; publication and NUC pending.**
+  `55_report_00.md` reconciled: fresh independent re-audit of
+  `ef9920333013f3f70bf5e3443be2e51814f6b9c3` established C1–C12 on the
+  corrected candidate and `KRONIKA-ONE-PRODUCT-S8-AUDIT-F01` is
+  `verified-closed` with the auditor's own two-context synthetic probe (changed
+  prompt, changed login, changed kind, empty fingerprint, missing fingerprint
+  and absent `crypto.subtle` all mint a new id; no auto-submit; no prompt in
+  storage). Evidence: focused Python `416 passed`; bounded JS `149 passed`,
+  `0` failed; probe root `/tmp/kronika-one-product-s8-reaudit` removed; no
+  candidate mutation. Orchestrator direct read-only re-verification: HEAD
+  `ef99203…`, tree `e4338c2f…`, clean; candidate unchanged. Orchestrator
+  acceptance: the S8 slice is accepted (`acceptance-PASS`); the correction
+  cycle budget is consumed (primary fresh acceptance plus the full-fresh
+  correction re-acceptance). Mutable-state change observed during
+  reconciliation: a push from this checkout at 16:34:40 advanced public
+  `refs/heads/feat/kronika-one-product` from `ade1169…` to `ef99203…`
+  (`reflog: update by push`); public `main` remains `ade1169…`. RF-12
+  classification (unit: the remote feature-branch ref): primary
+  `accepted-continuation` — the pushed object equals the accepted local
+  candidate exactly (HEAD/tree match), no unexplained remainder; the actor was
+  not directly established (presumed Cooperator-owned publication action) and
+  will be confirmed with Michal; publication to `main` is still pending and
+  remains a separate explicit authority. Next: Cooperator decision on
+  publishing `main` `ade1169… -> ef99203…` (non-force fast-forward, direct
+  readback) and the routine NUC refresh to that exact SHA; then Michal's
+  rendered acceptance per the frozen plan's section 8.
+
+- **2026-09-30 — Publication PASS; NUC refresh BLOCKED by a pre-existing
+  state-directory defect (second unit); live runner degradation observed;
+  decision requested.** Cooperator authorized the next step ("Autorizujem").
+  Publication executed directly under that authority: non-force fast-forward
+  `refs/heads/feat/kronika-one-product:refs/heads/main`, public readback
+  `main` = `ef99203…`, feature branch = `ef99203…`, the two other heads
+  unchanged; local `main` fast-forwarded to `ef99203…`; working branch clean.
+  Publication PASS. The routine NUC refresh then failed at the first helper
+  call (`framenest-release status`, exit 20). Diagnosis (all read-only):
+  `/var/lib/framenest` is mode `755`; `framenest-db status` on the deployed
+  tree fails closed with `FRAMENEST_DB_COMMAND_FAILED` (the S6 private-catalog
+  rule requires `0700`); the DB file itself is `600 framenest`, backup
+  readiness area is `ready`; `sudo -n true` succeeds and all gate SSH paths
+  work. Root cause: the installed (and repository) unit
+  `framenest-catalog-backup.service` declares `StateDirectory=framenest`
+  without `StateDirectoryMode=0700`, so systemd's default `0755` is applied at
+  every backup-service start; `ctime` of the directory is
+  `2026-09-30 06:16:18 UTC`, exactly the last backup-service start (the NUC
+  rebooted at 06:12:44 UTC and the backup unit started three times that
+  morning; `framenest.service` itself carries `StateDirectoryMode=0700` and is
+  not the offender). The same omission exists in
+  `deploy/systemd/framenest-catalog-offdevice.service`. Live consequence:
+  `framenest.service` is active, but its X/YouTube acquisition runner
+  iterations have been failing every second since the reset
+  (`X_ACQUISITION_RUNNER_ITERATION_FAILED`,
+  `YOUTUBE_ACQUISITION_RUNNER_ITERATION_FAILED`, retryable) — new database
+  connections now fail the private-catalog check. A bare `chmod 700` is not
+  durable: the next backup run (timer next elapse 2026-10-01 03:25:23 UTC)
+  would reset the mode again. Recommended route (A): immediate
+  Cooperator-authorized `chmod 700` to stop the live failure, then a small
+  bounded correction (add `StateDirectoryMode=0700` to the two unit sources
+  and their contract tests), focused validation, publication to `main`
+  (UI unchanged from the accepted S8 candidate), install the corrected units
+  on the NUC, `daemon-reload`, then continue the routine release update to the
+  new head and verify; Michal's rendered acceptance follows. Alternative (B):
+  `chmod 700` plus deploy `ef99203…` as-is now (the cutover restart would
+  re-apply `0700` through `framenest.service`), with the durable unit fix
+  afterwards; the defect would recur at the next backup run. Decision
+  requested; no further mutation performed beyond the authorized publication.
+
+- **2026-09-30 — Route A executed end-to-end: state-directory repair committed
+  and published (`5eddb81…`); NUC deployed and verified; live degradation
+  stopped; rendered acceptance requested.** Cooperator approved route A
+  ("A .."). Execution (direct, non-independent; Cooperator grant):
+  immediate `chmod 700 /var/lib/framenest` restored the private-catalog
+  invariant and stopped the failing acquisition runners (no
+  `*_RUNNER_ITERATION_FAILED` entries since 14:50 UTC). Bounded repository
+  fix: `StateDirectoryMode=0700` added to
+  `deploy/systemd/framenest-catalog-backup.service` and
+  `deploy/systemd/framenest-catalog-offdevice.service`, with contract
+  assertions in `tests/contract/test_catalog_backup_timer.py` and
+  `tests/contract/test_catalog_offdevice_timer.py`; Red on the unfixed units
+  (2 failed), Green after (13 passed, exit 0) via the declared `test-focus`
+  route with baseline `ef99203…`; exactly four paths changed, one commit
+  `5eddb81bd164207a86f23b3f236e36b66192930b` (subject
+  `fix(deploy): keep the catalog state directory private for backup units`).
+  Publication: non-force fast-forwards with direct readback — public `main`
+  and `feat/kronika-one-product` `ef99203… -> 5eddb81…`; the two other heads
+  unchanged; local `main` fast-forwarded. NUC routine release update to
+  `5eddb81…` through the sole entry point: `status` PASS,
+  `check --release 5eddb81…` PASS, `deploy --yes` exit 0 with
+  `web_release: 5eddb81…`, capture unchanged `94e605c…`. Host follow-up: the
+  corrected backup unit was installed from
+  `/opt/framenest/current/deploy/systemd/` to `/etc/systemd/system/` and
+  hash-verified byte-identical
+  (`ce67e4a3102142304641279466d1b734f0fc1694843d52178dfced5fb45a9a79`),
+  `daemon-reload`, then one real `systemctl start
+  framenest-catalog-backup.service` (`ExecMainStatus=0`) proved durability:
+  `StateDirectoryMode=0700` effective, `/var/lib/framenest` still `700`,
+  `framenest-db status` `at_head` `0035`. Final `framenest-release status`:
+  active/web release `5eddb81…` (= public main), capture `94e605c…` parked,
+  service active, database `0035`, backup readiness `ready`. The offdevice
+  unit is not installed on the host; its source is fixed for future installs.
+  Note: the deployed head is the accepted S8 candidate `ef99203…` plus this
+  deployment-source fix; the S8 UI/research/rule bytes are unchanged. Next:
+  Michal's rendered acceptance of the S8 UI on the NUC (numbered checklist
+  sent); independent acceptance of this small fix is a ledger candidate if
+  wanted.
+
+- **2026-09-30 — Michal's rendered S8 acceptance recorded: items 1–9 PASS,
+  item 10 NOT TESTED; the S8 row is complete end-to-end.** Cooperator
+  acceptance on the NUC release `5eddb81…` (UI bytes identical to the
+  independently accepted candidate `ef99203…`): Landing/Timeline PASS;
+  Timeline filters PASS; unchanged Gallery (cards, filters, search, Details,
+  playback) PASS; personal history with separate Questions/Records tabs PASS;
+  disabled Search form PASS; disabled Research form PASS; administrator
+  review empty states (no Reject, no unready actions) PASS; "Kronika"
+  branding with the `FN` monogram PASS; responsive/keyboard basics PASS.
+  Item 10 (sandboxed completed-document view) is NOT TESTED because the NUC
+  catalog has no saved records; this is a missing-fixture state, not a
+  defect, and it is carried into S9, where the bounded live acceptance will
+  create saved records and the administrator review/approval and document
+  rendering can then be exercised (no synthetic record was created here; no
+  unauthorized fixture mutation). S8 phase-qualified results are now
+  complete: implementation-PASS (non-independent), acceptance-PASS
+  (independent, `55/01`), publication-PASS (`ef99203…`, then the deployment
+  fix `5eddb81…`), deployment-PASS (NUC serves `5eddb81…`, database `0035`,
+  service active, capture `94e605c…` parked), production/rendered acceptance
+  PASS with the single NOT TESTED sub-item. The logical whole
+  `kronika-one-product` remains open. Ledger candidates (non-authorizing):
+  optional small independent audit of the deployment fix `5eddb81…`;
+  living-status document refresh to state S8 accepted/deployed; carry the
+  document/review rendered checks into S9 with real records. Next strategic
+  action: S9 — integrated acceptance on the new empty catalog, the
+  exact-object stopped-writer database reset (its own Cooperator-authorized
+  operation), separate provider provisioning/live-call grants, and S10 after
+  S9 acceptance.
