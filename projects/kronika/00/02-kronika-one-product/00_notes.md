@@ -2460,3 +2460,36 @@ handout; a later read-only preflight re-verifies them before any host mutation.
   dispatches the prompt into a fresh Agent chat with native Plan mode ON; the
   report is reconciled and the plan frozen, then bounded S8 implementation
   grants follow.
+
+- **2026-09-29 — S8 Planner report reconciled; report persisted; plan frozen;
+  S8 implementation grant issued (session 53 / exchange 01).** `52_report_00.md`
+  arrived session-delivered as a complete plan with status PARTIAL solely
+  because the client Plan Mode prohibited the report-file write; the
+  Orchestrator persisted the exact relayed content to the trace (SHA-256
+  `d064848b72833db8c0ae8ae525d03fd9242393c419e468e21e2d86f67ccc430f`,
+  517 lines), closing the delivery gap without rewriting the report's own
+  status. Read-only reconciliation re-verified: baseline unchanged (HEAD
+  `ade1169…`, tree `f266df72…`, parent `7be040e…`, clean; AP pin `73e20ef…`);
+  both consequential production findings confirmed in code (`audience_me`
+  returns `identity: null` on the trusted-loopback composition at
+  `application.py` ~1545; `records_api._summary_payload` carries no
+  title/category and detail carries question text plus citations but not answer
+  text); all 19 existing allowlist paths present; only
+  `tests/kronika_ui.test.js` is new; no `ROUTE_POLICIES` change is expected.
+  Plan accepted and frozen; section 9's proposal is superseded by the issued
+  grant. Cooperator-confirmed presentation decisions recorded by the plan:
+  English copy; "Kronika" branding with the existing `FN` monogram retained;
+  no package/header/storage-key/deployment/repository renames. Issued the S8
+  implementation grant `53_implementation_00.md` (session 53 / exchange 01,
+  fresh-worker-session, Fresh Implementation Worker, native planning mode
+  not-used, manual Cooperator delivery, High), SHA-256
+  `7a276696f4bc595335b556eedf9da5c8b54da022ead4c69e53efb7a65d82f76f`: the
+  exact 20-path allowlist; the additive summary/filter and local-identity
+  changes; the frozen shell design; the causal test matrix with the new
+  `tests/kronika_ui.test.js` harness; exactly one final bounded full JS run;
+  no broad Python suite; one local commit
+  `feat(kronika): add unified timeline history and review UI`; no push. Report
+  destination `53_report_00.md` (absent at issuance). Next: the Cooperator
+  dispatches the prompt into a fresh Agent chat with native Plan mode OFF;
+  then the fresh independent audit of the exact candidate, publication, NUC
+  refresh and Michal's rendered acceptance.
