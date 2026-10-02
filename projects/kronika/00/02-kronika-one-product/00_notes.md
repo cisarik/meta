@@ -2718,3 +2718,897 @@ handout; a later read-only preflight re-verifies them before any host mutation.
   exact-object stopped-writer database reset (its own Cooperator-authorized
   operation), separate provider provisioning/live-call grants, and S10 after
   S9 acceptance.
+
+- **2026-09-30 — S9 step 1 authorized; read-only reset preflight grant issued
+  (session 56 / exchange 01).** Cooperator authorized the S9 first step
+  ("Autorizujem"). Issued the read-only preflight
+  `56_preflight_00.md` (session 56 / exchange 01, fresh-worker-session,
+  Worker-Executed Preflight, native planning mode not-used, manual Cooperator
+  delivery, High), SHA-256
+  `bdfe6c60f93bde1b368927746fe89c3171c30eecb6820f378924fdeee5c404b7`: produce
+  the exact-object reset plan on the released state `5eddb81…` under the
+  binding AGENTS.md/ADR-0082/deployment-doc boundary (identify both old
+  application databases and WAL/SHM files, stop all writers, delete only those
+  objects, preserve media/profiles/identity configuration/secrets/archives,
+  create the empty catalog through normal migrations); classify the state-dir
+  database objects and `runtime-settings.json`; capture the newest verified
+  recovery point and the documented rollback; propose the ordered stop /
+  delete / migrate / verify / start sequence and the post-reset verification
+  list. Read-only host access through the worker gate only; `sudo -n` read-only
+  permitted; no service actions, no file mutation, no secret reads; the
+  preflight does not authorize the reset. Report destination `56_report_00.md`
+  (absent at issuance). Next: reconcile the preflight, then issue the exact
+  reset grant for Cooperator approval before execution.
+
+- **2026-09-30 — S9 reset preflight PASS reconciled; exact reset decision
+  requested.** `56_report_00.md` reconciled and spot-checked read-only by the
+  Orchestrator through the gate: released state `5eddb81…` on `/opt/framenest/current`,
+  capture pointer `94e605c…`, service active with pid 8310 holding the catalog,
+  backup timer active (next elapse `2026-10-01 03:25:54 UTC`), backup service
+  inactive, off-device units not installed, identity map key present in
+  `/etc/framenest/framenest.env` (value not read). Exact mutation boundary
+  confirmed on the host: `/var/lib/framenest/catalog.sqlite3` (600, 1134592
+  bytes, mtime `2026-09-30 15:08:07 UTC`) and the zero-byte
+  `/var/lib/framenest/catalog.sqlite` (644) are present; all six
+  `-wal`/`-shm`/`-journal` siblings are absent and are to be refused if they
+  appear with unsafe properties. Nine July scratch files, every directory
+  (`catalog-backups`, `catalog-backup-ops`, `catalog-restore-verify`, `ai`,
+  `covers`, `upload-quarantine`, `x-staging`, `youtube-acquisition`,
+  `chatgpt-page`, `deployment-evidence`, the root-owned backup residue dir,
+  `.cache`, `.config`, `.local`), `/etc/framenest`, the release pointers,
+  `/var/lib/kronika-capture`, `/srv/media`, backup bundles and archives are
+  outside the reset. Checkpoint: newest verified bundle
+  `auto-20260930T145340Z-2c167119` (attempt 86, revision `0035`,
+  restore-verified) is older than the live catalog, so the reset grant must
+  take one final quiescent `run-scheduled` backup after writers stop and
+  before any delete, and must refuse the delete if the new bundle does not
+  match the live file. Rollback per the accepted boundary is the same release
+  with a compatible empty catalog, not a restore of deleted test data.
+  Proposed ordered sequence recorded in the report: stop
+  `framenest-catalog-backup.timer`, then the backup service, then
+  `framenest.service`; prove stopped (`is-active`/`fuser` no pid); final
+  backup; re-stat and delete only the exact set; `framenest-db migrate` and
+  `status` (`at_head` `0035`); verify `0700`/`0600`; start service and timer;
+  `check-health`; confirm pointers and capture unchanged. Orchestrator
+  disposition: preflight accepted; one exact reset decision requested from
+  Michal (recommended direct execution under his approval; sudo timestamp to
+  be refreshed before execution). No mutation performed. Ledger candidate:
+  the nine July scratch files in the state directory remain as future
+  cleanup candidates outside this reset.
+
+- **2026-09-30 — Reset executed; a post-reset startup gap found (configured
+  publication library missing from the empty catalog); decision requested.**
+  Michal approved the exact reset ("áno"). Executed directly: writers stopped
+  in order (backup timer, backup service, `framenest.service`; all three
+  inactive, `fuser` no pid); a final quiescent backup
+  `auto-20260930T155720Z-f9ead1a3` (revision `0035`, 1134592 bytes matching
+  the live file) was taken before any delete; the exact set was re-stat'ed and
+  deleted (the present `catalog.sqlite3` and zero-byte `catalog.sqlite`; the
+  six absent siblings tolerated, no symlinks or unusual link counts);
+  `framenest-db migrate` then `status` returned `at_head` `0035`; the new
+  catalog is `600 framenest:framenest` nlink 1 and `/var/lib/framenest`
+  remains `700`. `framenest-catalog-backup.timer` restarted (active/waiting);
+  pointers unchanged (`5eddb81…`, capture `94e605c…`); the three capture
+  services remain active. **Startup gap:** `framenest.service` crash-looped
+  (NRestarts 4, stopped to halt the loop): `check-database-ready` passes, but
+  `serve` exits 1 because `create_app` → `_resolve_published_storage` raises
+  `ValueError("Upload publication configuration is invalid.")` — the env key
+  `FRAMENEST_UPLOAD_PUBLICATION_LIBRARY_ID=528f7733-b3c6-4f6d-9373-6f8fa8a2261b`
+  requires a matching `libraries` row, and the empty catalog has none. The
+  reset preflight did not construction-test `create_app` on the empty catalog;
+  this gap is acknowledged. Old registration read read-only from the
+  pre-delete bundle: device `a74ff55e-81b0-4b91-b07f-9de77a24a1b6` ("FrameNest
+  NUC"), library `528f7733…` ("FrameNest Published Uploads", posix,
+  `/srv/media/framenest-published`). The published directory still holds the
+  media files (untouched); the catalog has no media rows (intended). Options
+  presented: **A** — re-create the same device+library rows with the exact
+  old IDs directly in the fresh DB (keeps the env unchanged; unsupported
+  direct SQL write); **B (recommended)** — re-register through the supported
+  `framenest-catalog device register` + `library register` commands (new
+  UUIDs, no scan, no media import) and update exactly the one
+  `FRAMENEST_UPLOAD_PUBLICATION_LIBRARY_ID` line in
+  `/etc/framenest/framenest.env`; **C** — clear the publication setting
+  (  feature off; not recommended). Decision requested; service remains stopped
+  pending it. No other mutation performed.
+
+- **2026-09-30 — Reset completed (option B executed); empty catalog serves
+  healthy; S9 emptiness acceptance requested.** Michal chose B ("B").
+  Executed directly: registered a new device
+  `09a2cc80-2a4e-4953-a928-0bd051d18e64` ("FrameNest NUC") and a new library
+  `048cb4a9-b67e-4140-a289-839f0c0e646e` ("FrameNest Published Uploads",
+  posix, `/srv/media/framenest-published`) through the supported
+  `framenest-catalog device register` / `library register` commands (no scan,
+  no media import); changed exactly one line in
+  `/etc/framenest/framenest.env`:
+  `FRAMENEST_UPLOAD_PUBLICATION_LIBRARY_ID` from `528f7733…` to `048cb4a9…`
+  (verified before/after). Startup diagnostic on the deployed tree then
+  printed `create_app: ok`. `framenest.service` started cleanly: journal shows
+  `check-database-ready: ready 0035` and uvicorn `Application startup
+  complete.`; `check-health` returned `state: ready`; no further restarts
+  after the loop was stopped (NRestarts remains the historical 4; no new
+  restart lines). `framenest-release status`: active/web release `5eddb81…`,
+  capture `94e605c…`, service active, database `0035`, backup readiness
+  `ready`. Read-only catalog inspection: `kronika_records` empty,
+  `logical_media` empty, exactly one library (the new registration) and one
+  device (the new registration). The three capture services remain active;
+  pointers unchanged; acquisition-runner failure events stopped (none since
+  16:12 UTC). The reset leaves the accepted empty catalog for S9; the
+  pre-reset test catalog remains only in the safety bundle
+  `auto-20260930T155720Z-f9ead1a3`. Next: Michal's empty-catalog rendered
+  acceptance (checklist sent), then a fresh independent S9 integrated review
+  of the transition evidence, then the separately authorized provider step.
+
+- **2026-09-30 — Michal's empty-catalog S9 acceptance recorded: items 1–9
+  PASS, item 10 NOT TESTED; fresh independent S9 review grant issued (session
+  57 / exchange 01).** Cooperator acceptance on the NUC release `5eddb81…`
+  after the reset: Timeline landing/empty state PASS; empty Gallery with
+  working filters/search PASS; empty personal history PASS; disabled Search
+  form PASS; disabled Research form PASS; administrator review empty states
+  PASS; existing sections (Manage media, My contributions, Analysis
+  proposals) open and close with empty states PASS; navigation without
+  errors PASS; branding/responsive basics PASS. Item 10 (document render)
+  remains NOT TESTED — no records exist until the separately authorized
+  provider step; it is carried there. Issued the fresh read-only independent
+  review `57_acceptance_00.md` (session 57 / exchange 01,
+  fresh-worker-session, Fresh Independent Audit, native planning mode
+  not-used, manual Cooperator delivery, Extra High): verify the reset
+  exactness (deleted-object set and absence, the pre-delete safety bundle
+  `auto-20260930T155720Z-f9ead1a3` and its contents/hash, the new catalog
+  `at_head 0035` with private modes and empty media/records, exactly the two
+  new registration rows), the option-B completion (registrations through the
+  supported CLI, the single env line matching the registered library, stated
+  verification limits), preservation invariants (media files, capture
+  services and pointers, identity configuration, archives), release/service
+  integrity (active/web release = public `main` `5eddb81…`, capture
+  `94e605c…`, health ready, no restart loop), and the absence of unexpected
+  side effects. Read-only through the worker gate; no mutation, no service
+  actions, no secrets; report destination `57_report_00.md` (absent at
+  issuance). Next after the review: the separately authorized provider step
+  (credentials, price-schedule wiring decision, bounded live acceptance).
+
+- **2026-09-30 — S9 transition review PASS reconciled; S9 empty-catalog
+  portion complete; provider step proposed.** `57_report_00.md` (status PASS,
+  acceptance-PASS) reconciled and spot-checked read-only by the Orchestrator:
+  all claims C1–C8 established independently — reset object exactness
+  (state dir unchanged, only the two database objects removed, six siblings
+  absent, scratch files and all directories retained, `runtime-settings.json`
+  still absent); checkpoint (safety bundle
+  `auto-20260930T155720Z-f9ead1a3`, catalog sha256 `fb2bf1f6…` and size match,
+  revision `0035`, old library row intact); new catalog correctness
+  (`600 filenest:framenest`, nlink 1, `at_head` `0035`, empty records/media,
+  exactly the two new registration rows); option-B exactness (sudo audit
+  records show the two supported registrations and the single `sed -i` line at
+  16:11:03 UTC; env file size/mode/owner and 22-key set unchanged; stated
+  limitation: no byte pre-image); release/service integrity (`current` =
+  `5eddb81…` = public `main`, capture `94e605c…`, service active/
+  `Result=success`, `NRestarts` unchanged since the clean 16:11:30 UTC start,
+  timer waiting, readiness `ready`); preservation (40 media files still under
+  `/srv/media/framenest-published`, newest mtime before the reset; three
+  capture units active; identity map present; no media/records import);
+  side effects (no runner-failure events since 16:12 UTC; repository clean at
+  `5eddb81…`, AP pin unchanged); acceptance linkage (item 10 correctly
+  untested). No findings. Residual/ledger candidates (non-authorizing): the
+  newest verified recovery point `auto-20260930T155814Z-3f00f7a1` is the empty
+  pre-registration snapshot (the timer will take a fresh one at 2026-10-01
+  03:20 UTC; the pre-delete bundle remains available); the nine July scratch
+  files remain the preflight cleanup candidate; item 10 stays with the
+  provider step. S9 empty-catalog portion is complete: preflight `56/01` →
+  reset execution (option B) → Cooperator acceptance (1–9 PASS, 10 NOT
+  TESTED) → independent review `57/01` PASS. Next: the provider slice — P1 a
+  bounded implementation grant to wire the accepted `UsagePriceSchedule` into
+  `build_research_runtime` (today a saved request reconciles as unknown and
+  consumes the reservation), P2 the Cooperator-provisioned OpenAI project
+  credential (drop-in + key) and enabling research in the non-secret AI
+  config (defaults already hold the accepted budgets), P3 the bounded live
+  acceptance (one synthetic Search + one synthetic Research, reservation ≤
+  USD 5.50, receipts and cleanup), P4 household UX acceptance with real
+  records (unlocks document render and administrator review rendering).
+
+- **2026-09-30 — Provider slice started; P1 price-schedule wiring grant issued
+  (session 58 / exchange 01).** Michal approved starting the provider slice
+  ("spúšťame!") and flagged that he has USD 7.50 platform credit and needs a
+  slow, step-by-step P2 walkthrough (first use of the Responses API). Issued
+  `58_implementation_00.md` (session 58 / exchange 01, fresh-worker-session,
+  Fresh Implementation Worker, native planning mode not-used, manual Cooperator
+  delivery, High), SHA-256
+  `e00f009c8949e07c05f5634afcff2d94be826a891419d66e65a40149d7d55c52`: add the
+  date-qualified `OPENAI_RESPONSES_PRICE_SCHEDULE_2026_09_26` constant (input
+  5,000,000 / cached 500,000 / output 30,000,000 / web search per thousand
+  10,000,000 micro-USD) in the OpenAI Responses adapter module with the
+  revalidation-before-live-use note, pass it in `build_research_runtime`, pin
+  the rates and add a causal composition reconciliation test (Red on the
+  current `unknown` path, Green after); four-path allowlist; focused route;
+  one local commit `feat(research): reconcile usage with the documented price
+  schedule`; no push; research stays disabled. Report destination
+  `58_report_00.md` (absent at issuance). Note for P2/P3: the accepted
+  live-acceptance reservation is at most USD 5.50 against the available
+  USD 7.50 credit; the accepted provider monthly hard limit (USD 30) will be
+  set in the OpenAI project during P2. Next: dispatch P1, reconcile, then the
+  step-by-step P2 walkthrough for Michal (project, hard limit, project key,
+  key file, credential drop-in, enabling research in the non-secret AI
+  config), then P3 live acceptance.
+
+- **2026-09-30 — P1 implementation PASS reconciled; publication of `a368750…`
+  requested.** `58_report_00.md` reconciled and re-verified read-only by the
+  Orchestrator: commit `a3687505eb12359c76f85661e51e36d7e4778fc9` (parent
+  `5eddb81…`, tree `6f845cb82c26412ef3109e9b902a74ba0e17e6b0`, subject
+  `feat(research): reconcile usage with the documented price schedule`);
+  exactly the four allowlisted paths; worktree clean; AP pin unchanged; public
+  `main` and feature branch still `5eddb81…` (local only). Diff inspection
+  confirmed the date-qualified
+  `OPENAI_RESPONSES_PRICE_SCHEDULE_2026_09_26` constant (input 5,000,000 /
+  cached 500,000 / output 30,000,000 / web search per thousand 10,000,000
+  micro-USD, builder docstring names the section-3 source and the
+  revalidation requirement) and the single `price_schedule=` wiring in
+  `build_research_runtime`. Red on the parent proved the `unknown` accounting
+  state; Green `32 passed` on the focused route. Recorded deviation: the
+  docstring sits on the private builder because the frozen slotted schedule
+  cannot carry `__doc__`; the public constant name is exported. The causal
+  test replaces the credential supplier with a synthetic in-test value — no
+  secret was read. Next: Cooperator publication authority for `a368750…`
+  (non-force fast-forward `main` + feature branch) and the routine NUC
+  refresh, then the step-by-step P2 walkthrough (OpenAI project, USD 30
+  monthly hard limit, project key, key file, credential drop-in, enabling
+  research in the non-secret AI config) and P3 live acceptance.
+
+- **2026-09-30 — P1 published and deployed; P2 begun step by step.** Under the
+  Cooperator's authorization: non-force fast-forwards with direct readback —
+  public `main` and `feat/kronika-one-product` `5eddb81… -> a368750…`; local
+  `main` synced. NUC routine release update to `a368750…` through the sole
+  helper: `status` PASS, `check --release a368750…` PASS,
+  `deploy --yes` exit 0 with `web_release: a368750…`; capture unchanged
+  `94e605c…`. Post-deploy: helper `status` shows active/web release
+  `a368750…`, database `0035`, service active, backup readiness `ready`;
+  `check-health` returned `state: ready`. P2 started with step 1 (OpenAI
+  platform: create the project, set the accepted USD 30 monthly hard limit,
+  create a project-scoped API key; the key is not to be pasted into chat or
+  stored anywhere until the step-2 host placement). Subsequent P2 steps
+  prepared: step 2 Cooperator key-file placement at
+  `/etc/framenest/credentials/research-openai` (0600 root; the app reads the
+  systemd credential via `LoadCredential=KRONIKA_RESEARCH_OPENAI_API_KEY` from
+  the drop-in `deploy/systemd/framenest-research-credential.conf`), step 3
+  enabling research in `/var/lib/framenest/ai/config.json` (v3 research
+  section with the accepted defaults), step 4 drop-in install, `daemon-reload`
+  and one restart, step 5 capability verification; then P3 live acceptance
+  under its own bounded grant.
+
+- **2026-09-30 — COOPERATOR INTENT: administrator-settable research model;
+  sequencing decision requested.** Michal raised, before completing P2 step 1,
+  that as the administrator of Kronika he needs to be able to set the model —
+  the accepted ADR-0083 route pins the fixed model `gpt-5.5-2026-04-23`.
+  Orchestrator reading: this is a Cooperator-owned product change (server-side,
+  administrator-controlled model selection), not client-supplied model
+  fields; the client-supplied-model prohibition, snapshot-at-admission and
+  no-automatic-fallback rules stay. Facts established read-only: the non-secret
+  research configuration already carries a validated `model_id` string, so the
+  model is technically server-configurable today via the AI config file; what
+  is missing is (a) a first-class administrator surface (the AI admin API
+  preserves the research section but does not expose or edit it), (b) a
+  per-model price schedule, because `OPENAI_RESPONSES_PRICE_SCHEDULE_2026_09_26`
+  and the accounting reconciliation are pinned to one model, and (c) the
+  durable documentation update that supersedes the "fixed model" wording
+  (ADR-0083/SPEC/SERVER) with the administrator-controlled selection, a
+  validated web-search-capable allowlist, no fallback and snapshot semantics.
+  Proposed sequencing: continue P2 (project, USD 30 limit, key — all
+  model-agnostic) and P3 live acceptance with the accepted model, then a small
+  bounded slice for the administrator research-settings surface (admin API +
+  shell settings, model allowlist with matching price schedules, budgets,
+  docs); alternative: pause P3 and implement the administrator surface first.
+  Decision requested; no OpenAI platform action or host mutation taken in this
+  exchange.
+
+- **2026-09-30 — COOPERATOR DECISION: option 1; administrator research
+  settings queued as a later bounded slice.** Michal chose option 1. P2/P3
+  proceed with the accepted model `gpt-5.5-2026-04-23` (full path including
+  accounting validated first); immediately after, a bounded slice with the
+  working name **S9-R** will implement the administrator-managed research
+  provider settings: admin API + shell settings surface (enable/disable,
+  model from a validated web-search-capable allowlist with a matching price
+  schedule per model; unknown model fails closed), budget fields, and the
+  durable documentation update that supersedes the "fixed model" wording in
+  ADR-0083/SPEC/SERVER while preserving no-client-model-selection,
+  snapshot-at-admission and no-automatic-fallback. No different model was
+  requested for P3. P2 step 1 (OpenAI project, USD 30 monthly hard limit,
+  project-scoped key) remains with the Cooperator; the key is never pasted
+  into chat or stored outside the step-2 host placement.
+
+- **2026-09-30 — P2 steps 2 and 3 executed and verified.** Step 2 (Cooperator,
+  NUC block): the project OpenAI key was written to
+  `/etc/framenest/credentials/research-openai` — verified read-only as a
+  regular file, `600 root:root`, link count 1, 164 bytes; the key value was
+  never printed, pasted into chat, or stored anywhere else. Step 3
+  (Orchestrator through the gate, using the supported atomic mutation): the
+  non-secret AI config `/var/lib/framenest/ai/config.json` was upgraded from
+  schema version 1 to version 3 (writer adds `providers: {}`) and gained the
+  accepted research section via `mutate_ai_server_config` +
+  `default_research_configuration(enabled=True)`: provider `openai-responses`,
+  model `gpt-5.5-2026-04-23`, search limits 3 tool calls / 4,096 output tokens
+  / 180 s / reservation 500,000 µ$; research limits 20 / 32,768 / 1,800 s /
+  5,000,000 µ$; daily budget 10,000,000 µ$ and monthly 30,000,000 µ$; prompt
+  16,384 B; response cap 8,388,608 B; answer 2,097,152 B; citations 200;
+  timeouts 5/30/5; credential identifier `KRONIKA_RESEARCH_OPENAI_API_KEY`;
+  raw `active_provider_id`/`provider_models` preserved, `updated_at_ms`
+  refreshed; file now 1,043 bytes `600 framenest:framenest`. The running
+  service does not re-read the research section, so research remains
+  inactive until step 4. Note: `load_ai_server_config` reports the in-memory
+  schema constant 3, so the step-3 script's "before" value read as 3 while
+  the file was still version 1 — the file bytes confirm the upgrade. Next:
+  step 4 — install `deploy/systemd/framenest-research-credential.conf` as a
+  drop-in, `daemon-reload`, one service restart, and verification (service
+  health, clean startup, and a transient systemd-credential presence check
+  proving the `LoadCredential` mapping without exposing the key).
+
+- **2026-09-30 — P2 complete (steps 2–4 + precheck); P3 live-acceptance
+  instructions issued to the Cooperator.** Step 4 executed: the drop-in
+  `deploy/systemd/framenest-research-credential.conf` was installed from the
+  `a368750…` release tree to
+  `/etc/systemd/system/framenest.service.d/` and hash-verified byte-identical
+  (`fc11804f…`), `daemon-reload`, one clean restart (journal:
+  `check-database-ready: ready 0035`, uvicorn `Application startup complete.`);
+  service active; `check-health` `ready`; release `a368750…`, capture
+  `94e605c…`, backup `ready`. A transient `systemd-run` check with the same
+  `LoadCredential` property proved the credential readable through the systemd
+  credential boundary (`credential_present: True`; the value was never
+  printed). One transient SSH attempt timed out and succeeded on the single
+  bounded retry (recorded; the adjacent commands in the same batch succeeded).
+  P3 precheck via a transient on the deployed tree: config present, research
+  `enabled: True`, provider `openai-responses`, model `gpt-5.5-2026-04-23`,
+  `runtime_built: True`; `research_requests` and `research_budget_holds`
+  empty. Issued the Cooperator-executed P3 acceptance artifact
+  `59_acceptance_00.md` (logical whole `kronika-one-product`, 59/01):
+  exactly one synthetic public Search + one synthetic public Research through
+  the deployed UI, no retries, reservations ≤ USD 5.50 of the USD 7.50
+  credit, stop on any error; then document render (S9 item 10), administrator
+  approval of both records, Timeline/history/Gallery checks, and the platform
+  usage receipt. The Orchestrator verifies server-side accounting, records,
+  binding, reconciliation and cleanup afterwards and records
+  `59_report_00.md`.
+
+- **2026-09-30 — P3 live acceptance executed (Cooperator PASS); one cleanup
+  finding.** Michal reported PASS after the two synthetic calls through the
+  deployed UI. Server-side evidence (read-only): exactly two
+  `research_requests` rows, both `saved`, no `error_code` —
+  `op-1cfafe8e…` (search, record `72cf2d73…`) and `op-cb6b84ef…` (research,
+  record `95a6406d…`); `kronika_documents` has exactly the two matching rows;
+  both records are `family` visibility, version 2, with
+  `timeline_entered_at_ms` set (administrator approval succeeded); no ERROR
+  journal entries; `research_budget_holds` both `reconciled` with accounted
+  costs of 57,640 µ$ (search) and 370,695 µ$ (research) — total ≈ USD 0.43 of
+  the USD 7.50 credit, against reservations 500,000/5,000,000 µ$. The wired
+  price schedule is confirmed live. **Finding: remote cleanup has no
+  production caller.** `ResearchCoordinator.release_remote_pending()` is
+  implemented and unit-tested but invoked nowhere in `src/`; the nudge paths
+  (`research_api.py` POST submit and detail GET) call only `submit_pending()`/
+  `poll_once()`, so terminal rows keep `cleanup_state: pending` and the
+  provider-side responses were not deleted (observed `pending` for both P3
+  rows). This contradicts the accepted design (“delete the remote response
+  after validated local persistence”). Proposed: run the designed
+  `release_remote_pending()` once as a bounded transient on the NUC to delete
+  the two P3 responses now (within P3's cleanup authority), and authorize a
+  small correction grant to wire cleanup into the research API nudges with a
+  causal test. Platform usage figures (step 9) still to be reported by the
+  Cooperator for the provider-side receipt. No additional provider calls were
+  made; the whole remains open.
+
+- **2026-09-30 — P3 responses deleted; automatic-cleanup correction grant
+  issued (session 60 / exchange 01).** Under the Cooperator's authorization
+  ("a"): the designed `release_remote_pending()` was executed once as a
+  bounded transient on the deployed tree with the systemd credential;
+  `released_count: 2` and both rows verified `cleanup_state: deleted`
+  (`op-1cfafe8e…`, `op-cb6b84ef…`). P3 remote-deletion evidence is complete.
+  Issued the bounded correction `60_correction_00.md` (session 60 /
+  exchange 01, fresh-worker-session, Bounded Correction Worker, native
+  planning mode not-used, manual Cooperator delivery, High), SHA-256
+  `df7ef2278cca5ca011e1d1a50c2eff154221b546bad18d09b8b24e3ef1df5af5`: extend
+  the two existing research API nudge blocks (POST admission path and detail
+  GET) with `runtime.release_remote_pending()` inside the same guards, add one
+  causal regression in `tests/contract/test_research_requests_api.py` (Red on
+  the parent, Green after), two-path allowlist, focused route, one local
+  commit `fix(research): release remote responses on research API nudges`, no
+  push; a scoped fresh verification and the deployment are separate later
+  steps. Report destination `60_report_00.md` (absent at issuance). The
+  Cooperator's platform Usage figures for the P3 receipt remain requested.
+
+- **2026-09-30 — Cleanup correction PASS reconciled; scoped verification
+  issued (session 61 / exchange 01); P3 platform figures recorded.**
+  `60_report_00.md` reconciled and re-verified read-only by the Orchestrator:
+  commit `3bf424586289b500cf45cb0d49676b50d27328fa` (parent `a368750…`, tree
+  `ee39cdee…`, subject `fix(research): release remote responses on research
+  API nudges`); exactly the two allowlisted paths; both nudge blocks now call
+  `runtime.release_remote_pending()` inside the existing guards; worktree
+  clean; public refs still `a368750…`. Worker evidence: Red on the parent
+  (release list empty), Green `20 passed` on the focused route. Cooperator
+  platform Usage for the P3 acceptance: **53,037 total tokens, USD 0.38 total
+  spend** — recorded as the provider-side receipt; the application's
+  reconciled calculation was USD 0.05764 (search) + USD 0.370695 (research) =
+  USD 0.4283, so the invoice is ~11% below the calculated figure (safe
+  direction; the design distinguishes calculated cost from the invoice).
+  Ledger candidate (non-authorizing): validate the price-schedule accuracy
+  against future invoices (cached-input/reasoning handling, possible platform
+  reporting lag). Issued the scoped fresh verification
+  `61_acceptance_00.md` (session 61 / exchange 01, fresh-worker-session, Fresh
+  Independent Re-Audit, native planning mode not-used, manual Cooperator
+  delivery, Extra High): verify candidate containment, the correction shape,
+  the focused route on the corrected candidate and the causal regression,
+  absence of live side effects, and issue the P3-F01 verdict. Report
+  destination `61_report_00.md` (absent at issuance). After a
+  `verified-closed` verdict: publication and deployment of `3bf4245…` (then
+  the NUC has automatic cleanup), completion of the S9 provider part, then
+  S9-R (administrator research settings) and S10.
+
+- **2026-09-30 — Cleanup correction verified-closed; publication of
+  `3bf4245…` requested.** `61_report_00.md` (status acceptance-PASS)
+  reconciled: independent scoped verification of
+  `3bf424586289b500cf45cb0d49676b50d27328fa` established V1–V5 — candidate
+  identity/containment (one commit, exactly the two allowlisted paths, clean,
+  no push, AP pin unchanged); correction shape (the only two added statements
+  are the guarded `release_remote_pending()` calls; the previously workerless
+  method now has exactly the two intended production callers); causal evidence
+  (focused route `20 passed` on the exact candidate; the regression is
+  causal and Red on the parent per the recorded and re-derived evidence);
+  no live side effects (fakes only, no credential, no NUC, clean tree). The
+  finding `KRONIKA-ONE-PRODUCT-S9-P3-F01` is `verified-closed`. Limitations
+  stated (causality derived from diff/assertions, not a parent checkout run;
+  no broad suites; no NUC). Ledger candidates (non-authorizing): the
+  POST-handler release only runs on the freshly-admitted path (a replay relies
+  on a later GET nudge); a provider-side persistent delete failure keeps rows
+  pending and retries per nudge within the bound; cleanup runs on every detail
+  read (bounded). S9 provider part is functionally complete: live acceptance
+  (P3), accounting reconciled, invoice recorded, remote deletion performed and
+  automatic cleanup corrected-and-verified. Next: Cooperator publication
+  authority for `3bf4245…` (non-force fast-forward `main` + feature branch)
+  and the routine NUC refresh; the UI bytes are unchanged from the accepted
+  `a368750…`, so the rendered acceptance stands. Then S9-R and S10.
+
+- **2026-09-30 — `3bf4245…` published and deployed (automatic cleanup live);
+  S9 provider part complete; S9-R Planner grant issued (session 62 /
+  exchange 01).** Under the Cooperator's go-ahead: non-force fast-forwards
+  with direct readback — public `main` and `feat/kronika-one-product`
+  `a368750… -> 3bf4245…`; local `main` synced. NUC routine release update to
+  `3bf4245…`: `status` PASS, `check --release 3bf4245…` PASS, `deploy --yes`
+  exit 0; final `status` shows active/web release `3bf4245…`, capture
+  `94e605c…`, service active, database `0035`, backup `ready`; uvicorn
+  startup complete; `check-health` `ready`. The automatic remote cleanup is
+  now live on the NUC (next terminal research interaction will delete remote
+  responses through the corrected nudge path; the two P3 rows are already
+  `deleted`). S9 provider part is complete: reset + independent review
+  `57/01`; P1 price-schedule wiring `58/01` + deploy; P2 provisioning
+  (credential, config v3 research section, drop-in, restart); P3 live
+  acceptance with records, approval, render, reconciled accounting
+  (`$0.4283` calculated, platform invoice `$0.38` / 53,037 tokens) and remote
+  deletion; cleanup correction `60/01` + verification `61/01`
+  (`verified-closed`). UI bytes are unchanged since the accepted S8 shell, so
+  the Cooperator rendered acceptance stands. Issued the S9-R Planner grant
+  `62_planning_00.md` (session 62 / exchange 01, fresh-worker-session,
+  Planner, native planning mode required, manual Cooperator delivery, Extra
+  High), SHA-256
+  `b65db000cc9ebb98c49aedfb660008f7fdd22f39271b143885f98565616bfde0`:
+  freeze the administrator research-settings design (admin-only API on the
+  existing `provider.operate` capability, validated web-search-capable model
+  allowlist with a matching `UsagePriceSchedule` per model, fail-closed
+  unknown-model refusal, editable budget bounds, shell settings inside the
+  existing administrator AI area, tests, the durable supersession of the
+  fixed-model wording in ADR-0083/SPEC/SERVER, acceptance route and the
+  proposed first implementation grant). Report destination `62_report_00.md`
+  (absent at issuance). Remaining after S9-R: S10 public rename.
+
+- **2026-09-30 — S9-R initial plan stopped PARTIAL with
+  NEEDS_ORCHESTRATOR_DECISION; bounded model-evidence task routed.** The
+  Planner (62/01) correctly stopped without freezing a plan. Orchestrator
+  acknowledgement: the initial S9-R grant misdescribed `model_id` as a merely
+  validated string; the code enforces equality with the fixed model in
+  `ResearchConfiguration.__post_init__`, `_require_model_id` and
+  `select_research_provider`. Planner findings to carry into the targeted
+  revision: (1) configuration and selection boundaries must be deliberately
+  modified for model selection; (2) only one price schedule exists and no
+  second model’s public support/pricing was grounded under the read-only
+  grant; (3) the research runtime captures configuration at application
+  construction, so a durable settings save needs an explicit refresh path
+  (including enabling a process that started disabled); (4) accounting must
+  resolve per admitted request/model rather than one shared schedule, with
+  restart persistence and fail-closed unknowns; (5) the request fingerprint
+  includes model/config, so replay after a settings change interacts with
+  idempotency and must not silently replace history; (6) configuration
+  writes are atomic but not concurrency-guarded across writers, so the
+  eventual API needs a conflict contract; (7) `provider.operate` and the
+  existing admin AI dialog/API patterns are the integration points; identity
+  must be verified, not loopback-legacy; (8) budget ceilings already exist;
+  (9) the fixed-model wording spans AGENTS/README/PRODUCT/SPEC/SERVER plus
+  ADR-0083, whose “Revisit Conditions” require a superseding ADR for a
+  changed model or budget decision, and living status sentences predating
+  S8/S9 evidence need bounded reconciliation. Smallest next step accepted:
+  one bounded public-documentation evidence task (fresh Worker, WebSearcher
+  profile) producing a source-backed model matrix — at least one additional
+  exact model identifier with Responses/`web_search` support, deprecation
+  status, request-shape compatibility and full pricing (input, cached input,
+  output, web search, tiers) mapped to the existing `UsagePriceSchedule`;
+  no account access, no provider generation, no NUC. That new external
+  evidence then supports the single justified targeted revision of the
+  planning question (not yet issued). No implementation authority exists.
+
+- **2026-09-30 — Model matrix evidence PASS reconciled; targeted planning
+  revision issued (session 62 / exchange 02).** `63_report_00.md` reconciled
+  (WebSearcher, PASS, retrieval date 2026-09-30, first-party pages only):
+  four grounded candidates — `gpt-5.5-2026-04-23` (baseline; 5,000,000 /
+  500,000 / 30,000,000 / 10,000,000 micro-USD; no separate cache-write
+  charge), `gpt-5.6-sol` (4,000,000 / 400,000 / 20,000,000 / 10,000,000;
+  cache writes 1.25x; promotional through at least 2026-11-21),
+  `gpt-5.6-terra` (2,000,000 / 200,000 / 12,000,000 / 10,000,000),
+  `gpt-5.6-luna` (200,000 / 20,000 / 1,200,000 / 10,000,000); all support
+  Responses + `web_search` + `low`/`high` and 128k max output; none
+  deprecated; `gpt-5.5-pro` excluded (no `low`); `gpt-5.4` a valid
+  cache-write-free alternative. Material schedule-shape gaps: the >272K
+  long-context tier (2x input / 1.5x output) and the GPT-5.6 cache-write
+  charge cannot be represented by the current four rates; unknowns include
+  account access, 5.6 snapshot stability, >272K reachability, cache-write
+  occurrence and usage-field observability (LEAD). Issued the single
+  authorized targeted revision `62_planning_01.md` (session 62 / exchange 02,
+  current-worker-session, Planner, native planning mode required, manual
+  Cooperator delivery, Extra High), SHA-256
+  `1fe695ce69e1cd28142e4d471f836b258503430633f540d0dd590eac0c0f9dbd`:
+  freeze the S9-R plan incorporating the nine `62_report_00.md` findings and
+  the `63_report_00.md` matrix — allowlist with per-model schedules (one
+  Cooperator-confirmable product choice), the schedule-shape decision
+  (long-context and cache-write dimensions vs constrained inputs), per-request
+  pricing with restart persistence, runtime refresh, idempotency, concurrent
+  save, admin API, shell surface, tests, the new ADR plus living-document
+  deltas, and the acceptance route; one bounded first-party documentation
+  retrieval allowed solely for the cache-write usage-field LEAD. Report
+  destination `62_report_01.md` (absent at issuance). After the revision
+  report: freeze the plan, surface the allowlist choice to Michal, then issue
+  the S9-R implementation grant.
+
+- **2026-09-30 — S9-R revision reconciled; plan frozen; implementation grant
+  issued (session 64 / exchange 01).** `62_report_01.md` (45 KB, persisted by
+  the Cooperator after chat delivery; SHA-256
+  `971279787fdbc218964f6c8d01b99957afaf0137405cd73758b09d8ef3538325`)
+  reconciled and spot-checked read-only by the Orchestrator: the fixed-model
+  enforcement is confirmed in code (`research_configuration.py` lines 136/431,
+  `research_registry.py` line 141, constant in `domain/research.py`);
+  all five proposed new paths are absent; the compatibility test inputs
+  (`tests/unit/infrastructure/ai/test_registry.py`,
+  `tests/contract/test_ai_server_composition.py`) and the referenced existing
+  modules exist. Plan accepted and frozen; the report’s PARTIAL applied only
+  to its original file delivery, which the Cooperator closed by persisting
+  the exact content. The Cooperator confirmed the one product choice
+  in-session (“Štyri modely (Recommended)”): allowlist
+  `gpt-5.5-2026-04-23` (default), `gpt-5.6-sol`, `gpt-5.6-terra`,
+  `gpt-5.6-luna`; exact short/long/cache-write rates; 272,000-token
+  long-context threshold; Sol `valid_until` 2026-11-22; the cache-write usage
+  field (`usage.input_tokens_details.cache_write_tokens`) resolved by the
+  bounded first-party retrieval. The frozen plan also fixes versioned pricing
+  (`configuration_version = "s9r-20260930"`, tuple-resolved append-only
+  schedules), the persistent/refreshable runtime, replay/idempotency
+  version 2 with an atomic submission claim, the shared-configuration CAS and
+  sibling lock with `If-Match` semantics, the exact admin routes
+  `GET/PUT /api/admin/ai/research-settings` with `provider.operate` and the
+  stable error table, the shell Research-settings section, the 44-path
+  allowlist, the focused validation route and the acceptance route (including
+  the bounded live model-switch proof). Issued the implementation grant
+  `64_implementation_00.md` (session 64 / exchange 01, fresh-worker-session,
+  Fresh Implementation Worker, native planning mode not-used, manual
+  Cooperator delivery, High), SHA-256
+  `18d88392a4d811481eb9b7cff195b06719dc3f966d85a90693bf62042ea9b085`: the
+  frozen sections 2–8, the exact 44 paths, one local commit
+  `feat(research): add administrator settings and versioned pricing`, no
+  push. Report destination `64_report_00.md` (absent at issuance). Next:
+  dispatch; then one fresh independent audit of the exact candidate,
+  publication, NUC refresh, rendered acceptance and the bounded live proof
+  (each separate), then S10.
+
+- **2026-09-30 — S9-R implementation PASS reconciled; audit issued (session 65
+  / exchange 01).** `64_report_00.md` reconciled and re-verified read-only:
+  commit `e8f1c04b289b7bd694d66edba012d288ee41e610` (parent `3bf4245…`, tree
+  `1cbf6739083e7459b1d5e5011dbd72fed77e5d69`, subject
+  `feat(research): add administrator settings and versioned pricing`); 37
+  changed paths, all inside the frozen 44-path allowlist (the remaining
+  allowlisted files were legitimately unchanged, including the two read-only
+  compatibility inputs); worktree clean; public refs still `3bf4245…`; AP pin
+  unchanged. Spot checks: the four-entry catalog with the confirmed
+  identifiers and Sol `valid_until`; the eleven new catalog/arithmetic tests;
+  the regenerated inventory. **Orchestrator-found discrepancy routed to the
+  audit as a named probe (V11):** `64_report_00.md` §4 attributes “strict
+  usage parsing and submit-404 distinction” tests to
+  `tests/unit/infrastructure/ai/test_openai_responses_adapter.py`, but that
+  file is unchanged in the delta; the new coverage lives (at least partly) in
+  `test_research_models.py` and `test_research_settings_api.py`, so the audit
+  must determine whether the required causal coverage exists or is missing,
+  and classify the report attribution. Recorded deviations to assess in the
+  audit (V10): media-provider `If-Match` optional while research PUT requires
+  it; Sol cutoff enforced at admission/PUT rather than in selection; legacy
+  over-threshold unknown accounting. Issued the fresh independent audit
+  `65_acceptance_00.md` (session 65 / exchange 01, fresh-worker-session, Fresh
+  Independent Audit, native planning mode not-used, manual Cooperator
+  delivery, Extra High), SHA-256
+  `63b53eea36ad73b498ddeac6beff361d6fe20f7d8ff54eac850c0820bc06e912`: the
+  twelve fixed claims (containment; catalog/pricing; accounting integrity;
+  runtime/enable-disable; idempotency/single attempt; shared-config CAS;
+  admin API; shell; documentation; the three deviations; the V11 named probe;
+  independent non-regression re-run of the focused route), R3 with
+  authorization, accounting-integrity and shared-configuration
+  specializations, read-only with no temporary root. Report destination
+  `65_report_00.md` (absent at issuance). Next after the audit verdict:
+  publication, NUC refresh, rendered acceptance, then the bounded live
+  model-switch proof, then S10.
+
+- **2026-09-30 — S9-R audit PARTIAL reconciled (F-1…F-4); bounded correction
+  issued (session 64 / exchange 02).** `65_report_00.md` reconciled:
+  independent audit of `e8f1c04…` established V1 (containment), V2 (catalog
+  and rates), V3 (accounting integrity, fail-closed unknown, fixtures),
+  V5 (idempotency and atomic claim), V6 CAS core, V7 admin API, V8 shell,
+  V9 documentation and V12 (focused route independently `373 passed` + JS
+  `29/29`); no security, accounting or authorization defect. Not accepted yet:
+  **F-1** (medium) the implementation report attributed adapter tests to an
+  unchanged file and two new adapter behaviors (`_parse_usage`,
+  `_submit_status_error_code`) have zero test references — both a reporting
+  defect and a coverage gap, exactly the named probe the Orchestrator had
+  found before issuing the audit; **F-2** (medium) no causal regressions for
+  the plan’s Refresh/Snapshot rows (disabled-start runtime, enable without
+  restart, model change affecting only new admissions, restart persistence);
+  **F-3** (low-medium) the media half of the shared-configuration contract is
+  partial and its deviation record understated (no media `If-Match`/ETag in
+  the shell, no cross-invalidation, no JS coverage) — fail-safe but
+  incompletely delivered; **F-4** (low) GET research-settings emits an eighth
+  `changed: null` key instead of exactly seven fields. Eight ledger
+  candidates L-1…L-8 recorded (notably L-1 cached-tokens-missing semantics
+  and L-5 unbound route-policy test). Orchestrator disposition: one bounded
+  correction covering F-1…F-4, all inside the existing 44-path allowlist
+  (F-3 completed rather than accepted as a deviation); no publication before
+  the correction and a fresh re-audit. Issued `64_correction_01.md` (session
+  64 / exchange 02, current-worker-session, Bounded Correction Worker, native
+  planning mode not-used, manual Cooperator delivery, High), SHA-256
+  `54bbbb7b075e7df5e790e4e9d48a40714afd0059fcb3e8298c7d9618ef611abd`:
+  seven-path allowlist (`ai_admin_api.py`, `app.js`,
+  `test_openai_responses_adapter.py`, `test_research_provider_contract.py`,
+  `test_research_completion.py`, `test_research_settings_api.py`,
+  `ai_providers_admin_frontend.test.js`), one local commit
+  `fix(research): close the S9-R audit findings`, no push; the 64 report is
+  not rewritten (historical evidence) — the correction report records the
+  attribution defect. Report destination `64_report_01.md` (absent at
+  issuance). Next: fresh independent re-audit (session 66), then publication,
+  NUC refresh, rendered acceptance and the bounded live proof.
+
+- **2026-09-30 — Correction PASS reconciled; fresh re-audit issued (session 66
+  / exchange 01).** `64_report_01.md` reconciled and re-verified read-only:
+  commit `2af8edde5faf8967777a68b0a72685cc580c45ea` (parent `e8f1c04…`, tree
+  `3f6367cf2da9224eebefb7659ca0efb8ae7d54e0`, subject
+  `fix(research): close the S9-R audit findings`); exactly six of the seven
+  allowlisted paths changed (`test_research_completion.py` untouched is
+  permitted by the “and/or” wording); worktree clean; public refs still
+  `3bf4245…`; AP pin unchanged. Corrections: F-1 twelve adapter guard cases
+  (`_parse_usage`/`_submit_status_error_code`, submit-404 vs poll-404,
+  cache-write parsing, never-zero usage) with the attribution defect recorded
+  in the correction report and `64_report_00.md` deliberately not rewritten;
+  F-2 one contract regression covering disabled-start existence, enable
+  without restart, model-change scope and restart persistence; F-3 the media
+  shell `If-Match`/ETag symmetry with cross-invalidation and JS coverage
+  (server-side optional media `If-Match` retained); F-4 GET returns exactly
+  seven keys and PUT seven plus `changed`. Worker evidence: focused 70 passed
+  Python, 33/33 JS, plus a narrow 268-passed compatibility rerun; recorded
+  near-miss: two mis-targeted `app.js` edits caught and fixed before commit.
+  Issued the full-fresh re-audit `66_acceptance_00.md` (session 66 /
+  exchange 01, fresh-worker-session, Fresh Independent Re-Audit, native
+  planning mode not-used, manual Cooperator delivery, Extra High), SHA-256
+  `e42d06125f6ba439574a1522b252fae23ca679e0568afcf2acdf253eae260e70`: verify
+  R1 containment, R2 F-1, R3 F-2, R4 F-3 (including a close read of the four
+  media mutation functions and the ping for mis-targeted edits), R5 F-4,
+  R6 independent focused-route re-run, R7 the L-1…L-4 residual disposition.
+  Report destination `66_report_00.md` (absent at issuance). Next after a
+  PASS: publication, NUC refresh, rendered acceptance and the bounded live
+  model-switch proof.
+
+- **2026-09-30 — S9-R re-audit acceptance-PASS reconciled; publication
+  requested.** `66_report_00.md` reconciled: fresh independent re-audit of
+  `2af8edde…` established R1–R7 with no findings — containment (39-path
+  two-commit delta strictly inside the frozen 44; no push; AP pin unchanged);
+  F-1 verified (15 new adapter cases exercising the real adapter and both
+  error mappings; attribution defect recorded without rewriting the
+  historical report); F-2 verified (real disposable engine, mutable
+  configuration provider, disabled-start existence, enable without restart,
+  model-change scope, restart pricing durability; causal); F-3 verified (the
+  four media mutation functions and the ping read line-by-line; header only
+  when a revision exists; both invalidation directions; live server-side ETag
+  path); F-4 verified (exactly seven GET keys, PUT plus `changed`); focused
+  route independently reproduced `391 passed` Python and `33/33` JS with the
+  delta fully explained. L-1…L-4 dispositions recorded without findings:
+  L-1 cached-tokens-missing is conservative and needs an explicit wording
+  decision; L-2 a disabled PUT may newly store an expired model but every
+  generation path fails closed; L-3 the frozen plan’s “confirm discarding a
+  dirty draft” sentence is genuinely unimplemented (`dirty`/`stale` are
+  effectively write-only; CAS keeps it fail-safe) and the audit recommends
+  naming it as an explicit deviation in the S9-R closure record; L-4 the
+  confirmation note omits the two reservation values. New ledger candidates
+  L-9 (invalidation notice invisible until Save), L-10 (weak/malformed ETag
+  treated as no revision) and L-11 (F-2 “restart” naming). Two numeric
+  inaccuracies in `64_report_01.md` recorded as trace-only noise. Orchestrator
+  disposition: candidate accepted; L-1…L-3 to be named in the closure record
+  (L-3 as a named deviation with an optional later UI follow-up); L-9…L-11
+  ledger candidates. Requested the Cooperator’s publication authority for
+  `2af8edde…` (non-force fast-forward `main` + feature branch, direct
+  readback) and the routine NUC refresh; then rendered acceptance and the
+  bounded live model-switch proof.
+
+- **2026-09-30 — S9-R published and deployed; rendered acceptance requested.**
+  Under the Cooperator’s authorization: non-force fast-forwards with direct
+  readback — public `main` and `feat/kronika-one-product`
+  `3bf4245… -> 2af8edd…`; local `main` synced. NUC routine release update to
+  `2af8edd…`: `status` PASS, `check --release 2af8edd…` PASS, `deploy --yes`
+  exit 0; final `status` shows active/web release `2af8edd…`, capture
+  `94e605c…`, service active, database `0035`, backup `ready`; uvicorn
+  `Application startup complete.`; `check-health` `ready`. The S9-R slice is
+  now live on the NUC (administrator research settings, versioned pricing,
+  refreshable runtime, shared-config CAS, both routes in the workspace
+  composition). Sent Michal the rendered acceptance checklist for the
+  administrator AI dialog: presence and current values of the Research
+  settings section (enabled, `gpt-5.5-2026-04-23`, $10/$30/$0.50/$5.00,
+  credential indicator, catalog info for the four models); model change plus
+  confirmation with Cancel leaving the value unchanged; budget change plus
+  confirmation with Cancel; one real save (terra) and restore to the default
+  5.5; a two-tab stale-revision conflict exercise; accessibility/responsive
+  basics; the ordinary-user boundary marked NOT TESTED unless a second
+  identity is available; and the L-3 dirty-draft deviation noted as known.
+  After acceptance: the bounded live proof (Research on `gpt-5.5-2026-04-23`,
+  setting switched to `gpt-5.6-luna` while it runs, then a Search on Luna;
+  at most two new generation attempts, reservations ≤ USD 5.50, restore the
+  pre-proof settings afterwards), then S10.
+
+- **2026-10-01 — Michal’s S9-R rendered acceptance: items 1–5 and 8 PASS,
+  item 6 PARTIAL (conflict copy not observed), 7 and 9 NOT TESTED.**
+  Accepted: the Research settings section exists with the correct current
+  values and catalog information (1–2); model and budget changes show the
+  confirmation and Cancel leaves the value unchanged (3–4); a real save works
+  and the settings were restored to the default `gpt-5.5-2026-04-23` (5);
+  accessibility/responsive basics (8). Item 6 (two-tab stale conflict) is
+  PARTIAL: he did not see the conflict copy. Orchestrator read-only triage:
+  the client path exists — `saveResearchSettings` sets the conflict copy on a
+  409 and the `finally` block calls `renderResearchSettings()`, the section
+  has a status line and a Reload button, and the JS suite already contains
+  `a stale-revision save returns the conflict copy without rebasing`; the most
+  likely cause is the manual setup not producing an actual stale revision
+  (e.g., the second dialog opened after the first save, or a no-op save that
+  does not advance the revision). A precise two-tab retry recipe was sent;
+  the ordinary-user boundary (7) stays NOT TESTED (covered by API tests and
+  the audit) and the L-3 deviation note (9) is already recorded. The
+  server-side 409 and CAS behavior are independently established by audit
+  R5/R6; only the rendered copy awaits confirmation.
+
+- **2026-10-01 — Rendered item 6 PASS; live proof declined and closed as
+  unproven; S9 slice closed.** Michal reported PASS for the precise two-tab
+  stale-conflict recipe. The bounded live proof (`67_acceptance_00.md`) was
+  then explicitly declined (“Nechajme unproven”); Orchestrator verification
+  confirmed no new provider call was made (only the two P3 rows exist) and
+  recorded the outcome as `67_report_00.md` (not executed; the mid-run
+  overlap and the Luna-live path remain unproven, with deterministic causal
+  coverage in the audited F-2 regression and the P3 live acceptance on the
+  default model). Rendered acceptance for S9-R: items 1–6 and 8 PASS; item 7
+  (ordinary-user boundary) NOT TESTED and covered by API/authorisation tests;
+  item 9 is the named L-3 deviation. Settings after acceptance: research
+  enabled, model restored to `gpt-5.5-2026-04-23`, daily budget `$8`,
+  monthly `$30`, reservations unchanged — all within bounds. **S9 closure
+  record (Orchestrator):** integrated acceptance on the empty catalog (`57/01`
+  review plus Cooperator acceptance), the exact-object reset, provider
+  provisioning and live acceptance (P2/P3, accounting reconciled, invoice
+  recorded, remote deletion), the cleanup correction and verification
+  (`60/61`), the S9-R slice (plan `62/01`+revision, implementation `64/01`,
+  audit findings `65/01`, correction `64/02`, re-audit `66/01`
+  acceptance-PASS), publication and NUC refresh of `2af8edde…` all satisfied.
+  Named residual deviations/decisions carried forward: L-1 (cached-tokens
+  missing semantics), L-2 (disabled PUT may store an expired selection),
+  L-3 (the plan’s dirty-draft discard confirmation is unimplemented; fail-safe
+  under CAS; optional later UI follow-up), plus ledger candidates L-4 and
+  L-9…L-11 and the previously carried items (macOS youtube-fake-demo test
+  debt, price-schedule accuracy vs invoice, nine July scratch files, the
+  newest recovery point predating the registrations). The logical whole
+  remains open; next and final slice: **S10** (public rename), after which
+  the whole may be closed.
+
+- **2026-10-01 — S10 preflight complete (Orchestrator direct, read-only);
+  rename steps requested from the Cooperator.** `68_preflight_00.md` records:
+  verified current state (local `origin` = `https://github.com/cisarik/framenest.git`;
+  `cisarik/kronika` = `66c40d43…` main only; framenest public refs at
+  `2af8edd…`; the release helper verifies public main through the local
+  remote name, not a hardcoded URL). Live references: ten
+  `deploy/systemd/*` `Documentation=https://github.com/cisarik/framenest`
+  URLs to update; the local `origin` URL; everything else is internal
+  identity kept by AGENTS (`ap.project.conf` projectId, package, unit names,
+  helper name) or historical evidence kept as-is (provenance manifest, ADRs,
+  trace). No README/PRODUCT/SPEC/SERVER/ROADMAP live link references the
+  repository URL. Sequence: (1) Cooperator renames `cisarik/kronika` →
+  `cisarik/kronika-capture-archive`, then `cisarik/framenest` →
+  `cisarik/kronika` (no transfer, force or history change; redirects kept);
+  (2) bounded reference-update grant (direct under S10 authority): local
+  `origin` update, the ten unit URLs, one commit
+  `chore: update repository URLs for the kronika rename`, non-force
+  fast-forward push of `main` and the feature branch to the renamed
+  repository with readback; (3) verification (new-name refs, old-name
+  redirect, capture archive still `66c40d43…`, helper continues to work);
+  (4) Cooperator archives `cisarik/kronika-capture-archive` last; (5) S10
+  acceptance record, then whole-closure evaluation.
+
+- **2026-10-01 — COOPERATOR DECISION: former capture repository keeps the name
+  `cli_chatgpt`; S10 reference update published.** Michal renamed
+  `cisarik/kronika` to `cisarik/cli_chatgpt` (not the planned
+  `kronika-capture-archive`) and `cisarik/framenest` to `cisarik/kronika`;
+  asked whether to keep it, he confirmed “nechávam”. Orchestrator execution
+  under the S10 authorization: local `origin` updated to
+  `https://github.com/cisarik/kronika.git`; the ten `deploy/systemd/*`
+  `Documentation=` URLs updated; ROADMAP’s S10 row updated to `cli_chatgpt`
+  and a dated execution note added to ADR-0082 (the original wording stays as
+  historical decision text); focused unit-contract route `68 passed`; one
+  local commit `5260e2d153ef0bef71b8f13e20616ba1ed0f50b1`
+  (`chore: update repository URLs for the kronika rename`); non-force
+  fast-forward push of `main` and `feat/kronika-one-product` to the renamed
+  repository with direct readback — both refs `5260e2d…`; the old
+  `cisarik/framenest` URL redirects and reads the same refs;
+  `cisarik/cli_chatgpt` still `66c40d43…` (unchanged); local `main` synced.
+  `framenest-release status` and `check --release 5260e2d…` both exit 0 with
+  the new origin; the target release’s `capture_unit_contract_sha256` changed
+  because the capture unit Documentation URLs changed (cosmetic; the
+  deployed capture release and installed units are untouched). Remaining S10
+  steps: the Cooperator archives `cisarik/cli_chatgpt` (last step) and
+  optionally the routine NUC refresh to `5260e2d…` for exact public-main
+  consistency; then the S10 acceptance record and whole-closure evaluation.
+  No force, no history rewrite, no repository deletion or transfer; internal
+  identifiers and historical evidence unchanged.
+
+- **2026-10-02 — S10 accepted without archive; closure published.** After a
+  power loss, the interrupted worktree was re-verified. Michal confirmed S10
+  closes without archiving `cisarik/cli_chatgpt`. Public readback before the
+  closeout: `cisarik/kronika` `main` and `feat/kronika-one-product` at
+  `5260e2d…`; `cisarik/framenest` redirects to the same ref;
+  `cisarik/cli_chatgpt` `main` remains `66c40d43…`. Two defects in the
+  interrupted closeout: the capture provenance upstream
+  `https://github.com/cisarik/kronika.git` now resolves to this repository,
+  so it cannot name commit `66c40d43…`; and `ap project check` rejects
+  `projectId = cisarik/framenest` once `origin` is
+  `https://github.com/cisarik/kronika.git`. Both are corrected. Living status
+  in README, PRODUCT, SPEC, ROADMAP, AGENTS, the NUC runbook and ADR-0083
+  records S10 complete and the capture repository active. The implemented
+  awk ledger entry left the active ledger; its closure action was
+  `remove-from-active-ledger` and its historical evidence is AP pin
+  `73e20ef…`. Commits: `0eaa43922aa034965ea4a657a22046ab139f17a6`
+  (`docs: close the S10 rename without archiving the capture repository`)
+  and `0c850996cd2ef17dae4112733fd17fdc732f4699`
+  (`chore: remove the implemented awk observation from the active ledger`).
+  `ap project check --baseline 0c85099…` PASS. Focused contract route
+  `16 passed` (`test_worker_execution_contract`, `test_ap_project_contract`,
+  `test_chatgpt_page_packaging`). Non-force fast-forward push; direct
+  readback: both public refs and the `cisarik/framenest` redirect are
+  `0c85099…`; `cisarik/cli_chatgpt` is unchanged. No archive, no force, no
+  history rewrite. The `framenest` package, provenance module, migration
+  history, HTTP headers and deployment identifiers remain. NUC still serves
+  the earlier release; a routine refresh to `0c85099…` is not part of this
+  acceptance. Next decision: whole-closure evaluation.
+
+- **2026-10-02 — Routine NUC refresh to the S10 closeout.** Michal established
+  the global sudo timestamp (`GLOBAL_SUDO_READY`). Read-only `status` showed
+  active web release `2af8edd…`, capture `94e605c…`, service active, database
+  `0035`, backup `ready`. `check --release 0c85099…` exit 0. `deploy --yes`
+  exit 0. Final `status`: web release `0c85099…`, capture unchanged
+  `94e605c…`, service active, database `0035`, backup `ready`. Worker then
+  ran remote `sudo -K`. No capture activation, no archive, no schema change.
+
+- **2026-10-02 — Rendered read of the refreshed NUC shell.** Browser session
+  against the Tailscale Serve origin: title Kronika, signed in, cloud
+  connected. Timeline shows the two approved 2026-09-30 Search and Research
+  cards. Opening the Search card loads the question, citation and the
+  sandboxed answer (`Python 3.14.7` present in the frame source). Gallery
+  reports an empty catalog view, consistent with the S9 reset. The media AI
+  indicator reads unavailable because the last provider test did not reach
+  the configured provider. No new provider call was made.
+
+- **2026-10-02 — Predecessor whole is closable; successor handout issued.**
+  Scoped S0–S10 evidence holds: public `main` and the NUC web release are
+  `0c85099…`, capture remains `94e605c…`, `cli_chatgpt` stays active, and the
+  checkout is clean. Michal's new direction, only Kronika including host
+  paths and script names, supersedes the predecessor's "no mass rename" limit
+  as the next objective. It does not reopen S10. Closure signal emitted in
+  the Orchestrator chat. The remote sudo timestamp stays released.
+
+- **2026-10-02 — Misplaced handout withdrawn.** `05_handout.md` was written
+  inside this closed trace and then removed. It is not a handout of this
+  whole. The successor opens at
+  `/Users/agile/meta/projects/kronika/00/03-kronika-sole-identity/` with
+  `00_handout.md` and `00_notes.md`. Archive sequence remains `00`.
+  Logical-whole sequence is `03`. This trace stays frozen aside from this
+  archival correction.
