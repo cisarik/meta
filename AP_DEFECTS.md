@@ -17,10 +17,15 @@ Revised           2026-09-04, same day, same session, twice, after things the fi
                   evidence described the code from memory and the code says something more precise.
                   ⛔ Nothing else in D-01..D-12 was rewritten. They were true when written and the
                   archive keeps them as they were (AP.md:322-336).
-Defect count      EIGHTEEN, plus D-03b.
+Revised           2026-11-08, D-19 added by the ORCHESTRATOR of Kronika era 01, from a
+                  different consumer and AP pin (73e20ef80b88700d5fcbc397cd8edd4fc425869f).
+                  The original eighteen entries are unchanged; D-19 is a new measured
+                  defect, not a rewrite of the Libre Tiles evidence.
+Defect count      NINETEEN, plus D-03b.
 Written by        the ORCHESTRATOR of Libre Tiles logical wholes 13/00 and 15/00
 Governing AP pin  9c5cc44f8b6c92dd56ad2427d13223d7d59c5656   (.ap gitlink of /home/agile/Projects/libretiles)
-Evidence scope    Measured inside Libre Tiles logical wholes 13/00 and 15/00.
+Evidence scope    Measured inside Libre Tiles logical wholes 13/00 and 15/00;
+                  D-19 measured inside Kronika era 01 (2026-11-07..08), AP pin 73e20ef.
 Consumer          a future Orchestrator or Cooperator running an AP protocol-update task
 Retention         until each defect is either fixed in AP or explicitly rejected with a reason
 Cleanup owner     the COOPERATOR
@@ -102,6 +107,9 @@ D-15  several handouts per whole are lawful, and there is no naming or precedenc
 D-16  one tier is selected per EXCHANGE, so the cheap half of a mixed grant is paid at the E3 rate
 D-17  the human courier trap — forcing the Cooperator to manually copy-paste reports between files and chats
 D-18  sunk-cost dev-data preservation — over-engineering complex backward shims for unneeded alpha/dev data
+D-19  prompt readiness has no mechanical satisfiability or completeness gate — a prompt can
+      require a command its own negative authority forbids, or carry an unresolved routing
+      placeholder, and still be issued as authoritative
 ```
 
 ⚠ **My intuition about which of these matter most**, stated plainly and separately from the
@@ -1291,6 +1299,117 @@ Data lifecycle posture: clean-slate-permitted | production-preservation-required
   - Provide a one-line administrative purge (`manage.py purge_legacy_games` or DB reset).
   - Keep models, services, and queries 100% clean, lean, and targeted at the new authoritative schema.
 ```
+
+---
+
+## D-19 · Prompt readiness has no mechanical satisfiability or completeness gate
+
+### The defect
+
+AP requires the Orchestrator to perform a "contradiction and omission review"
+before issuing a prompt. That review is prose self-review. A prompt can contain
+two explicit fields that cannot both be satisfied — a validation command that
+the negative authority forbids, or a report-persistence owner that contradicts
+the no-write instruction — and still look complete. The Worker's only lawful
+response is AP §18's stop, so the destructive result is a consumed exchange and
+a false start, not a caught error.
+
+### The evidence — one prompt, one causal pair and four further defects, one BLOCKED report
+
+Kronika era 01, 2026-11-07, logical whole
+`ux-refresh-acceptance-and-promotion`, AP pin `73e20ef`. The first Planner
+prompt was stored as
+`projects/kronika/01/00-ux-refresh-acceptance-and-promotion/01_planning_00.md`
+(Meta commit `5c9b95c`; withdrawn in `16c46d6`). Its terminal report
+`01_report_00.md` was `BLOCKED` with
+`Escalation disposition: NEEDS_ORCHESTRATOR_DECISION`. The report's first
+sentence names the causal pair:
+
+> The planning exchange stopped because mandatory validation requires an
+> explicitly forbidden command.
+
+The prompt's negative authority said "any NUC contact, including SSH, the NUC
+worker gate, and `deploy/ubuntu/kronika-release` in every mode." Its validation
+section required re-verifying NUC status through `kronika-release status`.
+AP §18 ("Stopping Conditions") requires a Worker to stop when validation
+requires a forbidden command. The Worker stopped correctly and produced no
+plan.
+
+The same prompt contained four further readiness defects that did not by
+themselves block, but prove the gate is not mechanical:
+
+1. `Validation ladder` appeared twice, once `selected` and once `not-used`.
+2. The delivery annex assigned `Report persistence owner: assigned WORKER`
+   while Finishing said the Orchestrator stores the report and the Worker
+   writes no file.
+3. `Delivery route: <select: direct session dispatch by default; manual
+   copy-paste on Cooperator opt-out>` was issued with the placeholder intact.
+4. The infrastructure annex spelled the CPython root `/opt/fragenest/`; the
+   project's authoritative spelling is `/opt/framenest/`.
+
+None of these is a subtle semantic question. They are field-level
+satisfiability and completeness failures, and the previous prompt's own Worker
+found them all without executing the plan.
+
+### Why AP permits it
+
+The readiness owner says the Orchestrator must review "contradiction and
+omission" before issuing, but AP defines no artifact or check that compares:
+
+- each validation command against the positive authority that permits it;
+- each identity/routing field against the "exactly one value" rule;
+- each persistence owner against the Worker's write authority;
+- each project path or tool spelling against its durable owner.
+
+This is adjacent to D-04 (self-check for omissions) and D-11 (no in-band
+prompt repair) but distinct: the contradiction is between two explicit fields,
+not an unstated omission, and the Worker can see it before executing. The cost
+is one consumed exchange plus the Cooperator's attention, and the protocol
+currently records it as a Worker BLOCKED report rather than an Orchestrator
+readiness failure.
+
+### ⭐ Proposed fix
+
+Add one compact **Prompt Satisfiability Check** to the readiness review. It is
+four questions, each answerable from the prompt itself:
+
+```text
+1 VALIDATION–AUTHORITY
+  For every required validation command or observation, name the positive
+  authority that permits it. If none exists, either grant it explicitly or
+  delete the validation. A validation that requires a forbidden command is a
+  prompt defect, not a Worker failure.
+
+2 ROUTING COMPLETENESS
+  Every identity/routing field contains exactly one concrete value. No
+  `<select: ...>`, `<selected route>`, `TBD`, or unresolved skeleton
+  placeholder survives into an issued prompt. Command templates such as
+  `<sha>` and `<pytest-args>` are allowed only in prose, never in a routing
+  field.
+
+3 PERSISTENCE–AUTHORITY
+  Split the delivery record into `Report author` and `Report persister` (or
+  define `report-delivery: in-session`). A read-only Worker may author a
+  report in-session; the Orchestrator may persist it. The two owners must not
+  contradict the Worker's write authority.
+
+4 DURABLE SPELLING
+  Every project path, tool path, env var, and command name in the prompt is
+  copied from its durable owner, not from memory or a previous handout. The
+  `/opt/framenest` vs `/opt/fragenest` error is the measured example.
+```
+
+A single BLOCKED report is the most expensive possible feedback for a
+four-line check. The check belongs to the Orchestrator's readiness review, not
+to the Worker's task.
+
+### Honest limits
+
+One consumer, one prompt, one pin. The contradiction was real and measurable;
+the proposed check is small enough to be adopted without a new protocol role.
+The deeper point is D-04's: an Orchestrator cannot reliably self-review by
+prose, so the check must name the specific comparison, not repeat "review for
+contradictions."
 
 ---
 

@@ -1024,3 +1024,71 @@ meta_exchange_index = AP Worker exchange ordinal - 1 ; 00_handout.md is reserved
 Prompt and report contents are exact historical evidence. Path normalization does
 not rewrite them; old literal paths inside historical artifacts are preserved as
 historical text. Future pairs are added only after the report exists.
+
+---
+
+## 17. Additions measured after this pin — Kronika era 01 (2026-11-08)
+
+This section is outside the `9c5cc44` distillation. It records checks that the
+current pin (`73e20ef80b88700d5fcbc397cd8edd4fc425869f`) still does not make
+mechanical, measured in Kronika era 01. Treat them as Orchestrator advice until
+AP adopts them; the governing AP still wins.
+
+### 17.1 Validation–authority satisfiability
+
+A prompt can require a validation command that its own negative authority
+forbids. Measured: the first Kronika Planner prompt prohibited "any NUC
+contact, including ... `deploy/ubuntu/kronika-release` in every mode" and then
+required re-verifying NUC status through `kronika-release status`. The Worker
+correctly stopped under AP §18 and returned `BLOCKED` without a plan.
+
+Before dispatch, for **every** required validation command or observation, name
+the positive-authority field that permits it. If no field permits it, either
+grant it explicitly or delete the validation. A validation that requires a
+forbidden command is an Orchestrator prompt defect, not a Worker failure.
+
+### 17.2 Routing completeness
+
+Every identity/routing field must contain exactly one concrete value. No
+`<select: ...>`, `<selected route>`, `TBD`, or other skeleton placeholder may
+survive into an issued prompt. Command templates such as `<sha>` and
+`<pytest-args>` are allowed only in prose, never in a routing field. Measured
+in the same prompt: the `Delivery route` field was issued with the literal
+placeholder `<select: direct session dispatch by default; manual copy-paste on
+Cooperator opt-out>`.
+
+### 17.3 Report author versus report persister
+
+The delivery record's `Report persistence owner` is ambiguous when a read-only
+Worker returns its terminal report in-session and the Orchestrator stores it.
+Measured: one prompt assigned `Report persistence owner: assigned WORKER` while
+its Finishing section said the Worker writes no file and the Orchestrator
+stores the report. Split the record into `Report author` and `Report persister`
+(or define `report-delivery: in-session`). A read-only Worker may author a
+report; the Orchestrator may persist it. The two owners must not contradict the
+Worker's write authority.
+
+### 17.4 A blocked first exchange and the filename expectation
+
+When the first `01/01` exchange is blocked by a prompt defect and its artifacts
+are withdrawn, AP coordinates are still consumed. The corrected fresh Planner
+is `02/01`, stored as `02_planning_00.md`, not the `01_planning_00.md` that the
+Cooperator may expect from the first-plan filename rule. State this explicitly
+when delivering the corrected prompt. The working tree keeps a session-`01`
+gap; Git history preserves the withdrawn pair. A true restart at `01/01`
+requires a new logical-whole identity and a new directory, not a rename.
+
+### 17.5 The four-line pre-dispatch check
+
+```text
+VALIDATION–AUTHORITY  every required command has a named positive authority
+ROUTING               exactly one concrete value; no unresolved placeholders
+PERSISTENCE           report author and report persister are distinct when the
+                      Worker is read-only
+SPELLING              every path, tool, env var, and command name is copied from
+                      its durable owner, not from memory or a prior handout
+```
+
+These four checks are cheap enough to run on every prompt. They do not replace
+the AP readiness review; they make its most expensive failures visible before a
+Worker pays for them.
