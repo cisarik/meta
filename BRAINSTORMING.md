@@ -33,6 +33,11 @@ proposal about AP is only meaningful against a specific AP.
 governing pin at the time of writing   9c5cc44f8b6c92dd56ad2427d13223d7d59c5656
 measured in                            /home/agile/Projects/libretiles/.ap
 sibling newer checkout, NOT governing  /home/agile/Projects/ap
+
+Kronika addition, 2026-11-08           §7 measured at
+                                       73e20ef80b88700d5fcbc397cd8edd4fc425869f
+                                       (.ap of /Users/agile/Projects/kronika).
+                                       Sections 1-6 remain at the 9c5cc44 pin.
 ```
 
 ---
@@ -458,6 +463,305 @@ Before designing backward-compatibility heuristics for records that lack require
 the Orchestrator / Planner must explicitly verify with the Cooperator:
 "Does historical data have durable value, or is a Clean Slate purge authorized?"
 If purge is authorized, delete legacy tables/rows and build solely against the authoritative clean schema.
+```
+
+---
+
+## 7. `Master Orchestrator` — a run-level Orchestrator that pre-generates `00_handout.md` for every logical whole
+
+```text
+STATUS   proposed, 2026-11-08, by the COOPERATOR during Kronika era 01
+OWNER    COOPERATOR (protocol design is his, RF-01); ORCHESTRATOR records and sharpens
+PIN      measured against 73e20ef80b88700d5fcbc397cd8edd4fc425869f
+```
+
+### 7.1 The idea, in his words and in one paragraph
+
+His words, recorded because the shape matters:
+
+> *"Ty by si teda bol de facto 'Session' ale 'Master' alebo proste hlavny
+> Orchestrator generujuci handout expertne prompty pre logicke celky."*
+
+> *"od teba chcem aby si vygeneroval pre kazdy logicky celok samostatny
+> 00_handout.md."*
+
+The **Master Orchestrator** is an ORCHESTRATOR instance whose bounded planning
+scope is one **development run**, not one logical whole. It maintains the run
+map — the ordered set of logical wholes, their dependencies and their evidence —
+and writes one provisional `00_handout.md` for each whole in the run. It does
+not issue the Workers' task prompts, does not accept their results, and does not
+close their wholes. The per-whole Orchestrator still does that.
+
+In one sentence: it is **orchestration of orchestration** at the handoff layer.
+The per-whole Orchestrator coordinates Workers inside a whole; the Master
+Orchestrator coordinates handoffs between wholes.
+
+### 7.2 Why he wants it
+
+Measured friction in the current archive:
+
+- The Cooperator has long pauses between development runs. Each new whole
+  currently starts with a restoration handout written at the end of the previous
+  whole or by a fresh Orchestrator after the pause.
+- Those handoffs cost a large context artifact each, and they are written by the
+  participant who is closest to the old whole and furthest from the new one.
+- The Cooperator becomes the relay between per-whole Orchestrators: "here is the
+  next whole, here is the state, here is what we decided."
+- The candidate backlog already exists, but it is scattered across handouts,
+  reports and chat. The run has no single map.
+
+Pre-generating the handouts at the start of a run gives the Cooperator a
+reviewable menu of wholes and gives each per-whole Orchestrator a consistent,
+expert starting point. The Cooperator's scarce attention moves from handoff
+plumbing to product direction.
+
+### 7.3 What it is, and what it is not
+
+```text
+IT IS
+- an ORCHESTRATOR session or access profile whose scope is a development run;
+- the author of the run map and of one provisional 00_handout.md per whole;
+- a user of the existing orchestration-planning layer and the Meta trace;
+- the maintainer of cross-whole dependencies and of the candidate backlog;
+- a reader of AP_DEFECTS.md / AP_DESTILLED.md and a capturer of new protocol
+  friction.
+
+IT IS NOT
+- a fourth persistent AP role;
+- a Worker, a Planner, or a substitute for the per-whole Planner;
+- the issuer of Worker prompts or the acceptor of their reports;
+- a source of mutation authority;
+- a second semantic owner for product decisions;
+- a reason to skip Stage 1 verification in the per-whole Orchestrator;
+- a batch of pre-approved implementation grants.
+```
+
+The distinction is deliberate: the Master Orchestrator **prepares** the run, the
+per-whole Orchestrator **executes** the governance of one whole, and the
+COOPERATOR **selects** the objective and accepts the result.
+
+### 7.4 AP mapping, measured at the Kronika pin
+
+The three persistent roles are unchanged: COOPERATOR, ORCHESTRATOR, WORKER. The
+Master Orchestrator is an ORCHESTRATOR instance with a broader **session scope**,
+not a new role. It uses:
+
+- the orchestration-planning layer (`AP.md` §3) for the run map;
+- the existing Worker session target and profile rules for each whole's Planner;
+- RF-19 for the external trace and exchange coordinates;
+- RF-14 / `ARTIFACT_LIFECYCLE.md` for the handout artifacts;
+- the same authority rules: the handout grants nothing;
+- the same independence rules: the Master does not audit a whole and does not
+  accept its result.
+
+The per-whole Orchestrator remains the only authority that issues the whole's
+Worker prompts. The Master's handout is a **provisional seed**; the per-whole
+Orchestrator re-verifies current state and may rewrite the handout before the
+first Planner. The first Planner still runs with the client's actual native
+planning mode enabled; the Master never replaces the Planner's repository
+grounding.
+
+If AP later formalizes this, the clean shape is a named Orchestrator access
+profile or a bounded session scope, not a fourth role. The profile name is a
+routing label, not authority.
+
+### 7.5 Meta layout and numbering
+
+The Meta archive already separates **runs** and **wholes**:
+
+```text
+projects/<project>/<run>/<whole-sequence>-<whole-identity>/00_handout.md
+projects/<project>/<run>/<whole-sequence>-<whole-identity>/00_notes.md
+...
+```
+
+- `<run>` is the archive sequence (`00`, `01`, `02`, ...). It groups the wholes
+  between Cooperator pauses.
+- `<whole-sequence>` is the two-digit order inside that run (`00`, `01`, ...).
+- `00_handout.md` is the Master Orchestrator's seed for that whole.
+- `00_notes.md` is the per-whole Orchestrator's decision record, created when
+  the whole opens and frozen at closure.
+
+The Master Orchestrator may add one optional run-level map:
+
+```text
+projects/<project>/<run>/00_RUN_MAP.md
+```
+
+The run map lists the ordered wholes, their dependencies, their status
+(`provisional | handed-off | active | closed | superseded`), and the one
+sentence of evidence that justifies each. It is discovery policy, not
+authority. If the Cooperator does not want a new artifact, the directory names
+plus the handouts are enough.
+
+### 7.6 The process
+
+```text
+1  The COOPERATOR sets the run objective, priorities and any hard exclusions.
+2  The MASTER ORCHESTRATOR reads the verified current state, the previous run's
+   closure, AP_DEFECTS.md / AP_DESTILLED.md, and the candidate backlog.
+3  It drafts the run map: ordered wholes, dependencies, evidence, scope shape,
+   risks and the handoff order.
+4  It writes one provisional 00_handout.md per whole. Each handout is a
+   restoration/handoff seed, not a plan and not a grant.
+5  The COOPERATOR reviews the run map, reorders or drops wholes, and selects the
+   first whole.
+6  The PER-WHOLE ORCHESTRATOR restores from that handout, verifies current
+   state, updates the handout to confirmed (or rewrites it), and issues the
+   first Planner prompt.
+7  At each closure, the Master updates the run map and the remaining handouts
+   for the changed state. A stale handout is revalidated, superseded or marked
+   obsolete; it is never silently trusted.
+8  The Master captures new measured protocol friction in AP_DEFECTS.md and
+   keeps AP_DESTILLED.md current as part of normal work.
+```
+
+### 7.7 The handout template
+
+Every Master-generated `00_handout.md` should carry:
+
+```text
+Restoration classification: PROVISIONAL | FULL | PARTIAL
+Capability profile: Orchestrator
+Initialization signal: ...
+Restoration date / author / persister / predecessor / destination
+Restoration grants mutation authority: no
+
+0  Read this first
+1  Continuation Bootstrap Stage 1: repository, AP pin, NUC, previous closure
+2  Stage 2: recommended whole, scope shape, questions, alternatives
+3  Strategic continuity
+4  Project-specific operating rules (report direct-write, satisfiability,
+   coordinates, delivery, AP maintenance, security)
+5  Risk register
+6  First actions
+7  Readiness review
+```
+
+The handout names the **questions** the per-whole Planner must answer; it does
+not answer them. It names the **evidence** and the **risks**; it does not
+pre-approve a solution.
+
+### 7.8 Benefits
+
+```text
+1  The Cooperator sees the run as a menu before it starts.
+2  Each per-whole Orchestrator starts from a consistent, expert handoff instead
+   of re-deriving context after a pause.
+3  Cross-whole dependencies become visible (e.g. previews before thumbnails;
+   thumbnails before onboarding).
+4  Handoffs are written while the analysis context is fresh, not after a pause.
+5  The Cooperator stops being the relay between per-whole Orchestrators.
+6  The run map is a natural place to reconcile AP_DEFECTS.md improvements with
+   product work.
+```
+
+### 7.9 Costs and risks
+
+```text
+COST, stated first
+1  STALENESS. A handout written at run start goes stale by the time its whole
+   opens. Mitigation: mark it PROVISIONAL; the per-whole Orchestrator must
+   revalidate state and may rewrite it. A stale handout is evidence, not
+   authority.
+2  OVER-PLANNING. Generating eight handouts may be wasted if the Cooperator
+   changes direction. Mitigation: keep the run map cheap; generate handouts in
+   a rolling horizon or at low resolution until the whole is selected.
+3  AUTHORITY CONFUSION. A pre-written handout can be mistaken for a task grant.
+   Mitigation: every handout says "grants no authority" and the per-whole
+   Orchestrator still performs Stage 1/2.
+4  DUPLICATE OWNERSHIP. The Master can drift into product decisions that belong
+   to the Cooperator or the per-whole Planner. Mitigation: handouts carry
+   questions and constraints, not decisions.
+5  CONTEXT COST. Writing all handouts is a large upfront token cost. Mitigation:
+   bound the run size; use a compact template; generate the rest on demand.
+6  FALSE CONTINUITY. The Master may assume the previous whole closed as planned.
+   Mitigation: read the closure record and revalidate the actual state.
+```
+
+### 7.10 Open questions
+
+```text
+1  Is "Master Orchestrator" a new Orchestrator access profile, a session scope,
+   or only a local Meta convention? It must not become a fourth AP role.
+2  Does the run map deserve a durable artifact, or are directory names and
+   handouts enough?
+3  Batch-generate all handouts at run start, or a rolling horizon of the next
+   two or three?
+4  How is PROVISIONAL -> confirmed recorded: in the handout header, in the run
+   map, or both?
+5  Who updates the remaining handouts when a whole changes the state: the
+   Master, the closing per-whole Orchestrator, or the next whole's Orchestrator?
+6  How does the Master avoid pre-empting the per-whole Planner's native planning
+   mode?
+7  What is the exact handoff from Master to per-whole Orchestrator: a prompt, a
+   file path, or both?
+```
+
+### 7.11 Recommended first test — this Kronika run
+
+Use the current Kronika run as the pilot:
+
+```text
+projects/kronika/01/
+  00-ux-refresh-acceptance-and-promotion          closed 2026-11-08
+  01-timeline-and-history-media-thumbnails       handout written
+  02-upload-flow-polish                          handout written
+  03-companion-download-notifications            handout written
+  04-household-onboarding                        handout written
+  05-humanized-error-copy                        handout written
+  06-accessibility-pass                          handout written
+  07-app-js-modularization-planning              handout written
+  08-product-language-decision                   handout written
+```
+
+The pilot run now has a complete provisional handout set. The Cooperator
+selects the order; the per-whole Orchestrator for the selected whole revalidates
+its handout before the first Planner. Measure:
+
+```text
+- time from whole selection to first Planner prompt;
+- number of Cooperator relays needed to start the whole;
+- number of stale facts the per-whole Orchestrator had to correct;
+- whether the per-whole Orchestrator had to re-derive context the handout
+  already carried;
+- token cost of the handout batch vs. the saved restoration work.
+```
+
+If the test shows that the handouts are stale or over-specified, narrow the
+Master's scope to a run map plus one-paragraph seeds, and let the per-whole
+Orchestrator write the full handout.
+
+### 7.12 The first AP update run
+
+The first concrete Master Orchestrator whole is the AP update itself:
+
+```text
+/Users/agile/meta/projects/ap/10/00-master-orchestrator-and-report-persistence/00_handout.md
+```
+
+It formalizes the Master Orchestrator role/session scope, the run-level handoff
+model, direct-write report persistence, the three read-only axes, the prompt
+satisfiability check, the blocked-first-exchange rule and the standing
+AP-maintenance instruction. It then publishes a new AP commit and updates the
+Kronika `.ap` pin to it. This is the bridge between the Kronika pilot handouts
+and the next development run.
+
+### 7.13 Relationship to the other entries
+
+```text
+§1 Worker Orchestrator      different: that is a WORKER with internal delegation;
+                            the Master is an ORCHESTRATOR with a run scope.
+§2 Several handouts         related: that is several handouts inside one whole;
+                            the Master writes one handout per whole in a run.
+§5 Direct-write reports     complementary: the Master's handoffs reduce the
+                            Cooperator's relay; direct-write removes the report
+                            relay. Both protect Cooperator attention.
+§6 Clean-slate data         independent: a product-data policy, not a handoff
+                            policy.
+AP_DEFECTS D-21             the Master is a natural carrier of the standing
+                            AP-maintenance instruction: read the backlog, capture
+                            new defects, update AP_DESTILLED.md.
 ```
 
 ---

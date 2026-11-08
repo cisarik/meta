@@ -10,12 +10,15 @@ Read this once. Then work from the line references, not from memory. The single
 most expensive failure recorded in this archive is an Orchestrator recalling a
 closed enum instead of reading it (`PROJECT_CONTEXT.md` lesson 17).
 
-⭐ **READ THIS FILE SECOND, NOT FIRST.** `/home/agile/meta/AP_DEFECTS.md` (1 157
-lines) was written after this one, by the Orchestrator of `13/00`, and it records
-**fifteen MEASURED defects of the protocol this file distils.** It does not
+⭐ **READ THIS FILE SECOND, NOT FIRST.** `/home/agile/meta/AP_DEFECTS.md` (about
+1,900 lines) was written after this one, by the Orchestrator of `13/00`, and it
+records **twenty-one MEASURED defects plus D-03b and D-17b.** It does not
 contradict the pin — it says where the pin is expensive, where it is silent, and
 what to do instead. Its **section 3** is the working shape that produced twelve
-shipped languages in one whole, and its **section 4** is a priority order.
+shipped languages in one whole, its **section 4** is a priority order, and its
+**§0.0** is a standing instruction to every Orchestrator. D-17b, D-19, D-20 and
+D-21 are measured additions from Kronika era 01; §17 below records the practical
+checks they imply.
 
 ```text
 WHAT THIS FILE IS      the protocol, faithfully, with line numbers you can check.
@@ -33,6 +36,11 @@ WHAT AP_DEFECTS IS     where the protocol costs more than it returns, measured, 
          of D-02, D-03, D-07 and D-12.
    D-14  a one-word Cooperator reply — `Pokracuj`, `ano`, `A` — CONTINUES a scope and never SELECTS
          one. Measured: it was read as authority to implement and a session's work was reverted.
+⚠ THE ONE THAT CHANGES YOUR FIRST EXCHANGE
+   D-17b/D-20  the Worker writes its own report file by default; "read-only" is
+               three axes — repository, host, trace — not one. The Cooperator is
+               never a copy-paste courier. Read §17.3 and §17.6 before issuing a
+               read-only prompt.
 ```
 
 ---
@@ -338,7 +346,8 @@ So the first planning prompt of a whole is `01_planning_00.md`, not
 ```text
 archive the prompt and its ACTUAL outcome TOGETHER, only after the outcome exists
 in Git both files share one unique first-add commit
-the Worker never self-archives its own current pair
+the Worker WRITES its own report file to the exact trace path by default;
+  "the Worker never self-archives" means the Git first-add, not the file write
 an interruption companion is lawful ONLY when no terminal report exists, is
   written by an authorized non-Worker owner from safely known facts, and never
   impersonates the Worker
@@ -1023,7 +1032,9 @@ meta_exchange_index = AP Worker exchange ordinal - 1 ; 00_handout.md is reserved
 
 Prompt and report contents are exact historical evidence. Path normalization does
 not rewrite them; old literal paths inside historical artifacts are preserved as
-historical text. Future pairs are added only after the report exists.
+historical text. The Worker writes its report file by default; the prompt/report
+pair is committed together only after the report exists; the Worker does not
+commit its own pair.
 
 ---
 
@@ -1057,16 +1068,23 @@ in the same prompt: the `Delivery route` field was issued with the literal
 placeholder `<select: direct session dispatch by default; manual copy-paste on
 Cooperator opt-out>`.
 
-### 17.3 Report author versus report persister
+### 17.3 Report author, report persister, and the direct-write default
 
 The delivery record's `Report persistence owner` is ambiguous when a read-only
 Worker returns its terminal report in-session and the Orchestrator stores it.
 Measured: one prompt assigned `Report persistence owner: assigned WORKER` while
 its Finishing section said the Worker writes no file and the Orchestrator
-stores the report. Split the record into `Report author` and `Report persister`
-(or define `report-delivery: in-session`). A read-only Worker may author a
-report; the Orchestrator may persist it. The two owners must not contradict the
-Worker's write authority.
+stores the report. Worse, the Kronika era 01 prompts defaulted to
+"in-session only" and the Cooperator had to create `03_report_00.md` manually.
+
+The correct default is **direct-write**: the Worker writes its terminal report
+to the exact trace path named in the prompt before its terminal notice, reads
+it back, and writes no other file. The Orchestrator verifies the report; the
+Cooperator or authorized Git owner commits the prompt/report pair. Split the
+record into `Report author: WORKER`, `Report persister: WORKER`, and
+`Report persistence: direct-write <path> | in-session-only`. `in-session-only`
+is an exceptional Cooperator choice, not the default. A read-only Worker is
+read-only for the repository and host, not for its own trace artifact.
 
 ### 17.4 A blocked first exchange and the filename expectation
 
@@ -1083,8 +1101,8 @@ requires a new logical-whole identity and a new directory, not a rename.
 ```text
 VALIDATION–AUTHORITY  every required command has a named positive authority
 ROUTING               exactly one concrete value; no unresolved placeholders
-PERSISTENCE           report author and report persister are distinct when the
-                      Worker is read-only
+PERSISTENCE           report persistence is direct-write by default; repository,
+                      host and trace authority are separate axes
 SPELLING              every path, tool, env var, and command name is copied from
                       its durable owner, not from memory or a prior handout
 ```
@@ -1092,3 +1110,64 @@ SPELLING              every path, tool, env var, and command name is copied from
 These four checks are cheap enough to run on every prompt. They do not replace
 the AP readiness review; they make its most expensive failures visible before a
 Worker pays for them.
+
+### 17.6 Report persistence is the Worker's job
+
+Measured in Kronika era 01: the Planner prompt told the Worker to return its
+report in-session and to write no file. The Cooperator had to direct the
+Planner to write `02_report_00.md`; the audit prompt repeated the same default,
+and the Cooperator had to create `03_report_00.md` manually. The exact
+instruction was:
+
+> *"03_report_00.md som musel vytvorit manualne, dalsim workerom prosim
+> vysvetli, ze je to ich uloha aby som nemusel riesit copy->paste."*
+
+The default is **direct-write**. The Worker writes its terminal report to the
+exact trace path named in the prompt, reads it back, and writes no other file.
+The Orchestrator reads and verifies the report from the trace. The Cooperator
+or authorized Git owner commits the prompt/report pair after the report
+exists. The Cooperator is never a copy-paste courier.
+
+`in-session-only` remains lawful only when the Cooperator explicitly chooses
+it, for example when the Worker has no trace-write capability. It is not the
+default and must not be inferred from "read-only".
+
+### 17.7 Three read-only axes
+
+"Read-only" is not one authority. Keep three axes separate in every prompt and
+delivery record:
+
+```text
+Repository mutation: none | <exact paths>
+Host/remote mutation: none | <exact commands>
+Trace persistence: none | direct-write <exact trace path> | in-session-only
+```
+
+A read-only audit has repository none and host none, but trace direct-write.
+A read-only source review has the same. A current-session continuation may have
+an exact repository allowlist and no host authority. `in-session-only` is an
+exceptional Cooperator choice. A Worker that is read-only for the repository is
+not thereby forbidden to write its own report.
+
+### 17.8 Standing AP-maintenance instruction
+
+AP is a living protocol, maintained in parallel with normal project work. It is
+not a separate logical whole. Every Orchestrator should:
+
+- read `AP_DEFECTS.md` and `AP_DESTILLED.md` during restoration;
+- capture measured protocol friction during normal work, with file/heading
+  evidence, and append it to the defect backlog;
+- hand an AP-update Orchestrator a complete, prioritized backlog rather than a
+  request to re-explain past lessons;
+- treat AP maintenance as part of normal project work, not a new product
+  objective.
+
+The AP-update Orchestrator must process every open entry: accept it into AP,
+reject it with a stated reason, or carry it forward with an explicit owner. It
+must update `AP_DESTILLED.md` in the same task and must not silently drop an old
+entry. The Cooperator must never have to explain a defect that is already
+recorded.
+
+This instruction is consumer policy, not AP semantics. It can be adopted
+without a new AP release. The canonical AP repository still needs the
+Cooperator's authority for any change.
