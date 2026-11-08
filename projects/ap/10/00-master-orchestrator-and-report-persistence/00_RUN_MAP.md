@@ -16,7 +16,7 @@ Status: active
 
 | Order | Whole | Status | Evidence / dependency |
 |---|---|---|---|
-| 00 | `00-master-orchestrator-and-report-persistence` | active (acceptance 03/01 delivered) | This run's only whole. Depends on AP `73e20ef` and the Kronika pin `73e20ef`; produces the new AP commit, the Kronika `.ap` pin update, and the pilot dry-run evidence. Planner report `01_report_00.md` accepted; CD-1/2/4/5/6 accepted, CD-3 overridden to Cooperator pin commit/push. Implementation candidate `fe1e58d9` (local, 14 paths) delivered; fresh independent acceptance prompt `03_acceptance_00.md` delivered; report pending. |
+| 00 | `00-master-orchestrator-and-report-persistence` | active (correction 02/02 delivered) | This run's only whole. Depends on AP `73e20ef` and the Kronika pin `73e20ef`; produces the new AP commit, the Kronika `.ap` pin update, and the pilot dry-run evidence. Planner report `01_report_00.md` accepted; CD-1/2/4/5/6 accepted, CD-3 overridden to Cooperator pin commit/push. Implementation candidate `fe1e58d9` (local, 14 paths); acceptance 03/01 PARTIAL with A-1 material/A-2/A-3 minor; correction prompt `02_correction_01.md` delivered; re-audit 04/01 pending. |
 
 The AP run contains one logical whole. The Kronika run 01 handouts belong to the
 Kronika project and are **not** wholes in AP run 10; they are pilot evidence for
