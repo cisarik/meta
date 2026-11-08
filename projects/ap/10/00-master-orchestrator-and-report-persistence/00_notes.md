@@ -639,7 +639,120 @@ after independent file verification. The Cooperator commits the Meta trace.
 The out-of-root read is recorded as a process finding and carried into the
 pilot prompt hardening. AP and Kronika are unaffected.
 
-## 17. Decision log
+## 17. Meta publication review
+
+- Meta local HEAD and public main are both
+  `16a593e133d1b1e7563db2609f7f82c910c3c1cc`; the commit is
+  `docs: update AP projections for d7023cf`.
+- The four Meta files are public: `AP_DEFECTS.md` with §7's 23 dispositions
+  and the corrected §0.0; `AP_DESTILLED.md` with §0.1 and the §17/§18
+  conversion; `BRAINSTORMING.md` with §7 promoted; `README.md` with the run-map
+  and provisional-handout local storage.
+- The Meta projection prompt/report pair and the run notes/run map are tracked
+  in the Meta history.
+- The out-of-root read incident remains recorded in `05_report_01.md` and in
+  this notes file. It is a process finding; AP and Kronika are unaffected.
+- Meta publication PASS recorded. AP_DESTILLED and AP_DEFECTS are current.
+
+## 18. Pilot report review
+
+The pilot report was received at `06_report_00.md` (306 lines). Identity check:
+it begins exactly `### Report for ORCHESTRATOR_CHAT`, echoes session 06 /
+exchange 01, declares status PASS, phase-qualified not-applicable, report
+justification new-evidence, logical-whole closure not-closed, and the verdict
+`lawful start: yes-with-corrections`.
+
+Verified independently:
+
+- Kronika HEAD/public `246c9f8...`; `.ap` gitlink/HEAD `d7023cf...`; AP public
+  `d7023cf...`; clean; strict `doctor` and `project check` PASS.
+- Only `06_report_00.md` was written. No `00_notes.md`, no handout, no prompt,
+  no Stage 2, no Worker prompt, no Kronika/AP/Meta edit, no NUC, no tests,
+  browser or provider.
+- The probe read the handout, the four named predecessor files, the AP docs at
+  `d7023cf` and the Kronika checkout. It did not read any agent/session
+  transcript or out-of-root path; the pilot prompt's hardening was respected.
+- The Handout Revalidation Record is complete: `adopted-with-corrections`,
+  with usable facts, stale facts, not-revalidated facts and the exact
+  corrections.
+- The corrections cover the stale HEAD/pin/baseline, the legacy `FULL`/`READY`
+  metadata, the missing provisional marker, session scope and reasoning
+  recommendation, the §4.1 non-AP field spellings/duplicate `Trace persistence`
+  and `in-session-only`, the §4.3 restart sentence, the §4.5 AP_DEFECTS/
+  AP_DESTILLED pointers, the missing Stage 1 ledger/revalidation steps, and the
+  §5 residual-label mapping.
+- The verdict is `yes-with-corrections`: no blocking fact; the handout is a
+  usable seed once the listed corrections are applied. The handout refresh is a
+  separate run-level task, R1.
+
+Pilot prompt defects recorded: the record template's legacy-marker value is not
+an AP spelling; the probe grant omitted the `Cooperator delivery / trace
+destination` record required by P3 when `Trace persistence` is not none; the
+context-capacity value `200k` is outside the AP's 250k/1M values. These are
+prompt-ledger findings, not AP-source defects. The pilot LEAD that the other
+Kronika run 01 handouts likely carry the same legacy metadata is carried into
+R1.
+
+Orchestrator disposition: pilot PASS; the AP update whole can close with
+residuals R1–R7. The closure record is `07_closure.md`; Cooperator acceptance is
+pending.
+
+## 19. Handout refresh review
+
+The Kronika run 01 handout refresh report was received at `07_report_00.md`
+(252 lines). Identity check: it begins exactly `### Report for
+ORCHESTRATOR_CHAT`, echoes session 07 / exchange 01, declares status PASS and
+phase-qualified implementation-PASS, and records the nine-path refresh.
+
+Verified independently:
+
+- AP local/public `d7023cf...`; Kronika local/public `246c9f8...`; `.ap`
+  gitlink/HEAD `d7023cf...`; AP and Kronika clean.
+- Exactly the eight handouts `01`-`08` are modified and
+  `projects/kronika/01/00_RUN_MAP.md` is new; no other Meta path changed except
+  the AP run trace.
+- Each handout carries the eight refreshed metadata lines exactly once
+  (`Handout status: provisional`, `Restoration classification: PARTIAL`,
+  `Orchestrator session scope: logical-whole`,
+  `Development run identity: kronika-run-01`,
+  `Refreshed against: AP d7023cf`, `Handout author:`, `Mechanical persister:`,
+  `Reasoning recommendation:`); no legacy `Report author`,
+  `Report persister`, `Report persistence:`, `Report destination`,
+  `in-session-only`, `true restart`, `Restoration classification: FULL`,
+  `Overall: READY` or `binding on your prompts` remains.
+- The run map has 9 `Run entry` lines: 00 `closed`, 01-08 `provisional`, with
+  dependencies, handout locators, evidence sentences and
+  `Run map authority: discovery-only`.
+- The closed 00 handout/notes, AP_DESTILLED, AP_DEFECTS, the Meta README, the AP
+  repository and Kronika are unchanged. No `00_notes.md`, product whole or
+  Worker prompt was created.
+- The refresh report's V1-V12 pass; no test, browser, provider, NUC or
+  `kronika-release` was run.
+
+Refresh findings:
+
+- The run map objective is derived from the closed 00 handout §9.2 and the eight
+  handouts; no Cooperator-selected objective is recorded. R8: the Cooperator
+  confirms, narrows or replaces it before selection.
+- The refresh found three further corrections beyond the pilot list: the
+  "may rewrite" instruction, the "handed off" predecessor label, and the
+  missing Active Worker readiness row in 03-08. The handouts are improved
+  beyond the pilot's minimum.
+- Prompt finding: the Meta handout/run-map writes are trace persistence under
+  AP §5, while the grant classed them as repository mutation and omitted the
+  P3 delivery record. No effect; recorded for the prompt ledger R6.
+- Authorship: this Master Orchestrator is not the original Kronika era 01
+  author; the Cooperator's refresh instruction is the authority for the
+  in-place refresh, and each handout keeps its `Original handout author` line.
+- The `Orchestrator session scope: logical-whole` plus
+  `Development run identity: kronika-run-01` reading is permitted; the first
+  per-whole Orchestrator can confirm it when the whole opens.
+
+Orchestrator disposition: R1 is complete. The AP update whole closes. The
+Cooperator commits the Meta trace; R8 remains the next-run objective
+confirmation.
+
+## 20. Decision log
 
 ```text
 2026-11-08  Stage 1 complete. No repository, Git, host, publication, or pin
@@ -766,6 +879,47 @@ pilot prompt hardening. AP and Kronika are unaffected.
             no secret read; recorded; pilot prompt will prohibit any
             transcript/out-of-root read.
 
+2026-11-08  Meta publication PASS: the Cooperator committed 16a593e and pushed
+            it. Meta local HEAD and public main are 16a593e; the four Meta
+            projection files, the projection prompt/report pair, the notes and
+            the run map are tracked. AP_DESTILLED and AP_DEFECTS are current.
+            The out-of-root read incident is recorded in 05_report_01.md and
+            the notes.
+
+2026-11-08  Pilot prompt authored as session 06 / exchange 01 in
+            06_pilot-probe_00.md and handed to the Cooperator for manual
+            delivery. Fresh Evidence Probe, read-only Stage 1 of the Kronika
+            handout 01, direct-write 06_report_00.md. Pending: pilot report.
+
+2026-11-08  Pilot report received at 06_report_00.md; status PASS, verdict
+            yes-with-corrections. No 00_notes.md, no Stage 2, no Worker prompt,
+            no Kronika/AP/Meta edit. The handout is a usable seed with the
+            listed corrections; the refresh is residual R1. Prompt defects
+            recorded for the prompt ledger.
+
+2026-11-08  Closure record 07_closure.md written with the final AP/Kronika/Meta
+            state, the acceptance check, and residuals R1-R7. Cooperator
+            acceptance pending.
+
+2026-11-08  COOPERATOR closure decision: accepts the AP update closure
+            conditionally on the R1 handout refresh. The closure record
+            07_closure.md remains a candidate; the whole stays open until the
+            refresh report and Meta commit. Refresh exchange 07/01 authorized.
+
+2026-11-08  Handout refresh prompt authored as session 07 / exchange 01 in
+            07_handout-refresh_00.md and handed to the Cooperator for manual
+            delivery. Fresh Implementation Worker; eight Kronika run 01
+            handouts plus the run 01 run map; no Git; the Cooperator commits
+            the Meta trace. Report 07_report_00.md. Pending: refresh report.
+
+2026-11-08  Handout refresh report received at 07_report_00.md; status PASS,
+            implementation-PASS. Eight Kronika run 01 handouts refreshed and
+            run map 00_RUN_MAP.md created; AP/Kronika clean; no product whole,
+            no Git. R1 complete. Closure 07_closure.md finalized as
+            closed-by-ORCHESTRATOR; the Cooperator's conditional acceptance is
+            now final. Cooperator Meta commit pending. R8 remains: the
+            Cooperator confirms the Kronika run 01 objective before selection.
+
 2026-11-08  State discrepancy: projects/ap/10/master_orchestrator.md was
             modified at Stage 1 and is now deleted. The Planner reports it as
             pre-existing owner state. The cause is not established. The file is
@@ -780,11 +934,11 @@ pilot prompt hardening. AP and Kronika are unaffected.
             created.
 ```
 
-## 18. Trace inventory
+## 21. Trace inventory
 
 ```text
 00_notes.md              this file
-00_RUN_MAP.md            run map for AP run 10
+00_RUN_MAP.md            run map for AP run 10 (closed)
 01_planning_00.md        Planner prompt
 01_report_00.md          Planner terminal report
 02_implementation_00.md  Implementation Worker prompt
@@ -799,8 +953,11 @@ pilot prompt hardening. AP and Kronika are unaffected.
 05_report_00.md          Pin update terminal report
 05_meta-projection_01.md Meta projection prompt
 05_report_01.md          Meta projection terminal report
-06_pilot-probe_00.md     Pilot probe prompt, later
-06_report_00.md          Pilot probe report, later
+06_pilot-probe_00.md     Pilot probe prompt
+06_report_00.md          Pilot probe terminal report
+07_handout-refresh_00.md Kronika run 01 handout refresh prompt
+07_report_00.md          Handout refresh terminal report
+07_closure.md            closed-by-ORCHESTRATOR closure record
 ```
 
 Later prompt/report pairs are added only when their exchange is authorized and

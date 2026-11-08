@@ -1,21 +1,50 @@
 # Kronika — Fresh Orchestrator Handoff
 
 ```text
-Restoration classification: PROVISIONAL
+Restoration classification: PARTIAL
+Handout status: provisional
 Capability profile: Orchestrator
 Initialization signal: You are a fresh Orchestrator instance assigned to the ORCHESTRATOR role for the Kronika project.
+Orchestrator session scope: logical-whole
+Development run identity: kronika-run-01
+Current phase: Restoration (Continuation Bootstrap Stage 1 not yet performed)
+Reasoning recommendation: selecting a Worker is premature
 Restoration date: 2026-11-08
-Handout author: the Master Orchestrator of Kronika development run 01
-Mechanical persister: the same instance, writing this file outside the repository
-Predecessor whole: projects/kronika/01/01-timeline-and-history-media-thumbnails (handed off, not yet executed)
+Refreshed: 2026-11-08
+Refreshed against: AP d7023cf; Kronika 246c9f8; .ap d7023cf
+Handout author: Master Orchestrator, AP run 10
+Original handout author: the Master Orchestrator of Kronika development run 01 (also its original mechanical persister)
+Mechanical persister: Fresh Implementation Worker session 07
+Predecessor whole: projects/kronika/01/01-timeline-and-history-media-thumbnails (provisional at the refresh; not opened, not closed)
+Run map: /Users/agile/meta/projects/kronika/01/00_RUN_MAP.md
 Handout destination: /Users/agile/meta/projects/kronika/01/02-upload-flow-polish/
 Restoration grants mutation authority: no
 ```
 
-This prompt transfers information, never authority. It is **provisional**: it
-was written before the predecessor whole executed. The per-whole Orchestrator
-must revalidate current state and may rewrite this handout before the first
-Planner prompt. A stale handout is evidence, not authority.
+This prompt transfers information, never authority. It is a **provisional
+seed**: it was written, and refreshed on 2026-11-08, before the predecessor
+whole opened. The per-whole Orchestrator revalidates it in Continuation
+Bootstrap Stage 1 and records a Handout Revalidation Record before the first
+Planner prompt. It does not edit this handout in place; a material rewrite is a
+successor handout that names this one as predecessor
+(`.ap/AP.md#run-level-handouts`). A stale handout is evidence, not authority.
+
+**Refresh note (2026-11-08).** This handout was refreshed in place before its
+whole opened, under the Cooperator-accepted AP run 10 refresh, applying the
+corrections that the AP run 10 pilot probe recorded for the sibling handout 01
+(`/Users/agile/meta/projects/ap/10/00-master-orchestrator-and-report-persistence/06_report_00.md`)
+where this handout's own content required them. The refresh updates state
+facts, metadata and the AP operating rules to AP `d7023cf`. The recommended
+whole, scope questions, strategic continuity and risk content are unchanged.
+Superseded claims and reasons: the former restoration classification and
+readiness verdict were not AP values; the former "may rewrite this handout"
+instruction contradicted the AP freeze-on-open rule; the predecessor label
+"handed off" collided with the run-entry status vocabulary; HEAD/public main
+`7ee4684` and AP pin `73e20ef` were superseded by the pin-only commit
+`246c9f8`; the former §4.1 report-field block, the §4.2 check owner, the §4.3
+restart sentence and the §4.5 rule sources were replaced by pointers to their
+AP `d7023cf` owners. Mechanical persistence: AP run 10, logical whole
+`master-orchestrator-and-report-persistence`, Worker session 07, exchange 01.
 
 The COOPERATOR is **Michal**. Chat with him in **Slovak**, address him with
 masculine grammatical forms, and refer to yourself with **feminine** forms.
@@ -32,11 +61,11 @@ Read this handout together with:
 - `.ap/AP.md`, `.ap/AP_ORCHESTRATOR.md`, `.ap/AP_WORKER.md` at the pinned AP
   commit, per the ORCHESTRATOR minimum-reading spine;
 - `.ap/PROMPT_CONTRACTS.md` for prompt, planning, acceptance, report and trace
-  structures;
-- `/Users/agile/meta/AP_DEFECTS.md` §0.0 and D-17b, D-19, D-20, D-21;
-- `/Users/agile/meta/AP_DESTILLED.md` §17;
-- the run map and the predecessor handouts under
-  `/Users/agile/meta/projects/kronika/01/`;
+  structures, including the Run Map Record, Provisional Handout Marker and
+  Handout Revalidation Record;
+- the upgrade ledger declared in `AGENTS.md`, `docs/AP_UPGRADE_OBSERVATIONS.md`;
+- the run map `/Users/agile/meta/projects/kronika/01/00_RUN_MAP.md` and the
+  predecessor handouts under `/Users/agile/meta/projects/kronika/01/`;
 - the previous whole's closure record and reports under
   `/Users/agile/meta/projects/kronika/01/01-timeline-and-history-media-thumbnails/`
   when they exist.
@@ -45,22 +74,31 @@ The Master Orchestrator's handouts are **provisional seeds**. They do not
 replace Stage 1 verification, the per-whole Planner, or the COOPERATOR's
 selection.
 
+Meta `/Users/agile/meta/AP_DEFECTS.md` (§0.0, D-17b, D-19, D-20, D-21) and
+`/Users/agile/meta/AP_DESTILLED.md` (§17) remain citable consumer evidence of
+what the predecessor run measured. They are not rule sources: the direct-write
+default, the mutation axes, the satisfiability check, consumed coordinates and
+the standing maintenance duty are owned by AP at `d7023cf`.
+
 ---
 
 ## 1. Continuation Bootstrap, Stage 1 — restore and reconcile read-only
 
-Verify, do not trust this handout. The state below is **last observed** at
-handout creation; the predecessor whole may have changed it.
+Verify, do not trust this handout. The state below is **last observed** at the
+2026-11-08 refresh; the predecessor whole is expected to change it.
 
 ### 1.1 Repository
 
 ```text
 Repository: https://github.com/cisarik/kronika (main)
 Local checkout: /Users/agile/Projects/kronika
-Last observed HEAD: 7ee4684f529b3d2cdf15ce30902ba01a2b39992c
-Last observed public main: 7ee4684f529b3d2cdf15ce30902ba01a2b39992c
+Last observed HEAD: 246c9f86b72e652cd36ed0d9f4e19e77f972df91
+Last observed public main: 246c9f86b72e652cd36ed0d9f4e19e77f972df91
+Last observed commit subject: docs: update analytic programming
 Last observed working tree: clean
 ```
+
+`246c9f8` is a pin-only commit over `7ee4684`; it changes no runtime path.
 
 Re-verify with `git rev-parse HEAD`, `git ls-remote origin refs/heads/main`,
 and `git status --short`. A different HEAD or dirty tree is a new state;
@@ -70,9 +108,12 @@ closed, stop and wait for its closure.
 ### 1.2 Governing AP
 
 ```text
-AP pin last observed: 73e20ef80b88700d5fcbc397cd8edd4fc425869f
+AP pin last observed: d7023cf037f6d17885c3ede5c04812c61640da50
 Governing variant: stable
 ```
+
+AP public main was `d7023cf` at the refresh (ADR-0026 run-scoped orchestration
+and direct-write report persistence, with its correction).
 
 Verify `git ls-tree HEAD .ap`, `git -C .ap rev-parse HEAD`, and
 `./.ap/ap doctor`. Do not upgrade the pin as part of this whole unless the
@@ -85,25 +126,49 @@ COOPERATOR explicitly selects that separate task.
   --baseline <current public main SHA>
 ```
 
-Expected: PASS. Python evidence and tests go only through the declared
+Expected: PASS. Public `main` was `246c9f8` at the refresh; the predecessor
+whole is expected to move it, so use the exact SHA observed in Stage 1. Python
+evidence and tests go only through the declared
 `./.ap/ap exec --operation test-focus` route. JavaScript tests use
 `node --test`. Cursor/AppImage Workers must never invoke `.venv/bin/python`,
 `python`, `python3`, or `poetry run` for evidence.
 
-### 1.4 NUC state
+### 1.4 NUC state — last observed, NOT revalidated
 
 The predecessor run last observed the NUC at `7ee4684` (docs/tests on top of
-the E3-accepted `cb5fa4d` runtime). Re-verify through
+the E3-accepted `cb5fa4d` runtime). The 2026-11-08 refresh did **not**
+revalidate it; NUC contact was not authorized. The NUC is expected to stay at
+`7ee4684` until a separate routine refresh. Re-verify through
 `deploy/ubuntu/kronika-release status`; the helper needs the COOPERATOR's
 active global sudo timestamp. Never assume it persists across a Worker's
 terminal `sudo -K`.
 
 ### 1.5 Previous whole closure
 
-The previous whole `01-timeline-and-history-media-thumbnails` is **handed off,
-not necessarily executed**. Read its closure record when it exists. Do not
-assume its scope, files, or residuals. If it is still active, stop; this whole
-waits.
+At the 2026-11-08 refresh the previous whole
+`01-timeline-and-history-media-thumbnails` was **provisional: not opened and not
+closed**; no closure evidence exists. This whole depends on its closure in the
+run map's recommended order (see also risk U6). Read its closure record when it
+exists. Do not assume its scope, files, or residuals. If it is still active,
+stop; this whole waits. If the COOPERATOR reorders the run, revalidate the
+dependency instead of assuming it.
+
+### 1.6 Upgrade ledger
+
+`AGENTS.md` declares the AP upgrade ledger outside the managed block
+(`Ledger path: docs/AP_UPGRADE_OBSERVATIONS.md`). Validate the declared file and
+revalidate every active entry against the current repository and the governing
+pin before relying on it (`.ap/AP.md#continuation-bootstrap`,
+`.ap/PROMPT_CONTRACTS.md#upgrade-observation-ledger-contract`).
+
+### 1.7 Handout Revalidation Record
+
+Before the first Planner prompt, revalidate every material fact in this handout
+against current evidence and record the Handout Revalidation Record
+(`.ap/PROMPT_CONTRACTS.md#handout-revalidation-record`) in this whole's
+`00_notes.md` (`.ap/AP.md#run-level-handouts`; Meta `README.md`, Run Maps and
+Provisional Handouts). Name every material fact you could not observe under
+`Not revalidated`, including the NUC state when NUC access is not granted.
 
 ---
 
@@ -181,8 +246,8 @@ Likely out of scope:
 
 ### 2.4 Other candidate wholes (not selected)
 
-The run map remains provisional; do not start one without the COOPERATOR's
-explicit selection:
+These entries are provisional in the run map, which is discovery-only; do not
+start one without the COOPERATOR's explicit selection:
 
 1. Companion download notifications (completed X/YouTube downloads in the
    side-panel history and toolbar badge).
@@ -241,50 +306,66 @@ Accepted direction to preserve:
 
 ## 4. Project-specific operating rules measured in the predecessor run
 
-These are binding on your prompts unless the COOPERATOR changes them.
+This handout grants nothing. AP precedence (RF-19) and the AP owners at the
+governing pin govern every prompt. Each rule below records what the
+predecessor run measured and points to the AP owner that now holds it; if a
+pointer and its owner disagree, the owner wins.
 
 ### 4.1 Reports are written by the Worker, not ferried by the COOPERATOR
 
-The corrected default is **direct-write**:
+AP `d7023cf` owns the direct-write default
+(`.ap/AP.md#direct-write-report-persistence`), the three mutation axes
+(`.ap/AP.md#mutation-axes`, `.ap/PROMPT_CONTRACTS.md#mutation-axes-record`),
+and the delivery record with its consistency rules P1–P5
+(`.ap/PROMPT_CONTRACTS.md#cooperator-delivery-and-trace-destination-record`).
+The Worker writes its terminal report to the exact trace path, reads it back,
+and only then sends its terminal notice; the Orchestrator verifies the report
+from the trace; the COOPERATOR or authorized Git owner commits the
+prompt/report pair only after the report exists.
 
-- the authoritative prompt names the exact trace report path;
-- the Worker writes the terminal report to that path before its terminal
-  notice, reads it back, and writes no other file;
-- the Orchestrator reads and verifies the report from the trace;
-- the COOPERATOR or authorized Git owner commits the prompt/report pair only
-  after the report exists;
-- `in-session-only` is an exceptional COOPERATOR choice, not the default.
-
-Every Worker prompt must carry:
-
-```text
-Report author: WORKER
-Report persister: WORKER
-Report persistence: direct-write <exact trace path>
-Report destination: <exact trace path>
-Trace persistence: direct-write <exact trace path>
-```
-
-and the separate axes:
+For the default route, a newly issued Worker prompt uses these AP spellings,
+each line exactly once. This is a spelling projection only; the owners above
+govern:
 
 ```text
-Repository mutation: none | <exact paths>
-Host/remote mutation: none | <exact commands>
-Trace persistence: none | direct-write <exact trace path> | in-session-only
+Cooperator delivery / trace destination: configured
+Downloadable prompt filename: <exact prompt filename>
+Destination path: <exact whole directory>
+Report filename: <exact report filename>
+Prompt persistence owner: <named actor>
+Report persistence owner: assigned WORKER
+Git publication owner: <named actor>
+Archival: wait-for-report
+Repository mutation: none | <exact repository paths>
+Host/remote mutation: none | <exact targets and operations>
+Trace persistence: direct-write <exact report path>
 ```
 
-Read `AP_DEFECTS.md` §0.0, D-17b and D-20, and `AP_DESTILLED.md` §17.3 and
-§17.6 before issuing the first prompt.
+An issued prompt resolves every placeholder and alternative to one value. For
+an authorized Planner, `Trace persistence` also names the exact received prompt
+path (P1), and the prompt names the client completion route (P4). In-session
+relay is exceptional: it requires an explicit COOPERATOR selection or a
+recorded missing Worker capability, names that other `Report persistence owner`,
+states the relay basis, sets `Trace persistence: none`, and the Worker returns
+the complete report in the session (P2).
 
 ### 4.2 Prompt satisfiability before dispatch
 
+Before delivery, apply the four comparisons owned by
+`.ap/AP.md#prompt-satisfiability-check` to the complete prompt:
+
 ```text
-VALIDATION–AUTHORITY  every required command has a named positive authority
-ROUTING               exactly one concrete value; no unresolved placeholders
-PERSISTENCE           report persistence is direct-write; repository/host/trace
-                      authority are separate axes
-SPELLING              every path, tool, env var and command name comes from its
-                      durable owner
+VALIDATION–AUTHORITY  every required command, observation, generated output and
+                      completion write fits the positive authority; no negative
+                      clause forbids it
+ROUTING               every identity, coordinate, route, mode and destination
+                      field holds exactly one concrete value
+PERSISTENCE           persistence owners, the three mutation axes, positive
+                      authority and the client's permitted completion route
+                      agree (delivery record P1–P5)
+SPELLING              every path, tool, environment variable, field and command
+                      comes from its current durable owner, not memory or an
+                      earlier handout
 ```
 
 A validation command that the prompt's own negative authority forbids is a
@@ -293,32 +374,42 @@ prompt defect. Do not issue it and wait for a Worker to block.
 ### 4.3 First Planner and coordinates
 
 - Every new logical whole starts with a Planner in Worker session `01`,
-  exchange `01`, `fresh-worker-session`, `Native planning mode: required`.
-- The Planner is read-only for the repository; it still writes its own report
-  to the exact trace path.
-- If the first exchange is blocked by a prompt defect and its artifacts are
-  withdrawn, the coordinates are still consumed. The next fresh session is
-  `02/01`; the Meta filename is `02_planning_00.md`, not the expected
-  `01_planning_00.md`. Tell the COOPERATOR explicitly. A true restart at
-  `01/01` requires a new logical-whole identity.
-- Meta filenames follow `<session>_<phase>_<exchange-index>.md` and
+  exchange `01`, `fresh-worker-session`, `Native planning mode: required`
+  (`.ap/AP.md#orchestration-planning-and-implementation-planning`).
+- The Planner is read-only for the repository; under the direct-write default
+  it still writes its own report to the exact trace path.
+- Coordinates are consumed once their prompt is issued, whatever the outcome
+  (`.ap/AP.md#consumed-coordinates`). If the first exchange stops on a prompt
+  defect and a fresh session is selected, the corrected initial Planner is
+  `02/01`; the Meta files are `02_planning_00.md` and `02_report_00.md`, not the
+  expected `01_planning_00.md`
+  (`.ap/PROMPT_CONTRACTS.md#blocked-first-exchange-example`). Tell the
+  COOPERATOR explicitly.
+- Meta filenames follow the trace-local mapping
+  (`.ap/PROMPT_CONTRACTS.md#trace-local-filename-mapping-example` and the Meta
+  `README.md`): `<session>_<phase>_<exchange-index>.md` and
   `<session>_report_<exchange-index>.md`; the exchange index is the AP exchange
   ordinal minus one.
 
 ### 4.4 Delivery route
 
 Ask the COOPERATOR once around the first Planner to select direct session
-dispatch or manual copy-paste; preserve the selection through the whole. The
+dispatch or manual copy-paste; preserve the selection through the whole (AP §3
+delivery selection; the Cooperator Presentation Profile in `AGENTS.md`). The
 previous whole used manual copy-paste. The report itself is still direct-write
 by the Worker; the COOPERATOR does not ferry the report file.
 
 ### 4.5 AP maintenance is part of normal work
 
-Read `AP_DEFECTS.md` and `AP_DESTILLED.md` during restoration. Capture new
-measured protocol friction in `AP_DEFECTS.md`; do not wait for a separate AP
-task. The Orchestrator of an AP update must process the open backlog and update
-`AP_DESTILLED.md` in the same task. Do not ask the COOPERATOR to re-explain a
-recorded defect.
+AP §13 owns the standing duty (`.ap/AP.md#standing-ledger-maintenance`):
+revalidate the declared upgrade ledger in Stage 1 (§1.6); record newly measured
+friction against AP as `untriaged` entries in `docs/AP_UPGRADE_OBSERVATIONS.md`
+only under an exact write grant, otherwise as non-authorizing ledger candidates
+in the closure or handoff record. A pin update remains its own explicit AP
+update task (`AGENTS.md`). Meta `AP_DEFECTS.md` and `AP_DESTILLED.md` are
+citable consumer evidence only, not AP rule sources or ledger discovery
+sources. Do not ask the COOPERATOR to re-explain friction already recorded
+there or in the ledger.
 
 ### 4.6 Security boundaries and execution routes
 
@@ -363,18 +454,23 @@ acceptance claims, not implementation details.
 
 1. Read `AGENTS.md`, the AP spine, `AP_ORCHESTRATOR.md`, and the named
    `PROMPT_CONTRACTS.md` sections.
-2. Read `AP_DEFECTS.md` §0.0 and D-17b/D-19/D-20/D-21; read
-   `AP_DESTILLED.md` §17.
+2. Validate the declared upgrade ledger `docs/AP_UPGRADE_OBSERVATIONS.md` and
+   revalidate every active entry at the current pin (§1.6).
 3. Verify the repository gate, AP pin, `ap doctor`, `ap project check`, public
-   `main`, and the NUC status through the canonical helper.
-4. Read the predecessor whole's closure record and reports when they exist.
-5. Present the restored state and this recommended whole to the COOPERATOR in
+   `main`, and the NUC status through the canonical helper when NUC access is
+   granted; otherwise carry the NUC state as not revalidated.
+4. Read the predecessor whole's closure record and reports when they exist,
+   and the run map.
+5. Revalidate this handout's material facts and prepare its Handout
+   Revalidation Record (§1.7).
+6. Present the restored state and this recommended whole to the COOPERATOR in
    his presentation profile. Ask one decision: select this whole or another.
-6. Only after selection, ask once for the delivery route and issue the first
-   Planner prompt for session `01`, exchange `01`, with `Native planning mode:
-   required` and direct-write report persistence.
-7. Do not create `00_notes.md` until the COOPERATOR selects the whole; then
-   create it and freeze it only at closure.
+7. Only after selection, create this whole's `00_notes.md`, record the Handout
+   Revalidation Record there, ask once for the delivery route, and issue the
+   first Planner prompt for session `01`, exchange `01`, with `Native planning
+   mode: required` and `Report persistence owner: assigned WORKER` under the
+   direct-write default.
+8. Freeze `00_notes.md` only at closure.
 
 The Meta directory is:
 
@@ -388,18 +484,19 @@ The Meta directory is:
 
 | Review | Result |
 |---|---|
-| Contradiction | No contradiction found between this handout and the verified state at creation; the predecessor whole is not yet executed, so the state may change |
+| Contradiction | No contradiction found between this handout and the state observed at the 2026-11-08 refresh; the predecessor whole has not opened, so the state will change |
 | Omission | The whole is a recommendation, not a selected objective; the COOPERATOR must select it |
-| Stale state | Marked **PROVISIONAL**; repository, AP pin, NUC and predecessor state must be revalidated |
+| Stale state | Repository and AP pin observed at the 2026-11-08 refresh; NUC not revalidated; predecessor not closed; revalidate all |
 | Authority | No mutation authority transferred; every next action needs a new grant |
 | Active mutation | None |
-| Active Worker | None |
+| Active Worker | None for this whole |
 | Security boundary | Upload capability, quarantine, validation and privacy must not widen |
 | Strategic direction | ADR-0082 through ADR-0086 preserved |
-| Next-step executability | Executable after Stage 1 verification, predecessor closure, and the COOPERATOR's selection |
+| Next-step executability | Executable after Stage 1 verification, the Handout Revalidation Record, predecessor closure, and the COOPERATOR's selection |
 
-Overall: **PROVISIONAL / READY AFTER REVALIDATION** — this is a prepared handoff,
-not a current-state authority.
+Overall: **PARTIAL** — useful continuity exists, but the whole has not opened,
+the predecessor whole is not closed, and the NUC state is not revalidated. This
+is a prepared handoff, not a current-state authority.
 
 This handout grants no repository, implementation, deployment, production,
 account, filesystem, external-service, Git, or host mutation authority. Verify

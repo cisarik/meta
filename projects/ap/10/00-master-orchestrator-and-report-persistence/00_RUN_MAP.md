@@ -9,14 +9,18 @@ Run: 10
 Objective: formalize the Master Orchestrator run scope and the related AP
   protocol corrections; publish the new AP version; update the Kronika .ap pin;
   dry-run one prepared Kronika handout.
-Status: active
+Status: closed
+Run closure: 2026-11-08. The only whole closed after AP d7023cf publication,
+  Kronika pin 246c9f8, Meta projection 16a593e, pilot yes-with-corrections and
+  R1 handout refresh. The Kronika run 01 can start after the Cooperator
+  confirms its objective and selects the first whole.
 ```
 
 ## Ordered wholes
 
 | Order | Whole | Status | Evidence / dependency |
 |---|---|---|---|
-| 00 | `00-master-orchestrator-and-report-persistence` | active (Meta projection report received; Cooperator Meta commit pending) | This run's only whole. Depends on AP `73e20ef` and the Kronika pin `73e20ef`; produces the new AP commit, the Kronika `.ap` pin update, and the pilot dry-run evidence. Planner report `01_report_00.md` accepted; CD-1/2/4/5/6 accepted, CD-3 overridden to Cooperator pin commit/push. Implementation `fe1e58d9`; acceptance 03/01 PARTIAL; correction `d7023cf`; re-audit 04/01 PASS; AP publication PASS (public main `d7023cf`); Kronika pin published `246c9f8` with `.ap` `d7023cf`. Meta projection `05_report_01.md` PASS; four Meta files changed; Cooperator Meta commit pending; pilot 06/01 next. |
+| 00 | `00-master-orchestrator-and-report-persistence` | closed | This run's only whole. Depends on AP `73e20ef` and the Kronika pin `73e20ef`; produces the new AP commit, the Kronika `.ap` pin update, and the pilot dry-run evidence. Planner report `01_report_00.md` accepted; CD-1/2/4/5/6 accepted, CD-3 overridden to Cooperator pin commit/push. Implementation `fe1e58d9`; acceptance 03/01 PARTIAL; correction `d7023cf`; re-audit 04/01 PASS; AP publication PASS (public main `d7023cf`); Kronika pin published `246c9f8` with `.ap` `d7023cf`; Meta published `16a593e`; pilot 06/01 PASS `yes-with-corrections`; R1 handout refresh 07/01 PASS (eight Kronika run 01 handouts + run map). Closure `07_closure.md` closed-by-ORCHESTRATOR; Cooperator acceptance final. |
 
 The AP run contains one logical whole. The Kronika run 01 handouts belong to the
 Kronika project and are **not** wholes in AP run 10; they are pilot evidence for
@@ -33,7 +37,8 @@ the handoff model and the subject of the bounded dry-run inside this whole.
 5  Cooperator publication of the AP commit(s) to public main.
 6  Kronika .ap pin update and compatibility checks; Cooperator publishes the pin.
 7  Bounded pilot dry-run of one prepared Kronika handout (Stage 1 only).
-8  Master Orchestrator closure record; Cooperator accepts.
+8  Master Orchestrator closure record; Cooperator accepts conditionally on R1.
+9  R1 Kronika run 01 handout refresh; closure final and run map frozen.
 ```
 
 Each step is a separate authority boundary. A check never publishes or deploys.
