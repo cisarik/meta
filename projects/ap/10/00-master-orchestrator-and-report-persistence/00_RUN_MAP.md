@@ -16,7 +16,7 @@ Status: active
 
 | Order | Whole | Status | Evidence / dependency |
 |---|---|---|---|
-| 00 | `00-master-orchestrator-and-report-persistence` | active (correction 02/02 delivered) | This run's only whole. Depends on AP `73e20ef` and the Kronika pin `73e20ef`; produces the new AP commit, the Kronika `.ap` pin update, and the pilot dry-run evidence. Planner report `01_report_00.md` accepted; CD-1/2/4/5/6 accepted, CD-3 overridden to Cooperator pin commit/push. Implementation candidate `fe1e58d9` (local, 14 paths); acceptance 03/01 PARTIAL with A-1 material/A-2/A-3 minor; correction prompt `02_correction_01.md` delivered; re-audit 04/01 pending. |
+| 00 | `00-master-orchestrator-and-report-persistence` | active (Meta projection report received; Cooperator Meta commit pending) | This run's only whole. Depends on AP `73e20ef` and the Kronika pin `73e20ef`; produces the new AP commit, the Kronika `.ap` pin update, and the pilot dry-run evidence. Planner report `01_report_00.md` accepted; CD-1/2/4/5/6 accepted, CD-3 overridden to Cooperator pin commit/push. Implementation `fe1e58d9`; acceptance 03/01 PARTIAL; correction `d7023cf`; re-audit 04/01 PASS; AP publication PASS (public main `d7023cf`); Kronika pin published `246c9f8` with `.ap` `d7023cf`. Meta projection `05_report_01.md` PASS; four Meta files changed; Cooperator Meta commit pending; pilot 06/01 next. |
 
 The AP run contains one logical whole. The Kronika run 01 handouts belong to the
 Kronika project and are **not** wholes in AP run 10; they are pilot evidence for

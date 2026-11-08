@@ -470,7 +470,7 @@ If purge is authorized, delete legacy tables/rows and build solely against the a
 ## 7. `Master Orchestrator` — a run-level Orchestrator that pre-generates `00_handout.md` for every logical whole
 
 ```text
-STATUS   proposed, 2026-11-08, by the COOPERATOR during Kronika era 01
+STATUS   promoted, 2026-11-08; AP d7023cf, ADR-0026
 OWNER    COOPERATOR (protocol design is his, RF-01); ORCHESTRATOR records and sharpens
 PIN      measured against 73e20ef80b88700d5fcbc397cd8edd4fc425869f
 ```

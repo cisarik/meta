@@ -96,6 +96,26 @@ prompt/report persisters and Git ownership; in ChatOrchestrator workflows Meta
 Git operations belong to the Cooperator. Historical first-add mismatches remain
 history and require explicit prospective reconciliation, not silent rewriting.
 
+## Run Maps and Provisional Handouts
+
+A run-scoped Orchestrator's run map for one development run is stored at the
+archive-sequence level:
+
+    projects/<project>/<archive-sequence>/00_RUN_MAP.md
+
+The run map is discovery-only and grants nothing. The run-scoped handout names
+its exact locator. An existing run map keeps its location; moving one needs an
+exact grant.
+
+A logical whole's `00_handout.md` may carry `Handout status: provisional`. A
+provisional handout is frozen when its whole opens and is not an exchange; a
+material rewrite is a successor handout in the handoff/closure sequence above.
+When a provisional handout is received, the whole's Orchestrator writes the
+handout revalidation record in that whole's `00_notes.md`.
+
+AP §14 Run-Level Handouts owns the meaning of the run map, the marker, and the
+revalidation record; this section names only their local storage.
+
 ## Authority
 
 Meta stores selective historical evidence only. Current task authority comes

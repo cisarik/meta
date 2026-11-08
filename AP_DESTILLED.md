@@ -11,14 +11,16 @@ most expensive failure recorded in this archive is an Orchestrator recalling a
 closed enum instead of reading it (`PROJECT_CONTEXT.md` lesson 17).
 
 ⭐ **READ THIS FILE SECOND, NOT FIRST.** `/home/agile/meta/AP_DEFECTS.md` (about
-1,900 lines) was written after this one, by the Orchestrator of `13/00`, and it
+2,000 lines) was written after this one, by the Orchestrator of `13/00`, and it
 records **twenty-one MEASURED defects plus D-03b and D-17b.** It does not
 contradict the pin — it says where the pin is expensive, where it is silent, and
 what to do instead. Its **section 3** is the working shape that produced twelve
 shipped languages in one whole, its **section 4** is a priority order, and its
 **§0.0** is a standing instruction to every Orchestrator. D-17b, D-19, D-20 and
 D-21 are measured additions from Kronika era 01; §17 below records the practical
-checks they imply.
+checks they imply and, since AP `d7023cf` adopted them, points to the governing
+AP rules. `AP_DEFECTS.md` **§7** records the disposition of every entry at that
+AP commit.
 
 ```text
 WHAT THIS FILE IS      the protocol, faithfully, with line numbers you can check.
@@ -41,6 +43,12 @@ WHAT AP_DEFECTS IS     where the protocol costs more than it returns, measured, 
                three axes — repository, host, trace — not one. The Cooperator is
                never a copy-paste courier. Read §17.3 and §17.6 before issuing a
                read-only prompt.
+⭐ ADOPTED INTO AP d7023cf (ADR-0026, 2026-11-08)
+   D-17/D-17b, D-19, D-20, D-21 and run-scoped orchestration are governing AP rules
+   now, not Meta advice: the direct-write report default, the three mutation axes,
+   the prompt satisfiability check, consumed coordinates, standing ledger
+   maintenance, run maps and provisional handouts. §0.1 lists the AP anchors, §17
+   points to them, §18 summarizes the run scope. Where this box and AP differ, AP wins.
 ```
 
 ---
@@ -96,6 +104,47 @@ Three divergences are **material**, not cosmetic:
 `git -C /home/agile/Projects/libretiles rev-parse HEAD:.ap`. If it is not
 `9c5cc44`, the numbers are stale — use the **heading text** as the durable key
 and re-count. Headings survive renumbering; line numbers do not.
+
+### 0.1 Measured after the pin — AP `d7023cf` (2026-11-08)
+
+Everything above and in §1–§15 stays indexed to `9c5cc44` and remains the
+historical record for that pin. This subsection only names what changed later.
+Measured on 2026-11-08 in:
+
+```text
+/Users/agile/Projects/ap           HEAD    d7023cf037f6d17885c3ede5c04812c61640da50 (= public main)
+/Users/agile/Projects/kronika/.ap  gitlink d7023cf… since Kronika 246c9f86b72e652cd36ed0d9f4e19e77f972df91
+```
+
+AP `d7023cf` adopted D-17/D-17b, D-19, D-20, D-21 and run-scoped orchestration
+under ADR-0026. The changed anchors are listed below; the anchor or heading is
+the durable key, and the line is the heading line at `d7023cf`:
+
+```text
+anchor or heading                              owner                       line  adopts
+AP.md#consumed-coordinates                     RF-19                        427  D-19 (blocked first exchange)
+AP.md#direct-write-report-persistence          RF-19                        495  D-17, D-17b
+AP.md Planning Budget and Expiry               Finite Convergence Contract  581  D-19 (sentence at 593-597)
+AP.md#orchestrator-session-scope               §3                           923  run-scoped orchestration
+AP.md#mutation-axes                            §5                          1384  D-20, D-17b
+AP.md#prompt-satisfiability-check              §7                          1813  D-19
+AP.md#standing-ledger-maintenance              §13                         2761  D-21
+AP.md#run-level-handouts                       §14                         2901  run maps, provisional handouts, D-13
+
+PROMPT_CONTRACTS.md  Mutation Axes Record                              441
+PROMPT_CONTRACTS.md  Blocked First Exchange Example                    699
+PROMPT_CONTRACTS.md  Cooperator Delivery and Trace Destination Record  872  (P1-P5 at 902-908)
+PROMPT_CONTRACTS.md  Run Map Record                                   2645
+PROMPT_CONTRACTS.md  Provisional Handout Marker                       2662
+PROMPT_CONTRACTS.md  Handout Revalidation Record                      2674
+AP_ORCHESTRATOR.md   Run-Scoped Orchestration                          544
+docs/adr/0026-run-scoped-orchestration-mutation-axes-and-direct-write-reports.md
+```
+
+File sizes at `d7023cf`: `AP.md` 3272 lines, `AP_ORCHESTRATOR.md` 594,
+`AP_WORKER.md` 341, `PROMPT_CONTRACTS.md` 2759. The same staleness rule applies:
+before quoting a line above, check `git -C <consumer> rev-parse HEAD:.ap`; if it
+is not `d7023cf`, use the anchor or heading and re-count.
 
 ---
 
@@ -346,7 +395,8 @@ So the first planning prompt of a whole is `01_planning_00.md`, not
 ```text
 archive the prompt and its ACTUAL outcome TOGETHER, only after the outcome exists
 in Git both files share one unique first-add commit
-the Worker WRITES its own report file to the exact trace path by default;
+the Worker WRITES its own report file by default — governing AP since d7023cf:
+  AP.md#direct-write-report-persistence (RF-19, :495-508); the pin above is silent;
   "the Worker never self-archives" means the Git first-add, not the file write
 an interruption companion is lawful ONLY when no terminal report exists, is
   written by an authorized non-Worker owner from safely known facts, and never
@@ -569,6 +619,24 @@ route, the prompt **names or activates it** as the canonical path, and listing
 project files as required reading is *not* that binding. Any alternate must be
 an explicit bounded deviation naming the unusable declared route, the exact
 alternate, rationale, evidence class, bounded authority, and stopping condition.
+
+**Added at AP `d7023cf` (ADR-0026); absent from the `9c5cc44` pin.** Every newly
+issued grant declares three mutation axes (`AP.md#mutation-axes`), spelled as
+in `PROMPT_CONTRACTS.md` Mutation Axes Record:
+
+```text
+Repository mutation: none | <exact repository paths>
+Host/remote mutation: none | <exact targets and operations>
+Trace persistence: none | direct-write <exact trace paths>
+```
+
+*Read-only* qualifies one axis, never the whole grant, and the Worker's own
+report is trace persistence. Before delivery, run the four comparisons of
+`AP.md#prompt-satisfiability-check` — validation and authority, routing,
+persistence, spelling — and check the delivery record against P1–P5 in
+`PROMPT_CONTRACTS.md` Cooperator Delivery and Trace Destination Record. A failed
+comparison is an issuance defect: correct the prompt before delivery. §17.5 is
+the measured short form.
 
 ---
 
@@ -800,7 +868,8 @@ any unclassified material remainder => unexplained-divergence, fail-closed,
 Items 1-12 are distilled from era 10's record (`PROJECT_CONTEXT.md` §9 and
 `10/00-ui-internationalization/99_closure.md` §8), where **nine of twenty-seven
 findings were caused by Orchestrator prompts, not Worker error.** Items 13-22 in
-§14.1 were measured later, in `13/00`.
+§14.1 were measured later, in `13/00`. Items 23-24 in §14.2 point to rules that
+AP `d7023cf` adopted; the heading keeps its original count as a durable key.
 
 ⚠ **Read this section before section 8.** Every item is a prompt defect that
 already happened, and eleven of the twenty-two are cheaper to avoid than to find.
@@ -895,6 +964,26 @@ These are additive, not a replacement. Full evidence in
    `13/00`: the lexicon audit's own docstring claims it mirrors a twelve-row probe table and its
    inventory covers FOUR slugs, so eight shipped variants are audited with no positive probe. A green
    number that does not mean what it claims is a first-class defect, not a cosmetic one.
+```
+
+### 14.2 Items 23-24 — pointers to AP `d7023cf`
+
+Both are governing AP rules now; the items only point to them. Evidence is in
+`AP_DEFECTS.md`.
+
+```text
+23 ⛔ "READ-ONLY" WITHOUT AXES, AND THE COURIER REPORT. A prompt that says "read-only, write no
+   file" while the Worker must persist its report leaves the chat as the only lawful report path,
+   and the Cooperator ferries it. MEASURED in Kronika era 01: the Cooperator created `03_report_00.md`
+   by hand, and the hand-made file began with his sentence before the report header. Declare the
+   three axes; the report is trace persistence; its default persister is the Worker.
+   (AP.md#mutation-axes · AP.md#direct-write-report-persistence · AP_DEFECTS D-17b, D-20)
+24 ⛔ A PRE-WRITTEN HANDOUT TRUSTED WITHOUT REVALIDATION. A provisional handout is written before its
+   whole opens and is frozen when it opens. Revalidate every material fact in Continuation Bootstrap
+   Stage 1 and write the handout revalidation record before the first Planner prompt; the handout
+   never selects a whole, fixes a design or grants authority. MEASURED in `13/00`: nine defects in a
+   handout that had already been declared PASS twice.
+   (AP.md#run-level-handouts · PROMPT_CONTRACTS.md Handout Revalidation Record · AP_DEFECTS D-13)
 ```
 
 ---
@@ -1021,7 +1110,7 @@ GLOSSARY.md        8 core roles · 36 planning/execution/evidence · 66 converge
 ## 16. Meta storage contract in four lines
 
 `/home/agile/meta/README.md` is storage and discovery policy only and grants no
-authority of any kind (`README.md:45-48`).
+authority of any kind (`README.md`, section "Notes, Handouts, and Closure").
 
 ```text
 projects/<project>/<archive-sequence>/<whole-sequence>-<whole-identity>/
@@ -1032,20 +1121,44 @@ meta_exchange_index = AP Worker exchange ordinal - 1 ; 00_handout.md is reserved
 
 Prompt and report contents are exact historical evidence. Path normalization does
 not rewrite them; old literal paths inside historical artifacts are preserved as
-historical text. The Worker writes its report file by default; the prompt/report
+historical text. The Worker writes its report file by default
+(`AP.md#direct-write-report-persistence` at AP `d7023cf`); the prompt/report
 pair is committed together only after the report exists; the Worker does not
 commit its own pair.
 
+Run-level local names, added for AP `d7023cf`. The Meta README owns the names;
+`AP.md#run-level-handouts` owns their meaning:
+
+```text
+projects/<project>/<archive-sequence>/00_RUN_MAP.md    run map of one development run;
+                                                       discovery-only, never authority
+<whole>/00_handout.md with `Handout status: provisional`
+                                                       provisional handout; frozen when its
+                                                       whole opens; it is not an exchange
+<whole>/00_notes.md                                    holds the handout revalidation record,
+                                                       written when a provisional handout is received
+```
+
+The notes semantics and the handout/closure numbering above are unchanged. A
+material rewrite of a provisional handout is a successor handout in that
+sequence, never an in-place edit.
+
 ---
 
-## 17. Additions measured after this pin — Kronika era 01 (2026-11-08)
+## 17. Kronika era 01 additions — adopted into AP `d7023cf` (ADR-0026)
 
-This section is outside the `9c5cc44` distillation. It records checks that the
-current pin (`73e20ef80b88700d5fcbc397cd8edd4fc425869f`) still does not make
-mechanical, measured in Kronika era 01. Treat them as Orchestrator advice until
-AP adopts them; the governing AP still wins.
+This section is outside the `9c5cc44` distillation. It was measured in Kronika
+era 01 against AP `73e20ef80b88700d5fcbc397cd8edd4fc425869f`, which did not
+make these checks mechanical. AP `d7023cf037f6d17885c3ede5c04812c61640da50`
+(ADR-0026, 2026-11-08) adopted them. Each subsection now opens with an
+**Adopted** pointer to the governing AP rule; the measurement text under it is
+kept as the evidence that motivated the rule. Where the measured advice and the
+adopted rule differ, the pointer says so, and the governing AP wins.
 
 ### 17.1 Validation–authority satisfiability
+
+**Adopted:** `AP.md#prompt-satisfiability-check`, comparison
+*Validation–authority* (`AP_DEFECTS.md` D-19).
 
 A prompt can require a validation command that its own negative authority
 forbids. Measured: the first Kronika Planner prompt prohibited "any NUC
@@ -1060,6 +1173,9 @@ forbidden command is an Orchestrator prompt defect, not a Worker failure.
 
 ### 17.2 Routing completeness
 
+**Adopted:** `AP.md#prompt-satisfiability-check`, comparison *Routing*
+(`AP_DEFECTS.md` D-19).
+
 Every identity/routing field must contain exactly one concrete value. No
 `<select: ...>`, `<selected route>`, `TBD`, or other skeleton placeholder may
 survive into an issued prompt. Command templates such as `<sha>` and
@@ -1069,6 +1185,17 @@ placeholder `<select: direct session dispatch by default; manual copy-paste on
 Cooperator opt-out>`.
 
 ### 17.3 Report author, report persister, and the direct-write default
+
+**Adopted:** `AP.md#direct-write-report-persistence` (RF-19), with
+`AP.md#mutation-axes` and the consistency rules P1–P5 in `PROMPT_CONTRACTS.md`
+Cooperator Delivery and Trace Destination Record (`AP_DEFECTS.md` D-17, D-17b).
+**Not adopted:** the `Report author` / `Report persister` /
+`Report persistence` split proposed below. AP keeps the existing
+`Report persistence owner` field and adds the `Trace persistence` axis.
+`in-session-only` corresponds to the relay case of P2, which needs an explicit
+Cooperator selection or a recorded missing capability. Under P1, "writes no
+other file" below means no file outside the paths that `Trace persistence`
+grants.
 
 The delivery record's `Report persistence owner` is ambiguous when a read-only
 Worker returns its terminal report in-session and the Orchestrator stores it.
@@ -1088,15 +1215,30 @@ read-only for the repository and host, not for its own trace artifact.
 
 ### 17.4 A blocked first exchange and the filename expectation
 
+**Adopted:** `AP.md#consumed-coordinates` (RF-19), the blocked-planning
+sentence in Planning Budget and Expiry, and `PROMPT_CONTRACTS.md` Blocked First
+Exchange Example (`AP_DEFECTS.md` D-19). The corrected initial Planner keeps
+`Planning cycle: initial` and names the blocked report as
+`Prior planning report`. **Corrected at adoption:** the last sentence of this
+subsection, as measured in era 01, said a true restart at `01/01` requires a new
+logical-whole identity; AP rejects that, and the sentence now states the AP rule.
+
 When the first `01/01` exchange is blocked by a prompt defect and its artifacts
 are withdrawn, AP coordinates are still consumed. The corrected fresh Planner
 is `02/01`, stored as `02_planning_00.md`, not the `01_planning_00.md` that the
 Cooperator may expect from the first-plan filename rule. State this explicitly
 when delivering the corrected prompt. The working tree keeps a session-`01`
-gap; Git history preserves the withdrawn pair. A true restart at `01/01`
-requires a new logical-whole identity and a new directory, not a rename.
+gap; Git history preserves the withdrawn pair. There is no restart at `01/01`
+for the same objective: a new logical-whole identity is lawful only for a
+materially changed objective, never as a coordinate-reset mechanism, and
+renaming the whole or opening a new directory to regain `01/01` is invalid.
 
 ### 17.5 The four-line pre-dispatch check
+
+**Adopted:** the four comparisons of `AP.md#prompt-satisfiability-check`
+(`AP_DEFECTS.md` D-19). In AP the *Persistence* comparison checks that the
+persistence owners, the three mutation axes, positive authority and the
+client's completion route agree; a failed comparison is an issuance defect.
 
 ```text
 VALIDATION–AUTHORITY  every required command has a named positive authority
@@ -1112,6 +1254,10 @@ the AP readiness review; they make its most expensive failures visible before a
 Worker pays for them.
 
 ### 17.6 Report persistence is the Worker's job
+
+**Adopted:** `AP.md#direct-write-report-persistence`; Worker steps in
+`AP_WORKER.md` Reporting (`AP_DEFECTS.md` D-17, D-17b). `in-session-only` below
+corresponds to relay under P2, as §17.3 explains.
 
 Measured in Kronika era 01: the Planner prompt told the Worker to return its
 report in-session and to write no file. The Cooperator had to direct the
@@ -1134,6 +1280,13 @@ default and must not be inferred from "read-only".
 
 ### 17.7 Three read-only axes
 
+**Adopted:** `AP.md#mutation-axes`; spelling in `PROMPT_CONTRACTS.md` Mutation
+Axes Record (`AP_DEFECTS.md` D-20). **Spelling differs from the measured
+draft below:** AP's `Host/remote mutation` takes
+`<exact targets and operations>`, and `Trace persistence` takes
+`none | direct-write <exact trace paths>`; `in-session-only` is not a value
+(it is relay, P2). Copy the current spelling from §8, not from this block.
+
 "Read-only" is not one authority. Keep three axes separate in every prompt and
 delivery record:
 
@@ -1150,6 +1303,15 @@ exceptional Cooperator choice. A Worker that is read-only for the repository is
 not thereby forbidden to write its own report.
 
 ### 17.8 Standing AP-maintenance instruction
+
+**Adopted (consumer-neutral form):** `AP.md#standing-ledger-maintenance` (§13,
+`AP_DEFECTS.md` D-21). Maintaining the protocol and tools a project depends on
+is ordinary work. Every Orchestrator revalidates a declared upgrade ledger
+during Continuation Bootstrap Stage 1, and a whole that changes the ledger's
+target records a disposition for every active entry before closure. Declared
+storage stays in the consuming repository. The Meta-local instruction below
+stays Meta consumer policy for `AP_DEFECTS.md` and this file; `AP_DEFECTS.md` §7
+records how AP `d7023cf` disposed of every entry.
 
 AP is a living protocol, maintained in parallel with normal project work. It is
 not a separate logical whole. Every Orchestrator should:
@@ -1171,3 +1333,47 @@ recorded.
 This instruction is consumer policy, not AP semantics. It can be adopted
 without a new AP release. The canonical AP repository still needs the
 Cooperator's authority for any change.
+
+---
+
+## 18. Run-scoped orchestration in one page — AP `d7023cf` (ADR-0026)
+
+Pointers only; nothing here is new semantics. Absent from the `9c5cc44` pin and
+from `73e20ef`.
+
+```text
+WHAT IT IS      Orchestrator session scope `development-run`; "Master Orchestrator" is only
+                its explanatory name. A routing label like an access profile: NOT a fourth
+                role, grants no authority, never selects, plans, accepts or closes a whole.
+                Default scope is `logical-whole`.                AP.md#orchestrator-session-scope
+DECLARE IT      Orchestrator session scope: logical-whole | development-run
+                Development run identity: <stable project-local identifier> | not-applicable
+                A missing scope field in a historical handout means `logical-whole`.
+                                                    PROMPT_CONTRACTS.md (fields before Run Map Record)
+RUN MAP         one per run; discovery and decision support, not a roadmap, plan or
+                authority; `Run map authority: discovery-only`; entry statuses
+                provisional | handed-off | active | closed | superseded | dropped.
+                                      AP.md#run-level-handouts · PROMPT_CONTRACTS.md Run Map Record
+PROVISIONAL     `Handout status: provisional`; carries questions, evidence, risks and
+HANDOUT         constraints, never the first Planner's answers; never satisfies the
+                initial-Planner requirement; frozen once its whole opens; a material rewrite
+                is a successor handout.        PROMPT_CONTRACTS.md Provisional Handout Marker
+REVALIDATION    the receiving whole's Orchestrator revalidates every material fact in
+                Stage 1 and records the handout revalidation record, including
+                `Not revalidated`, before the first Planner prompt.
+                                                  PROMPT_CONTRACTS.md Handout Revalidation Record
+STEPS 1-8       objective and exclusions → one run map → provisional handouts on a rolling
+                horizon → hand off by exact locator plus a Fresh Orchestrator Restoration
+                prompt → prefer a fresh per-whole Orchestrator → update status after each
+                closure → capture friction → freeze the run map at run closure.
+                                                  AP_ORCHESTRATOR.md Run-Scoped Orchestration
+⛔ STOP          a prompt, acceptance or closure for a whole that another Orchestrator
+                instance coordinates; a stale run map informing a recommendation.
+                                                  AP_ORCHESTRATOR.md Run-Scoped Orchestration
+```
+
+The Meta local names for the run map, the provisional handout and the
+revalidation record are in §16 and in the Meta `README.md`. ADR-0026, section
+Rejected Alternatives, rejects a fourth persistent role, an access-profile
+value, "Master" as the structural value and a numeric rolling horizon, and
+defers a new prompt-engineering pattern until recurring evidence exists.

@@ -22,6 +22,10 @@ Revised           2026-11-08, D-17b, D-19, D-20 and D-21 added by the ORCHESTRAT
                   (73e20ef80b88700d5fcbc397cd8edd4fc425869f).
                   The original eighteen entries are unchanged; the new entries are
                   measured additions, not rewrites of the Libre Tiles evidence.
+Revised           2026-11-08, after AP d7023cf037f6d17885c3ede5c04812c61640da50 (ADR-0026)
+                  was published: the §0.0 restart sentence was corrected and §7, the
+                  disposition record of every entry, was appended. The D-01..D-21, D-03b
+                  and D-17b bodies are unchanged.
 Defect count      TWENTY-ONE, plus D-03b and D-17b.
 Written by        the ORCHESTRATOR of Libre Tiles logical wholes 13/00 and 15/00
 Governing AP pin  9c5cc44f8b6c92dd56ad2427d13223d7d59c5656   (.ap gitlink of /home/agile/Projects/libretiles)
@@ -75,8 +79,10 @@ failure.
 `01/01` exchange is blocked by a prompt defect and its artifacts are withdrawn,
 the coordinates are still consumed. The next fresh session is `02/01`; the
 Cooperator may expect `01_planning_00.md` and must be told why the file is
-`02_planning_00.md`. A true restart at `01/01` requires a new logical-whole
-identity.
+`02_planning_00.md`. A new logical-whole identity is lawful only for a
+materially changed objective; it is not a coordinate-reset mechanism, and
+renaming a whole to regain `01/01` for the same objective is invalid
+(`AP.md#consumed-coordinates` at AP `d7023cf`; corrected 2026-11-08).
 
 Read `AP_DESTILLED.md` for the operating shape and this file for the measured
 cost of not following it. The governing AP remains the only semantic authority.
@@ -1865,3 +1871,156 @@ and updates `AP_DESTILLED.md` in the same task.
 - Do not turn "direct-write" into permission to write arbitrary files.
 - Do not require a full suite or a browser for a report write.
 - Do not let the Cooperator become the courier again.
+
+---
+
+## 7. Disposition record — AP d7023cf (ADR-0026)
+
+```text
+AP commit       d7023cf037f6d17885c3ede5c04812c61640da50 (public main; ADR-0026)
+Acceptance      fresh independent re-audit 04/01, acceptance-PASS
+Consumer pin    Kronika .ap gitlink d7023cf since Kronika 246c9f86b72e652cd36ed0d9f4e19e77f972df91
+Source          the approved plan, section F, in
+                projects/ap/10/00-master-orchestrator-and-report-persistence/01_report_00.md;
+                AP owners re-measured at d7023cf on 2026-11-08
+Entries         23: D-01..D-21 plus D-03b and D-17b; none dropped
+```
+
+This section is evidence, not task authority. It records how the AP update of
+2026-11-08 disposed of every open entry, as §0.0 and §6.1 require. The bodies of
+D-01..D-21, D-03b and D-17b above are unchanged: they remain the measurements as
+written under their own pins. Where a body proposes a field or wording that AP
+adopted in a different form, the entry below says so; the body is not
+rewritten. Evidence names the AP owner at `73e20ef` (the plan's baseline) and,
+for adopted entries, at `d7023cf`. Anchors and headings are the durable keys;
+line numbers are at `d7023cf`.
+
+```text
+already-implemented  8   D-01 D-03 D-06 D-07 D-10 D-14 D-15 D-18
+accept               6   D-13 D-17 D-17b D-19 D-20 D-21   (all adopted at d7023cf)
+carry-forward        5   D-02 D-03b D-04 D-11 D-12
+reject               3   D-08 D-09 D-16
+superseded           1   D-05
+total               23
+```
+
+- **D-01 — already-implemented.**
+  - Owner: AP.
+  - AP owner: §17 Compact Communication, "Every terminal report includes compact Orchestration critique" with MEASURED and LEAD (`AP.md:3086`; `PROMPT_CONTRACTS.md` Worker Report Header).
+  - Evidence: present at `73e20ef` (ADR-0023); unchanged by ADR-0026.
+  - Proposed change: none.
+- **D-02 — carry-forward.**
+  - Owner: a future AP whole selected by the Cooperator.
+  - Reason: out of scope for this update; partial coverage exists.
+  - Evidence: `PROMPT_CONTRACTS.md` "Summarize command execution. Include full output only for failures…"; ADR-0023 rejected a universal word cap (Alternatives and Dispositions).
+  - Proposed change: none now.
+- **D-03 — already-implemented.**
+  - Owner: AP.
+  - AP owner: §12 Validation, "Determine project-gate applicability before prompt issuance" and "Do not repeat a broad check without relevant candidate/environment change, failure, or a named unresolved concern" (`AP.md:2422-2426`).
+  - Evidence: present at `73e20ef` (ADR-0017, ADR-0023).
+  - Proposed change: none.
+- **D-03b — carry-forward (consumer-owned).**
+  - Owner: the consuming project's rules.
+  - Reason: the scope of a project standing condition belongs to the project.
+  - Evidence: §12 requires determining project-gate applicability (`AP.md:2422-2423`).
+  - Proposed change: none in AP.
+- **D-04 — carry-forward.**
+  - Owner: a future AP whole.
+  - Reason: the coverage rule exists; the proposed `Enumeration status` field has one witness so far.
+  - Evidence: §14 "Copied inventories identify their coverage; a search pattern alone proves no universal absence" (`AP.md:2870-2871`); ADR-0023 "Historical search inventories establish their stated coverage, not universal absence".
+  - Proposed change: none now.
+- **D-05 — superseded.**
+  - Owner: AP.
+  - AP owner: §3 Orchestrator and ChatOrchestrator access profiles and RF-02's direct-versus-Worker boundary; at `d7023cf` also the session scope (`AP.md#orchestrator-session-scope`), which adds no role.
+  - Evidence: access profiles at `73e20ef` (ADR-0020, ADR-0023).
+  - Proposed change: none in AP. Kronika `AGENTS.md` still uses the historical label "Agent Orchestrator"; that is consumer lag carried forward to Kronika (plan MEASURED-9).
+- **D-06 — already-implemented.**
+  - Owner: AP.
+  - AP owner: §3, the Cooperator selects manual delivery or subagent/session dispatch once around the first Planner; dispatch delivers one complete prompt into one concrete session, and inherited context never proves independence (`AP.md:941-959`).
+  - Evidence: present at `73e20ef` (ADR-0019, ADR-0023, and ADR-0025 for full Orchestrators with authorized dispatch).
+  - Proposed change: none.
+- **D-07 — already-implemented.**
+  - Owner: AP.
+  - AP owner: the Per-Role Minimum-Reading Spine (`AP.md:63`); P19 Dense Grant by Citation (`PROMPT_ENGINEERING_PATTERNS.md`); Semantic Authority, where a conflict stops.
+  - Evidence: present at `73e20ef` (ADR-0020, ADR-0021).
+  - Proposed change: none.
+- **D-08 — reject.**
+  - Owner: AP.
+  - Reason: ADR-0023 rejected a protocol rename, and the closure precedence already exists: "identification of exact missing evidence takes precedence over more analysis" (`AP.md:1124`).
+  - Evidence: ADR-0023, Alternatives and Dispositions.
+  - Proposed change: none.
+- **D-09 — reject.**
+  - Owner: AP.
+  - Reason: ADR-0023 rejected a mandatory overhead record for lack of demonstrated need.
+  - Evidence: ADR-0023, Alternatives and Dispositions.
+  - Proposed change: none.
+- **D-10 — already-implemented.**
+  - Owner: AP.
+  - AP owner: RF-05 (fresh is not independent); the Fresh Evidence Probe and Diagnostic profiles.
+  - Evidence: ADR-0023 "Self-review remains useful without becoming independent acceptance".
+  - Proposed change: none.
+- **D-11 — carry-forward (deferred).**
+  - Owner: ADR-0023's deferral.
+  - Reason: concurrent effects and changed assumptions need safe re-gating; the satisfiability check at `d7023cf` reduces the need.
+  - Evidence: ADR-0023 "A generic in-band additive amendment … is deferred … use a complete compact renewed grant to the healthy current Worker instead".
+  - Proposed change: none.
+- **D-12 — carry-forward.**
+  - Owner: a future AP whole, together with D-02.
+  - Reason: the same family as D-02.
+  - Evidence: the tier owners in RF-07.
+  - Proposed change: none now.
+- **D-13 — accept (partially implemented at `73e20ef`); adopted at `d7023cf`.**
+  - Owner: this whole, `00-master-orchestrator-and-report-persistence`; delivered into AP.
+  - AP owner: §14 handout readiness, "Copied inventories identify their coverage" (`AP.md:2870`), plus the handout revalidation record of `AP.md#run-level-handouts` (`AP.md:2933-2941`) and its `Not revalidated` row (`PROMPT_CONTRACTS.md` Handout Revalidation Record).
+  - Evidence: at `73e20ef`, §14 readiness only; at `d7023cf`, a provisional handout must be revalidated fact by fact before the first Planner prompt. The full Handout Integrity Record proposed in the body was not adopted.
+  - Proposed change: implemented as the revalidation record with its `Not revalidated` row; no further change in this update.
+- **D-14 — already-implemented.**
+  - Owner: AP.
+  - AP owner: §3 Communication Routing, "A response such as A may select a clearly bounded option in established context. Continue resumes a clearly established next step within existing authority; it neither renews an expired Worker grant nor creates unexpressed scope" (`AP.md:1250-1252`).
+  - Evidence: ADR-0023 decision 13.
+  - Proposed change: none.
+- **D-15 — already-implemented (semantics).**
+  - Owner: AP; local file naming belongs to the trace's own documentation (the Meta README handoff/closure sequence).
+  - AP owner: §14 predecessors and supersession, "Newer time or filename never automatically supersedes accepted decisions" (`AP.md:2869`); at `d7023cf` a material rewrite of a provisional handout is a successor handout (`AP.md:2937-2939`).
+  - Evidence: ADR-0023; ADR-0026 decision 3.
+  - Proposed change: the run-level successor rule, implemented at `d7023cf`.
+- **D-16 — reject.**
+  - Owner: AP.
+  - Reason: ADR-0023 rejected a numeric tier-spread split.
+  - Evidence: ADR-0023, Alternatives and Dispositions.
+  - Proposed change: none.
+- **D-17 — accept; adopted at `d7023cf`.**
+  - Owner: this whole; delivered into AP.
+  - AP owner: RF-19 `AP.md#direct-write-report-persistence` (`AP.md:495-508`): when an activated delivery record names a report destination and the client permits the write, the default persister is `Report persistence owner: assigned WORKER` with matching `Trace persistence`; a relay needs an explicit Cooperator selection or a recorded missing capability. Worker steps: `AP_WORKER.md` Reporting.
+  - Evidence: at `73e20ef`, RF-19 permitted capable persistence but set no default (ADR-0023 decisions 6 and 7).
+  - Proposed change: the direct-write default, implemented. The body's Meta-specific path is adopted in consumer-neutral form: the destination comes from the delivery record.
+- **D-17b — accept; adopted at `d7023cf`.**
+  - Owner: this whole; delivered into AP.
+  - AP owner: the RF-19 default plus §5 `AP.md#mutation-axes` (`AP.md:1384-1400`) and the consistency rules P1–P5 (`PROMPT_CONTRACTS.md` Cooperator Delivery and Trace Destination Record).
+  - Evidence: as D-17.
+  - Proposed change: the default plus the mutation axes, implemented. Not adopted: the body's `Report persistence: direct-write <path> | in-session-only` field. The existing `Report persistence owner` plus `Trace persistence` express it, and `in-session-only` corresponds to the relay case of P2.
+- **D-18 — already-implemented.**
+  - Owner: AP.
+  - AP owner: the §5 data-decision check, "Development status alone authorizes no deletion" (`AP.md:1345`).
+  - Evidence: ADR-0023 "Development status does not authorize data purging".
+  - Proposed change: none. The body's `clean-slate-permitted` default is rejected; an accepted Cooperator purge decision is reused instead (`AP.md:1340-1343`).
+- **D-19 — accept; adopted at `d7023cf`.**
+  - Owner: this whole; delivered into AP.
+  - AP owner: §7 `AP.md#prompt-satisfiability-check` (`AP.md:1813-1827`); the blocked-first-exchange part in RF-19 `AP.md#consumed-coordinates` (`AP.md:427-442`) and Planning Budget and Expiry (`AP.md:593-597`); example `PROMPT_CONTRACTS.md` Blocked First Exchange Example.
+  - Evidence: at `73e20ef`, §7 "every action fits the grant" only (partial).
+  - Proposed change: the four comparisons and consumed coordinates, implemented. Not adopted: the `Report author` / `Report persister` split in comparison 3 (the persistence owners, the mutation axes and the completion route are compared instead), and any attestation field or checker (ADR-0026, Rejected Alternatives).
+- **D-20 — accept; adopted at `d7023cf`.**
+  - Owner: this whole; delivered into AP.
+  - AP owner: §5 `AP.md#mutation-axes`; spelling `PROMPT_CONTRACTS.md` Mutation Axes Record.
+  - Evidence: at `73e20ef`, side-effect classes and probe mutation domains only (partial).
+  - Proposed change: the three axes with *read-only* per axis, implemented. The adopted `Trace persistence` values are `none | direct-write <exact trace paths>`; `in-session-only` is not a value (relay, P2).
+- **D-21 — accept (consumer-neutral form); adopted at `d7023cf`.**
+  - Owner: this whole; delivered into AP.
+  - AP owner: §13 `AP.md#standing-ledger-maintenance` (`AP.md:2761-2777`), with the RF-09 capsule pointing to it.
+  - Evidence: at `73e20ef`, the RF-09 ledger and Stage 1 discovery only (partial).
+  - Proposed change: the standing duty, implemented. Declared ledger storage stays in the consuming repository (Cooperator decision CD-2, option K1). This file stays Cooperator-owned cross-project evidence that a task may cite; it never becomes AP authority. The body's project-owned `AGENTS.md` pointer is consumer work and was not part of this update.
+
+The §6 checklist above is historical. Its §6.2 field block (`Report author`,
+`Report persister`, `Report persistence`, `in-session-only`) was not adopted, as
+D-17b and D-20 record, and its §6.3 restart bullet is superseded by the corrected
+§0.0 sentence and `AP.md#consumed-coordinates`.
