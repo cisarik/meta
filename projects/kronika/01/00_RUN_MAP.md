@@ -22,7 +22,7 @@ Run objective: after the closed UX refresh, deliver the bounded household-produc
 Run map authority: discovery-only
 Run entry: 00 | ux-refresh-acceptance-and-promotion | closed | depends on: none | handout: /Users/agile/meta/projects/kronika/01/00-ux-refresh-acceptance-and-promotion/00_handout.md | evidence: Closed-by-ORCHESTRATOR on 2026-11-08 with Cooperator-declared production acceptance at 7ee4684 after E3 acceptance-PASS at cb5fa4d, per the closure record in that whole's 00_notes.md.
 Run entry: 01 | timeline-and-history-media-thumbnails | closed | depends on: ux-refresh-acceptance-and-promotion | handout: /Users/agile/meta/projects/kronika/01/01-timeline-and-history-media-thumbnails/00_handout.md | evidence: Closed-by-ORCHESTRATOR on 2026-11-10 with Cooperator-declared production acceptance for the History Questions-only correction at e6b26eb; E2, publication and deployment PASS; original Timeline-membership scope superseded by closed entry 09; notes frozen.
-Run entry: 02 | upload-flow-polish | active | depends on: timeline-and-history-media-thumbnails | handout: /Users/agile/meta/projects/kronika/01/02-upload-flow-polish/00_handout.md | evidence: Selected by the COOPERATOR on 2026-11-09 and opened by the run-scoped Orchestrator on 2026-11-10 after entries 01, 09 and 10 closed; handout revalidated against Kronika 8646146 and AP d7023cf, with stale predecessor/NUC/History facts corrected in 00_notes.md; first Planner report 01_report_00.md received and reconciled; Cooperator approved the decision-complete plan with per-dialog default-off auto-start, companion progress in the existing hosted dialog, a nine-path UI/test/docs allowlist and no API/auth/schema/protocol change; implementation prompt 02_implementation_00.md prepared for fresh session 02/01; its delivered report 02_report_00.md is a byte-identical copy of the planning report, with no implementation commit at 8646146, so the session is rejected as a delivery mismatch and preserved; corrected implementation prompt 03_implementation_00.md prepared for fresh session 03/01 with report 03_report_00.md; implementation, acceptance, publication, deployment and rendered acceptance pending.
+Run entry: 02 | upload-flow-polish | closed | depends on: timeline-and-history-media-thumbnails | handout: /Users/agile/meta/projects/kronika/01/02-upload-flow-polish/00_handout.md | evidence: Selected by the COOPERATOR on 2026-11-09 and opened by the run-scoped Orchestrator on 2026-11-10 after entries 01, 09 and 10 closed; handout revalidated against Kronika 8646146 and AP d7023cf, with stale predecessor/NUC/History facts corrected in 00_notes.md; first Planner report 01_report_00.md received and reconciled; Cooperator approved the decision-complete plan with per-dialog default-off auto-start, companion progress in the existing hosted dialog, a nine-path UI/test/docs allowlist and no API/auth/schema/protocol change; implementation prompt 02_implementation_00.md prepared for fresh session 02/01; its delivered report 02_report_00.md is a byte-identical copy of the planning report, with no implementation commit at 8646146, so the session is rejected as a delivery mismatch and preserved; corrected implementation prompt 03_implementation_00.md delivered to fresh session 03/01, which returned implementation-PASS at local 076c016 (parent 8646146) across exactly the nine allowlisted paths, independently re-verified with 277 selected Python and 285 selected Node tests; fresh E2 acceptance prompt 04_acceptance_00.md delivered; independent acceptance-PASS at 076c016 with all A-G claims, 277 selected Python and 285 selected Node tests; publication-PASS on public main at 076c016; NUC deployment-PASS at 076c016; Cooperator rendered the upload flow PASS except the opt-in checkbox and manual Start control, and decided that auto-start is unconditional with no checkbox and no in-dialog Start button while the header/companion Upload controls stay; correction implementation-PASS at local 0a96fc1 (parent 076c016) across seven allowlisted paths, independently re-verified with 277 selected Python and 285 selected Node tests; full-fresh E2 re-acceptance PASS at 0a96fc1 with all A-G claims, 277 selected Python and 285 selected Node tests; publication-PASS on public main at 0a96fc1; NUC reachability restored and deployment-PASS at 0a96fc1 with active/web 0a96fc1, capture unchanged, service active, database revision 0035 and backup restore-readiness ready; deployed shell has no checkbox, Start button or uploadAutoStart state; terminal sudo -K run; Cooperator rendered upload flow PASS at 0a96fc1 and then directed a bounded post-acceptance cover UX correction (move Choose cover to Edit, brain Analyze icon, grey Choose cover style, automatic frame preview on open/slider release, remove Preview frame); cover correction implementation-PASS at local e64f2b0 (parent 0a96fc1) across six allowlisted UI/test paths, Orchestrator-verified with 222 selected Python and 75 selected Node tests (1 gated browser test skipped); publication-PASS on public main at e64f2b0; NUC deployment-PASS at e64f2b0 with active/web e64f2b0, capture unchanged, service active, database revision 0035 and backup restore-readiness ready; deployed shell has the metadata Choose cover and no details cover or Preview-frame control; terminal sudo -K run; Cooperator declared the deployed e64f2b0 cover flow PASS; closed-by-ORCHESTRATOR on 2026-11-10 with production acceptance; notes frozen.
 Run entry: 03 | companion-download-notifications | provisional | depends on: upload-flow-polish | handout: /Users/agile/meta/projects/kronika/01/03-companion-download-notifications/00_handout.md | evidence: Proposed in the closed 00 handout §9.2 to surface completed X/YouTube downloads in the companion side-panel history and toolbar badge, reusing the existing own-history and request-detail read paths.
 Run entry: 04 | household-onboarding | provisional | depends on: companion-download-notifications | handout: /Users/agile/meta/projects/kronika/01/04-household-onboarding/00_handout.md | evidence: Proposed in the closed 00 handout §9.2 as a first-run explainer of roles, privacy and sharing for ordinary members plus a plain-language install guide, without changing the identity or authorization model.
 Run entry: 05 | humanized-error-copy | provisional | depends on: household-onboarding | handout: /Users/agile/meta/projects/kronika/01/05-humanized-error-copy/00_handout.md | evidence: Proposed in the closed 00 handout §9.2 to replace raw user-facing codes such as http_403 with actionable text after an inventory, keeping machine codes for diagnostics.
@@ -366,3 +366,92 @@ wholes of AP run 10, whose only whole is
   genuinely fresh session 03/01 with baseline `8646146`, the same accepted plan
   and nine-path allowlist, and report `03_report_00.md`. Implementation,
   acceptance, publication, deployment and rendered acceptance remain pending.
+- **2026-11-10 — entry 02 implementation PASS; E2 acceptance prepared.** Fresh
+  session 03/01 returned implementation-PASS at local `076c016` (parent
+  `8646146`) across exactly the nine allowlisted paths: opt-in per-dialog
+  default-off auto-start, existing capability/transfer path, preserved
+  administrator duplicate review and ordinary privacy, replacement/ownership
+  guards, full-offset Resume without PATCH, scoped presentation and updated
+  tests/docs. The Orchestrator independently re-ran the gate and selected
+  suites: 277 Python and 285 Node tests passed; the worktree is clean and public
+  `main` remains `8646146`. Fresh E2 acceptance prompt `04_acceptance_00.md` is
+  prepared for session 04/01; report `04_report_00.md`. Acceptance, publication,
+  deployment and rendered acceptance remain pending.
+- **2026-11-10 — entry 02 acceptance and publication PASS; NUC pending sudo.**
+  Fresh session 04/01 returned acceptance-PASS at
+  `076c01658f36f38cb9c8b5a3b4b098d774767616` with all A-G claims PASS, 277
+  selected Python tests and 285 selected Node tests. The accepted candidate was
+  published normally (`8646146..076c016`); direct public-ref readback matches
+  local `main`. The Cooperator refreshed the sudo timestamp and the canonical
+  helper deployed `076c016`; post-deploy status reports active/web `076c016`,
+  capture unchanged, service active, database revision `0035` and backup
+  restore-readiness ready. Terminal `sudo -K` was run. The Cooperator's rendered
+  upload-flow acceptance is the only pending closure input.
+- **2026-11-10 — entry 02 correction PASS; full-fresh re-acceptance prepared.**
+  The Cooperator rendered `076c016` PASS except the opt-in checkbox and manual
+  Start control, and decided that upload start is unconditional with no
+  checkbox and no in-dialog Start button; the header/companion Upload controls
+  remain and explicit Resume stays for recovered/paused work. Fresh session
+  05/01 returned implementation-PASS at local `0a96fc1` (parent `076c016`)
+  across seven allowlisted paths: controls and state removed, permitted
+  selection/drop starts one upload, tests and SPEC/DEVELOPMENT updated, and all
+  other upload behavior preserved. The Orchestrator independently re-ran the
+  gate and selected suites: 277 Python and 285 Node tests passed; the worktree
+  is clean and public `main` remains `076c016`. Full-fresh E2 re-acceptance
+  prompt `06_acceptance_00.md` is prepared for session 06/01; report
+  `06_report_00.md`. Final acceptance, publication, deployment and rendered
+  acceptance remain pending.
+- **2026-11-10 — entry 02 re-acceptance and publication PASS; NUC unreachable.**
+  Fresh session 06/01 returned full-fresh acceptance-PASS at
+  `0a96fc18b49191a32e7f482c4e881ad714db094a` with all A-G claims PASS, 277
+  selected Python tests and 285 selected Node tests. The accepted correction was
+  published normally (`076c016..0a96fc1`); direct public-ref readback matches
+  local `main`. NUC deployment is blocked because two bounded SSH connections to
+  `framenest-nuc.tail247768.ts.net:22` timed out; the host was expected to remain
+  at `076c016` until reachability was restored.
+- **2026-11-10 — entry 02 re-acceptance deployment PASS; rendered pending.**
+  The Cooperator restored NUC reachability and refreshed sudo. The canonical
+  helper deployed `0a96fc1`; post-deploy status reports active/web `0a96fc1`,
+  capture unchanged, service active, database revision `0035` and backup
+  restore-readiness ready. Deployed-shell checks report no checkbox, no Start
+  button and no `uploadAutoStart`; `uploadDialogIsOpen` remains. Terminal
+  `sudo -K` was run. The Cooperator's rendered re-acceptance of unconditional
+  start is the only pending closure input.
+- **2026-11-10 — entry 02 upload flow rendered PASS; bounded cover UX fix
+  opened.** The Cooperator declared the deployed `0a96fc1` upload flow PASS:
+  no checkbox or Start control, automatic picker/drop start, progress,
+  replacement lock, duplicate behavior, pause/resume/cancel, reopen, companion
+  and narrow layout accepted. He then found a separate cover-authoring UX issue
+  and explicitly directed a bounded post-acceptance correction, not a new
+  planning whole: move **Choose cover** from Details to the Edit footer next to
+  **Analyze by AI**, use a brain icon for Analyze, give Choose cover a slightly
+  grey Analyze-style surface, remove **Preview frame**, show the first frame on
+  open and load the selected frame automatically after slider release/±250 ms.
+  Prompt `07_correction_00.md` is prepared for fresh session 07/01 with the
+  six-path UI/test allowlist and report `07_report_00.md`. Whole 02 remains
+  active until the cover rendered PASS.
+- **2026-11-10 — entry 02 cover correction PASS and published; NUC pending
+  sudo.** Fresh session 07/01 returned implementation-PASS at local
+  `e64f2b0` (parent `0a96fc1`) across six UI/test paths: Choose cover moved from
+  Details to the Edit footer after Analyze by AI, brain Analyze icon, grey
+  Choose-cover style, Preview-frame button removed, first-frame preview on open
+  and automatic preview on slider release/±250 ms, with explicit Set as cover
+  preserved. The Orchestrator re-ran the gate and selected suites: 222 Python
+  and 75 Node tests passed, with the gated browser evidence test skipped; the
+  worktree is clean and no API/auth/schema change was found. The correction was
+  published normally (`0a96fc1..e64f2b0`); direct public-ref readback matches
+  local `main`. The Cooperator refreshed sudo and the canonical helper deployed
+  `e64f2b0`; post-deploy status reports active/web `e64f2b0`, capture unchanged,
+  service active, database revision `0035` and backup restore-readiness ready.
+  Deployed-shell checks confirm the metadata Choose cover and the absence of
+  the details cover and Preview-frame controls. Terminal `sudo -K` was run.
+  Rendered cover acceptance remains the final closure input.
+- **2026-11-10 — entry 02 rendered cover PASS and closed.** The Cooperator
+  declared the deployed `e64f2b0` cover flow PASS: Choose cover moved to the
+  Edit footer, brain Analyze icon, grey Choose-cover style, Preview-frame
+  control removed, automatic first-frame preview on open, slider-release and
+  ±250 ms preview, explicit Set/replace cover, Gallery cover and narrow layout
+  accepted. Together with the upload-flow PASS at `0a96fc1`, the whole is
+  production-accepted; notes are frozen and the run-map entry is `closed`.
+  The run remains open for the Cooperator's later selection among the
+  provisional entries; the deferred AP Playwright MCP whole remains separate.
