@@ -766,6 +766,118 @@ AP_DEFECTS D-21             the Master is a natural carrier of the standing
 
 ---
 
+## 8. Browser MCP evidence — Workers produce rendered screenshots and interactions, not only static reads
+
+```text
+STATUS   proposed, 2026-11-10, by the COOPERATOR
+OWNER    COOPERATOR (protocol design is his, RF-01)
+PIN      measured against AP d7023cf; canonical AP checkout
+         /Users/agile/Projects/ap; consumer Kronika .ap d7023cf
+COST     browser capability and MCP availability are environment-dependent;
+         screenshots and DOM/console/network evidence add trace volume, cleanup
+         and redaction work; flaky browser state can create false failures; a
+         screenshot can look authoritative while proving less than it seems.
+OPEN     exact MCP server identity/version and capability handshake; which
+         prompt fields carry browser authority; where rendered evidence lives
+         and how long it is retained; how screenshots are redacted and marked
+         non-secret; how Workers prove the page under test is the exact
+         candidate; whether the Orchestrator or a fresh auditor owns rendered
+         evidence; how to stop honestly when the MCP or browser is unavailable.
+```
+
+### 8.1 The measured gap
+
+The COOPERATOR has Playwright MCP and Chrome installed and has explicitly
+explained to Orchestrators and Workers that they should use the browser to open
+the running application, click the relevant controls, and take screenshots for
+verification and testing. In practice the current work still relied on static
+source/test inspection and on the COOPERATOR's own rendered acceptance; Workers
+did not use the available browser evidence route. The capability existed, but AP
+did not make it a declared, bounded, expected part of a UI Worker's evidence.
+
+That is a protocol gap, not a Worker failure. A route that is only mentioned in
+chat is ambient convenience. Under RF-06/RF-16 it is not a durable, declared
+capability, and an Orchestrator cannot rely on it or audit whether it was used.
+
+### 8.2 The proposal
+
+Add an explicit **browser-evidence route** to AP without creating a second
+semantic owner or a new role. At minimum:
+
+- **Capability handshake.** The Worker prompt names the available MCP server /
+  browser capability, the exact application origin or local URL, the identity
+  or fixture the Worker may use, and the allowed interactions. Availability is
+  capability context, never authority.
+- **Authority split.** Browser authority is separate from repository, host and
+  trace mutation. A read-only UI task can open the page, click, type into
+  non-secret test fields, take screenshots, read the accessibility tree, console
+  and network metadata, and write only its exact trace evidence. It cannot read
+  browser profiles, cookies, tokens, credential stores, unrelated tabs or
+  history, and cannot mutate the application or host without a separate grant.
+- **Evidence set.** The report should carry the exact candidate identity, URL
+  and viewport, screenshots for the claimed states, interaction steps, DOM or
+  accessibility observations, console/network errors relevant to the claim, and
+  the browser/MCP version or capability observation. Screenshots are evidence,
+  not acceptance; the COOPERATOR still owns subjective rendered acceptance.
+- **Prompt contract.** The existing Common Worker Task Fields and Browser Stall
+  Guard/Amended Expectation records should be extended or pointed to for the
+  exact fields. Do not add a parallel browser contract when an existing owner can
+  carry the requirement. The prompt must state when browser evidence is
+  required, optional, or unavailable, and must stop rather than fabricate
+  screenshots.
+- **Artifact lifecycle and privacy.** Rendered evidence goes to the activated
+  trace with exact filenames, retention and cleanup. It must be public-safe:
+  no secrets, private media filenames, host identifiers, cookies, tokens or
+  private network values. Redaction is verified before the report is terminal.
+- **Testing and acceptance.** A fresh auditor may use rendered evidence, but
+  must independently establish the candidate and the page identity. The
+  Cooperator's rendered acceptance remains separate. A screenshot cannot
+  substitute for a missing authorization test or for the Cooperator's verdict.
+- **Fallback.** If the MCP server, browser, network route or test identity is
+  unavailable, the Worker records the exact missing capability and either uses
+  the declared fallback or stops; it does not silently return to static-only
+  claims, invent a screenshot, or treat an ambient browser as authority.
+
+### 8.3 Why this is worth an AP whole
+
+UI verification is now a recurring part of Kronika work: Timeline, History,
+Gallery/Details, upload, companion, accessibility and responsive behavior.
+Workers can produce far better evidence than a prose claim, and the COOPERATOR
+can review exact screenshots instead of re-testing every visual state. The
+protocol change also makes the capability auditable and prevents a future Worker
+from either ignoring it or using an unbounded browser session.
+
+### 8.4 The next whole
+
+The first concrete AP whole is seeded at:
+
+```text
+/Users/agile/meta/projects/ap/10/01-playwright-mcp-integration/00_handout.md
+```
+
+It is deferred until the current Kronika logical wholes are finished. Its
+Planner must map the existing AP owners (RF-06, RF-16, RF-19, Browser Stall
+Guard, INFOSEC, ARTIFACT_LIFECYCLE, PROMPT_CONTRACTS) and propose the smallest
+coherent AP update, prompt/contract fields, evidence lifecycle, fallback and
+validation. A separate later task updates the Kronika `.ap` pin; the AP update
+does not silently move a consumer pin.
+
+### 8.5 Relationship to the other entries
+
+```text
+§5 direct-write reports   complementary: direct-write removes the report relay;
+                          browser evidence removes some of the Cooperator's
+                          rendered re-testing, without removing his acceptance.
+§7 Master Orchestrator    complementary: the Master can name the browser
+                          evidence expectation in each prepared handout.
+§1 Worker Orchestrator    independent: internal delegation is a role question;
+                          browser evidence is an execution/evidence route.
+AP_DEFECTS D-19/D-20      the browser authority must be a separate mutation axis
+                          and must pass the prompt-satisfiability check.
+```
+
+---
+
 ## 4. Rejected and superseded, kept so they are not re-proposed
 
 ```text
