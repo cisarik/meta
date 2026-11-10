@@ -1,0 +1,13 @@
+# Meta archives project development traces as Markdown and PNG screenshots.
+# Ignore all files by default.
+*
+
+# Keep directories traversable so archive files are allowed at any depth.
+!*/
+
+# Allow Markdown documents, PNG screenshots, and this root policy file.
+!*.md
+!*.png
+!/.gitignore
+
+# These rules do not stop tracking files already in Git's index.
