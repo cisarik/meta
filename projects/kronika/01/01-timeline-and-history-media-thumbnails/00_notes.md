@@ -303,3 +303,107 @@ product expectation changed. The new whole's provisional handout is:
 
 The 02 `upload-flow-polish` handout remains prepared but is deferred until after
 the new whole unless the COOPERATOR explicitly reorders.
+
+## History rendered finding and UI polish grant — 2026-11-10
+
+The Cooperator tested the deployed `65772c6` History view and found a UX
+problem: the **Questions** and **Records** tabs show effectively the same
+personal items, so the split is duplicate and confusing. The current History
+cards are also visually inconsistent with the new eye-candy Timeline chronicle
+list.
+
+Cooperator direction:
+
+- keep **only Questions**; remove the duplicate Records tab and its separate
+  history view;
+- use the same compact table/list visual language as the new Timeline: header,
+  rows, separators, emoji status/visibility, subtle green hover/focus;
+- give the question text the available width; show no Added/created date;
+- keep the page consistent, user-friendly and attractive;
+- do not reopen the Timeline, Gallery/Details, API, authorization or stored
+  data.
+
+Whole 01's Timeline-membership scope remains superseded by the now-closed whole
+09. This correction covers the remaining History presentation. Bounded UI
+polish prompt `02_correction_02.md` was issued to whole 01's healthy Worker
+session `02`, exchange `03`, with a UI-only allowlist, one local commit and
+report `02_report_02.md`. After the report, the Orchestrator verifies the diff,
+publishes and deploys the corrected release, and the Cooperator renders the
+History result. Whole 01 remains open until that rendered acceptance.
+
+## History correction reconciliation and publication — 2026-11-10
+
+`02_report_02.md` is present and was read back in full. It is a terminal
+`implementation-PASS` report at commit
+`e6b26eb9ae16f1b67f8f23e55dfb20c7c6f218dd`, parent
+`65772c6028c07edcab47b6928dbb31e30876c70a`, on local `main` with no push. The
+correction changes five paths: the History UI in `app.js`, `index.html`,
+`styles.css`, the Node tests and one normative `SPEC.md` sentence. The worktree
+is clean.
+
+The Orchestrator inspected the diff: the Questions/Records tab pair is gone;
+`#/history/records` resolves to `#/history` with any offset; History reads only
+`/api/research-requests`; the list uses the Timeline chronicle row language with
+Question, Kind, Status and Visibility, no preview or Added date, glyph status and
+visibility with accessible text, and the Timeline hover/reduced-motion rules.
+The API, authorization, stored data, Timeline, Gallery and Details are unchanged.
+The Orchestrator independently re-ran the gate at baseline `65772c6`, the Node
+suite: **55 passed**, and the selected local-web suite: **43 passed**.
+
+**E2 Orchestrator acceptance of the History correction: PASS.** The correction
+is published: `65772c6..e6b26eb` on public `main`, no force; direct `git
+ls-remote` readback returned `e6b26eb9ae16f1b67f8f23e55dfb20c7c6f218dd`; local
+HEAD and `origin/main` match. Deployment is pending a fresh Cooperator
+`sudo -v`; the previous timestamp was revoked after the `65772c6` deploy. The
+History rendered acceptance remains the Cooperator's; whole 01 stays open until
+that verdict.
+
+## History correction deployment — 2026-11-10
+
+The Cooperator refreshed the NUC sudo timestamp and the canonical helper
+completed the routine deployment at
+`e6b26eb9ae16f1b67f8f23e55dfb20c7c6f218dd` with exit 0. Post-deploy `status`
+reports `layout: canonical`, `active_release` and `web_release`
+`e6b26eb9ae16f1b67f8f23e55dfb20c7c6f218dd`, `capture_release`
+`5b86d896b3ea03f89fef2c90f7af2c121d0ef915`, `service_active: active`,
+`database_revision: 0035` and `backup_restore_readiness: ready`. Bounded
+read-only checks confirmed the deployed shell has the History chronicle header
+and no old Records tab markup. Terminal `sudo -K` was run; a following
+`sudo -n true` requires a password. A later deployment needs a fresh Cooperator
+`sudo -v`.
+
+Whole 01 is now E2 acceptance-PASS, publication-PASS and deployment-PASS at
+`e6b26eb` for the History Questions-only correction; its Timeline-membership
+scope remains superseded by closed whole 09. The Cooperator's History rendered
+acceptance is the remaining closure input. Whole 02 `upload-flow-polish` remains
+prepared and deferred.
+
+## Closure — 2026-11-10
+
+The COOPERATOR declared the deployed History Questions-only correction **PASS**
+and authorized closure of whole 01. The Timeline-membership part of the original
+objective was superseded by the Cooperator's route A and the now-closed whole 09.
+
+```text
+Phase-qualified result: production-acceptance-PASS (Cooperator-declared)
+Result artifact or commit: e6b26eb9ae16f1b67f8f23e55dfb20c7c6f218dd
+Result evidence: Cooperator rendered PASS for History on the deployed e6b26eb;
+  E2 acceptance of the History correction; publication-PASS; NUC deployment-PASS
+  with active/web e6b26eb, service active, database revision 0035 and backup
+  restore-readiness ready
+Required preceding results: satisfied
+Cooperator-owned decisions: satisfied — History rendered acceptance and closure
+  declared; Timeline-membership scope superseded by route A and closed whole 09
+Residual-risk disposition: satisfied — the original History media-thumbnail
+  display was deliberately replaced by the Questions-only decision; no medium or
+  higher residual; predecessor R10 remains a separate Cooperator-owned item
+Upgrade-ledger reconciliation: complete — entry
+  consumer-declared-execution-and-capability-route-binding remains accepted,
+  non-authorizing, retain-active; no ledger mutation
+Active mutation: none
+Closure actor: ORCHESTRATOR
+Logical-whole closure: closed-by-ORCHESTRATOR
+```
+
+These notes are frozen at closure. The next UI/UX consistency work is a separate
+logical whole; the deferred `upload-flow-polish` remains separate.
