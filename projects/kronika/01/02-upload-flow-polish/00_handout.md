@@ -50,7 +50,10 @@ Timeline did not match the intended complete chronicle. He selected route A: a
 new logical whole `timeline-complete-chronicle` (run map entry 09) to run before
 this one. This handout remains provisional and prepared, but do not open this
 whole until the COOPERATOR confirms after entry 09, unless he explicitly
-reorders. Revalidate the run map, whole 01 and entry 09 state in Stage 1.
+reorders. Entry 09 is now closed; the Cooperator added a final application-shell
+UI/UX consistency whole (entry 10) before this one, so expect to wait for entry
+10 instead. Revalidate the run map, whole 01, entry 09 and entry 10 state in
+Stage 1.
 
 The COOPERATOR is **Michal**. Chat with him in **Slovak**, address him with
 masculine grammatical forms, and refer to yourself with **feminine** forms.
