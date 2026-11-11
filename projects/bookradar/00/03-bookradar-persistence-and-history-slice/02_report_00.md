@@ -3,89 +3,90 @@
 Logical whole identity: bookradar-persistence-and-history-slice
 Worker session ordinal: 02
 Worker exchange ordinal: 01
-Persistent role identity: WORKER
-Worker session target: fresh-worker-session
-Native planning mode: not-used
-Worker session profile: Fresh Implementation Worker
-Phase: implementation
-Task identity: BOOKRADAR-PERSISTENCE-HISTORY-IMPLEMENTATION
-status: BLOCKED
-Phase-qualified result: not-applicable
-Start commit: bookradar `bd23b08cd315a7b3c7a549479db59cbe6ad2adce`
-End commit: bookradar `bd23b08cd315a7b3c7a549479db59cbe6ad2adce` (unchanged)
-Report justification: new-evidence
+
+status: PASS
+Phase-qualified result: implementation-PASS
+Start: `bookradar bd23b08cd315a7b3c7a549479db59cbe6ad2adce`
+End: `c93f5262ca27050922cc658424c298913852eaff`
+Report justification: new-mutation
 Logical-whole closure: not-closed
+Authority expiry: this terminal report ends the grant; no autonomous continuation.
 
-Accepted plan bytes matched before any mutation:
+Accepted plan bytes matched before mutation: prior report `031ae6abbf29a111a86e29acc43d8015b9700ffc37b62eb5610fd0a67e0d4d7d`, amendment `ab2a71aaf6b3ce29fc33d1fa4cb7a7614f4b92c394b462c8390f934a33cada6b`. Baseline, public `main`, and detached AP pin `d7023cf037f6d17885c3ede5c04812c61640da50` matched the grant. Toolchain was Rust/Cargo `1.99.1` with `rustfmt` and `clippy`. Host `sqlite3` reported `3.54.0`; the store does not link it.
 
-- `01_report_00.md` SHA-256 `031ae6abbf29a111a86e29acc43d8015b9700ffc37b62eb5610fd0a67e0d4d7d`
-- `01_report_01.md` SHA-256 `ab2a71aaf6b3ce29fc33d1fa4cb7a7614f4b92c394b462c8390f934a33cada6b`
+Changed paths, all fifteen allowlisted paths, one purpose: local SQLite observation history, deterministic current-candidate selection, synthetic `bookradar-poc`, tests, README, and accepted ADR 0004.
 
-The cleanliness precondition failed, so no source edit, dependency fetch, Cargo gate, CLI transcript, `ap doctor`, or commit ran in this session.
+| Package | Version | Checksum |
+|---|---|---|
+| `rusqlite` | `0.37.0` | `165ca6e57b20e1351573e3729b958bc62f0e48025386970b6e4d29e7a7e71f3f` |
+| `libsqlite3-sys` | `0.35.0` | `133c182a6a2c87864fe97778797e46c7e999672690dc9fa3ee8e241aa4a9c13f` |
+| `bitflags` | `2.13.2` | `3ded4057c258ba199e2d26386d3af3780957ecaee6c4ef4041c6b4b8b97c0b06` |
+| `cc` | `1.11.1` | `4ff2a8126fff0f8c839080d619675a585e61720bb12d2baceae45769fd66f155` |
+| `fallible-iterator` | `0.3.0` | `2acce4a10f12dc2fb14a218589d4f1f62ef011b2d0cc4b3cb1bba8e94da14649` |
+| `fallible-streaming-iterator` | `0.1.9` | `7360491ce676a36bf9bb3c56c1aa791658183a54d2744120f27285738d90465a` |
+| `find-msvc-tools` | `0.1.15` | `1c66915cc5391097de7a2b0b972e8505aa33c0df401fd3a6811dbdb32881ba48` |
+| `foldhash` | `0.1.5` | `d9c4f5dac5e15c24eb999c26181a6ca40b39fe946cbe4c263c7209467bc83af2` |
+| `hashbrown` | `0.15.5` | `9229cfe53dfd69f0609a49f65461bd93001ea1ef889cd5529dd176593f5338a1` |
+| `hashlink` | `0.10.0` | `7382cf6263419f2d8df38c55d7da83da5c18aef87fc7a7fc1fb1e344edfe14c1` |
+| `pkg-config` | `0.3.34` | `f6b464fbc74e149a392436b17d523f769e057cb6877f6a5c4618bc6f11800548` |
+| `shlex` | `2.0.1` | `f8fadd59c855ef2080decdef8ff161eb6661b86933c9d82e5ba29dc602a55aba` |
+| `smallvec` | `1.16.5` | `149309498a5f7334b12ddae0cad8aba81ce785fe91755068867e017cf98fee46` |
+| `vcpkg` | `0.2.15` | `accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426` |
 
-**Gate evidence.** Physical `pwd -P` and `git rev-parse --show-toplevel` are both `/Users/agile/Projects/bookradar`. Origin fetch and push are `https://github.com/cisarik/bookradar`. `HEAD`, `HEAD^{tree}`, subject, parent, and public `git ls-remote --symref https://github.com/cisarik/bookradar refs/heads/main HEAD` match the grant: commit `bd23b08cd315a7b3c7a549479db59cbe6ad2adce`, tree `3298d133bf1cb7d1425c2b712924f94565ffec05`, parent `5c820abd439850039adf9866af26acfa15287493`, symbolic `HEAD` and `refs/heads/main` both at that commit. One worktree. `.ap` is detached and clean at `d7023cf037f6d17885c3ede5c04812c61640da50`, origin `https://github.com/cisarik/ap.git`. No merge, rebase, cherry-pick, or revert state. The only lock-named file found was `.git/cursor/crepe/build.lock`; it was left in place. Read-only toolchain reads, after the failed cleanliness gate and without mutation: `rustc 1.99.1 (58cf8f9c3 2026-10-13)`, `cargo 1.99.1 (5f94df478 2026-08-27)`, clippy and rustfmt installed for `1.99.1`, host `aarch64-apple-darwin`, `sqlite3 3.54.0`, Apple clang `21.0.0`, `pkg-config 3.0.10`.
+Compiled SQLite is bundled `3.50.2`, read from the built `libsqlite3-sys` archive and its `SQLITE_VERSION` header. `pkg-config` and `vcpkg` are transitive build crates of `libsqlite3-sys`; the link used the bundled engine. `cargo tree --locked --offline -p bookradar-core` printed only `bookradar-core v0.1.0`.
 
-`git status --porcelain=v1 --branch --untracked-files=all` was `## main...origin/main` plus:
+Gates, all exit 0: workspace build, workspace test, `fmt --all --check`, clippy `-D warnings`, core tree, `git diff --check`, and `./.ap/ap doctor` PASS. Existing core suite: 17 passed. New tests: 7 store unit, 6 persistence, 13 history, 2 CLI. Core sources and the core suite were not modified.
 
-- `M Cargo.toml` — appended the accepted workspace table
-- `M Cargo.lock` — generated lock including `rusqlite 0.37.0` checksum `165ca6e57b20e1351573e3729b958bc62f0e48025386970b6e4d29e7a7e71f3f` and `libsqlite3-sys 0.35.0` checksum `133c182a6a2c87864fe97778797e46c7e999672690dc9fa3ee8e241aa4a9c13f`
-- `?? crates/bookradar-store/Cargo.toml` — package `bookradar-store` 0.1.0 with `rusqlite = { version = "=0.37.0", default-features = false, features = ["bundled"] }`
-- `?? crates/bookradar-store/src/lib.rs` and `?? crates/bookradar-store/src/bin/bookradar-poc.rs` — an 8-line and 5-line probe that prints `rusqlite::version()`
-
-Source mtimes are 2026-11-11 15:46:06 local, lockfile 15:46:22. During this classification, ignored `target/debug/bookradar-poc` and `target/debug/libbookradar_store.rlib` moved to 15:57. This session did not write them. Compiled SQLite version was not read, because running that binary was outside the failed-gate path. No schema, history, CLI behavior, tests, README, or ADR exists in the dirty tree.
+Positive CLI transcript against previously absent `target/bookradar-poc.sqlite`, every command exit 0:
 
 ```text
-Classification unit type: worktree
-Classification unit identity: /Users/agile/Projects/bookradar working tree versus HEAD bd23b08cd315a7b3c7a549479db59cbe6ad2adce
-Observed difference: uncommitted Cargo.toml workspace block, Cargo.lock rusqlite 0.37.0 graph, and untracked bookradar-store probe sources; ignored target/debug artifacts changed at 15:57 during classification
-Classification accepted-continuation: applicable because the dirty paths and pin match this logical whole's allowlist and provisioning step
-Classification unrelated-owner-work: applicable because this fresh session did not create the files and a concurrent local build continued at 15:57
-Classification stale-clone: not-applicable because local HEAD, origin/main, and the public main ref are bd23b08cd315a7b3c7a549479db59cbe6ad2adce
-Classification unpublished-candidate: not-applicable because no local commit exists beyond that baseline
-Classification unexplained-divergence: applicable because authorship of the 15:46 probe and the 15:57 build is not established from this session
-Primary recovery classification: unexplained-divergence
-Secondary recovery classifications: accepted-continuation, unrelated-owner-work
-Primary precedence basis: unexplained-divergence > unrelated-owner-work > stale-clone > accepted-continuation > unpublished-candidate
-Immediate recovery action: stop and return evidence before mutation
-Publication status: public main unchanged at bd23b08cd315a7b3c7a549479db59cbe6ad2adce; dirty paths uncommitted
-Owner provenance: unknown to this session
-Location status: uncommitted worktree on the canonical checkout, plus ignored target/
-Accepted authority: none for adopting or removing the dirty tree; this grant required a clean tree
-Other-unit context: .ap remains detached clean at d7023cf037f6d17885c3ede5c04812c61640da50
-Unclassified material remainder: none beyond the recorded dirty paths and ignored target writes
-Secondary facts preserved: yes
-Recovery gate: honored-explicit-classification
-Baseline fallback: none
-Mutation before classification: none
-Destructive recovery operation: none
-Returned to Orchestrator: yes
+created schema=1 synthetic=true
+appended observation=1 synthetic=true
+synthetic=true latest_attempt=1 access=readable listing=present availability=available
+candidate=1 temporal=within-interval conflict=clear recheck=clear verification=eligible
+Checked available -- unix:1793523600; expires_unix=1793610000
+appended observation=2 synthetic=true
+synthetic=true latest_attempt=2 access=rate-limited listing=uncertain availability=unknown
+candidate=1 temporal=within-interval conflict=clear recheck=failed verification=not-eligible
+Could not recheck -- unix:1793527200
+Last observed available -- unix:1793523600
+appended observation=3 synthetic=true
+appended observation=4 synthetic=true
+synthetic=true latest_attempt=3 access=readable listing=present availability=available
+candidate=3 temporal=within-interval conflict=clear recheck=clear verification=eligible
+Checked available -- unix:1793534400; expires_unix=1793620800
+synthetic=true offer=1/1 count=4
+4 observed=1793520000 ingested=1793545204 access=readable listing=present availability=unavailable review=supported
+1 observed=1793523600 ingested=1793545201 access=readable listing=present availability=available review=supported
+2 observed=1793527200 ingested=1793545202 access=rate-limited listing=uncertain availability=unknown review=supported
+3 observed=1793534400 ingested=1793545203 access=readable listing=present availability=available review=supported
 ```
 
-Changed files by this session: none.
-Tests and validation: repository, public-ref, AP, and toolchain reads only. The 17 core tests and the planned store/history/CLI gates did not run. CLI transcript: none. Exit codes: none.
-Git result: no stage, commit, fetch, or push. **No push.** Public `main` remains `bd23b08cd315a7b3c7a549479db59cbe6ad2adce`; symbolic `HEAD` unchanged.
+Negative `older` fixture on `target/bookradar-negative.sqlite`, including a second process `current`, every command exit 0:
+
+```text
+created schema=1 synthetic=true
+appended observation=4 synthetic=true
+synthetic=true latest_attempt=4 access=readable listing=present availability=unavailable
+candidate=4 temporal=within-interval conflict=clear recheck=clear verification=not-eligible
+Last observed unavailable -- unix:1793520000
+```
+
+Local commit `c93f5262ca27050922cc658424c298913852eaff`, parent `bd23b08cd315a7b3c7a549479db59cbe6ad2adce`, tree `b2ad12353723009944521c15ac2016970337c1df`, subject `feat: add persistent observation history PoC`. Staged and committed paths are exactly the fifteen allowlisted paths. Worktree is clean apart from ignored `target/`. **No push.** Public `origin/main` and symbolic `HEAD` remain `bd23b08cd315a7b3c7a549479db59cbe6ad2adce`.
+
 Persistence: none. This complete report is returned in-session and the COOPERATOR persists it.
-Deviations: implementation did not start. Dependency checksums above are observations of the pre-existing lockfile, not a provisioning result of this session. Bundled SQLite compile success and its version string are missing evidence.
-Risk: two writers on this checkout would overlap. The probe is only a version printer; it is not the accepted store.
-Smallest next step: the COOPERATOR classifies the existing dirty tree and any live writer, then a fresh implementation grant starts from an explicit clean baseline or from an explicitly accepted continuation. Focused fresh acceptance before publication remains the later step after a real local candidate.
+
+Deviations and residual evidence: empty-history text is implemented as `synthetic=true offer=1/1 count=0`, but that line was not executed as its own CLI assertion. The required positive transcript, negative fixture, and history matrix were executed. No Ubuntu run, power-loss test, or multi-process stress test was performed. This session is not independent acceptance.
+
+Smallest next step: focused fresh acceptance of local commit `c93f5262ca27050922cc658424c298913852eaff` before publication.
 
 ```text
 Orchestration critique:
-MEASURED: cleanliness precondition failed on five uncommitted allowlisted paths plus a target/debug write at 15:57; evidence is the status and mtimes above; effect is no implementation; smallest correction is an owner classification of that tree before any renewed grant
-LEAD: the probe text matches the accepted pin, so a later grant may be able to adopt it after classification; cheapest check is a repeated status once the concurrent writer is identified
+MEASURED: writable open initially assigned journal_mode=DELETE, which would have rewritten WAL instead of failing closed. Creation now selects DELETE; open only validates it. The schema-identity unit test covers WAL rejection.
+LEAD: empty-history CLI text is unasserted; one history invocation immediately after init is the cheapest check.
+
+Resolved Execution Issues / Near-Misses: Journal-mode validation was corrected before commit. The round-trip test initially compared history positions rather than observation ids, and one conflict-rejection fixture used an assessment time earlier than its initial review. Both were corrected before commit. Residual risk is limited to the unasserted empty-history line.
+Pre-Existing Failure Classification: none
 ```
 
-Resolved Execution Issues / Near-Misses: none
-Pre-Existing Failure Classification: none
-
-Capability handshake:
-- Product/client and model: requested Grok 4.7 in Cursor; observed session identity is the client prompt attribution, not an independent model attestation; evidence class requested plus unknown/not observably exposed for an independent build attestation.
-- Reasoning and context: High and about 250k requested; effective capacity unknown/not observably exposed; pressure low because work stopped at the gate.
-- Native planning mode: requested `not-used`; directly observed unused. No approval-mode mismatch was tested.
-- Filesystem: BookRadar, pinned `.ap`, and the named Meta trace were readable; this session wrote nothing.
-- Network and tools: one read-only `git ls-remote` directly observed; crates.io was not contacted by this session; shell and Git reads directly observed.
-- Source inspection, tests, commit, push, public-ref: inspection and public-ref read directly observed; tests, commit, and push not executed.
-- Missing capability: none for the gate. No subagent was used.
-Capability does not grant authority.
-
-Authority expiry: this terminal report ends the grant; no autonomous continuation.
+Capability handshake: Cursor client; model Grok 4.7 as the session identity, not independently attested. Native planning mode OFF. Edit, shell, Git, crates.io fetch, read-only `git ls-remote`, Rust `1.99.1`, and bundled SQLite compilation were directly observed. No subagents. No required capability was missing.
