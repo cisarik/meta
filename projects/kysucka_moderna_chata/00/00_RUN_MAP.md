@@ -1,0 +1,5 @@
+Run map: kysucka-moderna-chata-reference-visualization
+Run objective: converge the editable Blender scene toward reference/kysucka_moderna_chata.png through separately selected bounded wholes; architectural checking is deferred until Michal accepts the visualization
+Run map authority: discovery-only
+Run entry: 00 | kysucka-moderna-chata-ap-meta-initialization | provisional | depends on: none | handout: projects/kysucka_moderna_chata/00/00-init/00_handout.md | evidence: Michal selected initialization; public project bc510eb063f96d7cedad49aaaca6f58b54a51fd2 lacks .ap and AGENTS.md; fresh Orchestrator opening has not yet been observed by the Master
+Run entry: 01 | kysucka-moderna-chata-canonical-render-and-camera-baseline | provisional | depends on: kysucka-moderna-chata-ap-meta-initialization | handout: not-written | evidence: source camera is provisional and the supplied 00.png has an unclassified wide display and opaque-looking green glass; reconsider after initialization closure and Michal's feedback

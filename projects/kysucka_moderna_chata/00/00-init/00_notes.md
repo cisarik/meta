@@ -6,7 +6,7 @@ Orchestrator session scope: logical-whole
 Development run identity: kysucka-moderna-chata-reference-visualization
 Opened: 2026-11-14, Europe/Bratislava
 Notes author: ORCHESTRATOR (this whole)
-Status: open — implementation 01/03 blocked on a prompt-defect key; corrected implementation 01/04 prepared
+Status: closed — initialization whole; visual project open; Meta trace archival PARTIAL/pending with COOPERATOR
 
 This whole is the AP/Meta initialization before visual improvement work. It is not
 the Master Orchestrator of the development run and it does not own any later
@@ -152,12 +152,14 @@ Worker dispatch is not inferred from this decision; it is a separate routing cho
 - Meta root: the Cooperator-specified working copy of `https://github.com/cisarik/meta.git`, observed at 4d5c662c7f6ced09f5eb7b3f3a7ee83f98ef18c4; the Orchestrator's earlier assumed clone was deleted by the Cooperator. The environment-local absolute path is withheld from this public trace.
 - This whole's trace directory: `projects/kysucka_moderna_chata/00/00-init/`.
 - AP reading source: immutable public AP commit d7023cf037f6d17885c3ede5c04812c61640da50. A local standalone checkout was observed with the same HEAD and canonical origin; it is another owner's checkout and must not be modified. Its environment-local path is withheld from this public trace.
-- Local active Workers: the 01/01 Planner returned a terminal BLOCKED report; the
-  01/02 corrected Planner returned a terminal PARTIAL plan report, now received and
-  accepted; the 01/03 implementation returned a terminal BLOCKED report on a prompt
-  defect, consumed. The corrected 01/04 implementation prompt is prepared but not
-  delivered. No hidden active work is inferred.
-- Project working tree: clean at bc510eb; no untracked owner files observed. All four preserved-source hashes still match. No project mutation has been made by this Orchestrator.
+- Local active Workers: 01/01 planning BLOCKED, 01/02 planning PARTIAL with accepted
+  plan, 01/03 implementation BLOCKED on a prompt defect, 01/04 implementation PASS.
+  All issued Worker grants are expired. No active Worker, hidden stream, or project
+  mutation remains.
+- Project working tree: clean at
+  `b47cce6f91ae10a22fb708a8e5220ab27b471aeb`; `.ap` detached at the pin; all four
+  preserved-source hashes still match. No project mutation was made by this
+  Orchestrator; the implementation mutation was the authorized Worker candidate.
 
 ## First Planner report reconciliation — 01/01
 
@@ -311,6 +313,78 @@ Worker dispatch is not inferred from this decision; it is a separate routing cho
   `git config -f .gitmodules --get-regexp '^submodule\..*\.path$'` and expect
   `submodule..ap.path .ap`.
 
+## Implementation report reconciliation — 01/04
+
+- Report identity: `projects/kysucka_moderna_chata/00/00-init/01_report_03.md`.
+  It begins exactly `### Report for ORCHESTRATOR_CHAT`, echoes coordinates 01/04,
+  reports `status: PASS`, `Phase-qualified result: implementation-PASS`, start commit
+  `bc510eb...`, end commit `b47cce6...`, `Report justification: new-mutation`, and
+  `Logical-whole closure: not-closed`. SHA-256:
+  `0f697acd551dbf6ad669e2c83d991a6db53fb82890fde4e87d70b9dd8a9dd4fd`.
+- Persistence: the Worker wrote `01_report_03.md` directly to Meta and read it back
+  byte-for-byte. The report is committed in Meta `fe24ef3`. The implementation prompt
+  `01_implementation_03.md` remains untracked at the time of this notes freeze; see
+  the trace exception below.
+- Implementation result: project commit
+  `b47cce6f91ae10a22fb708a8e5220ab27b471aeb`, subject
+  `docs: initialize pinned AP and external Meta workflow`, single parent
+  `bc510eb063f96d7cedad49aaaca6f58b54a51fd2`, tree
+  `a73983fd6ef1d6dbc3985edbd08d9d2cd5e38a3a`. Exactly ten allowed paths changed:
+  `.ap`, `.gitignore`, `.gitmodules`, `AGENTS.md`, `README_SK.md`, `SOURCES.md`,
+  `docs/ARTIFACT_LIFECYCLE.md`, `docs/OPERATIONS.md`, `docs/VISUAL_BRIEF.md`,
+  `manifest/README.md`.
+- Durable AP pin: `.ap` gitlink, stage-0 index entry, committed tree entry, and `.ap`
+  HEAD all equal `d7023cf037f6d17885c3ede5c04812c61640da50`; `.ap` is detached and
+  clean. `.gitmodules` contains exactly the canonical URL/path with no branch tracking.
+- Independent Orchestrator verification: `./.ap/ap doctor` exited 0 with canonical
+  identity, strict pin equality, clean submodule, managed block, stable variant and
+  PASS. Public `main` is exactly `b47cce6...`. GitHub API confirmed the commit, single
+  parent, tree, ten changed paths, and root `.ap` mode `160000`/type `commit`/pin.
+  All nine committed text files were fetched from immutable public raw URLs at `C`
+  and matched local committed bytes. The four protected-source hashes still match.
+  Baseline has 56 tracked entries; the candidate has six modifications and four
+  additions, with 50 other entries unchanged. The remaining-instruction search
+  returned no current hits.
+- Preservation: reference, seed, numeric/modeling sources, CAD/PDF, previews,
+  inventory files, requirements, tools and historical `docs/VALIDATION.md` are
+  unchanged. No scene resave/rebuild, render, camera/material/shader/geometry change,
+  PDF/CAD regeneration, asset download, install, `ap.project.conf`, AP update or
+  copied protocol occurred.
+- Acceptance decision: implementation PASS is accepted. E2 is the evidence tier; no
+  fresh independent acceptance Worker was required because no AP semantic owner,
+  schema, validator, security boundary, or modeling behavior changed. The
+  Orchestrator's direct public readback and content comparison supply the required
+  independent verification of the exact candidate. Implementation evidence remains
+  non-independent.
+- Resolved execution issue: a supplementary report-preparation helper asserted
+  `55` baseline entries and `49` unchanged; the direct count found `56` baseline
+  entries and `50` unchanged. The helper assertion was a method error, not a project
+  failure, and no candidate change, gate waiver, repair cycle or repeated doctor run
+  followed.
+- Visual evidence: no new render was selected. Existing `previews/` remain Blender
+  4.3.2 author evidence (960 × 720; Cycles 96/32 samples; no denoising).
+  `renders/00.png` remains an untracked 1443 × 607 local display with SHA-256
+  `a82bce...`, differing from the handout hash `702df...`; provenance is unknown and
+  it is not accepted evidence. The ambient BlenderMCP/`load_post=3` observation and
+  engine/device/color-management limitations remain.
+- Trace exception: Meta `fe24ef3` first-added `00_notes.md` and
+  `01_report_03.md`, but not the matching prompt `01_implementation_03.md`. The
+  prompt is untracked. This is a first-add pairing mismatch caused by Cooperator
+  archival ordering, not a project implementation failure. Per AP/Meta policy, do not
+  rewrite history; the smallest prospective correction is a follow-up Cooperator
+  commit adding the exact prompt, with the mismatch disclosed in the closure packet.
+  This item remains PARTIAL/pending and does not reopen implementation or acceptance.
+- Trace baseline at inspection: Meta local/public `main`
+  `fe24ef3e3239f79abf05d123b2edf7dd4278643d`; README unchanged from `a1906d8b...`.
+  Earlier pairs: handout `e1a4de8`; 01/01 pair `b2227f3`; 01/02 pair `a6a39a1`;
+  01/03 pair `aaabcde`; notes + 01/04 report `fe24ef3`. `01_implementation_03.md`,
+  `00_RUN_MAP.md`, `renders/00.png` and the future `01_closure.md` remain untracked.
+- Closure decision: the initialization whole is closed as a project/public/acceptance
+  result. The declared closure signal `CELOK UZAVRETÝ ORCHESTRÁTOROM` is emitted in
+  `01_closure.md`. This is not visual-project closure. The Meta trace archival is
+  PARTIAL/pending with the Cooperator and does not authorize further implementation.
+  All issued Worker grants are expired; no active Worker or project mutation remains.
+
 ## Opening limitations
 
 - No independent observation of Michal's worktree, unsaved GUI state, local agents
@@ -336,10 +410,10 @@ Worker dispatch is not inferred from this decision; it is a separate routing cho
 
 ## Next action
 
-Deliver the prepared corrected `01_implementation_03.md` to the same healthy Worker
-session with native planning mode off. The Worker implements the accepted plan, writes
-its own `01_report_03.md` directly to Meta, reads it back, commits and publishes the
-project candidate non-force, and returns the complete report. Reconcile the result;
-do not start visual improvement work under this initialization whole. If the same
-session is unavailable, the fallback is a fresh session 02/01 with
-`02_implementation_00.md` + `02_report_00.md`; do not reuse 01/04 coordinates.
+The initialization whole is closed. The Master reviews `01_closure.md` and this
+frozen notes record, then may propose the next bounded whole. The evidence-backed
+recommendation is canonical render/camera baseline work, but that whole is not
+selected or started here. The Cooperator may add the missing
+`01_implementation_03.md` prompt in a follow-up Meta commit and commit the closure
+artifact; Meta Git publication remains Cooperator-owned. No Worker is active. Do not
+start visual improvement work under this initialization closure.
