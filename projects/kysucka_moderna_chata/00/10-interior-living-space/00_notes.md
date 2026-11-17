@@ -332,3 +332,45 @@ iba nové súbory `scripts/interior_v10.py`, `scripts/interior_v10_study.py`,
 naraz, stráž RAM 9 GiB (12 GiB pre čítanie `v08_view`), 6 vlákien.
 Splniteľnosť: vstupy existujú a majú overené hashe, povolené cesty zatiaľ
 neexistujú, dostupná RAM pri vydaní 16 GiB.
+
+## 2026-11-17 20:41–20:50 — hlásené zastavenie Workera 03/01; session v skutočnosti beží
+
+Michal napísal (správa s časom 20:41), že Workera 03/01 zastavil, lebo sa
+zasekol na git príkaze. Pozorovania, ktoré s tým nesedia:
+
+- prepis session obsahuje dva dokončené read-only git príkazy a žiadny
+  neskorší;
+- session po správe pracovala ďalej: 20:42:28 zapísala `work/v10/run_job.py`,
+  20:43:15 `scripts/interior_v10_study.py`, 20:43:21 a 20:43:30 spustila dva
+  background Blender joby (oba exit 0; 0,8 s / 459 MiB a 1,1 s / 551 MiB),
+  ktoré vytvorili `work/v10/study/interior_study_base.blend` a inventár;
+  posledný záznam v prepise je z 20:43:52;
+- od 20:43:52 do 20:49 sa nemenil prepis ani disk;
+- pokus poslať session nadväzujúcu správu o 20:48 klient odmietol s tým, že
+  subagent stále beží. Prerušenie som nevynútila.
+
+Záver: session 03 nie je zastavená. Ticho zodpovedá aj písaniu veľkého
+súboru (modul `interior_v10.py`), aj čakaniu na niečo; príčinu neviem.
+
+Moja chyba v postupe: na základe Michalovej správy som najprv pripravila
+záznam prerušenia, nový grant (najprv ako 04/01, potom ako 03/02) a Dodatok 1
+k `evidence/design_basis_v10.md`, hoci som ešte neoverila, že session
+naozaj skončila. Nič z toho nebolo vydané ani commitnuté. Koncepty som
+stiahla (ležia mimo repozitára v `/tmp/v10_drafts/`), súradnice 03/02 ani
+04/01 nie sú spotrebované. Podklad som vrátila na commitnuté bajty
+(e1a2165e…), lebo bežiaci Worker má v grante práve tento hash; súbor bol
+zmenený dvakrát na krátko (asi 20:44–20:45 a 20:48), čo pri zosúladení
+reportu zohľadním.
+
+Vecné zistenie session, ktoré platí bez ohľadu na ďalší postup: hotová
+podlaha je na +0,494 (`FLOOR_interior`, `build_scene.py` L120), nie +0,45.
+Schodisko má teda výšku 2,756 m = 16 × 0,17225 m, medzipodesta +1,355.
+Dodatok k podkladu pridám až po reporte alebo pri novom grante.
+
+Ďalšie zistenia: HEAD projektu je `0f5f84579d88ee67bc0bacee74826ef02bea7452`
+(Michalov commit 20:27, README_SK.md → README.md), strážené hashe sedia;
+`/usr/bin/time` na stroji nie je; V09 vytvoril nesledovaný
+`blender/kysucka_chata_mcp_v09_study.blend`.
+
+Rozhodnutie, či session nechať dobehnúť alebo ju prerušiť a vydať nový
+grant, patrí Michalovi; pýtam sa ho.
