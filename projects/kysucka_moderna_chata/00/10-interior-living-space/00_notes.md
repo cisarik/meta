@@ -408,3 +408,50 @@ hashe a JSON sekcie sedia); podklad s Dodatkom 1; zvyšky po session 03 sú
 v bráne s hashmi a nový Worker ich má najprv celé prečítať a potom prevziať,
 opraviť alebo prepísať; report do `04_report_00.md`. Koncept 03/02 nebol
 vydaný a jeho súradnice nie sú spotrebované.
+
+## 2026-11-17 22:13–22:25 — zosúladenie reportu 04/01 (rez 1, pilot rozloženia)
+
+Worker 04/01 dokončil prácu a report si zapísal sám: `04_report_00.md`,
+SHA-256 `c8a9763e5ed80ddefce270963058f434c9aefc2147a0fa415f12da2cbe7c1d5c`,
+stav PARTIAL.
+
+Čo som overila sama:
+
+- hashe modulu, nástroja, parametrov, oboch študijných scén, `checks.json`
+  a všetkých deviatich PNG sa zhodujú s reportom;
+- chránené vstupy majú pôvodné hashe (`build_scene.py`, `design.py`, v03,
+  v08_view); v projekte sú nové iba tri nesledované zdrojové súbory V10
+  a ignorovaný `work/v10/`; HEAD ostal `0f5f8457…`;
+- `jobs.jsonl`: 58 záznamov, 35 renderov, všetky exit 0, najviac 1,88 GiB
+  RSS a 80,6 s;
+- `checks.json`: všetky kontroly `pass` okrem `cold_open`;
+- všetkých deväť obrázkov som si pozrela.
+
+Odchýlky a moje rozhodnutia:
+
+- **Strop 30 renderov prekročený na 35.** Podľa Workera klient dve dávky
+  spustil dvakrát; príčinu som neoverovala. Joby boli sériové, na CPU, za
+  strážou RAM, bez viditeľnej škody. Beriem to ako zaznamenanú odchýlku;
+  do ďalšieho grantu dám poistku v launcheri (odmietnuť už zapísaný label).
+- **Chýba malý snímok kontroly cold open.** Počítacia časť prešla v novom
+  procese a osem finálnych renderov bežalo každý v novom procese nad
+  uloženou scénou. Na účel tohto rezu (podklad pre Michalovo posúdenie
+  rozloženia) to stačí; samostatnú opravnú výmenu nevydávam. Stav rezu
+  ostáva PARTIAL, nie PASS.
+- **Krokvy a svetlá výška galérie.** Pod priznanými krokvami je na okraji
+  pásu 1,887 m; 2,0 m platí medzi krokvami, pod krokvami v y 2,31–6,09.
+  Krokvy ponechávam a pás na státie zúžim na y 2,31–6,09 (dodatok k podkladu
+  pri ďalšom grante). Moja rezerva 0,20 m vychádzala zo `SOFFIT_wood`, nie
+  zo spodku strešnej škrupiny; chybu v podklade priznávam.
+- Ostatné konflikty (1 mm od povrchu podlahy, hlava otvoru v hrúbke strechy,
+  koniec okrajového trámu, voľný pás pri nástupe 1,05 m) prijímam, ako sú
+  postavené.
+
+Vlastný pohľad na obrázky: rozloženie je čitateľné a z C1 je cez presklený
+roh vidno krb s ohňom a niku na drevo, cez štít schodisko a luster. Slabé
+miesta: krbové teleso pôsobí ako tehlový stĺp uprostred miestnosti a z hero
+pohľadu oheň takmer nevidno; nábytok je hmotový; za oknami je zástupná
+krajina. Nič z toho nie je vizuálne prijatie; to patrí Michalovi.
+
+Obrázky som skopírovala do `evidence/slice1/` (bajtovo zhodné s
+`work/v10/evidence/`).
