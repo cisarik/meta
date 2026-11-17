@@ -264,3 +264,71 @@ targeted-revision`, basis new-repository-or-external-evidence, použité
 automatické revízie 1. Plán musí byť samostatný, lebo implementačný Worker
 dostane iba ten. Git publication owner je odteraz ORCHESTRATOR pre tento
 priečinok. Splniteľnosť: iba čítanie a aritmetika, tri mutačné osi `none`.
+
+## 2026-11-17 20:22–20:35 — zosúladenie reportu 02/01 a rozhodnutie Orchestrátorky
+
+Planner 02/01 (read-only subagent) vrátil report so stavom PASS; uložila som
+ho bajtovo presne z prepisu subagenta ako `02_report_00.md`, SHA-256
+`52a23306ae0b5d394a2951e667e646345397da2d6e266d24cf32031d2c574bfb`.
+
+Počas plánovania Michal sám commitol projekt (20:20:19, `ebfdf66f…`, v05 a
+novšia práca). Planner odchýlku HEAD nahlásil a pokračoval, lebo sedem JSON
+sekcií a hashe zdrojov sedeli. Je to vlastníkova práca, nie moja zmena; nový
+základ je `ebfdf66f5afc0c05343adf4ed49dffb03eb874ef`.
+
+PASS nepotvrdzujem. Report som preverila proti zdrojom a vlastnej aritmetike:
+
+- galéria na +2,70 m pretína priečky vysoké do +3,05 m a nechala by izbám
+  svetlú výšku 2,05 m; „pás ≥ 2,10 m v y 1,2–7,2“ je počtová chyba (v y 1,2
+  vychádza 1,75 m);
+- schodisko má os x = 8,45, teda v zádverí (miestnosť 01), nie v miestnosti
+  07, a podestou vo výške +1,50 m zatarasí jediný vstup z chodby;
+- presklenie x 10,05–14,01 by prekrylo lavicu a zrušilo kruhový ornament;
+  exteriérová referencia má úzky presklený roh vedľa nich;
+- tvrdenie, že krb ostane z C1 skrytý aj po presklení, je nesprávne: lúč na
+  krb pretína prednú stenu v x = 13,77, teda v presklení;
+- hero kamera 0,7 m od ohniska nemôže ukázať štít, krb a schody naraz.
+
+Technická trasa plánu je použiteľná: študijná scéna z v03, modul
+`scripts/interior_v10.py`, parametre `model/interior_v10.json`, seed 13710,
+názvy `V10_`, skrývanie bez mazania, vlastné číre duplikáty skla, CPU,
+tri rezy, identifikátory z katalógového výberu.
+
+Rozpočet plánovania je vyčerpaný (úvodný cyklus + jedna cielená revízia),
+tretí Planner podľa AP neexistuje. Prechod: `NEEDS_ORCHESTRATOR_DECISION`,
+ktorý vyhlasujem sama pri zosúladení. Moje rozhodnutie: technickú trasu
+prijímam, priestorové hodnoty plánu odmietam a nahrádzam ich vlastným
+záväzným podkladom `evidence/design_basis_v10.md` (SHA-256
+`e1a2165e06d1963067b363e20aa725f01f8d87f822d9970096abbf5621a21d86`),
+odvodeným zo zdrojov a prepočítaným:
+
+- galéria: doska x 2,7–8,8, vrch +3,25 (spodok 3,05 = vrch priečok), pás na
+  státie y 2,2–6,2;
+- schodisko: dvojramenné v SZ rohu miestnosti 07, 16 × 0,175 m, stupeň
+  0,27 m, medzipodesta +1,325, horná plošina nad otvorom chodby so svetlou
+  výškou 2,60 m;
+- presklený roh prednej steny x 12,75–14,25, lavica a ornament ostávajú;
+  z C1 cezeň vidno JV roh krbu, stolík a východný koniec sedenia;
+- krb: kamenné teleso okolo komína s čiernou oceľovou rohovou vložkou v JV
+  rohu, kamenná lavica s polienkami, nika na drevo;
+- zóny: obývacia časť na juhu, jedáleň na SV, kuchyňa pri zadnej stene.
+
+Vkusové otázky (charakter krbu, šírka presklenia, TV, pracovný kút, využitie
+galérie) majú predvolené hodnoty a sú parametrami; Michal ich uvidí na
+pilotných obrázkoch a môže ich zmeniť. Toto je odchýlka od čistej cesty
+„prijať plán“: priestorový návrh je moje orchestračné rozhodnutie, nie
+výstup Plannera, a jeho overenie v skutočnej scéne (lúče, kolízie, svetlé
+výšky) ukladám implementačnému Workerovi.
+
+Zvyšné časti AP potrebné pre implementačný grant som prečítala
+(Implementation Authority, Mutation Axes, delivery record, profil Fresh
+Implementation Worker, Planning Budget and Expiry).
+
+Prompt 03/01 (`03_implementation_00.md`): fresh-worker-session, Native
+planning mode: not-used, rez 1 — študijná scéna a pilot rozloženia. Mení
+iba nové súbory `scripts/interior_v10.py`, `scripts/interior_v10_study.py`,
+`model/interior_v10.json`, `work/v10/**`; report si Worker zapíše sám do
+`03_report_00.md`. Bez MCP, GUI, GPU, siete a Gitu; jeden Blender proces
+naraz, stráž RAM 9 GiB (12 GiB pre čítanie `v08_view`), 6 vlákien.
+Splniteľnosť: vstupy existujú a majú overené hashe, povolené cesty zatiaľ
+neexistujú, dostupná RAM pri vydaní 16 GiB.
