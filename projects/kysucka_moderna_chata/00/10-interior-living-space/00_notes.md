@@ -580,3 +580,12 @@ Z hero vzdialenosti sedačka stále splýva do jedného hladkého bloku. Prehoz
 na lehátku v týchto dvoch záberoch nie je. Kreslo je svetlé, ale nízke a
 tvrdé, nie hlboké kreslo z referencie. To nie je prijatie vzhľadu. Ďalší
 krok čaká na Michala. Celok nie je uzavretý.
+
+## 2026-11-18 00:31 — Michal: švy vankúšov a prehoz v hero zábere
+
+Po reze 3 si vybral ešte jeden úzky rez. Pôdorys sedačky a svetlé kreslo
+ostávajú. Zo širokého záberu majú byť vankúše oddelené a pletený prehoz
+na lehátku má byť v `hero_dusk`. Kamery sa nehýbu. Dodatok 4, SHA-256
+`43694106883be4970884a6a92ad31a09cd16ff5f41b6b069228c53edb4d257d7`.
+
+Grant 08/01, fresh session, strop 8 renderov, dôkaz do `work/v10/evidence_s4/`.

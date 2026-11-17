@@ -232,3 +232,14 @@ footprint and every other piece stay.
   chair is not part of this slice.
 - Dining chairs, kitchen, fireplace, cameras and the flat study landscape
   stay as they are.
+
+## Amendment 4 — cushion seams and the chaise throw (2026-11-18, 00:30)
+
+After slice 3 Michal asked for one narrow follow-up. The sofa plan and the
+light corner chair stay. Two things change:
+
+- From `CAM_V10_HERO` the seat and back cushions must read as separate
+  pieces, not one smooth block.
+- The knitted throw on the chaise must be visible in `hero_dusk`. Cameras
+  do not move. If `CAM_V10_SOFA` looks away from the chaise, the throw is
+  not forced into that frame.
