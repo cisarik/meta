@@ -551,3 +551,14 @@ voči referencii ostáva tmavé kožené kreslo, jednoduchá procedurálna
 sedačka, tmavé jedálenské stoličky, rovnaké polená v nike a plochá
 štúdiová krajina. To nie je prijatie vzhľadu. Ďalší rez čaká na
 Michalovo rozhodnutie. Celok nie je uzavretý.
+
+## 2026-11-17 23:55 — Michal: ďalší rez je sedačka a kreslo
+
+Po reze 2 si vybral svetlejšiu sedačku a kreslo bližšie k referencii.
+Dodatok 3 podkladu to zapisuje. Pôdorys sedačky ostáva, rohové kreslo
+prestáva byť čierna koža a galériové kreslo sa nerieši. SHA-256 podkladu
+`4504bbea1566351db8f24033cc38f71e3f8a62cb622ac9781d0ebbfe64278842`.
+
+Grant 07/01 ide fresh session. Žiadny presun zón. Jeden voliteľný CC0
+model kresla, inak procedurálne, látka `wool_boucle` už je na disku.
+Strop 12 renderov. Rez 2 ostáva v `work/v10/evidence_s2/`.

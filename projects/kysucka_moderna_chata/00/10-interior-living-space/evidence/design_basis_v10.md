@@ -214,3 +214,21 @@ Measured by Worker session 04 (`04_report_00.md`) and decided afterwards.
 - Accepted as built: finish top +0.451 and the resulting 1 mm offsets;
   front opening head inside the roof thickness; edge beam only south of
   the stair arrival; free stair-foot approach strip x 9.80–10.85.
+
+## Amendment 3 — sofa and corner chair (2026-11-17, 23:54)
+
+After slice 2 Michal chose the next interior slice: a lighter sofa and a
+lighter corner chair, closer to the two reference images. The layout,
+footprint and every other piece stay.
+
+- The sofa remains the procedural corner sofa. Its plan stays
+  x 9.25–12.10, y 0.40–1.35, with the chaise returning to y 2.30 on the
+  west. It is rebuilt as loose seat and back cushions in a warm light
+  fabric, with the knitted throw on the chaise. It is not replaced by a
+  straight catalogue sofa.
+- The corner chair at [13.62, 1.97] stops being the black leather
+  `modern_arm_chair_01`. It becomes a light upholstered lounge chair and
+  must still leave the C1 ray to the stair landing clear. The gallery
+  chair is not part of this slice.
+- Dining chairs, kitchen, fireplace, cameras and the flat study landscape
+  stay as they are.
