@@ -505,3 +505,25 @@ odkazuje na jeho hash; opravím to pri najbližšej zmene podkladu.
 
 Worker 05/01 bol vydaný okolo 22:19 a o 22:19:42 preukázateľne pracuje
 (prepis rastie); na disku zatiaľ nič nové.
+
+## 2026-11-17 23:08 — pád session 05/01 a grant 06/01
+
+Session 05/01 klient ukončil o 22:47 chybou `Other Models usage limit
+reached`. Report neexistuje. Záznam som napísala ja ako
+`05_interruption_00.md`. Súradnice 05/01 sú spotrebované.
+
+Stihla: CC0 aktíva (293 MB, `assets/interior_v10/`, slovenský manifest),
+modul s materiálmi a nábytkom, apply a kontroly. Geometria, idempotencia,
+svedkovia a textúry prešli. Tri kontroly nie: lúč z C1 na medzipodestu
+schodov trafí kreslo; tri rastliny na galérii sú vnútri otomanu; kuchynská
+linka zasahuje do uličky o 4 mm. Žiadny render rezu 2. Rez 1 je zachovaný
+v `work/v10/slice1/` s pôvodnými hashmi.
+
+V Dodatku 2 podkladu som opravila nesprávny čas 22:35 na „okolo 22:17“.
+Rozhodnutia sa nezmenili. Nový SHA-256
+`4901cdc0da78c5cb7b64992ee3eaa76bc5d3885d7b90f1e730b2be3bc40a2870`.
+
+Grant 06/01: fresh session, rovnaký rez. Žiadne sťahovanie. Opraví tri
+namerané zlyhania najmenším posunom, doženie cold open a vyrenderuje sadu
+pohľadov. Strop 30 renderov ostáva, doteraz sa minulo 0. Bez gitu, siete,
+MCP a GPU.

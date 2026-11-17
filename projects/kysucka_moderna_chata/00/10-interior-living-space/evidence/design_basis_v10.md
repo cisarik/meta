@@ -197,7 +197,7 @@ interior, rooms 01–06 included) with its top between +0.450 and +0.455.
 The stair rise is measured from the actual top of that owned finish, in 16
 equal risers.
 
-## Amendment 2 — after the layout pilot (2026-11-17, 22:35)
+## Amendment 2 — after the layout pilot (2026-11-17, about 22:17; an earlier draft of this heading said 22:35, which was a wrong estimate)
 
 Measured by Worker session 04 (`04_report_00.md`) and decided afterwards.
 
