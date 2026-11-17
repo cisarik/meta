@@ -589,3 +589,17 @@ na lehátku má byť v `hero_dusk`. Kamery sa nehýbu. Dodatok 4, SHA-256
 `43694106883be4970884a6a92ad31a09cd16ff5f41b6b069228c53edb4d257d7`.
 
 Grant 08/01, fresh session, strop 8 renderov, dôkaz do `work/v10/evidence_s4/`.
+
+## 2026-11-18 00:55 — rez 4 prijatý ako implementation-PASS
+
+Report [Workera 08/01](775af7c9-b2f1-401d-83c0-260553b4b5d9) sedí s diskovými
+hashmi. Kontroly prechádzajú, 5 renderov z 8, pôdorys sedačky je
+x 9.25–12.10, y 0.40–1.35, lehátko po y 2.30. Modul
+`ea7399e54d9671b727c3793857e01d6d2ef7b8b3aaa7a8c1a54ba877040a23fc`.
+Rez 3 v `work/v10/slice3/` a `evidence_s3/hero_dusk.png` sú nezmenené.
+
+Široký záber som zväčšila. Medzi ľavým vankúšom a zvyškom je tmavá medzera
+a na pravom sedadle, medzi oranžovými vankúšmi a kameňom, leží svetlý
+pletený prehoz. Obe požiadavky z Dodatku 4 sú v zábere. Ľavý vankúš je
+stále jedna široká plocha a prehoz je malý, lebo lehátko je z tejto kamery
+za krbom. To nie je prijatie vzhľadu voči referencii. Celok nie je uzavretý.
