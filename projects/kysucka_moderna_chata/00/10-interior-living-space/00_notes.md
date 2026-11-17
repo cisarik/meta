@@ -455,3 +455,32 @@ krajina. Nič z toho nie je vizuálne prijatie; to patrí Michalovi.
 
 Obrázky som skopírovala do `evidence/slice1/` (bajtovo zhodné s
 `work/v10/evidence/`).
+
+## 2026-11-17 22:30–22:45 — Michalove rozhodnutia k pilotu a grant 05/01
+
+Michal po pozretí pilotných obrázkov rozhodol: rozloženie sedí a mám
+pokračovať rezom 2; krb si ponechá tvar a dostane skutočný sivý skladaný
+kameň; presklený roh ostáva široký 1,5 m s lavicou a ornamentom. Je to
+prijatie rozloženia, nie vizuálne prijatie interiéru.
+
+Do `evidence/design_basis_v10.md` som pridala Dodatok 2 (tieto rozhodnutia,
+pás na státie y 2,31–6,09, prijaté odchýlky stavby); nový SHA-256
+`23d06f085df0f831731adecf552b75129d9251fc770f5626d16624ce918c822e`.
+
+Grant 05/01 (`05_implementation_00.md`): fresh-worker-session, rez 2 —
+CC0 PBR textúry a modely z Poly Haven, dopracované procedurálne kusy tam,
+kde katalóg nič nemá (rohová sedačka, koberec, oblúková lampa, polienka,
+kuchyňa), vierohodný oheň, rovnaká sada kamier znovu vyrenderovaná plus
+C1 za súmraku a tri porovnania so rezom 1. Novú session som zvolila preto,
+lebo session 04 má za sebou dlhý beh; kontext získa z kódu a reportu.
+
+Rozdiely oproti rezu 1: povolená sieť iba na `api.polyhaven.com` a jeho
+sťahovací host, rozpočet 700 MB, nové súbory v `assets/interior_v10/`
+s vlastným slovenským manifestom (existujúci `assets/ASSET_MANIFEST.md`
+ostáva nedotknutý, lebo na projekte bežia ďalšie session); launcher musí
+najprv dostať poistku proti dvojitému spusteniu a tvrdý strop 30 renderov;
+rez 1 sa pred zmenami zachová v `work/v10/slice1/`; kontrola cold open
+vrátane snímky je povinná. Bez gitu, MCP, GUI a GPU. Na stroji teraz
+bežia aj exteriérové joby V11 (`work/v11/`), stráž RAM a sériovosti ich
+zohľadňuje. Splniteľnosť: vstupy majú overené hashe, `assets/interior_v10/`
+neexistuje, dostupná RAM pri vydaní asi 12 GiB.

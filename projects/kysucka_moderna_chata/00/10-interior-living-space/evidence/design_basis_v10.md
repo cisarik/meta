@@ -196,3 +196,21 @@ retained, and an owned floor finish covers the same XY extent (the whole
 interior, rooms 01–06 included) with its top between +0.450 and +0.455.
 The stair rise is measured from the actual top of that owned finish, in 16
 equal risers.
+
+## Amendment 2 — after the layout pilot (2026-11-17, 22:35)
+
+Measured by Worker session 04 (`04_report_00.md`) and decided afterwards.
+
+- **Cooperator decisions on the pilot images:** the layout stands; the
+  fireplace keeps its built shape and receives real grey stacked stone; the
+  glazed front corner stays x 12.75–14.25 with bench and ornament. The
+  layout positions built in slice 1 (report 04/01, table "Layout positions
+  changed") replace the starting values of §4.
+- **Gallery standing band.** The roof shell underside is at roof_z − 0.17,
+  so the lining sits at roof_z − 0.20 and the exposed rafters project
+  0.113 m below it. Rafters stay. The band with ≥ 2.0 m under the rafters
+  is **y 2.31–6.09**; that is the standing band from now on (§3.1 said
+  y 2.2–6.2, which holds only between rafters).
+- Accepted as built: finish top +0.451 and the resulting 1 mm offsets;
+  front opening head inside the roof thickness; edge beam only south of
+  the stair arrival; free stair-foot approach strip x 9.80–10.85.
