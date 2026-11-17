@@ -562,3 +562,21 @@ prestáva byť čierna koža a galériové kreslo sa nerieši. SHA-256 podkladu
 Grant 07/01 ide fresh session. Žiadny presun zón. Jeden voliteľný CC0
 model kresla, inak procedurálne, látka `wool_boucle` už je na disku.
 Strop 12 renderov. Rez 2 ostáva v `work/v10/evidence_s2/`.
+
+## 2026-11-18 00:25 — rez 3 prijatý ako implementation-PASS, vzhľad sedačky ešte nie
+
+Report [Workera 07/01](cd2a7b1d-50d0-4b7d-912b-1307ca9296b9) sedí s diskom.
+Kontroly vrátane lúča na schodisko a cold open prechádzajú. 10 renderov
+z 12. Katalógové kreslo sa nestiahlo: náhľad `mid_century_lounge_chair` je
+hnedá koža. Rohové kreslo je svetlé, procedurálne, pôvod [13.62, 1.97],
+vrch 111 mm pod lúčom. Pôdorys sedačky je nezmenený. `wool_boucle` na disku
+je pepito, preto veľké plochy ostali na svetlom ľane. Modul
+`a55ed3bb447ae78388a4946f2d1911f1bc9aa22ac3b6ba2590f5d5e50d21f333`,
+scéna `7b512b9046ec7c405acd560d7b623b405093d88b2ddfceef7f33f4ca9f804dea`.
+Rez 2 v `work/v10/slice2/` aj pripnuté rendery v `evidence_s2/` sú nezmenené.
+`build_scene.py` a v03 tiež.
+
+Z hero vzdialenosti sedačka stále splýva do jedného hladkého bloku. Prehoz
+na lehátku v týchto dvoch záberoch nie je. Kreslo je svetlé, ale nízke a
+tvrdé, nie hlboké kreslo z referencie. To nie je prijatie vzhľadu. Ďalší
+krok čaká na Michala. Celok nie je uzavretý.
