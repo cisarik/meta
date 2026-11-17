@@ -243,3 +243,16 @@ light corner chair stay. Two things change:
 - The knitted throw on the chaise must be visible in `hero_dusk`. Cameras
   do not move. If `CAM_V10_SOFA` looks away from the chaise, the throw is
   not forced into that frame.
+
+## Amendment 5 — sofa work stops here (2026-11-18, 00:56)
+
+Michal looked at slice 4 and chose to stop. The study candidate stays the
+slice 4 scene. The dark gap between the cushions and the light throw on
+the right-hand seat are accepted as built for `CAM_V10_HERO`. The left
+cushion is still one broad face, and the throw is small because the chaise
+sits behind the stone breast from that camera. That is recorded, and it is
+not a defect to repair now.
+
+This is not visual acceptance of the interior. Integration into the full
+scene waits until the exterior wholes release the shared files. This
+amendment grants no further interior mutation.

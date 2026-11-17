@@ -603,3 +603,12 @@ a na pravom sedadle, medzi oranžovými vankúšmi a kameňom, leží svetlý
 pletený prehoz. Obe požiadavky z Dodatku 4 sú v zábere. Ľavý vankúš je
 stále jedna široká plocha a prehoz je malý, lebo lehátko je z tejto kamery
 za krbom. To nie je prijatie vzhľadu voči referencii. Celok nie je uzavretý.
+
+## 2026-11-18 00:56 — Michal: sedačku ďalej neriešiť
+
+Po reze 4 si vybral zastaviť prácu na sedačke a počkať na integráciu.
+Študijný kandidát ostáva scéna rezu 4. Tmavá medzera a malý prehoz sú
+prijaté ako postavené pre túto kameru. Ľavý vankúš je stále jedna plocha.
+Vzhľad interiéru tým nie je prijatý. Integrácia do plnej scény čaká, kým
+exteriérové celky uvoľnia spoločné súbory. Ďalší grant na interiér z tohto
+rozhodnutia nevychádza. Celok nie je uzavretý. Dodatok 5.
