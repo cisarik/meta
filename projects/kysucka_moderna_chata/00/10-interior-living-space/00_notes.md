@@ -484,3 +484,24 @@ vrátane snímky je povinná. Bez gitu, MCP, GUI a GPU. Na stroji teraz
 bežia aj exteriérové joby V11 (`work/v11/`), stráž RAM a sériovosti ich
 zohľadňuje. Splniteľnosť: vstupy majú overené hashe, `assets/interior_v10/`
 neexistuje, dostupná RAM pri vydaní asi 12 GiB.
+
+## 2026-11-17 22:20 — oprava časových údajov v poznámkach
+
+Niektoré časy v nadpisoch vyššie som odhadla, namiesto aby som ich
+odčítala z hodín, a dva sú preukázateľne nesprávne (ležia v budúcnosti
+voči commitom). Staršie zápisy neprepisujem; platí táto oprava podľa časov
+commitov v Meta a hodín stroja:
+
+| Zápis | Uvedené | Skutočnosť |
+|---|---|---|
+| zosúladenie reportu 02/01 | 20:22–20:35 | hotové pred commitom `dd9e992` o 20:32:21 |
+| prerušenie 03/01 a grant 04/01 | 20:50–21:10 | hotové pred commitom `199a8cf` o 21:05:20 |
+| zosúladenie reportu 04/01 | 22:13–22:25 | 22:13–22:15 (commit `e07a95f` o 22:14:49) |
+| rozhodnutia k pilotu a grant 05/01 | 22:30–22:45 | 22:15–22:19 (commit `a568b2f` o 22:18:47) |
+
+Rovnako Dodatok 2 v `evidence/design_basis_v10.md` nesie čas 22:35;
+vznikol okolo 22:17. Súbor teraz nemením, lebo bežiaci grant 05/01
+odkazuje na jeho hash; opravím to pri najbližšej zmene podkladu.
+
+Worker 05/01 bol vydaný okolo 22:19 a o 22:19:42 preukázateľne pracuje
+(prepis rastie); na disku zatiaľ nič nové.
