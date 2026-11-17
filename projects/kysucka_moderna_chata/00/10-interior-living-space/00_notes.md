@@ -374,3 +374,37 @@ Dodatok k podkladu pridám až po reporte alebo pri novom grante.
 
 Rozhodnutie, či session nechať dobehnúť alebo ju prerušiť a vydať nový
 grant, patrí Michalovi; pýtam sa ho.
+
+## 2026-11-17 20:50–21:10 — Michalovo rozhodnutie, prerušenie 03/01, grant 04/01
+
+Michal na otázku odpovedal: prerušiť Workera 03/01 a vydať grant novému
+Workerovi bez git príkazov. Prerušenie som poslala cez klienta okolo 21:03.
+Session potvrdila zastavenie a uviedla, že žiadny jej príkaz nikdy
+neuviazol a git použila iba dvakrát na čítanie (obe volania pod 0,5 s).
+Čo Michal videl ako zaseknutie, ostáva nezistené. Session medzitým
+pracovala až do 21:03:18.
+
+Na disku po nej ostalo (všetko v allowliste, nič neprijaté): modul
+`scripts/interior_v10.py` (1 345 riadkov), nástroj
+`scripts/interior_v10_study.py` (743 riadkov, kontroly nedokončené),
+`model/interior_v10.json`, launcher, základná aj prvá V10 študijná scéna a
+JSON evidencia. Tri Blender joby, každý pod 2 s a 0,6 GiB, žiadny render.
+Presné hashe sú v `03_interruption_00.md`, ktorý som napísala ja ako záznam
+prerušenia (nie report Workera). Súradnice 03/01 sú spotrebované.
+
+Rozhodnutie o podlahe (Dodatok 1 v `evidence/design_basis_v10.md`, nový
+SHA-256 `520db73c4d162e52b6dca916c7f65ab371cea20f4fce94dad07f257bf25c8960`):
+proxy `FLOOR_interior` má vrch na +0,494, ale deklarovaná úroveň podlahy
+(prahy, vstupné schody, spodná hrana skla) je +0,45. Platí +0,45: proxy
+podlaha sa skryje a ponechá, vlastná podlaha ju nahradí v rovnakom
+pôdoryse. Všetky úrovne podkladu ostávajú, schodisko 16 × 0,175 m. Pôvodne
+som zvažovala opačné riešenie (ponechať +0,494); prerušená session došla
+k tomuto a je konzistentnejšie s budovou.
+
+Grant 04/01 (`04_implementation_00.md`): fresh-worker-session, rovnaký rez
+a allowlist. Rozdiely oproti 03/01: žiadny git (identitu repozitára som
+overila sama: HEAD `0f5f84579d88ee67bc0bacee74826ef02bea7452`, strážené
+hashe a JSON sekcie sedia); podklad s Dodatkom 1; zvyšky po session 03 sú
+v bráne s hashmi a nový Worker ich má najprv celé prečítať a potom prevziať,
+opraviť alebo prepísať; report do `04_report_00.md`. Koncept 03/02 nebol
+vydaný a jeho súradnice nie sú spotrebované.

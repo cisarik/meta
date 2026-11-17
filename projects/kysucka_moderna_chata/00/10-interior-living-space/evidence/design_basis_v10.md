@@ -181,3 +181,18 @@ is in.
 | D4 | Work and music corner | none |
 | D5 | Gallery use | sparse lounge furnishing |
 | D6 | Clear glass on the gable in the full scene | decide at integration |
+
+## Amendment 1 — finished floor level (2026-11-17, 21:06)
+
+Found by Worker session 03 and confirmed in `scripts/build_scene.py` L120:
+the proxy `FLOOR_interior` is 0.044 thick with its centre at F + 0.022, so
+its top is at +0.494, while the declared floor datum
+(`building.floor_z`, door sills, entry steps, lower edge of the gable
+glass) is +0.45.
+
+Decision: the datum **+0.45 stays** and every level in this file stays as
+written. `FLOOR_interior` joins the proxies that give way: it is hidden and
+retained, and an owned floor finish covers the same XY extent (the whole
+interior, rooms 01–06 included) with its top between +0.450 and +0.455.
+The stair rise is measured from the actual top of that owned finish, in 16
+equal risers.
