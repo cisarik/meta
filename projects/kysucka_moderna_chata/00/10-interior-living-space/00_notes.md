@@ -527,3 +527,27 @@ Grant 06/01: fresh session, rovnaký rez. Žiadne sťahovanie. Opraví tri
 namerané zlyhania najmenším posunom, doženie cold open a vyrenderuje sadu
 pohľadov. Strop 30 renderov ostáva, doteraz sa minulo 0. Bez gitu, siete,
 MCP a GPU.
+
+## 2026-11-17 23:45 — rez 2 prijatý ako implementation-PASS
+
+Report [Workera 06/01](aafcbe40-02ff-4cc8-94b8-bdb9967afd84) som
+preverila voči disku. Status PASS ponechávam.
+
+Sedí: tri opravy (kreslo o 28 mm, rastliny z otomanu na podlahu galérie,
+linka a vysoká skriňa von z uličky), všetky kontroly vrátane cold open,
+16 renderov z 30, tri porovnania. Modul aj študijný nástroj ostali na
+hashoch z grantu. `model/interior_v10.json` je
+`7a57d828b60909270a5bfd36ed737514ce88c401f58d3f3a295bae08017e0695`,
+študijná scéna `6f1658eaf3cceccb6fa6e5d30d03b91bfe077428b697fbe974003f2797ddf678`.
+Rez 1, `work/v10/evidence/`, `build_scene.py` a v03 sú nezmenené.
+Jediný neúspešný job `s2b_04_apply` spadol na čiarke v JSON pred uložením;
+nasledujúci apply scénu uložil. Úchyt vysokej skrine na y 7.454 je
+dopočítaný z posunu, nie spätne odčítaný z meshu; kontrola uličky je
+prázdna.
+
+V porovnaniach je vľavo pilot a vpravo rez 2. Kameň ostáva sivý, oheň
+je čitateľný, podlaha, strop a nábytok majú skutočné materiály. Slabšie
+voči referencii ostáva tmavé kožené kreslo, jednoduchá procedurálna
+sedačka, tmavé jedálenské stoličky, rovnaké polená v nike a plochá
+štúdiová krajina. To nie je prijatie vzhľadu. Ďalší rez čaká na
+Michalovo rozhodnutie. Celok nie je uzavretý.
