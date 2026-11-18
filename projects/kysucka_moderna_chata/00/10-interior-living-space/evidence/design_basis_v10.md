@@ -256,3 +256,15 @@ not a defect to repair now.
 This is not visual acceptance of the interior. Integration into the full
 scene waits until the exterior wholes release the shared files. This
 amendment grants no further interior mutation.
+
+## Amendment 6 — a separate file without trees or hills (2026-11-18, 18:46)
+
+Michal kept the whole open, forbade Git commands, and asked for the
+interior in another file with no trees and no hills. A dining-chair draft
+written in the same hour was not issued and is withdrawn.
+
+The efficient file is a copy of the 23 MB study scene. It drops
+`SITE_terrain_proxy` and the whole `90_VEGETATION_PROXY` collection.
+The cottage, the interior, the fence, the path and the cameras stay.
+The slice 4 study file stays. The open GUI is not touched, and neither
+are `work/v12/` or `work/v13/`.

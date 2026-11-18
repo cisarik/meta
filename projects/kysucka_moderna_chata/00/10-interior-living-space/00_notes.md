@@ -612,3 +612,17 @@ prijaté ako postavené pre túto kameru. Ľavý vankúš je stále jedna plocha
 Vzhľad interiéru tým nie je prijatý. Integrácia do plnej scény čaká, kým
 exteriérové celky uvoľnia spoločné súbory. Ďalší grant na interiér z tohto
 rozhodnutia nevychádza. Celok nie je uzavretý. Dodatok 5.
+
+## 2026-11-18 18:47 — samostatný súbor bez stromov a kopca
+
+Michal chce interiér v inom súbore, bez stromov a kopcov, a bez git
+príkazov. Rozpracovaný grant na jedálenské stoličky som nevydala.
+
+Efektívna cesta nie je skrývanie v ťažkom exteriéri. Z 23 MB štúdie
+`work/v10/study/interior_study_v10.blend` (hash
+`0a85006a0fa1efec720ebb5791fea9a076cb76a8fe0d6d3db2568cc23deedadb`,
+nezmenený) vznikla kópia
+`work/v10/study/interior_only.blend`. Vyšiel z nej `SITE_terrain_proxy`
+a celá kolekcia `90_VEGETATION_PROXY`, spolu 264 objektov. Ostalo 543.
+Plot, chodník a chata ostali. Otvorený Blender som neprepínala.
+Git som nespustila.
